@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "385789015522",
+    "project_id": "ec3digrepo",
+    "storage_bucket": "ec3digrepo.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:385789015522:android:fcbb1eba26c78b459275bb",
+        "android_client_info": {
+          "package_name": "com.ec3digital.poraki"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "385789015522-g86u4ibvlvdif559l4o29bmdnn0bq0iq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBf0c_00pHeEbgDtdfFPMYV4AoG1aFYZEY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "385789015522-g86u4ibvlvdif559l4o29bmdnn0bq0iq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
