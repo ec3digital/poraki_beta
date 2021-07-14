@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:poraki/paginas/login/login_service.dart';
-import 'package:poraki/paginas/sign_up/sign_up_page.dart';
-import 'package:poraki/paginas/home/home_page.dart';
-import 'package:poraki/paginas/testefb/testefb.dart';
-import 'package:poraki/paginas/testeofer/telaofer.dart';
-import 'package:poraki/shared/constants/custom_colors.dart';
+import 'package:poraki/app/modules/sign_up/sign_up_page.dart';
+import 'package:poraki/app/modules/testes_widgets/testeofer/telaofer.dart';
+import 'package:poraki/app/theme/custom_colors.dart';
+
+import 'login_controller.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -44,7 +43,7 @@ class _LoginPageState extends State<LoginPage> {
                   bottom: 7,
                 ),
                 child: Image.asset(
-                  "assets/poraki250.png",
+                  "assets/icons/poraki250.png",
                   height: 250,
                 ),
               ),
@@ -221,7 +220,7 @@ class _LoginPageState extends State<LoginPage> {
 
   void _doLogin(BuildContext context) async {
     if (_formKey.currentState!.validate()) {
-      LoginService()
+      LoginController()
           .login(_mailInputController.text, _passwordInputController.text);
 
       Navigator.push(

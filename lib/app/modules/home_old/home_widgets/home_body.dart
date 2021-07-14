@@ -1,28 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:poraki/paginas/home/home_widgets/home_list_item.dart';
-import 'package:poraki/paginas/home/home_widgets/home_list_model.dart';
-import 'package:poraki/shared/constants/custom_colors.dart';
+import 'package:poraki/app/theme/custom_colors.dart';
 
-class HomePageContent extends StatefulWidget {
-  const HomePageContent({key}) : super(key: key);
+import 'home_list_item.dart';
+import 'home_list_model.dart';
 
-  @override
-  _HomePageContentState createState() => _HomePageContentState();
-}
 
-class _HomePageContentState extends State<HomePageContent> {
-  List<HomeListModel> listMockedList = [
+class HomeBody extends StatelessWidget {
+  final List<HomeListModel> listMockedList = [
     HomeListModel(
       title: "Academia - O Club",
-      assetIcon: "assets/icons/gym_icon.png",
+      assetIcon: "assets/images/dumbbell.png",
     ),
     HomeListModel(
       title: "Biometa Academia",
-      assetIcon: "assets/icons/gym_icon.png",
+      assetIcon: "assets/images/dumbbell.png",
     ),
     HomeListModel(
       title: "Academia Titanium Core",
-      assetIcon: "assets/icons/gym_icon.png",
+      assetIcon: "assets/images/dumbbell.png",
     )
   ];
 

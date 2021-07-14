@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:poraki/paginas/home/home_widgets/home_list_model.dart';
-import 'package:poraki/shared/constants/custom_colors.dart';
+import 'package:poraki/app/theme/custom_colors.dart';
+
+import 'home_list_model.dart';
 
 class HomeListItem extends StatefulWidget {
   final HomeListModel homeListModel;
@@ -42,7 +43,7 @@ class _HomeListItemState extends State<HomeListItem> {
                 children: [
                   Row(
                     children: [
-                      Image.asset(widget.homeListModel.assetIcon),
+                      Image.asset(widget.homeListModel.assetIcon, height: 40),
                       Padding(padding: EdgeInsets.only(left: 15)),
                       Text(
                         widget.homeListModel.title,

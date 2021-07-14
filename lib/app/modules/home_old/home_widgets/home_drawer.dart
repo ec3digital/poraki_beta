@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:poraki/shared/constants/custom_colors.dart';
+import 'package:poraki/app/theme/custom_colors.dart';
 
 Drawer getHomeDrawer() {
   return Drawer(
