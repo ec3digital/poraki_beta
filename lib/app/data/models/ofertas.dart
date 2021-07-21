@@ -5,7 +5,7 @@ class Ofertas {
   DateTime? ofertaDispoDesde;
   int? ofertaID;
   String? ofertaImgPath;
-  int? ofertaPreco;
+  double? ofertaPreco;
   String? ofertaTitulo;
 
   Ofertas(
@@ -25,7 +25,7 @@ class Ofertas {
     ofertaDispoDesde = json['OfertaDispoDesde'];
     ofertaID = json['OfertaID'];
     ofertaImgPath = json['OfertaImgPath'];
-    ofertaPreco = json['OfertaPreco'];
+    ofertaPreco = double.parse(json['OfertaPreco'].toString());
     ofertaTitulo = json['OfertaTitulo'];
   }
 

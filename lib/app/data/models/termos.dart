@@ -8,7 +8,4 @@ class Termo {
   factory Termo.fromDocument(DocumentSnapshot doc) {
     return Termo(termotexto: doc['termotexto']);
   }
-
 }
-
-

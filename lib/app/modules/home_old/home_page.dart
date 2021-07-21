@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-
-import 'home_widgets/home_appbar.dart';
-import 'home_widgets/home_body.dart';
-import 'home_widgets/home_drawer.dart';
-import 'home_widgets/home_fab.dart';
+import 'package:poraki/app/modules/home_old/home_old_widgets/home_drawer.dart';
+import 'home_old_widgets/home_appbar.dart';
+import 'home_old_widgets/home_body.dart';
+import 'home_old_widgets/home_fab.dart';
 
 class HomePageOld extends StatelessWidget {
   HomePageOld({Key? key}) : super(key: key);

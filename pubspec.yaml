@@ -23,10 +23,12 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  auto_size_text: ^3.0.0-nullsafety.0
   cloud_firestore: ^1.0.4
   cupertino_icons: ^1.0.2
-  firebase_core: ^1.0.3
+  font_awesome_flutter: ^9.1.0
   get: ^4.1.4
+  graphql_flutter: ^5.0.0
   http: ^0.13.3
   shared_preferences: ^2.0.6
 

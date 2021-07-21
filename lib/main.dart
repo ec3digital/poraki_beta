@@ -6,7 +6,7 @@ import 'app/app_widget.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  
+
   //runApp(testeCloud());
   //runApp(Card1());
   //runApp(TelaOfer());
