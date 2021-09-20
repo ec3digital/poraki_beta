@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
-import 'package:poraki/app/data/models/pessoas.dart';
-import 'package:poraki/app/shared/constants/constants.dart';
+import '../models/pessoas.dart';
+import '../../shared/constants/constants.dart';
 
 class PeopleRepository extends GetConnect {
   String url = '${Constants.baseUrl}pessoas';

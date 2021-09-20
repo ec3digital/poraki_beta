@@ -1,35 +1,41 @@
+import 'dart:convert';
+
 class LoginModel {
-  late String mail;
-  late String password;
-  late String name;
-  late bool keepOn;
+  final String mail;
+  final String password;
+  final String name;
+  final bool keepOn;
+  LoginModel({
+    required this.mail,
+    required this.password,
+    required this.name,
+    required this.keepOn,
+  });
 
-  LoginModel({required this.name, required this.mail, required this.password, required this.keepOn});
-
-  //keepOn = true;
-
-  LoginModel.fromJson(Map<String, dynamic> json) {
-    name = json['name'];
-    mail = json['mail'];
-    password = json['password'];
-    keepOn = json['keepOn'];
+  Map<String, dynamic> toMap() {
+    return {
+      'mail': mail,
+      'password': password,
+      "returnSecureToken": true,
+    };
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['name'] = this.name;
-    data['mail'] = this.mail;
-    data['password'] = this.password;
-    data['keepOn'] = this.keepOn;
-    return data;
+  factory LoginModel.fromMap(Map<String, dynamic> map) {
+    return LoginModel(
+      mail: map['mail'],
+      password: map['password'],
+      name: map['name'],
+      keepOn: map['keepOn'],
+    );
   }
 
+  String toJson() => json.encode(toMap());
+
+  factory LoginModel.fromJson(String source) =>
+      LoginModel.fromMap(json.decode(source));
+
+  @override
   String toString() {
-    return "Name: " +
-        this.name +
-        "\nE-mail: " +
-        this.mail +
-        "\nPassword: " +
-        this.password;
+    return 'LoginModel(mail: $mail, password: $password, name: $name, keepOn: $keepOn)';
   }
 }

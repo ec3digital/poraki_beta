@@ -1,32 +1,48 @@
 import 'package:get/get.dart';
-import 'package:poraki/app/modules/home/home_page.dart';
-import 'package:poraki/app/modules/home_old/home_page.dart';
-import 'package:poraki/app/modules/login/login_page.dart';
-import 'package:poraki/app/modules/sign_up/sign_up_page.dart';
 
+import '../modules/auth/login/login_page.dart';
+import '../modules/auth/sign_up/sign_up_page.dart';
+import '../modules/days_offers/days_offers_page.dart';
+import '../modules/days_offers/show_day_offer/show_day_offer_page.dart';
+import '../modules/days_offers/show_day_offer/widgets/view_search_product.dart';
+import '../modules/home/home_page.dart';
+import '../modules/shopping_cart/shopping_cart_page.dart';
+import '../modules/testes_widgets/testeofer/telaofer.dart';
 import 'app_routes.dart';
 
 class AppPages {
   static final routes = [
     GetPage(
-      name: AppRoutes.HOME_OLD,
-      page: () => HomePageOld(),
+      name: AppRoutes.viewSearchProduct,
+      page: () => ViewSearchProduct(),
     ),
     GetPage(
-      name: AppRoutes.HOME,
+      name: AppRoutes.showDayOffer,
+      page: () => ShowDayOfferPage(),
+    ),
+    GetPage(
+      name: AppRoutes.daysOffers,
+      page: () => DaysOffersPage(),
+    ),
+    GetPage(
+      name: AppRoutes.home,
       page: () => HomePage(),
     ),
     GetPage(
-      name: AppRoutes.HOME_OLD,
-      page: () => HomePageOld(),
-    ),
-    GetPage(
-      name: AppRoutes.SIGN_IN,
+      name: AppRoutes.signIn,
       page: () => LoginPage(),
     ),
     GetPage(
-      name: AppRoutes.SIGN_UP,
+      name: AppRoutes.signUp,
       page: () => SignUpPage(),
+    ),
+    GetPage(
+      name: AppRoutes.offer,
+      page: () => TelaOfer(),
+    ),
+    GetPage(
+      name: AppRoutes.shoppingCart,
+      page: () => ShoppingCartPage(),
     ),
   ];
 }

@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
-import 'package:poraki/app/data/models/categorias.dart';
-import 'package:poraki/app/shared/constants/constants.dart';
+
+import '../../shared/constants/constants.dart';
+import '../models/categorias.dart';
 
 class CategoriesRepository extends GetConnect {
   String url = '${Constants.baseUrl}categorias';

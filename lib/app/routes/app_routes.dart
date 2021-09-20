@@ -1,8 +1,11 @@
-abstract class AppRoutes{
-
-  static const INITIAL = '/';
-  static const HOME_OLD = '/home-old';
-  static const HOME = '/home';
-  static const SIGN_IN = '/sign-in';
-  static const SIGN_UP = '/sign-up';
+abstract class AppRoutes {
+  static const initial = '/';
+  static const home = '/home';
+  static const signIn = '/sign-in';
+  static const signUp = '/sign-up';
+  static const offer = '/offer';
+  static const shoppingCart = '/shopping-cart';
+  static const viewSearchProduct = '/view-search-product';
+  static const showDayOffer = '/show-day-offer';
+  static const daysOffers = '/days-offers';
 }

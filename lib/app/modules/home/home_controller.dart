@@ -1,17 +1,20 @@
 import 'package:get/get.dart';
-import 'package:poraki/app/data/models/categorias.dart';
-import 'package:poraki/app/data/models/ofertas.dart';
-import 'package:poraki/app/data/models/pessoas.dart';
-import 'package:poraki/app/data/repositories/categories_repository.dart';
-import 'package:poraki/app/data/repositories/offer_repository.dart';
-import 'package:poraki/app/data/repositories/people_repository.dart';
+import '../../data/models/categorias.dart';
+import '../../data/models/produto_oferta.dart';
+import '../../data/models/pessoas.dart';
+
+import '../../data/repositories/categories_repository.dart';
+import '../../data/repositories/offer_repository.dart';
+import '../../data/repositories/people_repository.dart';
+
 
 class HomeController extends GetxController {
+
   OfferRepository offerRepository = OfferRepository();
   CategoriesRepository categoriesRepository = CategoriesRepository();
   PeopleRepository peopleRepository = PeopleRepository();
 
-  Ofertas? offerToday;
+  ProdutoOferta? offerToday;
   List<Categorias>? categorias;
   List<Pessoas>? pessoas;
 
@@ -33,8 +36,9 @@ class HomeController extends GetxController {
   Future<void> getOffers() async {
     try {
       changeLoading(true);
-      List<Ofertas> ofertas = await offerRepository.getOffersAll();
-      offerToday = ofertas[0];
+      List<ProdutoOferta> ofertas = await offerRepository.getOffersAll();
+      offerToday = ofertas.first;
+      
     } catch (e) {
       print('Erro no getOffers() controller ${e.toString()}');
     } finally {
@@ -47,7 +51,7 @@ class HomeController extends GetxController {
       changeLoading(true);
       categorias = await categoriesRepository.getAllCategories();
     } catch (e) {
-      print('Erro no getOffers() controller ${e.toString()}');
+      print('Erro no getCategories() controller ${e.toString()}');
     } finally {
       changeLoading(false);
     }
@@ -58,7 +62,7 @@ class HomeController extends GetxController {
       changeLoading(true);
       pessoas = await peopleRepository.getAllPeople();
     } catch (e) {
-      print('Erro no getOffers() controller ${e.toString()}');
+      print('Erro no getPeople() controller ${e.toString()}');
     } finally {
       changeLoading(false);
     }
@@ -68,4 +72,6 @@ class HomeController extends GetxController {
     isLoading = newValue;
     update();
   }
+
+
 }

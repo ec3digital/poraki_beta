@@ -59,6 +59,7 @@ class MyStatelessWidget extends StatelessWidget {
           ButtonBar(
             alignment: MainAxisAlignment.start,
             children: [
+              // ignore: deprecated_member_use
               FlatButton(
                 textColor: const Color(0xFF6200EE),
                 onPressed: () {
@@ -66,6 +67,7 @@ class MyStatelessWidget extends StatelessWidget {
                 },
                 child: const Text('ACTION 1'),
               ),
+              // ignore: deprecated_member_use
               FlatButton(
                 textColor: const Color(0xFF6200EE),
                 onPressed: () {
@@ -75,7 +77,7 @@ class MyStatelessWidget extends StatelessWidget {
               ),
             ],
           ),
-          Image.asset("assets/ofe1a.jpeg"),
+          Image.asset("assets/images/ofe1a.jpeg"),
           // Image.asset('assets/card-sample-image-2.jpg'),
         ],
       ),

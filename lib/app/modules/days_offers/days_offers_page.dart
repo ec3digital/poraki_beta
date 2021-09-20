@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'days_offers_controller.dart';
-import 'days_offers_widgets/app_days_offers.dart';
-import 'days_offers_widgets/body_days_offers.dart';
+// import 'days_offers_widgets/app_days_offers.dart';
+// import 'days_offers_widgets/body_days_offers.dart';
+import 'widgets/app_days_offers.dart';
+import 'widgets/body_days_offers.dart';
 
 class DaysOffersPage extends StatelessWidget {
   final DaysOffersController _controller = Get.put(DaysOffersController());
