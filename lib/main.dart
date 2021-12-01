@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
-
-import 'app/app_widget.dart';
+import 'package:poraki/app/modules/auth/login/login_page.dart';
 
 void main() async {
-  //WidgetsFlutterBinding.ensureInitialized();
-  //await Firebase.initializeApp();
+  runApp(MyApp());
+}
 
-  //runApp(testeCloud());
-  //runApp(Card1());
-  //runApp(TelaOfer());
-  runApp(AppWidget());
-  //final CollTermos _colltermos = Firebase.instance.collection("akitermos")
-  //var listatermos = FirebaseFirestore.instance.collection("akitermos").snapshots(); //doc("es-mx").snapshots().toList();
-  //print(listatermos.first);
+class MyApp extends StatelessWidget {
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'PorAki',
+      home: LoginPage(),
+      debugShowCheckedModeBanner: false,
+    );
+  }
 }

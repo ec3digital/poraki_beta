@@ -26,10 +26,15 @@ class ListHorizontalBannersHome extends StatelessWidget {
             decoration: BoxDecoration(),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(10),
-              child: Image.network(
-                imgBanner,
-                fit: BoxFit.cover,
-              ),
+                child: FadeInImage.assetNetwork(
+                    placeholder: 'assets/images/PORAKI-Banner-sm.jpg',
+                    image: imgBanner,
+                    fit: BoxFit.cover,
+                ),
+              // child: Image.network(
+              //   imgBanner,
+              //   fit: BoxFit.cover,
+              // ),
             ),
           );
         },

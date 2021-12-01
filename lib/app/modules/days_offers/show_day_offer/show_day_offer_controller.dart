@@ -1,9 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:poraki/app/data/models/produto_oferta.dart';
+import 'package:poraki/app/data/repositories/offer_repository.dart';
 import 'widgets/bottom_sheet_product_day_offer.dart';
 
 class ShowDayOfferController extends GetxController {
   final TextEditingController amountController = TextEditingController();
+  OfferRepository offerRepository = OfferRepository();
+
+  ProdutoOferta? offerTapped;
 
   @override
   void onClose() {
@@ -13,7 +18,13 @@ class ShowDayOfferController extends GetxController {
 
   int amountProduct = 1;
   bool changeBottomSheet = false;
+  bool isLoading = false;
 
+  @override
+  void onInit() async {
+    await getOfferTapped();
+    super.onInit();
+  }
 
   openBottomSheet() {
     Get.bottomSheet(
@@ -43,9 +54,25 @@ class ShowDayOfferController extends GetxController {
     Get.back();
   }
 
+  Future<void> getOfferTapped() async {
+    try {
+      changeLoading(true);
+      List<ProdutoOferta> ofertaById = await offerRepository.getOfferById(1);
+      offerTapped = ofertaById.first;
+
+    } catch (e) {
+      print('Erro no getOffers() controller ${e.toString()}');
+    } finally {
+      changeLoading(false);
+    }
+  }
+
+  void changeLoading(bool newValue) {
+    isLoading = newValue;
+    update();
+  }
+
   List<String> listPictures = [
-    "https://cdn.pixabay.com/photo/2013/07/13/12/46/iphone-160307_960_720.png",
-    "https://cdn.pixabay.com/photo/2013/07/13/12/46/iphone-160307_960_720.png",
-    "https://cdn.pixabay.com/photo/2013/07/13/12/46/iphone-160307_960_720.png",
+    "https://firebasestorage.googleapis.com/v0/b/ec3digrepo.appspot.com/o/ofertas%2F2.jpg?alt=media",
   ];
 }

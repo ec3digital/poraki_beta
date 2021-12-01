@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import '../../../../common_widgets/container_options.dart';
 
 class DetailOfferDay extends StatelessWidget {
-  final String detailProduct;
+  final String? detailProduct;
 
   const DetailOfferDay({
     Key? key,
@@ -21,7 +21,7 @@ class DetailOfferDay extends StatelessWidget {
             'Detalhes:',
             style: Get.textTheme.bodyText1!.copyWith(fontWeight: FontWeight.w400, fontSize: 15),
           ),
-          Text(detailProduct),
+          Text(detailProduct!),
         ],
       ),
     );

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:poraki/app/data/models/produto_oferta.dart';
 
 import '../../../../theme/app_theme.dart';
 import '../show_day_offer_controller.dart';
@@ -14,10 +15,12 @@ import 'text_price_product_day_offer.dart';
 class BodyShowDayOffer extends StatelessWidget {
    BodyShowDayOffer({Key? key}) : super(key: key);
 
-  final ShowDayOfferController controller = Get.put(ShowDayOfferController());
+  final ShowDayOfferController _controller = Get.put(ShowDayOfferController());
 
   @override
   Widget build(BuildContext context) {
+    final ProdutoOferta? _product = _controller.offerTapped;
+    debugPrint(_product!.ofertaTitulo.toString());
     return SingleChildScrollView(
         child: Container(
           margin: const EdgeInsets.fromLTRB(12, 12, 12, 0),
@@ -26,14 +29,15 @@ class BodyShowDayOffer extends StatelessWidget {
             children: [
               NameProductOfferDay(
                 nameProduct:
-                    'Samsung Galaxy M21s Dual SIM 64 GB preto 4 GB RAM',
+                _product.ofertaTitulo.toString()
+                    //'Samsung Galaxy M21s Dual SIM 64 GB preto 4 GB RAM',
               ),
               const SizedBox(height: 10),
-              ListPictureProduct(controller: controller),
+              ListPictureProduct(controller: _controller),
               const SizedBox(height: 15),
-              DetailOfferDay(detailProduct: 'Várias peças - 6 anos de idade'),
+              DetailOfferDay(detailProduct: _product.ofertaDetalhe),
               SizedBox(height: 10),
-              TextPriceProductDayOffer(textPrice: 'R\$ 1.399 '),
+              TextPriceProductDayOffer(textPrice: 'R\$ ' + _product.ofertaPreco.toString()),
               const SizedBox(height: 10),
               ContainerAmountProductDayOffer(),
               SizedBox(height: 10),

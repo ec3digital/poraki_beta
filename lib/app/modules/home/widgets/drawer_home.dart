@@ -1,7 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:poraki/app/routes/app_routes.dart';
 import '../home_page.dart';
@@ -21,14 +20,14 @@ class DrawerHome extends StatelessWidget {
         children: [
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 10),
-            color: AppColors.yellowComum,
+            color: Colors.amber,
             height: Get.height * 0.16,
             child: GestureDetector(
               onTap: () {},
               child: Row(
                 children: [
                   CircleAvatar(
-                    backgroundImage: AssetImage('assets/images/photodune.png'),
+                    //backgroundImage: AssetImage('assets/images/photodune.png'),
                   ),
                   const SizedBox(width: 15),
                   AutoSizeText(

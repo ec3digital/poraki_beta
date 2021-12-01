@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-
 import '../modules/auth/login/login_page.dart';
 import '../modules/auth/sign_up/sign_up_page.dart';
 import '../modules/days_offers/days_offers_page.dart';
@@ -9,6 +8,7 @@ import '../modules/home/home_page.dart';
 import '../modules/shopping_cart/shopping_cart_page.dart';
 import '../modules/testes_widgets/testeofer/telaofer.dart';
 import 'app_routes.dart';
+import '../modules/offers/offers_page.dart';
 
 class AppPages {
   static final routes = [
@@ -43,6 +43,10 @@ class AppPages {
     GetPage(
       name: AppRoutes.shoppingCart,
       page: () => ShoppingCartPage(),
+    ),
+    GetPage(
+        name: AppRoutes.offers,
+        page: () => OffersPage()
     ),
   ];
 }

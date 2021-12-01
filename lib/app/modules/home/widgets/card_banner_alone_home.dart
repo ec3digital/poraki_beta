@@ -17,10 +17,10 @@ class CardBannerAloneHome extends StatelessWidget {
         margin: EdgeInsets.all(10),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(15),
-          child: Image.network(
-            "https://blog.midianoalvo.com.br/wp-content/uploads/2018/09/banner-anuncio-outdoor.jpg",
-            scale: 1.0,
-          ),
+          // child: Image.network(
+          //   "http://poraki-assets.ec3.digital/wp-content/uploads/2021/11/poraki_banner.png",
+          //   scale: 1.0,
+          // ),
         ),
       ),
     );

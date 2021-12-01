@@ -13,6 +13,13 @@ class BodyHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // FirebaseStorage storage = new FirebaseStorage(
+    //     storageBucket: 'gs://osszefogasaszanhuzokert.appspot.com/'
+    // );
+    // StorageReference imageLink = storage.ref().child('giftShopItems').child(documentSnapshot['imageName']);
+    // final imageUrl = await imageLink.getDownloadUrl();
+    // Image.network(imageUrl.toString());
+
     return SingleChildScrollView(
       child: GradientHeaderHome(
         child: Column(
@@ -34,7 +41,8 @@ class BodyHome extends StatelessWidget {
                     details: _controller.offerToday!.ofertaDetalhe ?? '',
                     cepOffer: _controller.offerToday!.ofertaCEP ?? '',
                     imgOffer:
-                        'https://cdn2.iconfinder.com/data/icons/black-friday-shopping-3/252/Asset_1140-256.png',
+                      'https://firebasestorage.googleapis.com/v0/b/ec3digrepo.appspot.com/o/ofertas%2F' + _controller.offerToday!.ofertaID.toString() + '.jpg?alt=media',
+                        // 'https://cdn2.iconfinder.com/data/icons/black-friday-shopping-3/252/Asset_1140-256.png',
                   );
                 }
               },

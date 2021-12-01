@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 
 class NameProductOfferDay extends StatelessWidget {
 
-  final String nameProduct;
+  final String? nameProduct;
 
   const NameProductOfferDay({Key? key, required this.nameProduct,}) : super(key: key);
 
@@ -12,7 +12,7 @@ class NameProductOfferDay extends StatelessWidget {
     return Align(
       alignment: Alignment.topLeft,
       child: Text(
-        nameProduct,
+        nameProduct!,
         textAlign: TextAlign.start,
         style: Get.textTheme.bodyText1!
             .copyWith(fontSize: 14, fontWeight: FontWeight.w400),

@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:poraki/app/routes/app_routes.dart';
-
 import '../../../../theme/app_theme.dart';
-import '../../../shopping_cart/shopping_cart_page.dart';
-import 'view_search_product.dart';
 
 class AppBarShowDayOffer extends StatelessWidget {
   final String? adressUser;
@@ -17,7 +14,7 @@ class AppBarShowDayOffer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: Colors.yellow,
+      backgroundColor: Colors.amber,
       title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

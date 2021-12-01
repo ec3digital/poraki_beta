@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../../theme/app_theme.dart';
 
 class GradientHeaderHome extends StatelessWidget {
   final Widget child;
@@ -16,9 +15,9 @@ class GradientHeaderHome extends StatelessWidget {
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
-            AppColors.yellowComum,
-            AppColors.yellowComum,
-            Color(0xffafafa),
+            Colors.amber,
+            Color(0xff8700),
+            Color(0xff8700),
             Color(0xffafafa),
             Color(0xffafafa),
             Color(0xffafafa),

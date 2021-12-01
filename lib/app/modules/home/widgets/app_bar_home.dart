@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:poraki/app/routes/app_routes.dart';
-import '../../shopping_cart/shopping_cart_page.dart';
 import '../home_controller.dart';
 
 class AppBarHome extends StatelessWidget {
@@ -11,8 +10,11 @@ class AppBarHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var txtBuscaCtrl = TextEditingController();
+    print('busca: ' + txtBuscaCtrl.text.removeAllWhitespace);
+
     return AppBar(
-      backgroundColor: Colors.yellow,
+      backgroundColor: Colors.amber,
       elevation: 0,
       titleSpacing: 0,
       title: Container(
@@ -21,26 +23,33 @@ class AppBarHome extends StatelessWidget {
           children: [
             Expanded(
               child: Container(
-                height: 50,
+                height: 34,
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.all(Radius.circular(30)),
                 ),
                 child: TextFormField(
+                  onFieldSubmitted: (String value) {
+                    Get.toNamed(AppRoutes.offers, arguments: [
+                      {'cep': '05735030'}, {'category': null }, {'title': txtBuscaCtrl.text}] );
+                  } ,
+                  controller: txtBuscaCtrl,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(25)),
                       borderSide: BorderSide.none,
                     ),
                     prefixIcon: Icon(Icons.search),
-                    labelText: 'Poraki você busca...',
+                    labelText: 'Poraki você busca por...',
+
                   ),
                 ),
               ),
             ),
             const SizedBox(width: 08),
             IconButton(
-              onPressed: () => Get.toNamed(AppRoutes.viewSearchProduct),
+              onPressed: () => Get.toNamed(AppRoutes.offers, arguments: [
+                {'cep': '05735030'}, {'category': null }, {'title': txtBuscaCtrl.text}] ),
               icon: Icon(
                 Icons.shopping_cart_outlined,
               ),

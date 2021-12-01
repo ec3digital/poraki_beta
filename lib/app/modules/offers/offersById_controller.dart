@@ -1,22 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-// import 'package:poraki/app/data/models/categorias.dart';
-import 'package:poraki/app/data/repositories/categories_repository.dart';
 import '../../data/models/produto_oferta.dart';
 import '../../data/repositories/offer_repository.dart';
 
-class DaysOffersController extends GetxController {
+class OffersByIdController extends GetxController {
   OfferRepository offerRepository = OfferRepository();
-  CategoriesRepository categoriesRepository = CategoriesRepository();
   List<ProdutoOferta> offers = [];
-  // List<Categorias>? categorias;
 
   final TextEditingController searchProductController = TextEditingController();
   bool isLoading = false;
 
   @override
   void onInit() async {
-    await getOffers();
+    await getOfferById(2);
     super.onInit();
   }
 
@@ -26,20 +22,12 @@ class DaysOffersController extends GetxController {
     super.onClose();
   }
 
-  final List<String> categories = [
-    "Celulares",
-    "Computadores",
-    "Bicicletas",
-    "Eletrodomésticos",
-    "Produtos De Beleza",
-  ];
-
-  Future<void> getOffers() async {
+  Future<void> getOfferById(int ofertaId) async {
     try {
       changeLoading(true);
-      offers = await offerRepository.getOffersAll();
+      offers = await offerRepository.getOfferById(ofertaId);
     } catch (e) {
-      print('Erro no getOffers() controller ${e.toString()}');
+      print('Erro no getOfferById() controller ${e.toString()}');
     } finally {
       changeLoading(false);
     }

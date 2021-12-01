@@ -2,10 +2,8 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:poraki/app/routes/app_routes.dart';
-
 import '../../../data/models/produto_oferta.dart';
 import '../days_offers_controller.dart';
-import '../show_day_offer/show_day_offer_page.dart';
 
 class ListProductsDayOffers extends StatelessWidget {
   final DaysOffersController controller;
@@ -30,38 +28,37 @@ class ListProductsDayOffers extends StatelessWidget {
                 return InkWell(
                   onTap: () => Get.toNamed(AppRoutes.showDayOffer),
                   child: Container(
-                    padding: EdgeInsets.only(top: 5, right: 5, left: 5),
+                    padding: EdgeInsets.only(top: 3, right: 5, left: 5),
                     child: Card(
                       elevation: 2,
-                      child: Column(
+                      child: ListView(
+                        shrinkWrap: true,
                         children: [
                           Container(
-                            height: 85,
-                            margin: EdgeInsets.only(top: 10),
-                            child: _product.ofertaImgPath != null
-                                ? Image.asset(_product.ofertaImgPath!)
-                                : Icon(Icons.broken_image_rounded),
+                            height: 100,
+                            margin: EdgeInsets.only(top: 4),
+                            child: Image.network('https://firebasestorage.googleapis.com/v0/b/ec3digrepo.appspot.com/o/ofertas%2F' + _product.ofertaID.toString() + '.jpg?alt=media',height: 100,),
                           ),
                           Container(
-                            margin: EdgeInsets.only(top: 5),
+                            margin: EdgeInsets.only(top: 4),
                             child: AutoSizeText(
                               _product.ofertaTitulo ?? '',
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontWeight: FontWeight.w700,
-                                fontSize: 15,
+                                fontSize: 14,
                               ),
                               maxLines: 2,
                             ),
                           ),
-                          const SizedBox(height: 8),
+                          const SizedBox(height: 15),
                           Container(
                             child: Text(
                               'R\$ ${_product.ofertaPreco?.toStringAsFixed(2) ?? ''}',
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontWeight: FontWeight.w700,
-                                fontSize: 15,
+                                fontSize: 14,
                                 color: Colors.green,
                               ),
                             ),

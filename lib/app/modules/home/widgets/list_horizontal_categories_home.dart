@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import '../../../data/models/categorias.dart';
-
 import '../home_controller.dart';
 import 'card_category_home.dart';
 
@@ -26,10 +24,12 @@ class ListHorizontalCategoriesHome extends StatelessWidget {
             scrollDirection: Axis.horizontal,
             itemCount: controller.categorias!.length,
             itemBuilder: (BuildContext context, int index) {
-              Categorias categoria = controller.categorias![index];
+              Categorias categories = controller.categorias![index];
               return CardCategories(
-                text: categoria.categoriaNome!,
-                iconData: Icons.image_outlined,
+                text: categories.categoriaNome!,
+                iconData: IconData(int.parse(categories.iconcode!), fontFamily: 'MaterialIcons'),
+                chave: categories.categoriaChave!,
+                // iconData: Icons.image_outlined,
               );
             },
           ),

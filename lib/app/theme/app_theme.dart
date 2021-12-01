@@ -11,7 +11,7 @@ abstract class AppColors {
   static Color black54Text = Color(0x8a000000);
   static Color primaryDark = Color(0xff161616);
   static Color primaryLight = Color(0xffF7F7F7);
-  static Color yellowComum = Color(0xfFFfEB3B);
+  static Color yellowComum = Colors.amber; // Color(0xfFFfEB3B);
 }
 
 abstract class AppTheme {
