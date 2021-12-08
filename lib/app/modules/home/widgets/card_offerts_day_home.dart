@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:poraki/app/routes/app_routes.dart';
-import '../../days_offers/days_offers_page.dart';
 import '../home_controller.dart';
 
 class CardOffertsDayHome extends StatelessWidget {
@@ -10,6 +9,7 @@ class CardOffertsDayHome extends StatelessWidget {
   final String details;
   final String cepOffer;
   final String imgOffer;
+  final String widgetTitle;
 
   const CardOffertsDayHome({
     Key? key,
@@ -18,6 +18,7 @@ class CardOffertsDayHome extends StatelessWidget {
     required this.details,
     required this.cepOffer,
     required this.imgOffer,
+    required this.widgetTitle,
   }) : super(key: key);
 
   @override
@@ -37,7 +38,7 @@ class CardOffertsDayHome extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.all(15.0),
                     child: Text(
-                      'Oferta do dia',
+                      widgetTitle,
                       style: Get.textTheme.headline1,
                     ),
                   ),
@@ -86,14 +87,15 @@ class CardOffertsDayHome extends StatelessWidget {
                   const SizedBox(height: 10),
                   Divider(),
                   InkWell(
-                    onTap: () => Get.toNamed(AppRoutes.daysOffers),
+                    onTap: () => Get.toNamed(AppRoutes.offers, arguments: [
+                      {'cep': '05735030'}, {'category': null }, {'title': null}] ),
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(15, 05, 15, 15),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            'Ver todas as ofertas do dia',
+                            'Ver todas',
                             style: TextStyle(color: Colors.blue),
                           ),
                           Icon(

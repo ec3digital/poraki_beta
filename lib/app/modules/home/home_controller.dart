@@ -12,6 +12,9 @@ class HomeController extends GetxController {
   String strCep = "05735030";
 
   ProdutoOferta? offerToday;
+  ProdutoOferta? bestoffer;
+  ProdutoOferta? mostfresheroffer;
+  ProdutoOferta? bestselleroffer;
   List<Categorias>? categorias;
   // List<Pessoas>? pessoas;
 
@@ -21,6 +24,9 @@ class HomeController extends GetxController {
   void onInit() async {
     await getOffers(strCep);
     await getCategories();
+    await getBestOffers(strCep);
+    // await getMostFreshOffers(strCep);
+    await getBestSellersOffers(strCep);
     // await getPeople();
     super.onInit();
   }
@@ -38,6 +44,45 @@ class HomeController extends GetxController {
       
     } catch (e) {
       print('Erro no getOffers() controller ${e.toString()}');
+    } finally {
+      changeLoading(false);
+    }
+  }
+
+  Future<void> getBestOffers(String cep) async {
+    try {
+      changeLoading(true);
+      List<ProdutoOferta> ofertas = await offerRepository.getBestOffers(cep);
+      bestoffer = ofertas.first;
+
+    } catch (e) {
+      print('Erro no getBestOffers() controller ${e.toString()}');
+    } finally {
+      changeLoading(false);
+    }
+  }
+
+  Future<void> getMostFreshOffers(String cep) async {
+    try {
+      changeLoading(true);
+      List<ProdutoOferta> ofertas = await offerRepository.getMostFreshOffers(cep);
+      mostfresheroffer = ofertas.first;
+
+    } catch (e) {
+      print('Erro no getMostFreshOffers() controller ${e.toString()}');
+    } finally {
+      changeLoading(false);
+    }
+  }
+
+  Future<void> getBestSellersOffers(String cep) async {
+    try {
+      changeLoading(true);
+      List<ProdutoOferta> ofertas = await offerRepository.getBestSellersOffers(cep);
+      bestselleroffer = ofertas.first;
+
+    } catch (e) {
+      print('Erro no getBestSellersOffers() controller ${e.toString()}');
     } finally {
       changeLoading(false);
     }

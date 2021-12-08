@@ -10,6 +10,8 @@ class ShowDayOfferPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // ShowDayOfferController _controller = new ShowDayOfferController();
+    // _controller.offerId = 2;
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(Get.height * 0.12),

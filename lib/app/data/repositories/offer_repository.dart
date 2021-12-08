@@ -59,4 +59,31 @@ class OfferRepository extends GetConnect {
         .toList();
   }
 
+  Future<List<ProdutoOferta>> getBestOffers(String cep) async {
+    String url = '${Constants.baseUrl}melhoresofertas/';
+    var response = await get(url, headers: Constants.headers);
+    if (response.hasError) throw 'Ocorreu um erro em getBestOffers()';
+    return (response.body['Ofertas'] as List)
+        .map((oferta) => ProdutoOferta.fromJson(oferta))
+        .toList();
+  }
+
+  Future<List<ProdutoOferta>> getBestSellersOffers(String cep) async {
+    String url = '${Constants.baseUrl}ofertasmaisvendidas/';
+    var response = await get(url, headers: Constants.headers);
+    if (response.hasError) throw 'Ocorreu um erro em getBestSellersOffers()';
+    return (response.body['Ofertas'] as List)
+        .map((oferta) => ProdutoOferta.fromJson(oferta))
+        .toList();
+  }
+
+  Future<List<ProdutoOferta>> getMostFreshOffers(String cep) async {
+    String url = '${Constants.baseUrl}ofertasmaisfrescas/';
+    var response = await get(url, headers: Constants.headers);
+    if (response.hasError) throw 'Ocorreu um erro em getMostFreshOffers()';
+    return (response.body['Ofertas'] as List)
+        .map((oferta) => ProdutoOferta.fromJson(oferta))
+        .toList();
+  }
+
 }

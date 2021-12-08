@@ -7,8 +7,10 @@ import 'widgets/bottom_sheet_product_day_offer.dart';
 class ShowDayOfferController extends GetxController {
   final TextEditingController amountController = TextEditingController();
   OfferRepository offerRepository = OfferRepository();
-
   ProdutoOferta? offerTapped;
+  int? offerId;
+
+  ShowDayOfferController();
 
   @override
   void onClose() {
@@ -22,8 +24,18 @@ class ShowDayOfferController extends GetxController {
 
   @override
   void onInit() async {
-    await getOfferTapped();
+    changeLoading(true);
+    print('onInit show_day_offer_controller');
+    this.offerId = Get.arguments[0]['id'];
+    if(offerId != null) {
+      print('offerId: ' + this.offerId!.toString());
+      //await getOfferTapped(offerId!.toInt());
+      await getOfferTapped(this.offerId!.toInt());
+    }
+
+    print('Arguments: ${Get.arguments}');
     super.onInit();
+    changeLoading(false);
   }
 
   openBottomSheet() {
@@ -54,14 +66,24 @@ class ShowDayOfferController extends GetxController {
     Get.back();
   }
 
-  Future<void> getOfferTapped() async {
+  Future<void> getOfferTapped(int offerIdx) async {
     try {
       changeLoading(true);
-      List<ProdutoOferta> ofertaById = await offerRepository.getOfferById(1);
-      offerTapped = ofertaById.first;
+      //if (this.offerId != null)
+        //{
+      //this.offerId = 2;
+        this.offerId = Get.arguments[0]['id'];
+        print('getOfferTapped id: ' + this.offerId.toString());
+        List<ProdutoOferta> ofertaById = await offerRepository.getOfferById(offerId!.toInt());
+        offerTapped = ofertaById.first;
+       // /}
+      //else
+        //{
+          //return null;
+        //}
 
     } catch (e) {
-      print('Erro no getOffers() controller ${e.toString()}');
+      print('Erro no getOfferTapped() - controller ${e.toString()}');
     } finally {
       changeLoading(false);
     }

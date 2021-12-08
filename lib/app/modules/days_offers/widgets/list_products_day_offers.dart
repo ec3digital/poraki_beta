@@ -6,18 +6,21 @@ import '../../../data/models/produto_oferta.dart';
 import '../days_offers_controller.dart';
 
 class ListProductsDayOffers extends StatelessWidget {
-  final DaysOffersController controller;
   ListProductsDayOffers({
     Key? key,
-    required this.controller,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final DaysOffersController controller = Get.put(DaysOffersController());
     return Expanded(
       child: Container(
-        child: GetBuilder<DaysOffersController>(
-          builder: (_) {
+          child: GetBuilder<DaysOffersController>(builder: (context) {
+            if (controller.isLoading) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+          } else {
             return GridView.builder(
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
@@ -26,7 +29,9 @@ class ListProductsDayOffers extends StatelessWidget {
               itemBuilder: (BuildContext context, int index) {
                 final ProdutoOferta _product = controller.offers[index];
                 return InkWell(
-                  onTap: () => Get.toNamed(AppRoutes.showDayOffer),
+                  onTap: () =>
+                      Get.toNamed(AppRoutes.showDayOffer,
+                      arguments: {'id': _product.ofertaID.toString()}),
                   child: Container(
                     padding: EdgeInsets.only(top: 3, right: 5, left: 5),
                     child: Card(
@@ -37,7 +42,12 @@ class ListProductsDayOffers extends StatelessWidget {
                           Container(
                             height: 100,
                             margin: EdgeInsets.only(top: 4),
-                            child: Image.network('https://firebasestorage.googleapis.com/v0/b/ec3digrepo.appspot.com/o/ofertas%2F' + _product.ofertaID.toString() + '.jpg?alt=media',height: 100,),
+                            child: Image.network(
+                              'https://firebasestorage.googleapis.com/v0/b/ec3digrepo.appspot.com/o/ofertas%2F' +
+                                  _product.ofertaID.toString() +
+                                  '.jpg?alt=media',
+                              height: 100,
+                            ),
                           ),
                           Container(
                             margin: EdgeInsets.only(top: 4),
@@ -93,11 +103,9 @@ class ListProductsDayOffers extends StatelessWidget {
                     ),
                   ),
                 );
-              },
-            );
-          },
-        ),
-      ),
+              });
+        }
+      })),
     );
   }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:poraki/app/modules/offers/widgets/list_offers.dart';
 import '../days_offers_controller.dart';
-import 'list_products_day_offers.dart';
 
 class BodyDaysOffers extends StatelessWidget {
   final DaysOffersController controller;
@@ -14,7 +14,8 @@ class BodyDaysOffers extends StatelessWidget {
       children: [
         //ListCategoriesDaysOffers(controller: controller),
         const SizedBox(height: 20),
-        ListProductsDayOffers(controller: controller),
+        //ListProductsDayOffers(),
+        ListOffers(),
       ],
     );
   }

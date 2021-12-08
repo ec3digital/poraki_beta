@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 abstract class AppColors {
-  static Color primaryColor = Color(0xff0000FF);
-  static Color secondaryColor = Color(0xff00F000);
+  static Color primaryColor = Color(Colors.brown.value); // Color(0xff0000FF);
+  static Color secondaryColor = Color(Colors.deepOrangeAccent.value); //Color(0xff00F000);
   static Color greenStrong = Color(0xff008E00);
   static Color grayBlueButton = Color(0xffb3c9f2);
   static Color purpleWeak = Color(0xffCCCCFF);

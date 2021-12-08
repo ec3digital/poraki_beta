@@ -1,0 +1,54 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:poraki/app/theme/app_theme.dart';
+
+class ListPicsOffer extends StatelessWidget {
+  List<String> imagesList = [];
+
+  ListPicsOffer({
+    Key? key,
+    required this.imagesList,
+  }) : super(key: key);
+
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: Get.height * 0.40,
+      child: Stack(
+        children: [
+          ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: 1, //controller.listPictures.length,
+            itemBuilder: (context, index) {
+              return Container(
+                width: Get.width * 1,
+                child: Align(
+                  alignment: Alignment.topCenter,
+                  child: Container(
+                    height: Get.height * 0.37,
+                    child: Image.network(
+                      imagesList[index],
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
+          Positioned(
+            right: 15,
+            bottom: 0,
+            child: FloatingActionButton(
+              elevation: 0,
+              backgroundColor: AppColors.grayLightContainer,
+              mini: true,
+              onPressed: () {},
+              child: Icon(Icons.share_outlined, color: Colors.black,),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}

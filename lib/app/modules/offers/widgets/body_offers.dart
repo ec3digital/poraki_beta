@@ -3,7 +3,9 @@ import 'package:flutter/rendering.dart';
 import 'list_offers.dart';
 
 class BodyOffers extends StatelessWidget {
-  BodyOffers({Key? key, }) : super(key: key);
+  BodyOffers({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -11,7 +13,7 @@ class BodyOffers extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         const SizedBox(height: 20),
-    ListOffers(),
+        ListOffers(),
       ],
     );
   }

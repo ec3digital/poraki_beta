@@ -5,15 +5,12 @@ import '../../data/repositories/offer_repository.dart';
 class OffersController extends GetxController {
   OfferRepository offerRepository = OfferRepository();
   List<ProdutoOferta> offers = [];
-  // OffersArgs offersArgs;
   String? cep;
   String? category;
   String? title;
   int? offerId;
 
-  OffersController(
-    //{required this.cep, this.category, this.title}
-);
+  OffersController();
 
   // final TextEditingController searchProductController = TextEditingController();
   bool isLoading = false;
@@ -24,7 +21,7 @@ class OffersController extends GetxController {
     this.cep = Get.arguments[0]['cep'];
     this.category = Get.arguments[1]['category'];
     this.title = Get.arguments[2]['title'];
-    this.offerId = Get.arguments[3]['id'];
+    this.offerId = Get.arguments[0]['id'];
 
 
     //print('offers onInit - cep: ' + this.cep.toString());
@@ -51,7 +48,7 @@ class OffersController extends GetxController {
       await getOfferByCEPTitle(this.cep!, this.title!);
     }
 
-    if(this.cep == null && this.category == null && this.title == null && this.offerId != null) {
+    if(this.offerId != null) {
       await getOfferById(this.offerId!);
     }
 
@@ -80,7 +77,7 @@ class OffersController extends GetxController {
       changeLoading(true);
       offers = await offerRepository.getDayOfferByCEP(cep);
     } catch (e) {
-      print('Erro no getOffers() controller ${e.toString()}');
+      print('Erro no getDayOfferByCEP() controller ${e.toString()}');
     } finally {
       changeLoading(false);
     }
@@ -92,7 +89,7 @@ class OffersController extends GetxController {
       print('entrou no getOfferByCEPCategory');
       offers = await offerRepository.getOfferByCEPCategory(cep, category);
     } catch (e) {
-      print('Erro no getOffers() controller ${e.toString()}');
+      print('Erro no getOfferByCEPCategory() controller ${e.toString()}');
     } finally {
       changeLoading(false);
     }
@@ -104,7 +101,7 @@ class OffersController extends GetxController {
       print('entrou no getOfferByCEPCategoryTitle');
       offers = await offerRepository.getOfferByCEPCategoryTitle(cep, title, category);
     } catch (e) {
-      print('Erro no getOffers() controller ${e.toString()}');
+      print('Erro no getOfferByCEPCategoryTitle() controller ${e.toString()}');
     } finally {
       changeLoading(false);
     }
@@ -116,7 +113,7 @@ class OffersController extends GetxController {
       print('entrou no getOfferByCEPTitle');
       offers = await offerRepository.getOfferByCEPTitle(cep, title);
     } catch (e) {
-      print('Erro no getOffers() controller ${e.toString()}');
+      print('Erro no getOfferByCEPTitle() controller ${e.toString()}');
     } finally {
       changeLoading(false);
     }
@@ -125,9 +122,10 @@ class OffersController extends GetxController {
   Future<void> getOfferById(int ofertaId) async {
     try {
       changeLoading(true);
+      print('entrou no getOfferById');
       offers = await offerRepository.getOfferById(ofertaId);
     } catch (e) {
-      print('Erro no getOffers() controller ${e.toString()}');
+      print('Erro no getOfferById() controller ${e.toString()}');
     } finally {
       changeLoading(false);
     }
