@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:poraki/app/routes/app_routes.dart';
 
-class CardCategories extends StatelessWidget {
+class CardCategoriesVertical extends StatelessWidget {
   final String text;
   final IconData iconData;
   final String chave;
 
-  const CardCategories({Key? key, required this.text, required this.iconData, required this.chave})
+  const CardCategoriesVertical({Key? key, required this.text, required this.iconData, required this.chave})
       : super(key: key);
 
   @override
@@ -16,11 +16,11 @@ class CardCategories extends StatelessWidget {
     //final args = ModalRoute.of(context)!.settings.arguments as OffersArgs;
     //print('chave: ' + chave);
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 8),
+      padding: EdgeInsets.symmetric(vertical: 8),
       child: Column(
         children: [
           Card(
-            elevation: 1,
+            elevation: 5,
             color: Colors.white,
             shape: CircleBorder(),
             child: Container(
@@ -28,9 +28,9 @@ class CardCategories extends StatelessWidget {
               height: Get.height * 0.07,
               width: Get.width * 0.14,
               child: IconButton(icon: Icon(iconData),
-                onPressed: () => Get.toNamed(AppRoutes.offers, arguments: [
-                  {'cep': '05735030'}, {'category': chave.toString() }, {'title': null}] )
-                ),
+                  onPressed: () => Get.toNamed(AppRoutes.offers, arguments: [
+                    {'cep': '05735030'}, {'category': chave.toString() }, {'title': null}] )
+              ),
             ),
           ),
           SizedBox(
@@ -42,7 +42,7 @@ class CardCategories extends StatelessWidget {
                 fontWeight: FontWeight.w400,
                 fontSize: 16,
               ),
-              maxLines: 2,
+              maxLines: 6,
               textAlign: TextAlign.center,
             ),
           ),

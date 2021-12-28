@@ -19,7 +19,7 @@ class FormSignup extends StatelessWidget {
         children: [
           TextFormField(
             validator: (value) {
-              if (value!.length < 10) {
+              if (value!.length < 4) {
                 return "Digite um nome maior";
               }
               return null;
@@ -28,10 +28,85 @@ class FormSignup extends StatelessWidget {
             autofocus: true,
             style: TextStyle(color: Colors.white),
             decoration: InputDecoration(
-              labelText: "Nome Completo",
+              labelText: "Nome",
               labelStyle: TextStyle(color: Colors.white),
               prefixIcon: Icon(
                 Icons.person,
+                color: Colors.white,
+              ),
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.white),
+              ),
+              enabledBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.white),
+              ),
+            ),
+          ),
+          TextFormField(
+            validator: (value) {
+              if (value!.length < 10) {
+                return "Digite um nome maior";
+              }
+              return null;
+            },
+            controller: controller.surnameInputController,
+            autofocus: true,
+            style: TextStyle(color: Colors.white),
+            decoration: InputDecoration(
+              labelText: "Sobrenome",
+              labelStyle: TextStyle(color: Colors.white),
+              prefixIcon: Icon(
+                Icons.person,
+                color: Colors.white,
+              ),
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.white),
+              ),
+              enabledBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.white),
+              ),
+            ),
+          ),
+          TextFormField(
+            validator: (value) {
+              if (value!.length != 11) {
+                return "CPF inválido";
+              }
+              return null;
+            },
+            controller: controller.cpfInputController,
+            autofocus: true,
+            style: TextStyle(color: Colors.white),
+            decoration: InputDecoration(
+              labelText: "CPF",
+              labelStyle: TextStyle(color: Colors.white),
+              prefixIcon: Icon(
+                Icons.assignment_ind,
+                color: Colors.white,
+              ),
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.white),
+              ),
+              enabledBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.white),
+              ),
+            ),
+          ),
+          TextFormField(
+            validator: (value) {
+              if (value!.length != 11) {
+                return "Por favor digite um telefone válido";
+              }
+              return null;
+            },
+            controller: controller.phoneInputController,
+            autofocus: true,
+            style: TextStyle(color: Colors.white),
+            decoration: InputDecoration(
+              labelText: "Telefone Celular",
+              labelStyle: TextStyle(color: Colors.white),
+              prefixIcon: Icon(
+                Icons.phone,
                 color: Colors.white,
               ),
               focusedBorder: UnderlineInputBorder(
@@ -61,6 +136,56 @@ class FormSignup extends StatelessWidget {
               ),
               prefixIcon: Icon(
                 Icons.mail_outline,
+                color: Colors.white,
+              ),
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.white),
+              ),
+              enabledBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.white),
+              ),
+            ),
+          ),
+          TextFormField(
+            validator: (value) {
+              if (value!.length != 8) {
+                return "Digite um CEP válido";
+              }
+              return null;
+            },
+            controller: controller.cepInputController,
+            autofocus: true,
+            style: TextStyle(color: Colors.white),
+            decoration: InputDecoration(
+              labelText: "CEP",
+              labelStyle: TextStyle(color: Colors.white),
+              prefixIcon: Icon(
+                Icons.map,
+                color: Colors.white,
+              ),
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.white),
+              ),
+              enabledBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.white),
+              ),
+            ),
+          ),
+          TextFormField(
+            validator: (value) {
+              if (value!.length != 10) {
+                return "Digite uma data de nascimento válida";
+              }
+              return null;
+            },
+            controller: controller.dtNascInputController,
+            autofocus: true,
+            style: TextStyle(color: Colors.white),
+            decoration: InputDecoration(
+              labelText: "Data de Nascimento",
+              labelStyle: TextStyle(color: Colors.white),
+              prefixIcon: Icon(
+                Icons.event,
                 color: Colors.white,
               ),
               focusedBorder: UnderlineInputBorder(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:poraki/app/services/hive/hive_poraki_user_service.dart';
 
 import '../../../data/models/login_model.dart';
 import '../../../data/repositories/login_repository.dart';
@@ -20,19 +21,25 @@ class LoginController extends GetxController {
     update();
   }
 
+  // valida o login
   void doLogin(BuildContext context) async {
-    if (formKey.currentState!.validate()) {
-      loginRepository.userLogin(
-        LoginModel(
-          mail: mailInputController.text,
-          password: passwordInputController.text,
-          keepOn: false,
-          name: '',
-        ),
-      );
+    // if (formKey.currentState!.validate()) {
+    //   loginRepository.userLogin(
+    //     LoginModel(
+    //       mail: mailInputController.text.removeAllWhitespace,
+    //       password: passwordInputController.text.removeAllWhitespace,
+    //       keepOn: false,
+    //       name: '',
+    //     ),
+    //   );
+
+      // salva usuario no hive, cria instancia do hive e abre a box
+      new hivePorakiUserService().SetUserEmail(mailInputController.text.removeAllWhitespace);
+
+      // redireciona para a home de ofertas
       Get.toNamed(AppRoutes.offer);
-    } else {
-      print("invalido");
-    }
+    // } else {
+    //   print("invalido");
+    // }
   }
 }

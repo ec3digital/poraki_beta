@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:poraki/app/modules/offers/widgets/button_offer.dart';
 import 'package:poraki/app/modules/offers/widgets/detail_offer.dart';
+import 'package:poraki/app/routes/app_routes.dart';
 import 'package:poraki/app/theme/app_theme.dart';
 import '../../../data/models/produto_oferta.dart';
 import '../offers_controller.dart';
@@ -61,13 +62,15 @@ class BodyOffer extends StatelessWidget {
                     Text('Quantidade: 1'),
                     SizedBox(height: 10),
                     ButtonOffer(
-                      onPressed: () {},
+                      onPressed: () { Get.toNamed(AppRoutes.shoppingCart); },
                       colorText: Colors.white,
                       text: 'Comprar agora',
                       colorButton: AppColors.primaryColor,
                     ),
                     ButtonOffer(
-                      onPressed: () {},
+                      onPressed: () {
+                        Get.toNamed(AppRoutes.shoppingCart,);
+                      },
                       colorText: AppColors.primaryColor,
                       text: 'Adicionar ao carrinho',
                       colorButton: AppColors.grayBlueButton,

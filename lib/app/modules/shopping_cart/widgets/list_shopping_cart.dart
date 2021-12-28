@@ -33,7 +33,7 @@ class ListShoppingCart extends StatelessWidget {
                         children: [
                           Image.asset(
                             controller.listShoppingCart[index].picture,
-                            scale: 5.5,
+                            //scale: 5.5,
                           ),
                           const SizedBox(width: 20),
                           Text(
@@ -79,7 +79,7 @@ class ListShoppingCart extends StatelessWidget {
                         GestureDetector(
                           onTap: () {},
                           child: Text(
-                            'Mais produtos do vendedor',
+                            'Ver outros produtos deste vendedor',
                             style: Get.textTheme.bodyText1!.copyWith(
                               fontWeight: FontWeight.w400,
                               color: AppColors.primaryColor,

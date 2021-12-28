@@ -1,7 +1,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import 'home_controller.dart';
 import 'widgets/app_bar_home.dart';
 import 'widgets/body_home.dart';

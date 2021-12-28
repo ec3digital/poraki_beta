@@ -91,7 +91,7 @@ class HomeController extends GetxController {
   Future<void> getCategories() async {
     try {
       changeLoading(true);
-      categorias = await categoriesRepository.getAllCategories();
+      categorias = await categoriesRepository.getCategoriesBarra();
     } catch (e) {
       print('Erro no getCategories() controller ${e.toString()}');
     } finally {

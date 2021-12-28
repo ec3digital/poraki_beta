@@ -15,11 +15,11 @@ class ShoppingCartController extends GetxController {
   }
 
   List<ShoppingCartModel> listShoppingCart = [
-    ShoppingCartModel('Xiaomi mi 11 Lite', 'assets/images/photodune.png', 1.528),
-    ShoppingCartModel('Xiaomi mi 11 Lite', 'assets/images/photodune.png', 1.528),
-    ShoppingCartModel('Xiaomi mi 11 Lite', 'assets/images/photodune.png', 1.528),
-    ShoppingCartModel('Xiaomi mi 11 Lite', 'assets/images/photodune.png', 1.528),
-    ShoppingCartModel('Xiaomi mi 11 Lite', 'assets/images/photodune.png', 1.528),
+    ShoppingCartModel('Xiaomi mi 11 Lite', 'assets/images/poraki_small.png', 1.528),
+    ShoppingCartModel('Xiaomi mi 11 Lite', 'assets/images/poraki_small.png', 1.528),
+    ShoppingCartModel('Xiaomi mi 11 Lite', 'assets/images/poraki_small.png', 1.528),
+    ShoppingCartModel('Xiaomi mi 11 Lite', 'assets/images/poraki_small.png', 1.528),
+    ShoppingCartModel('Xiaomi mi 11 Lite', 'assets/images/poraki_small.png', 1.528),
   ];
 
   showDialog() {

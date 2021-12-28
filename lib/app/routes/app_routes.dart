@@ -10,6 +10,7 @@ abstract class AppRoutes {
   static const viewSearchProduct = '/view-search-product';
   static const showDayOffer = '/show-day-offer';
   static const daysOffers = '/days-offers';
+  static const categories = '/categories';
   static const signUpGoogle = 'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBf0c_00pHeEbgDtdfFPMYV4AoG1aFYZEY';
   static const loginGoogle = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBf0c_00pHeEbgDtdfFPMYV4AoG1aFYZEY';
 }

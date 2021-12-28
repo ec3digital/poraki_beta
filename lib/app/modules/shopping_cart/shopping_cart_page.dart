@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:poraki/app/modules/shopping_cart/widgets/app_cart.dart';
 
 import '../../theme/app_theme.dart';
 import '../home/widgets/drawer_home.dart';
@@ -20,11 +21,8 @@ class ShoppingCartPage extends StatelessWidget {
       length: 2,
       child: Scaffold(
         backgroundColor: AppColors.grayLightContainer,
-        appBar: PreferredSize(
-          preferredSize: Size(double.maxFinite, Get.height * 0.14),
-          child: TabBarShoppingCart(controller),
-        ),
-        drawer: DrawerHome(-1),
+        appBar: appBarCart(),
+       // drawer: DrawerHome(-1),
         body: TabBarView(
           children: [
             BodyShoppingCart(controller),

@@ -15,8 +15,8 @@ class GradientHeaderHome extends StatelessWidget {
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
-            Colors.amber,
-            Color(0xff8700),
+            Colors.brown,
+            Colors.amberAccent,
             Color(0xff8700),
             Color(0xffafafa),
             Color(0xffafafa),

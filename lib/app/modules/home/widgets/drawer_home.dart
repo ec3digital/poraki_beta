@@ -3,15 +3,20 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:poraki/app/routes/app_routes.dart';
+import 'package:poraki/app/shared/porakiprefs.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../home_page.dart';
 import '../../../theme/app_theme.dart';
+import 'package:poraki/app/services/hive/hive_poraki_user_service.dart';
 
 class DrawerHome extends StatelessWidget {
   final int index;
-  const DrawerHome(
+  DrawerHome(
     this.index, {
     Key? key,
   }) : super(key: key);
+
+  // late final SharedPreferences _sharedPreferences;
 
   @override
   Widget build(BuildContext context) {
@@ -19,33 +24,77 @@ class DrawerHome extends StatelessWidget {
       child: Column(
         children: [
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            color: Colors.amber,
-            height: Get.height * 0.16,
-            child: GestureDetector(
-              onTap: () {},
-              child: Row(
-                children: [
-                  CircleAvatar(
-                    //backgroundImage: AssetImage('assets/images/photodune.png'),
-                  ),
-                  const SizedBox(width: 15),
-                  AutoSizeText(
-                    'Nome Sobrenome',
-                    style: Get.textTheme.bodyText1!.copyWith(
-                      fontWeight: FontWeight.normal,
-                      fontSize: 18,
-                    ),
-                  ),
-                  Spacer(),
-                  Icon(
-                    Icons.arrow_forward_ios_sharp,
-                    size: 15,
-                  )
-                ],
-              ),
-            ),
+              padding: const EdgeInsets.symmetric(horizontal: 6),
+              color: Colors.amber,
+              height: Get.height * 0.16,
+              //margin: EdgeInsets.only(top: 10, left: 1, right: 1),
+              child: Column(
+                  children: [
+                    Center(child: Text('')),
+                    Center(child: Text('')),
+                FutureBuilder(
+                    future: hivePorakiUserService().GetUserName(),
+                    initialData: "...",
+                    builder: (context, snapshot) {
+                      return Center(
+                        child: Text(
+                          snapshot.data.toString(),
+                          style: TextStyle(fontSize: 22.0),
+                        ),
+                      );
+                    }),
+                FutureBuilder(
+                    future: hivePorakiUserService().GetUserCep(),
+                    initialData: "...",
+                    builder: (context, snapshot) {
+                      return Center(
+                        child: Text(
+                          'CEP: ' + snapshot.data.toString(),
+                          style: TextStyle(fontSize: 18.0),
+                        ),
+                      );
+                    }),
+                    FutureBuilder(
+                        future: hivePorakiUserService().GetUserEmail(),
+                        initialData: "...",
+                        builder: (context, snapshot) {
+                          return Center(
+                            child: Text(
+                              snapshot.data.toString(),
+                              style: TextStyle(fontSize: 14.0),
+                            ),
+                          );
+                        }),
+              ])
           ),
+
+
+          // child:
+          // GestureDetector(
+          //     onTap: () {},
+          //     child: Row(
+          //       children: [
+          //         CircleAvatar(
+          //           //backgroundImage: AssetImage('assets/images/photodune.png'),
+          //         ),
+          //         const SizedBox(width: 15),
+          //
+          //         AutoSizeText(
+          //           hivePorakiUserService().GetUserEmail(),
+          //           style: Get.textTheme.bodyText1!.copyWith(
+          //             fontWeight: FontWeight.normal,
+          //             fontSize: 18,
+          //           ),
+          //         ),
+          //         Spacer(),
+          //         Icon(
+          //           Icons.arrow_forward_ios_sharp,
+          //           size: 15,
+          //         )
+          //       ],
+          //     ),
+          //   ),
+
           RowCategoriesDrawerHome(
             text: 'Inicio',
             isSelected: index == 0,
@@ -67,7 +116,7 @@ class DrawerHome extends StatelessWidget {
             text: 'Categorias',
             isSelected: index == 1,
             icon: Icons.category,
-            onTap: () {},
+            onTap: () => Get.toNamed(AppRoutes.categories),
           ),
 
           RowCategoriesDrawerHome(
@@ -118,6 +167,10 @@ class DrawerHome extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Future<String?> getUserData() async {
+    return PorAkiPrefs().getPrefStr("userEmail");
   }
 }
 

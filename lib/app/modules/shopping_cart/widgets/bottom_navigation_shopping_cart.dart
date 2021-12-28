@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:poraki/app/modules/offers/widgets/button_offer.dart';
 import '../../../theme/app_theme.dart';
 
 class BottomNavigationShoppingCart extends StatelessWidget {
@@ -49,7 +50,7 @@ class BottomNavigationShoppingCart extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Total com o frete'),
+                  Text('Total'),
                   Text('R\$ 2.158.00'),
                 ],
               ),
@@ -58,9 +59,11 @@ class BottomNavigationShoppingCart extends StatelessWidget {
             Container(
               margin: const EdgeInsets.symmetric(horizontal: 10),
               width: Get.width,
-              child: ElevatedButton(
+              child: ButtonOffer(
                 onPressed: (){},
-                child: Text('Continuar a compra'),
+                text: 'Pagar',
+                colorText: Colors.white,
+                colorButton: Colors.brown,
               ),
             )
           ],

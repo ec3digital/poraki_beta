@@ -1,13 +1,14 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:poraki/app/data/models/sql/sqlUsuarios.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:extended_masked_text/extended_masked_text.dart';
 import '../../../data/models/login_model.dart';
 import '../../../routes/app_routes.dart';
 import '../../../shared/constants/preferences_keys.dart';
+import 'package:poraki/app/services/sqlporaki_login_service.dart';
 
 class SignUpController extends GetxController {
   TextEditingController nameInputController = TextEditingController();
@@ -15,7 +16,18 @@ class SignUpController extends GetxController {
   TextEditingController passwordInputController = TextEditingController();
   TextEditingController confirmInputController = TextEditingController();
 
-  bool showPassword = false;
+  TextEditingController surnameInputController = TextEditingController();
+  //TextEditingController phoneInputController = TextEditingController();
+  //TextEditingController cepInputController = TextEditingController();
+  //TextEditingController dtNascInputController = TextEditingController();
+  //TextEditingController cpfInputController = TextEditingController();
+
+  MaskedTextController cpfInputController = MaskedTextController(mask: '000.000.000-00');
+  MaskedTextController dtNascInputController = MaskedTextController(mask: '00/00/0000');
+  MaskedTextController cepInputController = MaskedTextController(mask: '00000-000');
+  MaskedTextController phoneInputController = MaskedTextController(mask: '(00)00000-0000)');
+
+      bool showPassword = false;
   final formKey = GlobalKey<FormState>();
 
   signUp(String email, String password) async {
@@ -41,13 +53,13 @@ class SignUpController extends GetxController {
     } else {
       print("invalido");
     }
-    // LoginModel newUser = LoginModel(
-    //   name: _nameInputController.text,
-    //   mail: _mailInputController.text,
-    //   password: _passwordInputController.text,
-    //   keepOn: true,
-    // );
-    // _saveUser(newUser);
+    LoginModel newUser = LoginModel(
+      name: nameInputController.text,
+      mail: mailInputController.text,
+      password: passwordInputController.text,
+      keepOn: true,
+    );
+    _saveUser(newUser);
   }
 
   void changeShowPassword(bool newValue) {
@@ -57,10 +69,31 @@ class SignUpController extends GetxController {
 
   // ignore: unused_element
   void _saveUser(LoginModel user) async {
+    //TODO: criar usuario no Firebase e pegar o ID
+    var uid = 'eyCv21RfaURoMn0SUndCg6LPyJP2';
+
+    var sqlSvc = new sqlPorakiLoginService();
+    var newUser = new sqlUsuarios(mailInputController.text.removeAllWhitespace,
+        nameInputController.text.removeAllWhitespace,
+        surnameInputController.text.removeAllWhitespace,
+        cpfInputController.text.removeAllWhitespace,
+        phoneInputController.text.removeAllWhitespace,
+        cepInputController.text.removeAllWhitespace,
+        '',
+        '',
+        '',
+        DateTime.now().toString(),
+        DateTime.now().toString(),
+        '1.00'
+    );
+    sqlSvc.insertUsuario(newUser);
+
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString(
       PreferencesKeys.activeUser,
       json.encode(user.toJson()),
     );
+
+    Get.toNamed(AppRoutes.offer);
   }
 }

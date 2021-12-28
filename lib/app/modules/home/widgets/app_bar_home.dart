@@ -11,7 +11,6 @@ class AppBarHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var txtBuscaCtrl = TextEditingController();
-    print('busca: ' + txtBuscaCtrl.text.removeAllWhitespace);
 
     return AppBar(
       backgroundColor: Colors.amber,

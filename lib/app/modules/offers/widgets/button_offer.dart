@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:poraki/app/routes/app_routes.dart';
 
 class ButtonOffer extends StatelessWidget {
   final String text;
@@ -23,7 +24,9 @@ class ButtonOffer extends StatelessWidget {
       width: double.maxFinite,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(primary: colorButton),
-        onPressed: () => onPressed,
+        onPressed: () {
+          Get.toNamed(AppRoutes.shoppingCart);
+        },
         child: Text(
           text,
           style: Get.textTheme.bodyText1!.copyWith(
