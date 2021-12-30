@@ -7,7 +7,7 @@ import 'package:poraki/app/shared/porakiprefs.dart';
 import 'package:poraki/app/theme/custom_colors.dart';
 import 'package:poraki/app/modules/auth/sign_up/sign_up_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:poraki/app/services/sqlporaki_login_service.dart';
+import 'package:poraki/app/services/sqlite/sqlporaki_login_service.dart';
 
 class LoginPage extends StatefulWidget {
   @override

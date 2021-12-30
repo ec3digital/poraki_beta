@@ -1,6 +1,6 @@
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
-import '../data/models/sql/sqlUsuarios.dart';
+import '../../data/models/sql/sqlUsuarios.dart';
 
 class sqlPorakiLoginService {
 

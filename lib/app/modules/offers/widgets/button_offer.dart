@@ -6,7 +6,7 @@ class ButtonOffer extends StatelessWidget {
   final String text;
   final Color? colorButton;
   final Color colorText;
-  final Function onPressed;
+  final VoidCallback onPressed;
 
   const ButtonOffer({
     Key? key,
@@ -24,9 +24,10 @@ class ButtonOffer extends StatelessWidget {
       width: double.maxFinite,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(primary: colorButton),
-        onPressed: () {
-          Get.toNamed(AppRoutes.shoppingCart);
-        },
+        onPressed: onPressed,
+        // onPressed: () {
+        //   Get.toNamed(AppRoutes.shoppingCart);
+        // },
         child: Text(
           text,
           style: Get.textTheme.bodyText1!.copyWith(

@@ -3,7 +3,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 
 class hivePorakiUserService {
 
-  Box _box = Hive.box('userBox');
+  late Box _box; // = Hive.box('userBox');
 
   hivePorakiUserService() {
     _iniHive();
@@ -12,8 +12,10 @@ class hivePorakiUserService {
   }
 
   _iniHive() async {
+    print('_iniHive');
     await Hive.initFlutter();
     await Hive.openBox('userBox');
+    _box = Hive.box('userBox');
   }
 
   Future<String> GetUserCep() async {

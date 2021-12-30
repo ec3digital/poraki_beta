@@ -15,10 +15,10 @@ class sqlCarrinho {
   Map<String, dynamic> toMap() {
     return <String, dynamic> {
       "ofertaId": ofertaId,
-      "ofertaGUID": ofertaGUID,
+      // "ofertaGUID": ofertaGUID,
       "ofertaTitulo": ofertaTitulo,
       "ofertaCEP": ofertaCEP,
-      "ofertaVendedorGUID": ofertaVendedorGUID,
+      // "ofertaVendedorGUID": ofertaVendedorGUID,
       "ofertaPreco": ofertaPreco,
       "ofertaQtd": ofertaQtd,
       "ofertaImgPath": ofertaImgPath,

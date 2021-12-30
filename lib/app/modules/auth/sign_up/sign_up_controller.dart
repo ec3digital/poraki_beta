@@ -8,7 +8,7 @@ import 'package:extended_masked_text/extended_masked_text.dart';
 import '../../../data/models/login_model.dart';
 import '../../../routes/app_routes.dart';
 import '../../../shared/constants/preferences_keys.dart';
-import 'package:poraki/app/services/sqlporaki_login_service.dart';
+import 'package:poraki/app/services/sqlite/sqlporaki_login_service.dart';
 
 class SignUpController extends GetxController {
   TextEditingController nameInputController = TextEditingController();
