@@ -25,6 +25,7 @@ class FormSignup extends StatelessWidget {
               return null;
             },
             controller: controller.nameInputController,
+            keyboardType: TextInputType.name,
             autofocus: true,
             style: TextStyle(color: Colors.white),
             decoration: InputDecoration(
@@ -100,6 +101,7 @@ class FormSignup extends StatelessWidget {
               return null;
             },
             controller: controller.phoneInputController,
+            keyboardType: TextInputType.phone,
             autofocus: true,
             style: TextStyle(color: Colors.white),
             decoration: InputDecoration(

@@ -24,9 +24,9 @@ class DrawerHome extends StatelessWidget {
       child: Column(
         children: [
           Container(
-              padding: const EdgeInsets.symmetric(horizontal: 6),
+              padding: const EdgeInsets.symmetric(horizontal: 3),
               color: Colors.amber,
-              height: Get.height * 0.16,
+              height: Get.height * 0.14,
               //margin: EdgeInsets.only(top: 10, left: 1, right: 1),
               child: Column(
                   children: [
@@ -54,17 +54,17 @@ class DrawerHome extends StatelessWidget {
                         ),
                       );
                     }),
-                    FutureBuilder(
-                        future: hivePorakiUserService().GetUserEmail(),
-                        initialData: "...",
-                        builder: (context, snapshot) {
-                          return Center(
-                            child: Text(
-                              snapshot.data.toString(),
-                              style: TextStyle(fontSize: 14.0),
-                            ),
-                          );
-                        }),
+                    // FutureBuilder(
+                    //     future: hivePorakiUserService().GetUserEmail(),
+                    //     initialData: "...",
+                    //     builder: (context, snapshot) {
+                    //       return Center(
+                    //         child: Text(
+                    //           snapshot.data.toString(),
+                    //           style: TextStyle(fontSize: 14.0),
+                    //         ),
+                    //       );
+                    //     }),
               ])
           ),
 
@@ -99,11 +99,7 @@ class DrawerHome extends StatelessWidget {
             text: 'Inicio',
             isSelected: index == 0,
             icon: Icons.home_outlined,
-            onTap: () {
-              if (index != 0) {
-                Get.offAll(HomePage());
-              }
-            },
+            onTap: () => Get.toNamed(AppRoutes.home),
           ),
           const Divider(),
           RowCategoriesDrawerHome(
@@ -142,26 +138,32 @@ class DrawerHome extends StatelessWidget {
             text: 'Minha conta',
             isSelected: index == 4,
             icon: Icons.person_outline,
-            onTap: () {},
+            onTap: () => Get.toNamed(AppRoutes.account),
+          ),
+          RowCategoriesDrawerHome(
+            text: 'Endereços',
+            isSelected: index == 5,
+            icon: Icons.map,
+            onTap: () => Get.toNamed(AppRoutes.addresses),
           ),
           const Divider(),
           RowCategoriesDrawerHome(
             text: 'Vendas',
-            isSelected: index == 5,
+            isSelected: index == 6,
             icon: Icons.monetization_on_outlined,
             onTap: () {},
           ),
           RowCategoriesDrawerHome(
             text: 'Entregas',
-            isSelected: index == 6,
+            isSelected: index == 7,
             icon: Icons.shopping_cart_outlined,
             onTap: () {},
           ),
           const Divider(),
           RowCategoriesDrawerHome(
             text: 'Sair',
-            isSelected: index == 7,
-            onTap: () => Get.back(),
+            isSelected: index == 8,
+            onTap: () { Get.offAllNamed(AppRoutes.signIn); },
             icon: Icons.arrow_back,
           )
         ],

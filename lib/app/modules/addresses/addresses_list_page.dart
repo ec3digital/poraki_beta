@@ -1,14 +1,14 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:poraki/app/modules/categories/widgets/body_categories.dart';
+import 'package:poraki/app/modules/addresses/widgets/list_addresses.dart';
 import 'package:poraki/app/modules/home/home_controller.dart';
 import 'package:poraki/app/modules/home/widgets/app_bar_home.dart';
 import 'package:poraki/app/modules/home/widgets/drawer_home.dart';
 
-class CategoriesPage extends StatelessWidget {
+class AddressesListPage extends StatelessWidget {
   final HomeController controller = Get.find(); // Get.put(HomeController());
-  CategoriesPage({Key? key}) : super(key: key);
+  AddressesListPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +17,7 @@ class CategoriesPage extends StatelessWidget {
         preferredSize: Size(double.maxFinite, 55),
         child: AppBarHome(controller: controller),
       ),
-      body: BodyCategories(),
+      body: ListAddresses(),
       drawer: DrawerHome(0),
     );
   }

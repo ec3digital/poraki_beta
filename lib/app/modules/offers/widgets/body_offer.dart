@@ -58,7 +58,7 @@ class BodyOffer extends StatelessWidget {
                   DetailOffer(detailProduct: _product.ofertaDetalhe),
                   SizedBox(height: 10),
                   Text(
-                    'R\$ ' + _product.ofertaPreco.toString(),
+                    'R\$ ${_product.ofertaPreco?.toStringAsFixed(2) ?? ''}',
                     style: Get.textTheme.bodyText1!.copyWith(
                       fontSize: 25,
                     ),

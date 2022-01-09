@@ -19,7 +19,7 @@ class ButtonOffer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 10),
+      margin: const EdgeInsets.only(bottom: 10, left: 10, right: 10),
       height: 50,
       width: double.maxFinite,
       child: ElevatedButton(

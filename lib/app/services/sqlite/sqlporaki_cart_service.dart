@@ -13,12 +13,11 @@ class sqlPorakiCartService {
     );
 
     try {
-      // var list = await db.rawQuery('SELECT * FROM carrinho', []);
-      // var list = await db.query('carrinho');
       List<Map<String, dynamic>> list = await db.query('carrinho');
       print('qt tab cart: ' + list.length.toString());
       late List<sqlCarrinho> itemsCarrinho = [];
 
+      //itemsCarrinho.clear();
       list.forEach((item) {
         itemsCarrinho.add(new sqlCarrinho(
             item['ofertaId'].toString(),
@@ -40,25 +39,6 @@ class sqlPorakiCartService {
     } catch (e) {
       return Future.error(e);
     }
-
-  //
-  //   final maps = await db.query('carrinho');
-  //
-  //   return List.generate(maps.length, (i) { //create a list of memos
-  //     //return sqlCarrinho(ofertaId, ofertaGUID, ofertaTitulo, ofertaCEP, ofertaVendedorGUID, ofertaPreco, ofertaQtd, ofertaImgPath, categoriaChave, ofertaEntregaPrevEm).toMap();
-  //     return new sqlCarrinho(
-  //       maps[i]['ofertaID'].toString(),
-  //         maps[i]['ofertaGUID'].toString(),
-  //         maps[i]['ofertaTitulo'].toString(),
-  //       maps[i]['ofertaCEP'].toString(),
-  //     maps[i]['ofertaVendedorGUID'].toString(),
-  //       maps[i]['ofertaPreco'].toString(),
-  //         maps[i]['ofertaQtd'].toString(),
-  //         maps[i]['ofertaImgPath'].toString(),
-  //         maps[i]['categoriaChave'].toString(),
-  //     maps[i]['ofertaEntregaPrevEm'].toString()
-  //     );
-  // });
   }
 
   Future<void> deleteItemCarrinho(int id) async {
@@ -72,7 +52,7 @@ class sqlPorakiCartService {
   Future<void> deleteCarrinho() async {
     String dbPath = join(await getDatabasesPath(), 'poraki');
     var db = await openDatabase(dbPath, version: 1);
-    db.delete('carrinho');
+    await db.delete('carrinho');
 
     await db.close();
   }
@@ -81,19 +61,50 @@ class sqlPorakiCartService {
     String dbPath = join(await getDatabasesPath(), 'poraki');
     var db = await openDatabase(dbPath, version: 1);
 
-    var ret = await db.insert('carrinho', item.toMap());
+    bool exist = await existeItemCarrinho(int.parse(item.ofertaId));
+    if(exist) {
+      print('caiu no existe');
+      await increaseQtyItemCarrinho(int.parse(item.ofertaId), 1);
+    }
+    else {
+      print('caiu no NAO existe');
+      await db.insert('carrinho', item.toMap());
+    }
 
-    print('ret: ' + ret.toString());
+    // print('ret: ' + ret.toString());
     await db.close();
   }
 
-  Future<void> updateItemCarrinho(sqlCarrinho item) async {
+  Future<void> updateItemCarrinho(int id, int qtd) async {
     String dbPath = join(await getDatabasesPath(), 'poraki');
     var db = await openDatabase(dbPath, version: 1);
 
-    db.update('carrinho', item.toMap(), where: "ofertaId = ?", whereArgs: [item.ofertaId]);
+    //db.update('carrinho', item.toMap(), where: "ofertaId = ?", whereArgs: [item.ofertaId]);
+    await db.rawUpdate('UPDATE carrinho set ofertaQtd = ? where ofertaId = ?', [qtd, id]);
 
     await db.close();
+  }
+
+  Future<void> increaseQtyItemCarrinho(int id, int qtd) async {
+    String dbPath = join(await getDatabasesPath(), 'poraki');
+    var db = await openDatabase(dbPath, version: 1);
+
+    print('ofertaId carrinho -> ' + id.toString());
+    await db.rawUpdate('UPDATE carrinho set ofertaQtd = ofertaQtd + 1 where ofertaId = ?', [id]);
+
+    await db.close();
+  }
+
+  Future<bool> existeItemCarrinho(int id) async {
+    String dbPath = join(await getDatabasesPath(), 'poraki');
+    var db = await openDatabase(dbPath, version: 1);
+
+    var ret = await db.rawQuery('SELECT ofertaId FROM carrinho where ofertaId = ?', [id]); // .rawUpdate('UPDATE carrinho set ofertaQtd = ? where ofertaId = ?', [qtd, id]);
+
+    // await db.close();
+
+    print('existe? -> ' + ret.isNotEmpty.toString());
+    return ret.isNotEmpty;
   }
 
 }

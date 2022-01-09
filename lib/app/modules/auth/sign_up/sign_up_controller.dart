@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:poraki/app/data/models/sql/sqlUsuarios.dart';
+import 'package:poraki/app/data/models/sql/sqlUsuario.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:extended_masked_text/extended_masked_text.dart';
 import '../../../data/models/login_model.dart';

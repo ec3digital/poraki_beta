@@ -51,7 +51,8 @@ class CardOffertsDayHome extends StatelessWidget {
                     child: Center(
                       child: Image.network(
                         imgOffer,
-                        scale: 1.5,
+                        height: 300,
+                        //scale: 1.7,
                       ),
                     ),
                   ),

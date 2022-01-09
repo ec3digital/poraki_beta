@@ -1,5 +1,9 @@
 import 'package:get/get.dart';
+import 'package:poraki/app/modules/account/account_page.dart';
+import 'package:poraki/app/modules/addresses/address_page.dart';
+import 'package:poraki/app/modules/addresses/addresses_list_page.dart';
 import 'package:poraki/app/modules/categories/categories_page.dart';
+import 'package:poraki/app/modules/checkout/checkout_page.dart';
 import 'package:poraki/app/modules/offers/offer_page.dart';
 import '../modules/auth/login/login_page.dart';
 import '../modules/auth/sign_up/sign_up_page.dart';
@@ -52,6 +56,22 @@ class AppPages {
     GetPage(
       name: AppRoutes.categories,
       page: () => CategoriesPage(),
+    ),
+    GetPage(
+      name: AppRoutes.account,
+      page: () => AccountPage(),
+    ),
+    GetPage(
+      name: AppRoutes.addresses,
+      page: () => AddressesListPage(),
+    ),
+    GetPage(
+      name: AppRoutes.address,
+      page: () => AddressPage(enderecoGuid: null),
+    ),
+    GetPage(
+      name: AppRoutes.checkout,
+      page: () => CheckoutPage(),
     ),
   ];
 }

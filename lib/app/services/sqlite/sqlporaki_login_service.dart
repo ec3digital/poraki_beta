@@ -1,6 +1,6 @@
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
-import '../../data/models/sql/sqlUsuarios.dart';
+import '../../data/models/sql/sqlUsuario.dart';
 
 class sqlPorakiLoginService {
 
@@ -18,7 +18,7 @@ class sqlPorakiLoginService {
 
     var usu = await buscaUsuDados();
     if (usu.isEmpty)
-      insertUsuarioDefault();
+      await insertUsuarioDefault();
 
     await db.close();
   }
@@ -35,7 +35,7 @@ class sqlPorakiLoginService {
   Future<void> deleteUsuario() async {
     String dbPath = join(await getDatabasesPath(), 'poraki');
     var db = await openDatabase(dbPath, version: 1);
-    db.delete('usuarios');
+    await db.delete('usuarios');
 
     await db.close();
   }
@@ -43,7 +43,7 @@ class sqlPorakiLoginService {
   Future<void> reinsertUsuario(sqlUsuarios usuario) async {
     String dbPath = join(await getDatabasesPath(), 'poraki');
     var db = await openDatabase(dbPath, version: 1);
-    db.insert('usuarios', usuario.toMapBasic());
+    await db.insert('usuarios', usuario.toMapBasic());
 
     await db.close();
   }
@@ -53,7 +53,7 @@ class sqlPorakiLoginService {
     var db = await openDatabase(dbPath, version: 1);
     sqlUsuarios usuarios = new sqlUsuarios("seuMelhorEmail@dominio.com",".",".",".",".","05735-030",".",".",".",".","","1.0");
 
-    db.insert('usuarios', usuarios.toMap());
+    await db.insert('usuarios', usuarios.toMap());
 
     await db.close();
   }
@@ -64,6 +64,15 @@ class sqlPorakiLoginService {
     //sqlUsuarios usuarios = new sqlUsuarios("seuMelhorEmail@dominio.com",".",".",".",".","05735-030",".",".",".",".","","1.0");
 
     db.insert('usuarios', usuario.toMap());
+
+    await db.close();
+  }
+
+  Future<void> updateUsuario(sqlUsuarios usuario) async {
+    String dbPath = join(await getDatabasesPath(), 'poraki');
+    var db = await openDatabase(dbPath, version: 1);
+
+    await db.update('usuarios', usuario.toMap(), where: "usuEmail = ?", whereArgs: [usuario.usuEmail]);
 
     await db.close();
   }
@@ -117,17 +126,6 @@ class sqlPorakiLoginService {
     );
   ''';
 
-  //cria na tela de cadastro do usuario
-  final String _createTableEnderecos = '''
-    CREATE TABLE IF NOT EXISTS enderecos (
-    usuEmail TEXT,
-    usuCEP TEXT,
-    usuEndereco TEXT,
-    usuNumero TEXT,
-    usuCompl TEXT
-    );
-  ''';
-
 
   // cria no momento da criação do usuario
   final String _createTableUsuarioConfig = '''
@@ -151,8 +149,17 @@ class sqlPorakiLoginService {
   // cria no momento da criação do usuario
   final String _createTableVendFav = '''
     CREATE TABLE IF NOT EXISTS vendfavs (
-    vendEmail TEXT,
+    vendGuid TEXT,
     vendNome TEXT
+    );
+  ''';
+
+  // cria no momento da criação do usuario
+  final String _createTableVendedor = '''
+    CREATE TABLE IF NOT EXISTS vendedor (
+    vendGuid TEXT,
+    vendNome TEXT,
+    vendCEP TEXT
     );
   ''';
 
@@ -198,6 +205,7 @@ class sqlPorakiLoginService {
   // somente depois de fechada, enquanto aberta, somente da API
   final String _createTableVendaItens = '''
     CREATE TABLE IF NOT EXISTS vendaitens (
+    vendaItemId INT,
     vendaId INT,
     pedidoGUID TEXT,
     ofertaId INT,
@@ -242,7 +250,7 @@ class sqlPorakiLoginService {
     compraUsuGUID TEXT,
     compraAval INT,
     compraAvalEm TEXT,
-    compraMoeda TEXT
+    compraMoeda TEXT,
     compraCEP TEXT,
     compraEndereco TEXT,
     compraNumero TEXT,

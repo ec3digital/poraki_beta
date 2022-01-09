@@ -39,13 +39,13 @@ class ListOffers extends StatelessWidget {
                         shrinkWrap: true,
                         children: [
                           Container(
-                            height: 100,
+                            height: 80,
                             margin: EdgeInsets.only(top: 4),
                             child: Image.network(
                               'https://firebasestorage.googleapis.com/v0/b/ec3digrepo.appspot.com/o/ofertas%2F' +
                                   _product.ofertaID.toString() +
                                   '.jpg?alt=media',
-                              height: 100,
+                              height: 50,
                             ),
                           ),
                           Container(

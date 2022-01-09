@@ -32,7 +32,8 @@ class ListVerticalCategories extends StatelessWidget {
           return CircularProgressIndicator.adaptive();
         } else {
         return Container(
-          height: Get.height * 50, // * 0.14,
+          // height: Get.height * 50, // * 0.14,
+          height: MediaQuery.of(context).size.height,
           child: ListView.builder(
             scrollDirection: Axis.vertical,
             padding: const EdgeInsets.all(16.0),

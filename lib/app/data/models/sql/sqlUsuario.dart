@@ -8,6 +8,7 @@ class sqlUsuarios {
   final String? usuEndereco;
   final String? usuNumero;
   final String? usuCompl;
+  // final String? usuDtNasc;
   final String? usuLastLogin;
   final String? usuTermosEm;
   final String? usuVersao;

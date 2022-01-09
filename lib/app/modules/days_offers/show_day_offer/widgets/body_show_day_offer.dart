@@ -15,7 +15,7 @@ class BodyShowDayOffer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ShowDayOfferController _controller = Get.put(ShowDayOfferController());
+    final ShowDayOfferController _controller = Get.find(); // Get.put(ShowDayOfferController());
     _controller.getOfferTapped(3);
     return Container(
         child: GetBuilder<ShowDayOfferController>(builder: (context) {
@@ -49,7 +49,8 @@ class BodyShowDayOffer extends StatelessWidget {
                         detailProduct: _product.ofertaDetalhe.toString()),
                     SizedBox(height: 10),
                     TextPriceProductDayOffer(
-                        textPrice: 'R\$ ' + _product.ofertaPreco.toString()),
+                        textPrice: 'R\$ ${_product.ofertaPreco!.toStringAsFixed(2)}',
+                    ),
                     const SizedBox(height: 10),
                     ContainerAmountProductDayOffer(),
                     SizedBox(height: 10),

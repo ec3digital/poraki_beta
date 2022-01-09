@@ -12,7 +12,7 @@ class ListProductsDayOffers extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final DaysOffersController controller = Get.put(DaysOffersController());
+    final DaysOffersController controller = Get.find(); // Get.put(DaysOffersController());
     return Expanded(
       child: Container(
           child: GetBuilder<DaysOffersController>(builder: (context) {

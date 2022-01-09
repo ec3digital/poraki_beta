@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:poraki/app/data/models/sql/sqlCarrinho.dart';
 import 'package:poraki/app/services/sqlite/sqlporaki_cart_service.dart';
@@ -6,10 +7,13 @@ import 'widgets/dialog_amount_shopping_cart.dart';
 import 'widgets/dialog_more_unitys_shopping_cart.dart';
 
 class ShoppingCartController extends GetxController {
-  int tabBarLenght = 0;
+  //int tabBarLenght = 0;
   bool change = false;
   var listShoppingCart = [];
   String moreQuantity = '';
+  int qty = 0;
+
+  final TextEditingController txtQty = new TextEditingController();
 
   changeMoreQuantity(String? value) {
     moreQuantity = value!;
@@ -24,26 +28,39 @@ class ShoppingCartController extends GetxController {
 
   Future<void> carregaCarrinho() async {
     print('carregaCarrinho');
+    // txtQty.text = "1";
 
+    listShoppingCart.clear();
     List<sqlCarrinho> carrinho = await sqlPorakiCartService().carrinho();
-    // listShoppingCart = [];
 
-    // for(var c in carrinho) {
-    //   print('for');
     carrinho.forEach((element) {
-      print('foreach: ' + element.ofertaImgPath.toString());
-      //print(element.values['ofertaTitulo'].toString());
       listShoppingCart.add(new ShoppingCartModel(
         element.ofertaTitulo.toString(),
         'https://firebasestorage.googleapis.com/v0/b/ec3digrepo.appspot.com/o/ofertas%2F' +
             element.ofertaId.toString() +
             '.jpg?alt=media',
-        10.0,
+        double.parse(element.ofertaPreco),
+          element.ofertaId.toString(),
+        int.parse(element.ofertaQtd),
       ));
     });
-
-    // return carrinho;
   }
+
+  Future<void> esvaziaCarrinho() async {
+    await sqlPorakiCartService().deleteCarrinho();
+    await carregaCarrinho();
+  }
+
+  Future<void> deleteItemFromCarrinho(String id) async {
+    await sqlPorakiCartService().deleteItemCarrinho(int.parse(id));
+    await carregaCarrinho();
+  }
+
+  Future<void> atualizaQtdItemCarrinho(int id, int qtd) async {
+    await sqlPorakiCartService().updateItemCarrinho(id, qtd);
+    await carregaCarrinho();
+  }
+
 
   //
   //   Future<List<sqlCarrinho>> carregaItensCarrinho() async {

@@ -47,8 +47,7 @@ class AppBarHome extends StatelessWidget {
             ),
             const SizedBox(width: 08),
             IconButton(
-              onPressed: () => Get.toNamed(AppRoutes.offers, arguments: [
-                {'cep': '05735030'}, {'category': null }, {'title': txtBuscaCtrl.text}] ),
+              onPressed: () => Get.toNamed(AppRoutes.shoppingCart),
               icon: Icon(
                 Icons.shopping_cart_outlined,
               ),

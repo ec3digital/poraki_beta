@@ -24,22 +24,25 @@ dependencies:
   flutter:
     sdk: flutter
   auto_size_text: ^3.0.0-nullsafety.0
-  cloud_firestore: ^1.0.4
-  cupertino_icons: ^1.0.2
+  cloud_firestore: ^3.1.6
+  cupertino_icons: ^1.0.4
   font_awesome_flutter: ^9.1.0
-  get: ^4.1.4
  # graphql_flutter: ^5.0.0
   http: ^0.13.3
   shared_preferences: ^2.0.6
   flutter_rating_bar: ^4.0.0
   sqflite: ^2.0.1
+  #number_inc_dec: ^0.8.0
   #provider: ^5.0.0
   hive: ^2.0.5
   hive_flutter: ^1.1.0
-  path: ^1.6.0
+  path: ^1.8.0
   #path_provider: ^2.0.4
   extended_masked_text: ^2.3.1
-
+  #flutter_svg: ^0.18.0
+  flutter_localizations:
+    sdk: flutter
+  get: ^4.6.1
 
 dev_dependencies:
   flutter_test:
@@ -47,6 +50,8 @@ dev_dependencies:
 
   #hive_generator: ^[version]
   #build_runner: ^[version]
+
+
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

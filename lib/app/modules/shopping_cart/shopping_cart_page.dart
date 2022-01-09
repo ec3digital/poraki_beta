@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:poraki/app/modules/shopping_cart/widgets/app_cart.dart';
-
 import '../../theme/app_theme.dart';
-import '../home/widgets/drawer_home.dart';
 import 'shopping_cart_controller.dart';
 import 'widgets/body_shopping_cart.dart';
-import 'widgets/tab_bar_shopping_cart.dart';
 
 class ShoppingCartPage extends StatelessWidget {
   ShoppingCartPage({

@@ -4,9 +4,13 @@ abstract class AppRoutes {
   static const login = '/login';
   static const signIn = '/sign-in';
   static const signUp = '/sign-up';
+  static const account = '/account';
   static const offer = '/offer';
   static const offers = '/offers';
   static const shoppingCart = '/shopping-cart';
+  static const checkout = '/checkout';
+  static const address = '/address';
+  static const addresses = '/addresses';
   static const viewSearchProduct = '/view-search-product';
   static const showDayOffer = '/show-day-offer';
   static const daysOffers = '/days-offers';
