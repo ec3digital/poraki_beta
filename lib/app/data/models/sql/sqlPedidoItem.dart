@@ -1,6 +1,6 @@
-class sqlCompraItem {
-  final int compraItemId;
-  final int compraId;
+class sqlPedidoItem {
+  final String pedidoItemGUID;
+  final int pedidoId;
   final String? pedidoGUID;
   final int ofertaId;
   final String ofertaGuid;
@@ -15,12 +15,12 @@ class sqlCompraItem {
   final int? ofertaCancelada;
   final String? ofertaEntregueEm;
 
-  sqlCompraItem(this.compraItemId, this.compraId, this.pedidoGUID, this.ofertaId, this.ofertaGuid, this.ofertaTitulo, this.ofertaCEP, this.ofertaVendedorId, this.ofertaPreco, this.ofertaQtd, this.ofertaTotal, this.ofertaImgPath, this.categoriaChave, this.ofertaCancelada, this.ofertaEntregueEm);
+  sqlPedidoItem(this.pedidoItemGUID, this.pedidoId, this.pedidoGUID, this.ofertaId, this.ofertaGuid, this.ofertaTitulo, this.ofertaCEP, this.ofertaVendedorId, this.ofertaPreco, this.ofertaQtd, this.ofertaTotal, this.ofertaImgPath, this.categoriaChave, this.ofertaCancelada, this.ofertaEntregueEm);
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      "compraItemId": compraItemId,
-      "compraId": compraId,
+      "pedidoItemGUID": pedidoItemGUID,
+      "pedidoId": pedidoId,
       "pedidoGUID": pedidoGUID,
       "ofertaId": ofertaId,
       "ofertaGuid": ofertaGuid,

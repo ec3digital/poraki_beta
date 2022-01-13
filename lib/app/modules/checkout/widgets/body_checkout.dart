@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:poraki/app/modules/offers/widgets/button_offer.dart';
+import 'package:poraki/app/modules/shopping_cart/shopping_cart_controller.dart';
 import 'package:poraki/app/theme/app_theme.dart';
 
 enum FormasPagto { Cartao, PixQR, CarteirasDigitais, Direto }
 
 class BodyCheckOut extends StatefulWidget {
+  ShoppingCartController controller = Get.find();
+
   @override
   _BodyCheckOut createState() => _BodyCheckOut();
 }
@@ -17,45 +21,64 @@ class _BodyCheckOut extends State<BodyCheckOut> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Expanded(
-          child: Container(
-            child: ListView(
-              children: <Widget>[
-                paymentSection(),
-                selectedAddressSection(),
-                widgetEntrega(),
-                checkoutItem(),
-                priceSection()
-              ],
-            ),
-          ),
-          flex: 90,
-        ),
-        Expanded(
-          child: Container(
-            width: double.infinity,
-            margin: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-            child: ButtonOffer(
-              onPressed: () {
-                final snackBar = SnackBar(
-                    backgroundColor: AppColors.primaryColor,
-                    content: Container(
-                        height: 40,
-                        child: Center(
-                            child: const Text('Obrigado por sua compra!'))));
-                ScaffoldMessenger.of(context).showSnackBar(snackBar);
-              },
-              colorText: AppColors.primaryColor,
-              text: 'Finalizar',
-              colorButton: AppColors.grayBlueButton,
-            ),
-          ),
-          flex: 10,
-        )
-      ],
-    );
+    return FutureBuilder(
+        future: widget.controller.carregaCarrinho(),
+        builder: (context, futuro) {
+          print('cart qty:' +
+              widget.controller.listShoppingCart.length.toString());
+
+          if (futuro.connectionState == ConnectionState.waiting) {
+            return Center(
+                child: CircularProgressIndicator()); //Text('carrinho vazio'));
+            // } else if (futuro.hasError) {
+            //   return Center(child: Text(futuro.error.toString()));
+          } else {
+            if (widget.controller.listShoppingCart.length == 0) {
+              return Center(child: Text("carrinho vazio"));
+            } else {
+              return Column(
+                children: <Widget>[
+                  Expanded(
+                    child: Container(
+                      child: ListView(
+                        children: <Widget>[
+                          paymentSection(),
+                          selectedAddressSection(),
+                          widgetEntrega(),
+                          checkoutItem(),
+                          priceSection()
+                        ],
+                      ),
+                    ),
+                    flex: 90,
+                  ),
+                  Expanded(
+                    child: Container(
+                      width: double.infinity,
+                      margin: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                      child: ButtonOffer(
+                        onPressed: () {
+                          final snackBar = SnackBar(
+                              backgroundColor: AppColors.primaryColor,
+                              content: Container(
+                                  height: 40,
+                                  child: Center(
+                                      child: const Text(
+                                          'Obrigado por sua compra!'))));
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                        },
+                        colorText: AppColors.primaryColor,
+                        text: 'Finalizar',
+                        colorButton: AppColors.grayBlueButton,
+                      ),
+                    ),
+                    flex: 10,
+                  )
+                ],
+              );
+            }
+          }
+        });
   }
 
   selectedAddressSection() {
@@ -87,19 +110,6 @@ class _BodyCheckOut extends State<BodyCheckOut> {
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                       )),
-                  Container(
-                    padding:
-                        EdgeInsets.only(left: 8, right: 8, top: 4, bottom: 4),
-                    decoration: BoxDecoration(
-                        shape: BoxShape.rectangle,
-                        color: Colors.grey.shade300,
-                        borderRadius: BorderRadius.all(Radius.circular(16))),
-                    child: Text("voltar ao início",
-                        style: Get.textTheme.bodyText1!.copyWith(
-                          fontSize: 14,
-                          fontWeight: FontWeight.normal,
-                        )),
-                  )
                 ],
               ),
               createAddressText("Rua Carlos Magalhães, 100", 16),
@@ -231,9 +241,9 @@ class _BodyCheckOut extends State<BodyCheckOut> {
           padding: EdgeInsets.only(left: 12, top: 8, right: 12, bottom: 8),
           child: ListView.builder(
             itemBuilder: (context, position) {
-              return checkoutListItem();
+              return checkoutListItem(position);
             },
-            itemCount: 3,
+            itemCount: widget.controller.listShoppingCart.length,
             shrinkWrap: true,
             primary: false,
             scrollDirection: Axis.vertical,
@@ -243,14 +253,15 @@ class _BodyCheckOut extends State<BodyCheckOut> {
     );
   }
 
-  checkoutListItem() {
+  checkoutListItem(int index) {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 4),
       child: Row(
         children: <Widget>[
           Container(
             child: Image.network(
-              'https://firebasestorage.googleapis.com/v0/b/ec3digrepo.appspot.com/o/ofertas%2F6.jpg?alt=media',
+              widget.controller.listShoppingCart[index]
+                  .picture,
               height: 30,
               fit: BoxFit.fitHeight,
             ),
@@ -260,8 +271,31 @@ class _BodyCheckOut extends State<BodyCheckOut> {
           SizedBox(
             width: 8,
           ),
+          Expanded(
+          child:
           Text(
-            "Caixa de Morangos x 1",
+            widget.controller.listShoppingCart[index].name,
+            style: Get.textTheme.bodyText1!.copyWith(
+                fontSize: 16,
+                color: AppColors.primaryColor,
+                fontWeight: FontWeight.w900),
+          )),
+          Text(
+            widget.controller.listShoppingCart[index].qty.toString(),
+            style: Get.textTheme.bodyText1!.copyWith(
+                fontSize: 16,
+                color: AppColors.primaryColor,
+                fontWeight: FontWeight.w900),
+          ),
+          Text(
+            ' x ',
+            style: Get.textTheme.bodyText1!.copyWith(
+                fontSize: 16,
+                color: AppColors.primaryColor,
+                fontWeight: FontWeight.w900),
+          ),
+          Text(
+            widget.controller.listShoppingCart[index].value.toString(),
             style: Get.textTheme.bodyText1!.copyWith(
                 fontSize: 16,
                 color: AppColors.primaryColor,
@@ -312,11 +346,11 @@ class _BodyCheckOut extends State<BodyCheckOut> {
               SizedBox(
                 height: 8,
               ),
-              createPriceItem("Total Produtos", getFormattedCurrency(5197)),
-              createPriceItem("Descontos", getFormattedCurrency(3280)),
-              createPriceItem("Taxas", getFormattedCurrency(96)),
-              createPriceItem("TOTAL", getFormattedCurrency(2013)),
-              createPriceItem("Taxa Entrega", "GRÁTIS"),
+              createPriceItem("Total Produtos", getFormattedCurrency(widget.controller.cartTotalItems)),
+              createPriceItem("Descontos", getFormattedCurrency(widget.controller.cartDiscount)),
+              createPriceItem("Taxas", getFormattedCurrency(widget.controller.cartTaxes)),
+              // createPriceItem("TOTAL", getFormattedCurrency(widget.controller.cartTotal)),
+              createPriceItem("Taxa Entrega", getFormattedCurrency(widget.controller.cartDelivery)),
               SizedBox(
                 height: 8,
               ),
@@ -341,7 +375,7 @@ class _BodyCheckOut extends State<BodyCheckOut> {
                         fontWeight: FontWeight.w900),
                   ),
                   Text(
-                    getFormattedCurrency(2013),
+                    getFormattedCurrency(widget.controller.cartTotal),
                   )
                 ],
               )
@@ -376,8 +410,7 @@ class _BodyCheckOut extends State<BodyCheckOut> {
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(4)),
                     border: Border.all(color: Colors.grey.shade200)),
-                padding:
-                    EdgeInsets.only(left: 6, top: 6, right: 4, bottom: 4),
+                padding: EdgeInsets.only(left: 6, top: 6, right: 4, bottom: 4),
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
@@ -473,11 +506,7 @@ class _BodyCheckOut extends State<BodyCheckOut> {
                           SizedBox(height: 10),
                         ],
                       )
-                    ]
-                )
-            )
-        )
-    );
+                    ]))));
   }
 
   //

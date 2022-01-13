@@ -44,6 +44,7 @@ class _LoginPageState extends State<LoginPage> {
             // }
           // }
 
+          print('email: ' + _mailInputController.text.isEmpty.toString());
           return Scaffold(
             body: Container(
               height: MediaQuery.of(context).size.height,
@@ -97,7 +98,7 @@ class _LoginPageState extends State<LoginPage> {
                               return null;
                             },
                             controller: _mailInputController,
-                            autofocus: true,
+                            autofocus: _mailInputController.text.isEmpty,
                             style: TextStyle(color: Colors.white),
                             decoration: InputDecoration(
                               labelText: "E-mail",
@@ -127,6 +128,7 @@ class _LoginPageState extends State<LoginPage> {
                               }
                               return null;
                             },
+                            autofocus: _mailInputController.text.isNotEmpty,
                             obscureText: _obscurePassword,
                             controller: _passwordInputController,
                             style: TextStyle(color: Colors.white),

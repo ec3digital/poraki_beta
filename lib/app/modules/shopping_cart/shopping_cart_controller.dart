@@ -8,10 +8,16 @@ import 'widgets/dialog_more_unitys_shopping_cart.dart';
 
 class ShoppingCartController extends GetxController {
   //int tabBarLenght = 0;
+  String ctrlMsg = '';
   bool change = false;
   var listShoppingCart = [];
   String moreQuantity = '';
   int qty = 0;
+  double cartTotal = 0;
+  double cartDiscount = 0;
+  double cartTaxes = 0;
+  double cartTotalItems = 0;
+  double cartDelivery = 0;
 
   final TextEditingController txtQty = new TextEditingController();
 
@@ -22,7 +28,7 @@ class ShoppingCartController extends GetxController {
 
   @override
   void onInit() async {
-    await carregaCarrinho();
+    //await carregaCarrinho();
     super.onInit();
   }
 
@@ -44,6 +50,9 @@ class ShoppingCartController extends GetxController {
         int.parse(element.ofertaQtd),
       ));
     });
+
+    calcTotal();
+    update();
   }
 
   Future<void> esvaziaCarrinho() async {
@@ -59,6 +68,38 @@ class ShoppingCartController extends GetxController {
   Future<void> atualizaQtdItemCarrinho(int id, int qtd) async {
     await sqlPorakiCartService().updateItemCarrinho(id, qtd);
     await carregaCarrinho();
+  }
+
+  Future<void> calcTotal() async {
+    cartTotal = 0;
+    await calcTotalItems(); await calcTaxes(); await calcDelivery(); await calcDiscount();
+    cartTotal = ((cartTotalItems + cartDelivery) + cartTaxes) - cartDiscount;
+  }
+
+  Future<void> calcDiscount() async {
+    cartDiscount = 0;
+  }
+
+  Future<void> calcTaxes() async {
+    cartTaxes = 0;
+  }
+
+  Future<void> calcTotalItems() async {
+    cartTotalItems = 0;
+    listShoppingCart.forEach((element) {
+      cartTotalItems += element.value;
+    });
+  }
+
+  Future<void> calcDelivery() async {
+    cartDelivery = 3;
+  }
+
+  Future<void> saveBuy() async {
+    ctrlMsg = '';
+
+
+    ctrlMsg = 'Pedido foi realizado, obrigado!';
   }
 
 

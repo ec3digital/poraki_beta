@@ -1,12 +1,12 @@
 import 'package:path/path.dart';
-import 'package:poraki/app/data/models/sql/sqlCompraItem.dart';
+import 'package:poraki/app/data/models/sql/sqlPedidoItem.dart';
 import 'package:sqflite/sqflite.dart';
-import '../../data/models/sql/sqlCompra.dart';
+import '../../data/models/sql/sqlPedido.dart';
 
 // ignore: camel_case_types
-class sqlPorakiCompraService {
+class sqlPorakiPedidoService {
 
-  Future<List<sqlCompra>> compras() async {
+  Future<List<sqlPedido>> listOrders(String tp) async {
     String path = join( await getDatabasesPath(), 'poraki');
     Database db = await openDatabase(
       path,
@@ -15,7 +15,7 @@ class sqlPorakiCompraService {
 
     try {
       // List<Map<String, dynamic>> list = await db.query('vendas');
-      var list = await db.query('compras') as List<sqlCompra>;
+      var list = await db.query('pedidos', where: "pedidoTipo = ?", whereArgs: [tp]) as List<sqlPedido>;
 
       return list;
     } catch (e) {
@@ -23,36 +23,36 @@ class sqlPorakiCompraService {
     }
   }
 
-  Future<void> deleteCompra(int id) async {
+  Future<void> deleteOrder(String orderGuid) async {
     String dbPath = join(await getDatabasesPath(), 'poraki');
     var db = await openDatabase(dbPath, version: 1);
-    db.delete('compras', where: "compraId = ?", whereArgs: [id]);
+    db.delete('pedidos', where: "pedidoGUID = ?", whereArgs: [orderGuid]);
 
     await db.close();
   }
 
-  Future<void> insertCompra(sqlCompra item) async {
+  Future<void> insertOrder(sqlPedido order) async {
     String dbPath = join(await getDatabasesPath(), 'poraki');
     var db = await openDatabase(dbPath, version: 1);
 
-    var ret = await db.insert('compras', item.toMap());
+    var ret = await db.insert('pedidos', order.toMap());
 
     print('ret: ' + ret.toString());
     await db.close();
   }
 
-  Future<void> updateCompra(sqlCompra item) async {
+  Future<void> updateOrder(sqlPedido order) async {
     String dbPath = join(await getDatabasesPath(), 'poraki');
     var db = await openDatabase(dbPath, version: 1);
 
-    await db.update('compras', item.toMap(), where: "compraId = ?", whereArgs: [item.compraId]);
+    await db.update('pedidos', order.toMap(), where: "pedidoGUID = ?", whereArgs: [order.pedidoGUID]);
     //await db.rawUpdate('UPDATE carrinho set ofertaQtd = ? where ofertaId = ?', [qtd, id]);
 
     await db.close();
   }
 
   //vendas itens
-  Future<List<sqlCompraItem>> comprasItens(int compraId) async {
+  Future<List<sqlPedidoItem>> listOrderItems(String orderGuid) async {
     String path = join( await getDatabasesPath(), 'poraki');
     Database db = await openDatabase(
       path,
@@ -61,7 +61,7 @@ class sqlPorakiCompraService {
 
     try {
       // List<Map<String, dynamic>> list = await db.query('vendas');
-      var list = await db.query('compraItens', where: "compraId = ?", whereArgs: [compraId]) as List<sqlCompraItem>;
+      var list = await db.query('pedidoItens', where: "pedidoGUID = ?", whereArgs: [orderGuid]) as List<sqlPedidoItem>;
 
       return list;
     } catch (e) {
@@ -69,29 +69,29 @@ class sqlPorakiCompraService {
     }
   }
 
-  Future<void> deleteCompraItem(int id) async {
+  Future<void> deleteOrderItem(String orderItemGuid) async {
     String dbPath = join(await getDatabasesPath(), 'poraki');
     var db = await openDatabase(dbPath, version: 1);
-    db.delete('compraItens', where: "compraItemId = ?", whereArgs: [id]);
+    db.delete('pedidoItens', where: "pedidoItemGUID = ?", whereArgs: [orderItemGuid]);
 
     await db.close();
   }
 
-  Future<void> insertCompraItem(sqlCompraItem item) async {
+  Future<void> insertOrderItem(sqlPedidoItem item) async {
     String dbPath = join(await getDatabasesPath(), 'poraki');
     var db = await openDatabase(dbPath, version: 1);
 
-    var ret = await db.insert('compraItens', item.toMap());
+    var ret = await db.insert('pedidoItens', item.toMap());
 
     print('ret: ' + ret.toString());
     await db.close();
   }
 
-  Future<void> updateCompraItem(sqlCompraItem item) async {
+  Future<void> updatepedidoItem(sqlPedidoItem item) async {
     String dbPath = join(await getDatabasesPath(), 'poraki');
     var db = await openDatabase(dbPath, version: 1);
 
-    await db.update('compraItens', item.toMap(), where: "compraItemId = ?", whereArgs: [item.compraItemId]);
+    await db.update('pedidoItens', item.toMap(), where: "pedidoItemGUID = ?", whereArgs: [item.pedidoItemGUID]);
     //await db.rawUpdate('UPDATE carrinho set ofertaQtd = ? where ofertaId = ?', [qtd, id]);
 
     await db.close();
