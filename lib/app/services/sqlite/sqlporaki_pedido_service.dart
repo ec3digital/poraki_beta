@@ -6,7 +6,10 @@ import '../../data/models/sql/sqlPedido.dart';
 // ignore: camel_case_types
 class sqlPorakiPedidoService {
 
-  Future<List<sqlPedido>> listOrders(String tp) async {
+  late List<sqlPedido> pedidos = [];
+  late List<sqlPedidoItem> pedidoItems = [];
+
+  Future<List<sqlPedido>> listOrders(String userGUID) async {
     String path = join( await getDatabasesPath(), 'poraki');
     Database db = await openDatabase(
       path,
@@ -15,9 +18,60 @@ class sqlPorakiPedidoService {
 
     try {
       // List<Map<String, dynamic>> list = await db.query('vendas');
-      var list = await db.query('pedidos', where: "pedidoTipo = ?", whereArgs: [tp]) as List<sqlPedido>;
+      List<Map<String, dynamic>> list = await db.query('pedidos'); // as List<sqlPedido>; //, where: "pedidoUsuGUID = ?", whereArgs: [userGUID]) as List<sqlPedido>;
+      print('qtd pedidos 1: ' + list.length.toString());
 
-      return list;
+      list.forEach((item) {
+        pedidos.add(new sqlPedido(
+            item['pedidoGUID'].toString(),
+            item['pedidoVendedorGUID'].toString(),
+            item['pedidoVendedorEmail'].toString(),
+            item['pedidoEm'].toString(),
+            item['pedidoValorTotal'].toString(),
+            item['pedidoFormaPagto'].toString(),
+            0,
+            //item['pedidoCancelada']!,
+            item['pedidoPagtoEm'].toString(),
+            item['pedidoPessoaNome'].toString(),
+            item['pedidoPessoaEmail'].toString(),
+            item['pedidoUsuGUID'].toString(),
+            int.parse(item['pedidoAval'].toString()),
+            item['pedidoAvalEm'].toString(),
+            item['pedidoMoeda'].toString(),
+            item['pedidoCEP'].toString(),
+            item['pedidoEndereco'].toString(),
+            item['pedidoNumero'].toString(),
+            item['pedidoCompl'].toString(),
+            item['pedidoAutoriza'].toString(),
+            item['pedidoInstituicao'].toString(),
+            item['pedidoEntregaPrevista'].toString(),
+            item['pedidoEntregaRealizadaEm'].toString(),
+            item['pedidoEntregaPorUsuEmail'].toString(),
+            item['pedidoEntregaPorUsuNome'].toString()
+        ));
+
+      });
+
+        return pedidos;
+      //return list;
+    } catch (e) {
+      print('erro pedidos: ' + e.toString());
+      return Future.error(e);
+    }
+  }
+
+  Future<sqlPedido> getOrder(String pedidoGUID) async {
+    String path = join( await getDatabasesPath(), 'poraki');
+    Database db = await openDatabase(
+      path,
+      version: 1,
+    );
+
+    try {
+      // List<Map<String, dynamic>> list = await db.query('vendas');
+      var list = await db.query('pedidos') as List<sqlPedido>; //, where: "pedidoGUID = ?", whereArgs: [pedidoGUID]) as List<sqlPedido>;
+
+      return list.first;
     } catch (e) {
       return Future.error(e);
     }
@@ -59,15 +113,37 @@ class sqlPorakiPedidoService {
       version: 1,
     );
 
-    try {
+    //try {
       // List<Map<String, dynamic>> list = await db.query('vendas');
-      var list = await db.query('pedidoItens', where: "pedidoGUID = ?", whereArgs: [orderGuid]) as List<sqlPedidoItem>;
+      var list = await db.query('pedidoItens'); // as List<sqlPedidoItem>; //, where: "pedidoGUID = ?", whereArgs: [orderGuid]) as List<sqlPedidoItem>;
+      print('qtd pedidos items 1: ' + list.length.toString());
 
-      return list;
-    } catch (e) {
-      return Future.error(e);
-    }
-  }
+      list.forEach((item) {pedidoItems.add(new sqlPedidoItem(
+          item['pedidoItemGUID'].toString(),
+          item['pedidoGUID'].toString(),
+          item['ofertaGuid'].toString(),
+          item['ofertaTitulo'].toString(),
+          item['ofertaCEP'].toString(),
+          int.parse(item['ofertaVendedorId'].toString()),
+          double.parse(item['ofertaPreco'].toString()),
+          int.parse(item['ofertaQtd'].toString()),
+          double.parse(item['ofertaTotal'].toString()),
+          item['ofertaImgPath'].toString(),
+          item['categoriaChave'].toString(),
+          int.parse(item['ofertaCancelada'].toString()),
+          item['ofertaEntregueEm'].toString()));
+        });
+    print('qtd pedidos items 2: ' + pedidoItems.length.toString());
+
+    return pedidoItems;
+      }
+
+
+      //return list;
+    // } catch (e) {
+    //   return Future.error(e);
+    // }
+
 
   Future<void> deleteOrderItem(String orderItemGuid) async {
     String dbPath = join(await getDatabasesPath(), 'poraki');
@@ -78,6 +154,7 @@ class sqlPorakiPedidoService {
   }
 
   Future<void> insertOrderItem(sqlPedidoItem item) async {
+    print('insertOrderItem: ' + item.toMap().toString());
     String dbPath = join(await getDatabasesPath(), 'poraki');
     var db = await openDatabase(dbPath, version: 1);
 
@@ -87,7 +164,7 @@ class sqlPorakiPedidoService {
     await db.close();
   }
 
-  Future<void> updatepedidoItem(sqlPedidoItem item) async {
+  Future<void> updateOrderItem(sqlPedidoItem item) async {
     String dbPath = join(await getDatabasesPath(), 'poraki');
     var db = await openDatabase(dbPath, version: 1);
 

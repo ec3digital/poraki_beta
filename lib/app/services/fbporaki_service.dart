@@ -6,10 +6,10 @@ class fbPorakiService {
 
   //FirebaseFirestore? _fbInstance;
   fbPorakiService();
-  late String _strTermos = "merda";
-  late String _strAppAviso;
-  late String _strParamValue;
-  late String _strDicValue;
+  late String Termos = "Termos";
+  late String AppAviso;
+  late String ParamValue;
+  late String DicValue;
 
   // void onInit() async {
   //   _strTermos = "";
@@ -31,7 +31,7 @@ class fbPorakiService {
   String getTermos() {
     _getTermosFromFirebase().then((value) => null);
 
-    return _strTermos;
+    return Termos;
     // //_iniFirebase();
     // //await Firebase.initializeApp();
     // //late String ret;
@@ -59,17 +59,17 @@ class fbPorakiService {
 
   String getAppAviso() {
     getAppAvisoFromFirebase();
-    return _strAppAviso;
+    return AppAviso;
   }
 
   String getParamValue(String Key, String SubKey) {
     getParamValueFromFirebase(Key, SubKey);
-    return _strParamValue;
+    return ParamValue;
   }
 
   String getDicValue(String Key) {
     getDicValueFromFirebase(Key);
-    return _strDicValue;
+    return DicValue;
   }
 
   _iniFirebase() async {
@@ -81,7 +81,7 @@ class fbPorakiService {
     CollectionReference coll = _fbInstance.collection('akitermos');
     var result = await coll.get();
     print("_getTermosFromFirebase" + result.docs.first['ptbr']);
-    Future.value(_strTermos = result.docs.first['ptbr']);
+    Future.value(Termos = result.docs.first['ptbr']);
     //_strTermos = result.docs.first['ptbr'];
     // DocumentSnapshot snapshot = await coll.doc('termos').get();
     // var data = snapshot.data() as Map;
@@ -117,7 +117,7 @@ class fbPorakiService {
     CollectionReference coll = _fbInstance.collection('akiavisos');
     DocumentSnapshot snapshot = await coll.doc('avisos').get();
     var data = snapshot.data() as Map;
-    _strTermos = data['pt-br'];
+    Termos = data['pt-br'];
   }
 
   Future<void> getDicValueFromFirebase(String key) async {
@@ -126,7 +126,7 @@ class fbPorakiService {
     CollectionReference coll = _fbInstance.collection('akidic');
     DocumentSnapshot snapshot = await coll.doc(key).get();
     var data = snapshot.data() as Map;
-    _strDicValue = data['pt-br'] as String;
+    DicValue = data['pt-br'] as String;
   }
 
   Future<void> getParamValueFromFirebase(String key, String subKey) async {
@@ -135,7 +135,7 @@ class fbPorakiService {
     CollectionReference coll = _fbInstance.collection('akiparams');
     DocumentSnapshot snapshot = await coll.doc(key).get();
     var data = snapshot.data() as Map;
-    _strParamValue = data[subKey] as String;
+    ParamValue = data[subKey] as String;
   }
 
 }

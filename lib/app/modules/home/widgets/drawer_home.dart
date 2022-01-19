@@ -119,7 +119,7 @@ class DrawerHome extends StatelessWidget {
             text: 'Minhas Compras',
             isSelected: index == 2,
             icon: Icons.shopping_bag_outlined,
-            onTap: () {},
+            onTap: () => Get.toNamed(AppRoutes.orders),
           ),
           RowCategoriesDrawerHome(
             text: 'Favoritos',
@@ -151,7 +151,7 @@ class DrawerHome extends StatelessWidget {
             text: 'Vendas',
             isSelected: index == 6,
             icon: Icons.monetization_on_outlined,
-            onTap: () {},
+            onTap: () => Get.toNamed(AppRoutes.orders),
           ),
           RowCategoriesDrawerHome(
             text: 'Entregas',

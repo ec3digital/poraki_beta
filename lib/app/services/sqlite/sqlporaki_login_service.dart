@@ -9,11 +9,13 @@ class sqlPorakiLoginService {
     String dbPath = join(await getDatabasesPath(), 'poraki');
     var db = await openDatabase(dbPath,
     version: 1,
-    onCreate: (db, v){
+    onCreate: (db, v) {
       db.execute(_createTableUsuarios);
       db.execute(_createTableCategories);
       db.execute(_createTableCarrinho);
-
+      db.execute(_createTablePedidos);
+      db.execute(_createTablePedidoItens);
+      db.execute(_createTablePedidoMsgs);
     });
 
     var usu = await buscaUsuDados();
@@ -29,6 +31,16 @@ class sqlPorakiLoginService {
         path,
         version: 1,
     );
+
+    //await db.execute("DROP TABLE Pedidos");
+    //await db.execute(_createTablePedidos);
+
+    //await db.execute("DROP TABLE PedidoItens");
+    //await db.execute(_createTablePedidoItens);
+
+    //await db.execute("DELETE FROM Pedidos");
+    //await db.execute("DELETE FROM PedidoItens");
+
     return db.query('usuarios');
   }
 
@@ -172,43 +184,41 @@ class sqlPorakiLoginService {
   ''';
 
   // somente depois de fechada, enquanto aberta, somente da API
-  final String _createTableVendas = '''
-    CREATE TABLE IF NOT EXISTS vendas (
-    vendaId INT,
+  final String _createTablePedidos = '''
+    CREATE TABLE IF NOT EXISTS Pedidos (
     pedidoGUID TEXT,
-    vendaVendedorGUID TEXT,
-    vendaVendedorEmail TEXT,
-    vendaEm TEXT,
-    vendaValorTotal TEXT,
-    vendaFormaPagto TEXT,
-    vendaCancelada INT,
-    vendaPagtoEm TEXT,
-    vendaPessoaNome TEXT,
-    vendaPessoaEmail TEXT,
-    vendaUsuGUID TEXT,
-    vendaAval INT,
-    vendaAvalEm TEXT,
-    vendaMoeda TEXT
-    vendaCEP TEXT,
-    vendaEndereco TEXT,
-    vendaNumero TEXT,
-    vendaCompl TEXT,
-    vendaAutoriza TEXT,
-    vendaInstituicao TEXT,
-    vendaEntregaPrevista TEXT,
-    vendaEntregaRealizadaEm TEXT,
-    vendaEntregaPorUsuEmail TEXT,
-    vendaEntregaPorUsuNome TEXT
+    pedidoVendedorGUID TEXT,
+    pedidoVendedorEmail TEXT,
+    pedidoEm TEXT,
+    pedidoValorTotal TEXT,
+    pedidoFormaPagto TEXT,
+    pedidoCancelada INT,
+    pedidoPagtoEm TEXT,
+    pedidoPessoaNome TEXT,
+    pedidoPessoaEmail TEXT,
+    pedidoUsuGUID TEXT,
+    pedidoAval INT,
+    pedidoAvalEm TEXT,
+    pedidoMoeda TEXT,
+    pedidoCEP TEXT,
+    pedidoEndereco TEXT,
+    pedidoNumero TEXT,
+    pedidoCompl TEXT,
+    pedidoAutoriza TEXT,
+    pedidoInstituicao TEXT,
+    pedidoEntregaPrevista TEXT,
+    pedidoEntregaRealizadaEm TEXT,
+    pedidoEntregaPorUsuEmail TEXT,
+    pedidoEntregaPorUsuNome TEXT
     );
   ''';
 
   // somente depois de fechada, enquanto aberta, somente da API
-  final String _createTableVendaItens = '''
-    CREATE TABLE IF NOT EXISTS vendaitens (
-    vendaItemId INT,
-    vendaId INT,
+  final String _createTablePedidoItens = '''
+    CREATE TABLE IF NOT EXISTS pedidoitens (
+    pedidoItemGUID INT,
     pedidoGUID TEXT,
-    ofertaId INT,
+    ofertaGUID TEXT,
     ofertaTitulo TEXT,
     ofertaCEP TEXT,
     ofertaVendedorId INT,
@@ -224,7 +234,7 @@ class sqlPorakiLoginService {
 
   // somente depois de encerrado
   final String _createTablePedidoMsgs = '''
-    CREATE TABLE IF NOT EXISTS vendasmsgs (
+    CREATE TABLE IF NOT EXISTS pedidoMsgs (
     pedidoGUID TEXT,
     NomeVendedor TEXT,
     NomeComprador TEXT,
@@ -233,55 +243,55 @@ class sqlPorakiLoginService {
     );
   ''';
 
-  // somente depois de fechada, enquanto aberta, somente da API
-  final String _createTablecompras = '''
-    CREATE TABLE IF NOT EXISTS compras (
-    compraId INT,
-    pedidoGUID TEXT,
-    compraVendedorGUID TEXT,
-    compraVendedorEmail TEXT,
-    compraEm TEXT,
-    compraValorTotal TEXT,
-    compraFormaPagto TEXT,
-    compraCancelada INT,
-    compraPagtoEm TEXT,
-    compraPessoaNome TEXT,
-    compraPessoaEmail TEXT,
-    compraUsuGUID TEXT,
-    compraAval INT,
-    compraAvalEm TEXT,
-    compraMoeda TEXT,
-    compraCEP TEXT,
-    compraEndereco TEXT,
-    compraNumero TEXT,
-    compraCompl TEXT,
-    compraAutoriza TEXT,
-    compraInstituicao TEXT,
-    compraEntregaPrevista TEXT,
-    compraEntregaRealizadaEm TEXT,
-    compraEntregaPorUsuEmail TEXT,
-    compraEntregaPorUsuNome TEXT
-    );
-  ''';
+  // // somente depois de fechada, enquanto aberta, somente da API
+  // final String _createTablecompras = '''
+  //   CREATE TABLE IF NOT EXISTS compras (
+  //   compraId INT,
+  //   pedidoGUID TEXT,
+  //   compraVendedorGUID TEXT,
+  //   compraVendedorEmail TEXT,
+  //   compraEm TEXT,
+  //   compraValorTotal TEXT,
+  //   compraFormaPagto TEXT,
+  //   compraCancelada INT,
+  //   compraPagtoEm TEXT,
+  //   compraPessoaNome TEXT,
+  //   compraPessoaEmail TEXT,
+  //   compraUsuGUID TEXT,
+  //   compraAval INT,
+  //   compraAvalEm TEXT,
+  //   compraMoeda TEXT,
+  //   compraCEP TEXT,
+  //   compraEndereco TEXT,
+  //   compraNumero TEXT,
+  //   compraCompl TEXT,
+  //   compraAutoriza TEXT,
+  //   compraInstituicao TEXT,
+  //   compraEntregaPrevista TEXT,
+  //   compraEntregaRealizadaEm TEXT,
+  //   compraEntregaPorUsuEmail TEXT,
+  //   compraEntregaPorUsuNome TEXT
+  //   );
+  // ''';
 
-  // somente depois de fechada, enquanto aberta, somente da API
-  final String _createTablecompraItens = '''
-    CREATE TABLE IF NOT EXISTS compraitens (
-    compraId INT,
-    pedidoGUID TEXT,
-    ofertaId INT,
-    ofertaTitulo TEXT,
-    ofertaCEP TEXT,
-    ofertaVendedorId INT,
-    ofertaPreco REAL,
-    ofertaQtd INT,
-    ofertaTotal REAL,
-    ofertaImgPath TEXT,
-    categoriaChave TEXT,
-    ofertaCancelada INT,
-    ofertaEntregueEm TEXT
-    );
-  ''';
+  // // somente depois de fechada, enquanto aberta, somente da API
+  // final String _createTablecompraItens = '''
+  //   CREATE TABLE IF NOT EXISTS compraitens (
+  //   compraId INT,
+  //   pedidoGUID TEXT,
+  //   ofertaId INT,
+  //   ofertaTitulo TEXT,
+  //   ofertaCEP TEXT,
+  //   ofertaVendedorId INT,
+  //   ofertaPreco REAL,
+  //   ofertaQtd INT,
+  //   ofertaTotal REAL,
+  //   ofertaImgPath TEXT,
+  //   categoriaChave TEXT,
+  //   ofertaCancelada INT,
+  //   ofertaEntregueEm TEXT
+  //   );
+  // ''';
 
   // cria no momento de acesso ao menu anúncios
   // mofertaDispoDesde poderá ser nullada pra alterar disponibilidade

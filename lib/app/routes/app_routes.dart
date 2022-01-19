@@ -7,6 +7,9 @@ abstract class AppRoutes {
   static const account = '/account';
   static const offer = '/offer';
   static const offers = '/offers';
+  static const order = '/order';
+  static const orders = '/orders';
+  static const orderitems = '/orderitems';
   static const shoppingCart = '/shopping-cart';
   static const checkout = '/checkout';
   static const address = '/address';

@@ -5,6 +5,8 @@ import 'package:poraki/app/modules/addresses/addresses_list_page.dart';
 import 'package:poraki/app/modules/categories/categories_page.dart';
 import 'package:poraki/app/modules/checkout/checkout_page.dart';
 import 'package:poraki/app/modules/offers/offer_page.dart';
+import 'package:poraki/app/modules/orders/order_page.dart';
+import 'package:poraki/app/modules/orders/orders_page.dart';
 import '../modules/auth/login/login_page.dart';
 import '../modules/auth/sign_up/sign_up_page.dart';
 import '../modules/days_offers/days_offers_page.dart';
@@ -72,6 +74,14 @@ class AppPages {
     GetPage(
       name: AppRoutes.checkout,
       page: () => CheckoutPage(),
+    ),
+    GetPage(
+      name: AppRoutes.orders,
+      page: () => OrdersPage(),
+    ),
+    GetPage(
+      name: AppRoutes.order,
+      page: () => OrderPage(pedido: null),
     ),
   ];
 }

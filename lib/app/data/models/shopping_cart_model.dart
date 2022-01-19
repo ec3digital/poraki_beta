@@ -7,8 +7,9 @@ class ShoppingCartModel{
   final double value;
   final String id;
   final int qty;
+  final String categChave;
 
-  ShoppingCartModel(this.name, this.picture, this.value, this.id, this.qty);
+  ShoppingCartModel(this.name, this.picture, this.value, this.id, this.qty, this.categChave);
 
 
 }

@@ -57,7 +57,10 @@ class _BodyCheckOut extends State<BodyCheckOut> {
                       width: double.infinity,
                       margin: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
                       child: ButtonOffer(
-                        onPressed: () {
+                        onPressed: () async {
+
+                          await widget.controller.saveBuy();
+
                           final snackBar = SnackBar(
                               backgroundColor: AppColors.primaryColor,
                               content: Container(

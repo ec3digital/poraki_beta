@@ -55,46 +55,46 @@ class ListAddresses extends StatelessWidget {
             // } else if (futuro.hasError) {
             //   return Center(child: Text(futuro.error.toString()));
           } else {
-        print('qt ends: ' + controller.enderecos.length.toString());
-        return SingleChildScrollView(
-            child: GradientHeaderHome(
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-              SizedBox(height: 20),
-              Center(child: Text("Meus endereços")),
-              SizedBox(height: 20),
-              ButtonOffer(
-                onPressed: () {
-                  Get.toNamed(AppRoutes.address);
-                },
-                colorText: AppColors.yellowComum,
-                text: 'Adicionar novo',
-                colorButton: AppColors.primaryColor,
-              ),
-              Scrollbar(
-                child: ListView.builder(
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  //scrollDirection: Axis.vertical,
-                  // padding: const EdgeInsets.all(16.0),
-                  itemCount: controller.enderecos.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    //if (index.isOdd) return const Divider();
-                    //index = index ~/ 2 + 1;
-                    sqlEndereco endereco = controller.enderecos[index];
-                    return _buildRow(
-                        endereco.enderecoGuid,
-                        endereco.enderecoCEP,
-                        endereco.enderecoLogra,
-                        endereco.enderecoNumero,
-                        endereco.enderecoCompl!,
-                        endereco.enderecoTipo);
-                  },
-                ),
-              )
-            ])));
-      }
-    });
+            print('qt ends: ' + controller.enderecos.length.toString());
+            return SingleChildScrollView(
+                child: GradientHeaderHome(
+                    child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                  SizedBox(height: 20),
+                  Center(child: Text("Meus endereços")),
+                  SizedBox(height: 20),
+                  ButtonOffer(
+                    onPressed: () {
+                      Get.toNamed(AppRoutes.address);
+                    },
+                    colorText: AppColors.yellowComum,
+                    text: 'Adicionar novo',
+                    colorButton: AppColors.primaryColor,
+                  ),
+                  Scrollbar(
+                    child: ListView.builder(
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      //scrollDirection: Axis.vertical,
+                      // padding: const EdgeInsets.all(16.0),
+                      itemCount: controller.enderecos.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        //if (index.isOdd) return const Divider();
+                        //index = index ~/ 2 + 1;
+                        sqlEndereco endereco = controller.enderecos[index];
+                        return _buildRow(
+                            endereco.enderecoGuid,
+                            endereco.enderecoCEP,
+                            endereco.enderecoLogra,
+                            endereco.enderecoNumero,
+                            endereco.enderecoCompl!,
+                            endereco.enderecoTipo);
+                      },
+                    ),
+                  )
+                ])));
+          }
+        });
   }
 }

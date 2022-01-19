@@ -1,7 +1,6 @@
 class sqlPedido {
-  final int pedidoId;
+  //final int pedidoId;
   final String? pedidoGUID;
-  final String pedidoTipo;
   final String? pedidoVendedorGUID;
   final String pedidoVendedorEmail;
   final String pedidoEm;
@@ -26,35 +25,35 @@ class sqlPedido {
   final String? pedidoEntregaPorUsuEmail;
   final String? pedidoEntregaPorUsuNome;
 
-  sqlPedido(this.pedidoId, this.pedidoGUID, this.pedidoTipo, this.pedidoVendedorGUID, this.pedidoVendedorEmail, this.pedidoEm, this.pedidoValorTotal, this.pedidoFormaPagto, this.pedidoCancelada, this.pedidoPagtoEm, this.pedidoPessoaNome, this.pedidoPessoaEmail, this.pedidoUsuGUID, this.pedidoAval, this.pedidoAvalEm, this.pedidoMoeda, this.pedidoCEP, this.pedidoEndereco, this.pedidoNumero, this.pedidoCompl, this.pedidoAutoriza, this.pedidoInstituicao, this.pedidoEntregaPrevista, this.pedidoEntregaRealizadaEm, this.pedidoEntregaPorUsuEmail, this.pedidoEntregaPorUsuNome);
+  sqlPedido(this.pedidoGUID, this.pedidoVendedorGUID, this.pedidoVendedorEmail, this.pedidoEm, this.pedidoValorTotal, this.pedidoFormaPagto, this.pedidoCancelada, this.pedidoPagtoEm, this.pedidoPessoaNome, this.pedidoPessoaEmail, this.pedidoUsuGUID, this.pedidoAval, this.pedidoAvalEm, this.pedidoMoeda, this.pedidoCEP, this.pedidoEndereco, this.pedidoNumero, this.pedidoCompl, this.pedidoAutoriza, this.pedidoInstituicao, this.pedidoEntregaPrevista, this.pedidoEntregaRealizadaEm, this.pedidoEntregaPorUsuEmail, this.pedidoEntregaPorUsuNome);
 
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      "pedidoId": pedidoId,
-      "pedidoGUID": pedidoGUID,
-      "pedidoVendedorGUID": pedidoVendedorGUID,
+  Map<String, String> toMap() {
+    return <String, String>{
+      // "pedidoId": pedidoId,
+      "pedidoGUID": pedidoGUID.toString(),
+      "pedidoVendedorGUID": pedidoVendedorGUID.toString(),
       "pedidoVendedorEmail": pedidoVendedorEmail,
       "pedidoEm": pedidoEm,
       "pedidoValorTotal": pedidoValorTotal,
-      "pedidoFormaPagto": pedidoFormaPagto,
-      "pedidoCancelada": pedidoCancelada,
+      "pedidoFormaPagto": pedidoFormaPagto.toString(),
+      "pedidoCancelada": pedidoCancelada.toString(),
       "pedidoPagtoEm": pedidoPagtoEm,
       "pedidoPessoaNome": pedidoPessoaNome,
       "pedidoPessoaEmail": pedidoPessoaEmail,
-      "pedidoUsuGUID": pedidoUsuGUID,
-      "pedidoAval": pedidoAval,
-      "pedidoAvalEm": pedidoAvalEm,
-      "pedidoMoeda": pedidoMoeda,
+      "pedidoUsuGUID": pedidoUsuGUID.toString(),
+      "pedidoAval": pedidoAval.toString(),
+      "pedidoAvalEm": pedidoAvalEm.toString(),
+      "pedidoMoeda": pedidoMoeda.toString(),
       "pedidoCEP": pedidoCEP,
-      "pedidoEndereco": pedidoEndereco,
-      "pedidoNumero": pedidoNumero,
-      "pedidoCompl": pedidoCompl,
-      "pedidoAutoriza": pedidoAutoriza,
-      "pedidoInstituicao": pedidoInstituicao,
-      "pedidoEntregaPrevista": pedidoEntregaPrevista,
-      "pedidoEntregaRealizadaEm": pedidoEntregaRealizadaEm,
-      "pedidoEntregaPorUsuEmail": pedidoEntregaPorUsuEmail,
-      "pedidoEntregaPorUsuNome": pedidoEntregaPorUsuNome
+      "pedidoEndereco": pedidoEndereco.toString(),
+      "pedidoNumero": pedidoNumero.toString(),
+      "pedidoCompl": pedidoCompl.toString(),
+      "pedidoAutoriza": pedidoAutoriza.toString(),
+      "pedidoInstituicao": pedidoInstituicao.toString(),
+      "pedidoEntregaPrevista": pedidoEntregaPrevista.toString(),
+      "pedidoEntregaRealizadaEm": pedidoEntregaRealizadaEm.toString(),
+      "pedidoEntregaPorUsuEmail": pedidoEntregaPorUsuEmail.toString(),
+      "pedidoEntregaPorUsuNome": pedidoEntregaPorUsuNome.toString()
     };
   }
 

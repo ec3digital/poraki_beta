@@ -1,7 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:poraki/app/data/models/sql/sqlCarrinho.dart';
+import 'package:poraki/app/data/models/sql/sqlPedido.dart';
+import 'package:poraki/app/data/models/sql/sqlPedidoItem.dart';
 import 'package:poraki/app/services/sqlite/sqlporaki_cart_service.dart';
+import 'package:poraki/app/services/sqlite/sqlporaki_pedido_service.dart';
 import '../../data/models/shopping_cart_model.dart';
 import 'widgets/dialog_amount_shopping_cart.dart';
 import 'widgets/dialog_more_unitys_shopping_cart.dart';
@@ -48,6 +51,7 @@ class ShoppingCartController extends GetxController {
         double.parse(element.ofertaPreco),
           element.ofertaId.toString(),
         int.parse(element.ofertaQtd),
+        element.categoriaChave
       ));
     });
 
@@ -98,8 +102,67 @@ class ShoppingCartController extends GetxController {
   Future<void> saveBuy() async {
     ctrlMsg = '';
 
+    var orderService = new sqlPorakiPedidoService();
+
+    await _saveOrder(orderService);
+    await _saveOrderItems(orderService);
 
     ctrlMsg = 'Pedido foi realizado, obrigado!';
+  }
+
+  _saveOrder(sqlPorakiPedidoService orderSvc) async {
+
+    orderSvc.insertOrder(new sqlPedido(
+      null, //pedidoGUID,
+      'c09cd10b-5aa2-43c2-bb42-10031c0d4280', //pedidoVendedorGUID,
+      'danilojazz@gmail.com', // pedidoVendedorEmail,
+      DateTime.now().toString(), //pedidoEm,
+      cartTotal.toString(), //pedidoValorTotal,
+      "Cartão", //pedidoFormaPagto,
+      0, //pedidoCancelada,
+      '', // pedidoPagtoEm,
+      'Danilo Santos', // pedidoPessoaNome,
+      'danilojazz@gmail.com', // pedidoPessoaEmail,
+      'c09cd10b-5aa2-43c2-bb42-10031c0d4280', //pedidoUsuGUID,
+      0, //pedidoAval,
+      null, //pedidoAvalEm,
+      'R\$', //pedidoMoeda,
+      '05735-030', // //pedidoCEP,
+      'Rua Carlos Magalhães', // pedidoEndereco,
+      '100', // pedidoNumero,
+      'ap 55 Bloco 2', //pedidoCompl,
+      null, //pedidoAutoriza,
+      null, //pedidoInstituicao,
+      DateTime.now().toString(), //pedidoEntregaPrevista,
+      null, //pedidoEntregaRealizadaEm,
+      null, //pedidoEntregaPorUsuEmail,
+      null, //pedidoEntregaPorUsuNome
+    )
+    );
+  }
+
+  _saveOrderItems(sqlPorakiPedidoService orderSvc) async{
+    print('_saveOrderItems');
+    listShoppingCart.forEach((element) {
+      orderSvc.insertOrderItem(new sqlPedidoItem(
+          '', // pedidoItemGUID,
+          'c09cd10b-5aa2-43c2-bb42-10031c0d4280', //pedidoGUID,
+          // 0, //ofertaId,
+          'c09cd10b-5aa2-43c2-bb42-10031c0d4280', //ofertaGuid,
+          element.name, // ofertaTitulo,
+          '05735-030', // ofertaCEP,
+          0, //ofertaVendedorId,
+          element.value, // ofertaPreco,
+          element.qty, // ofertaQtd,
+          0, //double.parse(element.value) * double.parse(element.qty), // ofertaTotal,
+          element.picture, // ofertaImgPath,
+          element.categChave, //categoriaChave,
+          0, //ofertaCancelada,
+          '', // ofertaEntregueEm
+      )
+      );
+    });
+
   }
 
 
