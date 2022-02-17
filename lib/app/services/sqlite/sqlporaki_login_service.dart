@@ -306,8 +306,34 @@ class sqlPorakiLoginService {
     mofertaQtd INT,
     mofertaImgPath TEXT,
     mcategoriaChave TEXT,
-    mofertaCancelada INT
+    mofertaCancelada INT,
+    mofertaDispoAte TEXT,
+    mofertaTempoDeEntrega
     );
   ''';
+
+  // tempo de Entrega igual ao Jira
+// caracteristicas separado por ;
+// qtd vendidos
+// marca, cores, tamanhos, peso/porcao, voltagem, material, sabor, ano, unidade, validade
+// unidades de serviço: valor por serviço / hora
+
+// disponibilidade:
+// 24hs
+// marcar dias da semana
+// horario de anuncio - de/ate (no caso de serviços, horario de funcionamento)
+// horario de entrega - de/ate
+
+// forma de fechamento - compra por aplicativo ou contato
+
+// formas de entrega - eu entrego/pelo vendedor, comprador retira, parceiro (mostra nome do parceiro disponivel + valor ou indisponivel)
+// caso seja eu mesmo entrego, adicionar valor fixo da entrega até 1km, entre 1 e 2km, acima de 2km
+// fotos - foto principal + fotos adicionais (+3)
+// mostrar avaliações dos outros clientes S/N
+// valor do orçamento
+// opcao de pagar sinal pra encomenda
+// para aceitar pagamentos ou se for lojinha, tem q passar por avaliacao civil
+
+
 
 }

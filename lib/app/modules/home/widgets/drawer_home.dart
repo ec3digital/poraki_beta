@@ -122,10 +122,10 @@ class DrawerHome extends StatelessWidget {
             onTap: () => Get.toNamed(AppRoutes.orders),
           ),
           RowCategoriesDrawerHome(
-            text: 'Favoritos',
+            text: 'Minhas ofertas',
             isSelected: index == 3,
-            icon: Icons.favorite_border,
-            onTap: () {},
+            icon: Icons.local_offer_rounded,
+              onTap: () => Get.toNamed(AppRoutes.mofferTest),
           ),
           // RowCategoriesDrawerHome(
           //   text: 'Ofertas do dia',
@@ -151,7 +151,7 @@ class DrawerHome extends StatelessWidget {
             text: 'Vendas',
             isSelected: index == 6,
             icon: Icons.monetization_on_outlined,
-            onTap: () => Get.toNamed(AppRoutes.orders),
+             onTap: () => Get.toNamed(AppRoutes.orders),
           ),
           RowCategoriesDrawerHome(
             text: 'Entregas',

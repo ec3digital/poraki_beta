@@ -12,6 +12,8 @@ class LoginController extends GetxController {
   final formKey = GlobalKey<FormState>();
   final LoginRepository loginRepository = LoginRepository();
 
+  //TODO: salvar dados de login em sharedprefs e cep
+  //TODO: salvar cores no sharedprefs em outro controller baseado no firebase
   get obscurePassword => _obscurePassword;
 
   bool _obscurePassword = false;

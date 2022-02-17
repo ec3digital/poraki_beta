@@ -4,16 +4,16 @@ class sqlPedidoItem {
   final String ofertaGuid;
   final String ofertaTitulo;
   final String ofertaCEP;
-  final int ofertaVendedorId;
+  final String ofertaVendedorGuid;
   final double ofertaPreco;
-  final int ofertaQtd;
+  final double ofertaQtd;
   final double ofertaTotal;
   final String? ofertaImgPath;
   final String categoriaChave;
   final int? ofertaCancelada;
   final String? ofertaEntregueEm;
 
-  sqlPedidoItem(this.pedidoItemGUID, this.pedidoGUID, this.ofertaGuid, this.ofertaTitulo, this.ofertaCEP, this.ofertaVendedorId, this.ofertaPreco, this.ofertaQtd, this.ofertaTotal, this.ofertaImgPath, this.categoriaChave, this.ofertaCancelada, this.ofertaEntregueEm);
+  sqlPedidoItem(this.pedidoItemGUID, this.pedidoGUID, this.ofertaGuid, this.ofertaTitulo, this.ofertaCEP, this.ofertaVendedorGuid, this.ofertaPreco, this.ofertaQtd, this.ofertaTotal, this.ofertaImgPath, this.categoriaChave, this.ofertaCancelada, this.ofertaEntregueEm);
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
@@ -22,7 +22,7 @@ class sqlPedidoItem {
       "ofertaGuid": ofertaGuid,
       "ofertaTitulo": ofertaTitulo,
       "ofertaCEP": ofertaCEP,
-      "ofertaVendedorId": ofertaVendedorId,
+      "ofertaVendedorGuid": ofertaVendedorGuid,
       "ofertaPreco": ofertaPreco,
       "ofertaQtd": ofertaQtd,
       "ofertaTotal": ofertaTotal,

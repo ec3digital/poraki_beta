@@ -3,14 +3,16 @@ class CategoryModel {
   String? categoriaChave;
   String? secao;
   int? iconcode;
+  String? categoriaNomeLista;
 
-  CategoryModel({this.categoriaNome, this.categoriaChave, this.secao, this.iconcode});
+  CategoryModel({this.categoriaNome, this.categoriaChave, this.secao, this.iconcode, this.categoriaNomeLista});
 
   CategoryModel.fromJson(Map<String, dynamic> json) {
     categoriaNome = json['CategoriaNome'];
     categoriaChave = json['CategoriaChave'];
     secao = json['Secao'];
     iconcode = json['iconcode'];
+    categoriaNomeLista = json['categoriaNomeLista'];
   }
 
   Map<String, dynamic> toJson() {
@@ -19,6 +21,7 @@ class CategoryModel {
     data['CategoriaChave'] = this.categoriaChave;
     data['Secao'] = this.secao;
     data['iconcode'] = this.iconcode;
+    data['categoriaNomeLista'] = this.categoriaNomeLista;
     return data;
   }
 }

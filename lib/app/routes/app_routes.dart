@@ -20,4 +20,5 @@ abstract class AppRoutes {
   static const categories = '/categories';
   static const signUpGoogle = 'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBf0c_00pHeEbgDtdfFPMYV4AoG1aFYZEY';
   static const loginGoogle = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBf0c_00pHeEbgDtdfFPMYV4AoG1aFYZEY';
+  static const mofferTest = '/moffer-test';
 }

@@ -4,8 +4,9 @@ class sqlCategorias {
   final String secao;
   final int mostraBarra;
   final int iconCode;
+  final String categoriaNomeLista;
 
-  sqlCategorias(this.categoriaChave, this.categoriaNome, this.secao, this.mostraBarra, this.iconCode);
+  sqlCategorias(this.categoriaChave, this.categoriaNome, this.secao, this.mostraBarra, this.iconCode, this.categoriaNomeLista);
 
   Map<String, dynamic> toMap() {
     return <String, dynamic> {
@@ -14,6 +15,7 @@ class sqlCategorias {
       "secao": secao,
       "mostraBarra": mostraBarra,
       "iconCode": iconCode,
+      "categoriaNomeLista": categoriaNomeLista
     };
   }
 }

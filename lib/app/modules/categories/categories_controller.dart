@@ -8,11 +8,18 @@ class CategoriesController extends GetxController {
 
   List<Categorias>? categorias;
 
+  List<String>? listaCategorias = [];
+
   bool isLoading = false;
+
+  late Categorias categSelected;
+
+  //get categ => null;
 
   @override
   void onInit() async {
     await getAllCategories();
+    await getCategoriesNames();
     super.onInit();
   }
 
@@ -27,9 +34,34 @@ class CategoriesController extends GetxController {
     }
   }
 
+  Future<List<String>?> getCategoriesNames() async {
+    try {
+      changeLoading(true);
+      await getAllCategories();
+      listaCategorias?.clear();
+      categorias!.forEach((categ) {listaCategorias!.add(categ.categoriaNome!.trimRight());});
+      listaCategorias?.add('selecione');
+      print(categorias);
+      return listaCategorias;
+    } catch (e) {
+      print('Erro no getAllCategories() controller ${e.toString()}');
+    } finally {
+      changeLoading(false);
+    }
+  }
+
   void changeLoading(bool newValue) {
     isLoading = newValue;
     update();
+  }
+
+  Categorias? selecionaCategoria(String categName) {
+    if (listaCategorias!.isEmpty){
+      return null;
+    }
+    else {
+      return categorias?.where((categ) => categ.categoriaNome == categName).first;
+    }
   }
 
 }
