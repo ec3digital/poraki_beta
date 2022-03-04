@@ -28,9 +28,17 @@ class ListPictureProduct extends StatelessWidget {
                   alignment: Alignment.topCenter,
                   child: Container(
                     height: Get.height * 0.37,
-                    child: Image.network(
-                      controller.listPictures[index],
+
+                    child: FadeInImage.assetNetwork(
+                      placeholder: 'assets/images/pholder.png',
+                      image: controller.listPictures[index],
+                      imageErrorBuilder: (context, url, error) => new Icon(Icons.local_offer_outlined),
                     ),
+
+                    // child: Image.network(
+                    //   controller.listPictures[index],
+                    // ),
+
                   ),
                 ),
               );

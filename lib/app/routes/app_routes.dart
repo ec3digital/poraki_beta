@@ -9,7 +9,7 @@ abstract class AppRoutes {
   static const offers = '/offers';
   static const order = '/order';
   static const orders = '/orders';
-  static const orderitems = '/orderitems';
+  static const orderItems = '/orderitems';
   static const shoppingCart = '/shopping-cart';
   static const checkout = '/checkout';
   static const address = '/address';
@@ -20,5 +20,6 @@ abstract class AppRoutes {
   static const categories = '/categories';
   static const signUpGoogle = 'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBf0c_00pHeEbgDtdfFPMYV4AoG1aFYZEY';
   static const loginGoogle = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBf0c_00pHeEbgDtdfFPMYV4AoG1aFYZEY';
-  static const mofferTest = '/moffer-test';
+  static const mOffer = '/moffer';
+  static const mOffers = '/moffers';
 }

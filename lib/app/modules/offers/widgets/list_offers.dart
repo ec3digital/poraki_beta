@@ -41,12 +41,21 @@ class ListOffers extends StatelessWidget {
                           Container(
                             height: 80,
                             margin: EdgeInsets.only(top: 4),
-                            child: Image.network(
-                              'https://firebasestorage.googleapis.com/v0/b/ec3digrepo.appspot.com/o/ofertas%2F' +
-                                  _product.ofertaID.toString() +
-                                  '.jpg?alt=media',
+
+                            child: FadeInImage.assetNetwork(
+                              placeholder: 'assets/images/pholder.png',
+                              image: 'https://firebasestorage.googleapis.com/v0/b/ec3digrepo.appspot.com/o/ofertas%2F' + _product.ofertaID.toString() + '.jpg?alt=media',
+                              imageErrorBuilder: (context, url, error) => new Icon(Icons.local_offer_outlined),
                               height: 50,
                             ),
+
+                            // child: Image.network(
+                            //   'https://firebasestorage.googleapis.com/v0/b/ec3digrepo.appspot.com/o/ofertas%2F' +
+                            //       _product.ofertaID.toString() +
+                            //       '.jpg?alt=media',
+                            //   height: 50,
+                            // ),
+
                           ),
                           Container(
                             margin: EdgeInsets.only(top: 4),

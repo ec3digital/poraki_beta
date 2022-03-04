@@ -262,12 +262,20 @@ class _BodyCheckOut extends State<BodyCheckOut> {
       child: Row(
         children: <Widget>[
           Container(
-            child: Image.network(
-              widget.controller.listShoppingCart[index]
-                  .picture,
-              height: 30,
-              fit: BoxFit.fitHeight,
+
+            child: FadeInImage.assetNetwork(
+              placeholder: 'assets/images/pholder.png',
+              image: widget.controller.listShoppingCart[index].picture,
+              imageErrorBuilder: (context, url, error) => new Icon(Icons.local_offer_outlined),
+              height: 30, fit: BoxFit.fitHeight,
             ),
+
+            // child: Image.network(
+            //   widget.controller.listShoppingCart[index]
+            //       .picture,
+            //   height: 30,
+            //   fit: BoxFit.fitHeight,
+            // ),
             decoration:
                 BoxDecoration(border: Border.all(color: Colors.grey, width: 1)),
           ),

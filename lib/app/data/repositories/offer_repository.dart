@@ -1,8 +1,11 @@
 import 'package:get/get.dart';
+import 'package:poraki/app/data/models/oferta.dart';
 import '../models/produto_oferta.dart';
 import '../../shared/constants/constants.dart';
 
 class OfferRepository extends GetConnect {
+
+  late List<Oferta> listOffers = [];
 
   Future<List<ProdutoOferta>> getOffersAll() async {
     String url = '${Constants.baseUrl}ofertasdodiaporcep/05735030';
@@ -84,6 +87,21 @@ class OfferRepository extends GetConnect {
     return (response.body['Ofertas'] as List)
         .map((oferta) => ProdutoOferta.fromJson(oferta))
         .toList();
+  }
+
+  Future<List<Oferta>> getOfferBySellerGuid(String SellerGuid) async {
+    String url = "https://poraki.hasura.app/api/rest/moffer/eyCv21RfaURoMn0SUndCg6LPyJP2"; // '${Constants.baseUrl}moffer/' + SellerGuid;
+    var response = await get(url, headers: Constants.headers);
+    //print(response.body.toString());
+    if (response.hasError) throw 'Ocorreu um erro em getOfferBySellerGuid()';
+    listOffers = (response.body['Ofertas'] as List)
+        .map((oferta) => Oferta.fromJson(oferta))
+        .toList();
+    return listOffers;
+  }
+
+  Oferta getOfferByGuid(String offerGuid) {
+    return listOffers.where((oferta) => oferta.OfertaGUID == offerGuid).first;
   }
 
 }

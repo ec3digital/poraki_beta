@@ -42,12 +42,21 @@ class ListProductsDayOffers extends StatelessWidget {
                           Container(
                             height: 100,
                             margin: EdgeInsets.only(top: 4),
-                            child: Image.network(
-                              'https://firebasestorage.googleapis.com/v0/b/ec3digrepo.appspot.com/o/ofertas%2F' +
-                                  _product.ofertaID.toString() +
-                                  '.jpg?alt=media',
+
+                            child: FadeInImage.assetNetwork(
+                              placeholder: 'assets/images/pholder.png',
+                              image: 'https://firebasestorage.googleapis.com/v0/b/ec3digrepo.appspot.com/o/ofertas%2F' + _product.ofertaID.toString() + '.jpg?alt=media',
+                              imageErrorBuilder: (context, url, error) => new Icon(Icons.local_offer_outlined),
                               height: 100,
                             ),
+
+                            // child: Image.network(
+                            //   'https://firebasestorage.googleapis.com/v0/b/ec3digrepo.appspot.com/o/ofertas%2F' +
+                            //       _product.ofertaID.toString() +
+                            //       '.jpg?alt=media',
+                            //   height: 100,
+                            // ),
+
                           ),
                           Container(
                             margin: EdgeInsets.only(top: 4),

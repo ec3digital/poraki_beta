@@ -49,11 +49,21 @@ class CardOffertsDayHome extends StatelessWidget {
                   GestureDetector(
                     onTap: () {},
                     child: Center(
-                      child: Image.network(
-                        imgOffer,
+
+                      child: FadeInImage.assetNetwork(
+                        placeholder: 'assets/images/pholder.png',
+                        image: imgOffer,
+                        imageErrorBuilder: (context, url, error) => new Icon(Icons.local_offer_outlined),
                         height: 300,
-                        //scale: 1.7,
                       ),
+
+                      // child: Image.network(
+                      //   imgOffer,
+                      //   height: 300,
+                      //   //scale: 1.7,
+                      // ),
+
+
                     ),
                   ),
                   Padding(

@@ -124,7 +124,7 @@ class sqlPorakiPedidoService {
           item['ofertaGuid'].toString(),
           item['ofertaTitulo'].toString(),
           item['ofertaCEP'].toString(),
-          int.parse(item['ofertaVendedorId'].toString()),
+          item['ofertaVendedorId'].toString(),
           double.parse(item['ofertaPreco'].toString()),
           double.parse(item['ofertaQtd'].toString()),
           double.parse(item['ofertaTotal'].toString()),

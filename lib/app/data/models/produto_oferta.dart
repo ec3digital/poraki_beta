@@ -2,7 +2,7 @@ class ProdutoOferta {
   String? categoriaChave;
   String? ofertaCEP;
   String? ofertaDetalhe;
-  DateTime? ofertaDispoDesde;
+  String? ofertaDispoDesde;
   int? ofertaID;
   String? ofertaImgPath;
   double? ofertaPreco;
@@ -23,7 +23,7 @@ class ProdutoOferta {
     ofertaCEP = json['OfertaCEP'];
     ofertaDetalhe = json['OfertaDetalhe'];
     ofertaDispoDesde = json['OfertaDispoDesde'];
-    ofertaID = json['OfertaID'];
+    ofertaID = int.parse(json['OfertaID'].toString());
     ofertaImgPath = json['OfertaImgPath'];
     ofertaPreco = double.parse(json['OfertaPreco'].toString());
     ofertaTitulo = json['OfertaTitulo'];
@@ -35,9 +35,9 @@ class ProdutoOferta {
     data['OfertaCEP'] = this.ofertaCEP;
     data['OfertaDetalhe'] = this.ofertaDetalhe;
     data['OfertaDispoDesde'] = this.ofertaDispoDesde;
-    data['OfertaID'] = this.ofertaID;
+    data['OfertaID'] = this.ofertaID.toString();
     data['OfertaImgPath'] = this.ofertaImgPath;
-    data['OfertaPreco'] = this.ofertaPreco;
+    data['OfertaPreco'] = this.ofertaPreco.toString();
     data['OfertaTitulo'] = this.ofertaTitulo;
     return data;
   }

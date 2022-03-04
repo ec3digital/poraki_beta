@@ -108,11 +108,20 @@ class ListOrderItems extends StatelessWidget {
       child: Row(
         children: <Widget>[
           Container(
-            child: Image.network(
-              orderController.listaPedidosItems[index].ofertaImgPath.toString(),
-              height: 30,
-              fit: BoxFit.fitHeight,
+
+            child: FadeInImage.assetNetwork(
+              placeholder: 'assets/images/pholder.png',
+              image: orderController.listaPedidosItems[index].ofertaImgPath.toString(),
+              imageErrorBuilder: (context, url, error) => new Icon(Icons.local_offer_outlined),
+              height: 30, fit: BoxFit.fitHeight,
             ),
+
+            // child: Image.network(
+            //   orderController.listaPedidosItems[index].ofertaImgPath.toString(),
+            //   height: 30,
+            //   fit: BoxFit.fitHeight,
+            // ),
+
             decoration:
                 BoxDecoration(border: Border.all(color: Colors.grey, width: 1)),
           ),

@@ -151,7 +151,7 @@ class ShoppingCartController extends GetxController {
           'c09cd10b-5aa2-43c2-bb42-10031c0d4280', //ofertaGuid,
           element.name, // ofertaTitulo,
           '05735-030', // ofertaCEP,
-          0, //ofertaVendedorId,
+          '0', //ofertaVendedorId,
           element.value, // ofertaPreco,
           element.qty, // ofertaQtd,
           0, //double.parse(element.value) * double.parse(element.qty), // ofertaTotal,

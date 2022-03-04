@@ -1,6 +1,8 @@
 import 'package:extended_masked_text/extended_masked_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:poraki/app/data/models/oferta.dart';
+import 'package:poraki/app/data/repositories/offer_repository.dart';
 import '../../data/models/categorias.dart';
 import '../../data/repositories/categories_repository.dart';
 
@@ -57,5 +59,59 @@ class MofferController extends GetxController {
 
   final MaskedTextController   txtEncomendasAPartir     = MaskedTextController(mask: '00/00/0000');
   final MaskedTextController   txtEntregasAPartir       = MaskedTextController(mask: '00/00/0000');
+
+  late String? mofferGuid;
+  late Oferta? singleOffer;
+  bool isLoading = false;
+  List<Oferta> moffers = [];
+  OfferRepository offerRepository = OfferRepository();
+
+  MofferController();
+
+
+  @override
+  void onClose() {
+    // searchProductController.dispose();
+    super.onClose();
+  }
+
+  Future<void> getMoffers() async {
+    try {
+      changeLoading(true);
+      moffers = await offerRepository.getOfferBySellerGuid('eyCv21RfaURoMn0SUndCg6LPyJP2');
+      // print('getMoffers result - ' + moffers.toString());
+    } catch (e) {
+      changeLoading(false);
+      // print('Erro no getMOffers() controller ${e.toString()}');
+    } finally {
+      changeLoading(false);
+    }
+  }
+
+  // Future<void> getMoffer() async {
+  //   try {
+  //     changeLoading(true);
+  //     moffers = await offerRepository.getOfferBySellerGuid(SellerGuid)
+  //     print('getMoffers result - ' + moffers.toString());
+  //   } catch (e) {
+  //     changeLoading(false);
+  //     print('Erro no getMOffers() controller ${e.toString()}');
+  //   } finally {
+  //     changeLoading(false);
+  //   }
+  // }
+
+  void changeLoading(bool newValue) {
+    isLoading = newValue;
+    update();
+  }
+
+  void getSingleOffer(){
+    singleOffer = offerRepository.getOfferByGuid(this.mofferGuid.toString());
+    //
+    // txtValorTaxaMaisQue2km.text = singleOffer?.ValorEntregaMaisDe2!.toString() as String;
+    // txtValorTaxa1km.text = singleOffer?.ValorEntregaAte1!.toString() as String;
+    // txtEncomendasAPartir.value = singleOffer?.OfertaEncomendasAPartirDe!.toString() as String;
+  }
 
 }

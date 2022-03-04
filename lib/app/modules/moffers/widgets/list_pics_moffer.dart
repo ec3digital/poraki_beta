@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:poraki/app/theme/app_theme.dart';
 
-class ListPicsOffer extends StatelessWidget {
+class ListPicsMoffer extends StatelessWidget {
   List<String> imagesList = [];
 
-  ListPicsOffer({
+  ListPicsMoffer({
     Key? key,
     required this.imagesList,
   }) : super(key: key);
@@ -38,6 +38,7 @@ class ListPicsOffer extends StatelessWidget {
                     // child: Image.network(
                     //   imagesList[index],
                     // ),
+
                   ),
                 ),
               );

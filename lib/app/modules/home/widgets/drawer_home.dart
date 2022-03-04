@@ -125,7 +125,7 @@ class DrawerHome extends StatelessWidget {
             text: 'Minhas ofertas',
             isSelected: index == 3,
             icon: Icons.local_offer_rounded,
-              onTap: () => Get.toNamed(AppRoutes.mofferTest),
+              onTap: () => Get.toNamed(AppRoutes.mOffers),
           ),
           // RowCategoriesDrawerHome(
           //   text: 'Ofertas do dia',
@@ -163,7 +163,11 @@ class DrawerHome extends StatelessWidget {
           RowCategoriesDrawerHome(
             text: 'Sair',
             isSelected: index == 8,
-            onTap: () { Get.offAllNamed(AppRoutes.signIn); },
+            onTap: () {
+              Get.deleteAll(force: true);
+              _runSpecialCmds();
+              Get.offAllNamed(AppRoutes.signIn);
+              },
             icon: Icons.arrow_back,
           )
         ],
@@ -174,6 +178,9 @@ class DrawerHome extends StatelessWidget {
   Future<String?> getUserData() async {
     return PorAkiPrefs().getPrefStr("userEmail");
   }
+}
+void _runSpecialCmds() {
+
 }
 
 class RowCategoriesDrawerHome extends StatelessWidget {

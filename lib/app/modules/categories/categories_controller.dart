@@ -41,7 +41,6 @@ class CategoriesController extends GetxController {
       listaCategorias?.clear();
       categorias!.forEach((categ) {listaCategorias!.add(categ.categoriaNome!.trimRight());});
       listaCategorias?.add('selecione');
-      print(categorias);
       return listaCategorias;
     } catch (e) {
       print('Erro no getAllCategories() controller ${e.toString()}');
@@ -55,12 +54,21 @@ class CategoriesController extends GetxController {
     update();
   }
 
-  Categorias? selecionaCategoria(String categName) {
+  Categorias? selecionaCategoriaPorNome(String categName) {
     if (listaCategorias!.isEmpty){
       return null;
     }
     else {
       return categorias?.where((categ) => categ.categoriaNome == categName).first;
+    }
+  }
+
+  Categorias? selecionaCategoriaPorChave(String categKey) {
+    if (categorias!.isEmpty){
+      return null;
+    }
+    else {
+      return categorias?.where((categ) => categ.categoriaChave!.trimRight() == categKey.trimRight()).first;
     }
   }
 
