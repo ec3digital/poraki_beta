@@ -44,7 +44,8 @@ class _AddressBodyState extends State<AddressBody> {
         widget._controller.txtEnderecoCompl!.text.trimLeft().trimRight(),
         tipoSel,
         0,
-        null);//
+        null,null,null
+    );//
         //DateTime.now().toString());
 
     await widget._controller.adicionaEndereco(end);

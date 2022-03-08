@@ -8,11 +8,11 @@ class AddressController extends GetxController {
   // enderecoGuid;
   // final String  usuEmail;
   // final String  usuGuid;
-  final MaskedTextController    txtCEP            = MaskedTextController(mask: '00000-000');
-  final TextEditingController   txtEnderecoLogra  = TextEditingController();
-  final TextEditingController   txtEnderecoNumero = TextEditingController();
-  final TextEditingController?  txtEnderecoCompl  = TextEditingController();
-  final TextEditingController   txtEnderecoTipo   = TextEditingController();
+  final MaskedTextController txtCEP = MaskedTextController(mask: '00000-000');
+  final TextEditingController txtEnderecoLogra = TextEditingController();
+  final TextEditingController txtEnderecoNumero = TextEditingController();
+  final TextEditingController? txtEnderecoCompl = TextEditingController();
+  final TextEditingController txtEnderecoTipo = TextEditingController();
   // final int     txtEnderecoAtual;
   // final String? txtEnderecoUltData;
   // final String? txtEnderecoDesde;
@@ -40,7 +40,6 @@ class AddressController extends GetxController {
     update();
   }
 
-
   // @override
   // void onInit() async {
   //   await carregaUsuario();
@@ -53,22 +52,23 @@ class AddressController extends GetxController {
     var lista = await sqlPorakiAddressService().buscaEnderecos(false);
     lista.forEach((item) {
       var endereco = new sqlEndereco(
-        item.enderecoGuid.toString(),
-        item.usuEmail.toString(),
-        item.enderecoGuid.toString(),
-        item.enderecoCEP.toString(),
-        item.enderecoLogra.toString(),
-        item.enderecoNumero.toString(),
-        item.enderecoCompl.toString(),
-        item.enderecoTipo.toString(),
-        item.enderecoAtual,
-        item.enderecoUltData.toString(),
-        //item.enderecoDesde.toString(),
-      );
+          item.enderecoGuid.toString(),
+          item.usuEmail.toString(),
+          item.enderecoGuid.toString(),
+          item.enderecoCEP.toString(),
+          item.enderecoLogra.toString(),
+          item.enderecoNumero.toString(),
+          item.enderecoCompl.toString(),
+          item.enderecoTipo.toString(),
+          item.enderecoAtual,
+          item.enderecoUltData.toString(),
+          item.enderecoLat,
+          item.enderecoLong.toString()
+          //item.enderecoDesde.toString(),
+          );
 
       enderecos.add(endereco);
     });
-
   }
 
   Future<sqlEndereco> EnderecoAtual() async {
@@ -78,18 +78,20 @@ class AddressController extends GetxController {
     late sqlEndereco endereco;
     lista.forEach((item) {
       endereco = new sqlEndereco(
-        item.enderecoGuid.toString(),
-        item.usuEmail.toString(),
-        item.enderecoGuid.toString(),
-        item.enderecoCEP.toString(),
-        item.enderecoLogra.toString(),
-        item.enderecoNumero.toString(),
-        item.enderecoCompl.toString(),
-        item.enderecoTipo.toString(),
-        item.enderecoAtual,
-        item.enderecoUltData.toString(),
-        //item.enderecoDesde.toString(),
-      );
+          item.enderecoGuid.toString(),
+          item.usuEmail.toString(),
+          item.enderecoGuid.toString(),
+          item.enderecoCEP.toString(),
+          item.enderecoLogra.toString(),
+          item.enderecoNumero.toString(),
+          item.enderecoCompl.toString(),
+          item.enderecoTipo.toString(),
+          item.enderecoAtual,
+          item.enderecoUltData.toString(),
+          item.enderecoLat,
+          item.enderecoLong.toString()
+          //item.enderecoDesde.toString(),
+          );
     });
 
     return endereco;
@@ -98,21 +100,24 @@ class AddressController extends GetxController {
   Future<void> carregaEnderecoSingle(String enderecoGuid) async {
     print('carregaEnderecoSingle');
 
-    var lista = await sqlPorakiAddressService().buscaEnderecoSingle(enderecoGuid);
+    var lista =
+        await sqlPorakiAddressService().buscaEnderecoSingle(enderecoGuid);
     lista.forEach((item) {
       enderecoSingle = new sqlEndereco(
-        item.enderecoGuid.toString(),
-        item.usuEmail.toString(),
-        item.enderecoGuid.toString(),
-        item.enderecoCEP.toString(),
-        item.enderecoLogra.toString(),
-        item.enderecoNumero.toString(),
-        item.enderecoCompl.toString(),
-        item.enderecoTipo.toString(),
-        item.enderecoAtual,
-        item.enderecoUltData.toString(),
-        //item.enderecoDesde.toString(),
-      );
+          item.enderecoGuid.toString(),
+          item.usuEmail.toString(),
+          item.enderecoGuid.toString(),
+          item.enderecoCEP.toString(),
+          item.enderecoLogra.toString(),
+          item.enderecoNumero.toString(),
+          item.enderecoCompl.toString(),
+          item.enderecoTipo.toString(),
+          item.enderecoAtual,
+          item.enderecoUltData.toString(),
+          item.enderecoLat,
+          item.enderecoLong.toString()
+          //item.enderecoDesde.toString(),
+          );
     });
 
     txtCEP.text = enderecoSingle.enderecoCEP;
@@ -141,5 +146,4 @@ class AddressController extends GetxController {
     await sqlPorakiAddressService().updateEnderecoAtual(enderecoGuid);
     // await carregaUsuario();
   }
-
 }

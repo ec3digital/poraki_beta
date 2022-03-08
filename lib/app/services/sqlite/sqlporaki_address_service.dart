@@ -3,7 +3,6 @@ import 'package:poraki/app/data/models/sql/sqlEndereco.dart';
 import 'package:sqflite/sqflite.dart';
 
 class sqlPorakiAddressService {
-
   Future<List<sqlEndereco>> buscaEnderecos(bool atual) async {
     String path = join(await getDatabasesPath(), 'poraki');
     Database db = await openDatabase(
@@ -28,7 +27,9 @@ class sqlPorakiAddressService {
             item['enderecoCompl'],
             item['enderecoTipo'],
             item['enderecoAtual'],
-            item['enderecoUltData']));
+            item['enderecoUltData'],
+            item['enderecoLat'],
+            item['enderecoLong']));
       });
     } else {
       List<Map<String, dynamic>> list = await db
@@ -45,7 +46,9 @@ class sqlPorakiAddressService {
             item['enderecoCompl'],
             item['enderecoTipo'],
             item['enderecoAtual'],
-            item['enderecoUltData']));
+            item['enderecoUltData'],
+            item['enderecoLat'],
+            item['enderecoLong']));
       });
     }
     return enderecos;

@@ -94,8 +94,10 @@ class _MOfferPage extends State<MOfferPage> {
   var voltagemSel = 'selecione';
   var categoriaSel = 'selecione';
   var labelEntrega = 'Entrega';
+  var labelValidade = 'Validade';
   bool valDispoImediata = true;
   bool valMostraAval = false;
+  bool valMostraReview = false;
   bool valAceiteAuto = false;
   bool valAceitaEncomenda = false;
   bool valSomenteEncomenda = false;
@@ -116,6 +118,7 @@ class _MOfferPage extends State<MOfferPage> {
   bool showPreco = true;
   bool showDispoImediata = false;
   bool showMostraAval = false;
+  bool showMostraReview = false;
   bool showAceiteAuto = false;
   bool showAceitaEncomenda = false;
   bool showSomenteEncomenda = false;
@@ -205,9 +208,9 @@ class _MOfferPage extends State<MOfferPage> {
         0,
         0,
         0,
+        0,
         null,
-        null,
-        null,
+        widget.mofferController.mofferGuid == null ? null : widget.mofferController.mofferGuid.toString(),
         int.parse(widget.mofferController.txtQtdDispo.text),
         int.parse(widget.mofferController.txtQtdMaxPorVenda.text),
         int.parse(widget.mofferController.txtQtdAviso.text),
@@ -215,21 +218,21 @@ class _MOfferPage extends State<MOfferPage> {
         widget.mofferController.txtPesoPorcaoUn.text,
         int.parse(widget.mofferController.txtValidade.text),
         double.parse(widget.mofferController.txtValorMin.text),
-        valMostraAval,
+        valMostraReview,
         valAceiteAuto,
         valAceitaEncomenda,
         valSomenteEncomenda,
         valAceitaProposta,
-        60, //int.parse(widget.mofferController.txtTempoEntrega.text),
+        int.parse(widget.mofferController.txtTempoEntrega.text), //int.parse(widget.mofferController.txtTempoEntrega.text),
         tempoEntregaTipoSel,
         formaFechSel,
         agenteEntregaSel,
-        null,
-        null,
+        '',
+        '',
         widget.mofferController.txtMarca.text,
         widget.mofferController.txtCores.text,
         widget.mofferController.txtTamanhos.text,
-        false,
+        val24hs,
         int.parse(widget.mofferController.txtCepDistancia.text),
         0.00, // double.parse(widget.mofferController.txtValorSinalOrc.text),
         widget.mofferController.txtEncomendasAPartir.text,
@@ -237,55 +240,101 @@ class _MOfferPage extends State<MOfferPage> {
         widget.mofferController.txtCodigoAlt.text,
         double.parse(widget.mofferController.txtValorTaxa1km.text),
         double.parse(widget.mofferController.txtValorTaxa2km.text),
-        double.parse(widget.mofferController.txtValorTaxaMaisQue2km.text));
+        double.parse(widget.mofferController.txtValorTaxaMaisQue2km.text),
+        valQtd,
+        valSinalPercentual ? "P" : "V",
+        valPrecoInicial,
+        valPrecoCombinar,
+        valSeg,
+        valTer,
+        valQua,
+        valQui,
+        valSex,
+        valSab,
+        valDom,
+        widget.mofferController.txtSegDas.text,
+        widget.mofferController.txtSegAs.text,
+        widget.mofferController.txtTerDas.text,
+        widget.mofferController.txtTerAs.text,
+        widget.mofferController.txtQuaDas.text,
+        widget.mofferController.txtQuaAs.text,
+        widget.mofferController.txtQuiDas.text,
+        widget.mofferController.txtQuiAs.text,
+        widget.mofferController.txtSexDas.text,
+        widget.mofferController.txtSexAs.text,
+        widget.mofferController.txtSabDas.text,
+        widget.mofferController.txtSabAs.text,
+        widget.mofferController.txtDomDas.text,
+        widget.mofferController.txtDomAs.text,
+        null);
 
     // Uri url = Uri.https("ec3digrepo-default-rtdb.firebaseio.com", "/words.json");
-    var response = await post(
-      Uri.parse('${Constants.baseUrl}mofferadd'), headers: Constants.headers,
-      body: offerToSend.toJson(),
-      //body: jsonEncode(<String, String>{
-      // "CategoriaChave": "BELEZA",
-      // "Oferta24hs": "true",
-      // "OfertaAceitaAuto": "false",
-      // "OfertaAceitaEncomenda": "false",
-      // "OfertaAceitaProposta": "false",
-      // "OfertaCEP": "05735-030",
-      // "OfertaCodigoAlt": "codigo",
-      // "OfertaCores": "VERDE/AZUL/ROSA",
-      // "OfertaDetalhe": "PRODUTO DE BELEZA CHEIROSO",
-      // "OfertaDiasValidade": "90",
-      // "OfertaDispoTipo": "1",
-      // "OfertaDistanciaKm": "3",
-      // "OfertaFormaFechamento": "",
-      // "OfertaMarcaRevenda": "BOTICARDIO",
-      // "OfertaMostraAval": "true",
-      // "OfertaPeso": "100",
-      // "OfertaPesoUnidade": "ml",
-      // //"OfertaPrazoEntregaMinutos": "90",
-      // "OfertaPreco": "50.0",
-      // "OfertaPrecoMin": "42.0",
-      // "OfertaQtdAviso": "3",
-      // "OfertaQtdDispo": "7",
-      // "OfertaQtdMaxVenda": "2",
-      // "OfertaSomenteEncomenda": "false",
-      // "OfertaTamanhos": "P/M/G",
-      // "OfertaTempoEntrega": "90",
-      // "OfertaTempoEntregaUnidade": "min",
-      // "OfertaTitulo": "PERFUME PIRATA",
-      // "ValorEntregaAte1": "3.0",
-      // "ValorEntregaAte2": "5.0",
-      // "ValorEntregaMaisDe2": "7.0"
-      //})
-    );
 
-    print(response.body);
+    if(widget.mofferController.mofferGuid == null)
+      {
+        var response = await post(
+          Uri.parse('${Constants.baseUrl}mofferadd'), headers: Constants.headers,
+          body: offerToSend.toJsonPost(),
+          //body: jsonEncode(<String, String>{
+          // "CategoriaChave": "BELEZA",
+          // "Oferta24hs": "true",
+          // "OfertaAceitaAuto": "false",
+          // "OfertaAceitaEncomenda": "false",
+          // "OfertaAceitaProposta": "false",
+          // "OfertaCEP": "05735-030",
+          // "OfertaCodigoAlt": "codigo",
+          // "OfertaCores": "VERDE/AZUL/ROSA",
+          // "OfertaDetalhe": "PRODUTO DE BELEZA CHEIROSO",
+          // "OfertaDiasValidade": "90",
+          // "OfertaDispoTipo": "1",
+          // "OfertaDistanciaKm": "3",
+          // "OfertaFormaFechamento": "",
+          // "OfertaMarcaRevenda": "BOTICARDIO",
+          // "OfertaMostraAval": "true",
+          // "OfertaPeso": "100",
+          // "OfertaPesoUnidade": "ml",
+          // //"OfertaPrazoEntregaMinutos": "90",
+          // "OfertaPreco": "50.0",
+          // "OfertaPrecoMin": "42.0",
+          // "OfertaQtdAviso": "3",
+          // "OfertaQtdDispo": "7",
+          // "OfertaQtdMaxVenda": "2",
+          // "OfertaSomenteEncomenda": "false",
+          // "OfertaTamanhos": "P/M/G",
+          // "OfertaTempoEntrega": "90",
+          // "OfertaTempoEntregaUnidade": "min",
+          // "OfertaTitulo": "PERFUME PIRATA",
+          // "ValorEntregaAte1": "3.0",
+          // "ValorEntregaAte2": "5.0",
+          // "ValorEntregaMaisDe2": "7.0"
+          //})
+        );
 
-    //{"insert_Ofertas_one":{"OfertaGUID":"a9feeceb-9858-40a3-8ba0-4d9b2c8c54d1"}}
-    var jsonResp = jsonDecode(response.body);
-    var strGuid = jsonResp['insert_Ofertas_one']['OfertaGUID'];
+        print(response.body);
 
-    widget.offerGuid = strGuid;
-    print('guid: ' + strGuid);
+        //{"insert_Ofertas_one":{"OfertaGUID":"a9feeceb-9858-40a3-8ba0-4d9b2c8c54d1"}}
+        var jsonResp = jsonDecode(response.body);
+        var strGuid = jsonResp['insert_Ofertas_one']['OfertaGUID'];
+
+        widget.offerGuid = strGuid;
+        print('guid: ' + strGuid);
+      }
+    else
+      {
+        print(offerToSend.toJsonPut());
+        var response = await put(
+          Uri.parse('${Constants.baseUrl}mofferupd'), headers: Constants.headers,
+          body: offerToSend.toJsonPut(),
+        );
+
+        print(response.body);
+
+        var jsonResp = jsonDecode(response.body);
+        var strGuid = jsonResp['update_Ofertas']['returning'][0]['OfertaGUID'];
+
+        print('guid: ' + strGuid);
+      }
+
 
     // if (isEditing) {
     //
@@ -356,6 +405,7 @@ class _MOfferPage extends State<MOfferPage> {
       showAceitaEncomenda = false;
       showAceiteAuto = false;
       showMostraAval = false;
+      showMostraReview = false;
       showDispoImediata = false;
       // showListaFormaEntrega = false;
       // showListaFormaEntrega2 = false;
@@ -377,12 +427,14 @@ class _MOfferPage extends State<MOfferPage> {
         widget.categSelecionada.secao == 'SEC-SERV-CARRO' ||
         widget.categSelecionada.secao == 'SEC-SERV-PET') {
       labelEntrega = 'Atendimento';
+      labelValidade = 'Garantia';
       showCamposBasicos = true;
       showPreco = true;
       showTxtQtdDispo = false;
       showTxtValorMin = false;
       showTxtMarca = false;
       showTxtCep = true;
+      valQtd = false;
       // showTxtQtdMaxPorVenda = false;
       // showTxtQtdAviso = false;
       show24hs = true;
@@ -391,6 +443,7 @@ class _MOfferPage extends State<MOfferPage> {
       showAceitaEncomenda = false;
       showAceiteAuto = false;
       showMostraAval = true;
+      showMostraReview = true;
       showDispoImediata = true;
       showCamposEntrega = false;
       // showListaFormaEntrega = false;
@@ -402,7 +455,7 @@ class _MOfferPage extends State<MOfferPage> {
       showTxtTamanhos = false;
       showTxtPesoPorcao = false;
       showTxtPesoPorcaoUn = false;
-      showTxtValidade = false;
+      showTxtValidade = true;
       showTxtValorSinalOrc = true;
       // showTxtEntregaTaxas = false;
       showTxtCodigoAlt = false;
@@ -410,6 +463,7 @@ class _MOfferPage extends State<MOfferPage> {
     if (widget.categSelecionada.secao == 'SEC-PROD-DESAPEGO') {
       labelEntrega = 'Entrega';
       showCamposBasicos = true;
+      showCamposEntrega = true;
       showPreco = true;
       showTxtQtdDispo = true;
       showTxtValorMin = false;
@@ -423,8 +477,8 @@ class _MOfferPage extends State<MOfferPage> {
       showAceitaEncomenda = false;
       showAceiteAuto = true;
       showMostraAval = false;
+      showMostraReview = false;
       showDispoImediata = true;
-      showCamposEntrega = false;
       // showListaFormaEntrega = false;
       // showListaFormaEntrega2 = false;
       // showListaParceiros = true;
@@ -455,6 +509,7 @@ class _MOfferPage extends State<MOfferPage> {
       showAceitaEncomenda = false;
       showAceiteAuto = true;
       showMostraAval = false;
+      showMostraReview = false;
       showDispoImediata = true;
       showCamposEntrega = false;
       // showListaFormaEntrega = false;
@@ -487,6 +542,7 @@ class _MOfferPage extends State<MOfferPage> {
       showAceitaEncomenda = true;
       showAceiteAuto = true;
       showMostraAval = true;
+      showMostraReview = true;
       showDispoImediata = true;
       showCamposEntrega = true;
       // showListaFormaEntrega = true;
@@ -505,6 +561,7 @@ class _MOfferPage extends State<MOfferPage> {
     }
     if (widget.categSelecionada.secao == 'SEC-PROD-COMIDA') {
       labelEntrega = 'Entrega';
+      labelValidade = 'Validade';
       showCamposBasicos = true;
       showPreco = true;
       showTxtQtdDispo = true;
@@ -519,6 +576,7 @@ class _MOfferPage extends State<MOfferPage> {
       showAceitaEncomenda = true;
       showAceiteAuto = true;
       showMostraAval = true;
+      showMostraReview = true;
       showDispoImediata = true;
       showCamposEntrega = true;
       // showListaFormaEntrega = true;
@@ -537,6 +595,7 @@ class _MOfferPage extends State<MOfferPage> {
     }
     if (widget.categSelecionada.secao == 'SEC-PROD-OBJETO') {
       labelEntrega = 'Entrega';
+      labelValidade = 'Validade';
       showCamposBasicos = true;
       showPreco = true;
       showTxtQtdDispo = true;
@@ -551,6 +610,7 @@ class _MOfferPage extends State<MOfferPage> {
       showAceitaEncomenda = true;
       showAceiteAuto = true;
       showMostraAval = true;
+      showMostraReview = true;
       showDispoImediata = true;
       showCamposEntrega = true;
       // showListaFormaEntrega = true;
@@ -583,6 +643,7 @@ class _MOfferPage extends State<MOfferPage> {
       showAceitaEncomenda = true;
       showAceiteAuto = true;
       showMostraAval = true;
+      showMostraReview = true;
       showDispoImediata = true;
       showCamposEntrega = true;
       // showListaFormaEntrega = true;
@@ -613,6 +674,9 @@ class _MOfferPage extends State<MOfferPage> {
               oferta.OfertaGUID.toString() +
               '.jpg?alt=media';
 
+      print('guidOffer: ' + oferta.OfertaGUID.toString());
+      widget.mofferController.mofferGuid = oferta.OfertaGUID.toString();
+      print('widget guidOffer: ' + widget.mofferController.mofferGuid.toString());
       widget.mofferController.txtTitulo.text = oferta.OfertaTitulo.toString();
 
       if (widget.categoriesController.listaCategorias == null)
@@ -625,7 +689,10 @@ class _MOfferPage extends State<MOfferPage> {
 
       widget.mofferController.txtEncomendasAPartir.text =
           oferta.OfertaEncomendasAPartirDe.toString();
-      //widget.mofferController.txtValorTaxa1km.text = oferta.ValorEntregaAte1.toString();
+      widget.mofferController.txtValorTaxa1km.text =
+      oferta.ValorEntregaAte1 == null
+          ? '0'
+          : oferta.ValorEntregaAte1.toString();
       widget.mofferController.txtValorTaxaMaisQue2km.text =
           oferta.ValorEntregaMaisDe2 == null
               ? '0'
@@ -685,6 +752,9 @@ class _MOfferPage extends State<MOfferPage> {
           : oferta.OfertaQtdAviso.toString();
       widget.mofferController.txtPreco.text =
           oferta.OfertaPreco == null ? '0.00' : oferta.OfertaPreco.toString();
+      widget.mofferController.txtTempoEntrega.text = oferta.OfertaTempoEntrega == null
+          ? '0'
+          : oferta.OfertaTempoEntrega.toString();
 
       widget.offerGuid = widget.mofferController.mofferGuid!;
 
@@ -810,49 +880,53 @@ class _MOfferPage extends State<MOfferPage> {
                             SizedBox(height: 20),
 
                             if (showCamposBasicos)
-                              Column(children: <Widget>[TextFormField(
-                                controller: widget.mofferController.txtTitulo,
-                                decoration:
-                                InputDecoration(labelText: 'Titulo'),
-                                // textInputAction: TextInputAction.next,
-                                // onFieldSubmitted: (_) {
-                                //   FocusScope.of(context)
-                                //       .requestFocus(_priceFocusNode);
-                                // },
-                                validator: (value) {
-                                  bool isValid =
-                                      value.toString().trimRight().length < 3;
-                                  if (isValid)
-                                    return 'Informe um titulo valido';
-                                  return null;
-                                },
+                              Column(
+                                children: <Widget>[
+                                  TextFormField(
+                                    controller:
+                                        widget.mofferController.txtTitulo,
+                                    decoration:
+                                        InputDecoration(labelText: 'Titulo'),
+                                    // textInputAction: TextInputAction.next,
+                                    // onFieldSubmitted: (_) {
+                                    //   FocusScope.of(context)
+                                    //       .requestFocus(_priceFocusNode);
+                                    // },
+                                    validator: (value) {
+                                      bool isValid =
+                                          value.toString().trimRight().length <
+                                              3;
+                                      if (isValid)
+                                        return 'Informe um titulo valido';
+                                      return null;
+                                    },
+                                  ),
+                                  TextFormField(
+                                    controller:
+                                        widget.mofferController.txtDescricao,
+                                    decoration:
+                                        InputDecoration(labelText: 'Descrição'),
+                                    maxLines: 3,
+                                    keyboardType: TextInputType.multiline,
+                                  ),
+                                  Row(
+                                    children: <Widget>[
+                                      Checkbox(
+                                        value: this.valPrecoCombinar,
+                                        onChanged: (val) {
+                                          setState(() {
+                                            this.valPrecoCombinar = val!;
+                                          });
+                                        },
+                                        activeColor: Colors.blue,
+                                      ),
+                                      SizedBox(width: 20),
+                                      Text('Preco à combinar'),
+                                      SizedBox(height: 20)
+                                    ],
+                                  ),
+                                ],
                               ),
-                                TextFormField(
-                                  controller: widget.mofferController.txtDescricao,
-                                  decoration:
-                                  InputDecoration(labelText: 'Descrição'),
-                                  maxLines: 3,
-                                  keyboardType: TextInputType.multiline,
-                                ),
-                                Row(
-                                  children: <Widget>[
-                                    Checkbox(
-                                      value: this.valPrecoCombinar,
-                                      onChanged: (val) {
-                                        setState(() {
-                                          this.valPrecoCombinar = val!;
-                                        });
-                                      },
-                                      activeColor: Colors.blue,
-                                    ),
-                                    SizedBox(width: 20),
-                                    Text('Preco à combinar'),
-                                    SizedBox(height: 20)
-                                  ],
-                                ),
-                              ],),
-
-
 
                             if (showPreco && !valPrecoCombinar)
                               Column(
@@ -896,30 +970,35 @@ class _MOfferPage extends State<MOfferPage> {
                                     //   }
                                     // },
                                   ),
-                                  SizedBox(width: 20),
-                                  Row(
-                                    children: <Widget>[
-                                      Switch(
-                                          value: valSinalPercentual,
-                                          onChanged: (bool val) {
-                                            setState(() {
-                                              valSinalPercentual = val;
-                                            });
-                                          }),
+
+                                  if (showTxtValorSinalOrc)
+                                    Column(children: <Widget>[
                                       SizedBox(width: 20),
-                                      Text(valSinalPercentual
-                                          ? 'Sinal em Percentual'
-                                          : 'Sinal em valor cheio'),
-                                      SizedBox(height: 20)
-                                    ],
-                                  ),
-                                  TextFormField(
-                                      controller: widget
-                                          .mofferController.txtValorSinalOrc,
-                                      decoration: InputDecoration(
-                                          labelText: 'Valor Sinal/Orçamento'),
-                                      keyboardType: TextInputType.number),
-                                  SizedBox(width: 20),
+                                      Row(
+                                        children: <Widget>[
+                                          Switch(
+                                              value: valSinalPercentual,
+                                              onChanged: (bool val) {
+                                                setState(() {
+                                                  valSinalPercentual = val;
+                                                });
+                                              }),
+                                          SizedBox(width: 20),
+                                          Text(valSinalPercentual
+                                              ? 'Sinal em Percentual'
+                                              : 'Sinal em valor cheio'),
+                                          SizedBox(height: 20)
+                                        ],
+                                      ),
+                                      TextFormField(
+                                          controller: widget.mofferController
+                                              .txtValorSinalOrc,
+                                          decoration: InputDecoration(
+                                              labelText:
+                                                  'Valor Sinal/Orçamento'),
+                                          keyboardType: TextInputType.number),
+                                      SizedBox(width: 20),
+                                    ]),
 
                                   if (showAceitaProposta)
                                     Row(
@@ -951,49 +1030,51 @@ class _MOfferPage extends State<MOfferPage> {
                                 ],
                               ),
 
-                            if(showCamposBasicos)
-                              Column(children: <Widget>[
-                                Row(
-                                  children: <Widget>[
-                                    Switch(
-                                        value: valQtd,
-                                        onChanged: (bool val) {
-                                          setState(() {
-                                            valQtd = val;
-                                          });
-                                        }),
-                                    SizedBox(width: 20),
-                                    Text(valQtd
-                                        ? 'Controla quantidade'
-                                        : 'Sem controle de quantidade'),
-                                    SizedBox(height: 20)
-                                  ],
-                                ),
-
-                                if (valQtd)
-                                  TextFormField(
-                                    controller: widget.mofferController.txtQtdDispo,
-                                    decoration: InputDecoration(
-                                        labelText: 'Qtd disponível'),
-                                    keyboardType: TextInputType.number,
+                            if (showCamposBasicos)
+                              Column(
+                                children: <Widget>[
+                                  Row(
+                                    children: <Widget>[
+                                      Switch(
+                                          value: valQtd,
+                                          onChanged: (bool val) {
+                                            setState(() {
+                                              valQtd = val;
+                                            });
+                                          }),
+                                      SizedBox(width: 20),
+                                      Text(valQtd
+                                          ? 'Controla quantidade'
+                                          : 'Sem controle de quantidade'),
+                                      SizedBox(height: 20)
+                                    ],
                                   ),
-                                if (valQtd)
-                                  TextFormField(
-                                    controller:
-                                    widget.mofferController.txtQtdMaxPorVenda,
-                                    decoration: InputDecoration(
-                                        labelText: 'Qtd máxima por venda'),
-                                    keyboardType: TextInputType.number,
-                                  ),
-                                if (valQtd)
-                                  TextFormField(
-                                    controller: widget.mofferController.txtQtdAviso,
-                                    decoration: InputDecoration(
-                                        labelText: 'Qtd aviso acabando'),
-                                    keyboardType: TextInputType.number,
-                                  ),
-                              ],),
-
+                                  if (valQtd)
+                                    TextFormField(
+                                      controller:
+                                          widget.mofferController.txtQtdDispo,
+                                      decoration: InputDecoration(
+                                          labelText: 'Qtd disponível'),
+                                      keyboardType: TextInputType.number,
+                                    ),
+                                  if (valQtd)
+                                    TextFormField(
+                                      controller: widget
+                                          .mofferController.txtQtdMaxPorVenda,
+                                      decoration: InputDecoration(
+                                          labelText: 'Qtd máxima por venda'),
+                                      keyboardType: TextInputType.number,
+                                    ),
+                                  if (valQtd)
+                                    TextFormField(
+                                      controller:
+                                          widget.mofferController.txtQtdAviso,
+                                      decoration: InputDecoration(
+                                          labelText: 'Qtd aviso acabando'),
+                                      keyboardType: TextInputType.number,
+                                    ),
+                                ],
+                              ),
 
                             if (showTxtPesoPorcao)
                               TextFormField(
@@ -1020,7 +1101,7 @@ class _MOfferPage extends State<MOfferPage> {
                                       widget.mofferController.txtValidade,
                                   decoration: InputDecoration(
                                       labelText:
-                                          'Validade (ex: 5 dias após fabricação)'),
+                                          '$labelValidade (ex: 5 dias)'),
                                   keyboardType: TextInputType.number),
 
                             if (showTxtCep)
@@ -1036,7 +1117,7 @@ class _MOfferPage extends State<MOfferPage> {
                                 controller:
                                     widget.mofferController.txtCepDistancia,
                                 decoration: InputDecoration(
-                                    labelText: 'Distância de entrega em Km'),
+                                    labelText: 'Distância de $labelEntrega em Km'),
                                 keyboardType: TextInputType.number,
                               ),
 
@@ -1067,7 +1148,7 @@ class _MOfferPage extends State<MOfferPage> {
                                   decoration: InputDecoration(
                                       labelText: 'Tamanhos (separados por /)'),
                                   controller:
-                                  widget.mofferController.txtTamanhos,
+                                      widget.mofferController.txtTamanhos,
                                   keyboardType: TextInputType.multiline),
                             SizedBox(height: 20),
                             // Text('Nome 1º campo personalizado'),
@@ -1080,12 +1161,14 @@ class _MOfferPage extends State<MOfferPage> {
                             //   //decoration: InputDecoration(labelText: 'Tempo de entrega após aceite'),
                             //     keyboardType: TextInputType.number),
                             // SizedBox(height: 20),
-                            if(showCamposBasicos)
-                              Column(children: <Widget>[Text('Informações adicionais'),
+                            if (showCamposBasicos)
+                              Column(children: <Widget>[
+                                Text('Informações adicionais'),
                                 TextFormField(
-                                    controller: widget.mofferController.txtDetalhes,
-                                    keyboardType: TextInputType.multiline),]),
-
+                                    controller:
+                                        widget.mofferController.txtDetalhes,
+                                    keyboardType: TextInputType.multiline),
+                              ]),
 
                             if (showDispoImediata)
                               Row(
@@ -1251,14 +1334,14 @@ class _MOfferPage extends State<MOfferPage> {
                                 ),
                               ]),
 
-                            if (showMostraAval)
+                            if (showMostraReview)
                               Row(
                                 children: <Widget>[
                                   Switch(
-                                      value: valMostraAval,
+                                      value: valMostraReview,
                                       onChanged: (bool val) {
                                         setState(() {
-                                          valMostraAval = val;
+                                          valMostraReview = val;
                                         });
                                       }),
                                   SizedBox(width: 20),
@@ -1286,8 +1369,6 @@ class _MOfferPage extends State<MOfferPage> {
                                 ],
                               ),
 
-
-
                             if (showAceitaEncomenda)
                               Row(
                                 children: <Widget>[
@@ -1296,7 +1377,8 @@ class _MOfferPage extends State<MOfferPage> {
                                       onChanged: (bool val) {
                                         setState(() {
                                           valAceitaEncomenda = val;
-                                          print('valAceitaEncomenda: ' + valAceitaEncomenda.toString());
+                                          print('valAceitaEncomenda: ' +
+                                              valAceitaEncomenda.toString());
                                         });
                                       }),
                                   SizedBox(width: 20),
@@ -1307,8 +1389,8 @@ class _MOfferPage extends State<MOfferPage> {
                               Column(children: <Widget>[
                                 SizedBox(width: 20),
                                 TextFormField(
-                                  controller:
-                                  widget.mofferController.txtEncomendasAPartir,
+                                  controller: widget
+                                      .mofferController.txtEncomendasAPartir,
                                   decoration: InputDecoration(
                                       labelText: 'Encomendas a partir de:'),
                                   keyboardType: TextInputType.number,
@@ -1323,11 +1405,7 @@ class _MOfferPage extends State<MOfferPage> {
                                 //     }),
                                 // Text('Somente encomenda'),
                                 // SizedBox(height: 20),
-
-                              ]
-                              ),
-
-
+                              ]),
 
                             if (show24hs)
                               Row(
@@ -1345,24 +1423,28 @@ class _MOfferPage extends State<MOfferPage> {
                                 ],
                               ),
 
-                            if(showCamposBasicos)
-                              Column(children: <Widget>[SizedBox(height: 20),
-                                Text('Forma de Fechamento'),
-                                DropdownButton<String>(
-                                  items: listaFormaFechamento.map((String value) {
-                                    return DropdownMenuItem<String>(
-                                      value: value,
-                                      child: Text(value),
-                                    );
-                                  }).toList(),
-                                  value: formaFechSel,
-                                  onChanged: (String? newValue) {
-                                    setState(() {
-                                      formaFechSel = newValue!;
-                                    });
-                                  },
-                                ),],),
-
+                            if (showCamposBasicos)
+                              Column(
+                                children: <Widget>[
+                                  SizedBox(height: 20),
+                                  Text('Forma de Fechamento'),
+                                  DropdownButton<String>(
+                                    items: listaFormaFechamento
+                                        .map((String value) {
+                                      return DropdownMenuItem<String>(
+                                        value: value,
+                                        child: Text(value),
+                                      );
+                                    }).toList(),
+                                    value: formaFechSel,
+                                    onChanged: (String? newValue) {
+                                      setState(() {
+                                        formaFechSel = newValue!;
+                                      });
+                                    },
+                                  ),
+                                ],
+                              ),
 
                             SizedBox(height: 20),
                             // Row(
@@ -1374,144 +1456,153 @@ class _MOfferPage extends State<MOfferPage> {
                             // ),
 
                             if (showCamposEntrega)
-                              Column(children: <Widget>[
-                                Text(
-                                  "Disponibilidade de " + labelEntrega,
-                                  textAlign: TextAlign.center,
-                                ),
-                                SizedBox(height: 20),
-                                Text('Agente'),
-                                DropdownButton<String>(
-                                  items: listaFormaEntrega.map((String value) {
-                                    return DropdownMenuItem<String>(
-                                      value: value,
-                                      child: Text(value),
-                                    );
-                                  }).toList(),
-                                  value: agenteEntregaSel,
-                                  onChanged: (String? newValue) {
-                                    setState(() {
-                                      agenteEntregaSel = newValue!;
-                                    });
-                                  },
-                                ),
-                                SizedBox(height: 20),
-                                TextFormField(
-                                  controller:
-                                  widget.mofferController.txtEntregasAPartir,
-                                  decoration: InputDecoration(
-                                      labelText:
-                                      labelEntrega + ' a partir de:'),
-                                  keyboardType: TextInputType.number,
-                                ),
-                                Text("Horário de " + labelEntrega),
-                                TextFormField(
-                                  controller: widget.mofferController.txtEntregaDas,
-                                  decoration: InputDecoration(labelText: 'Das'),
-                                  keyboardType: TextInputType.number,
-                                ),
-                                TextFormField(
-                                  controller: widget.mofferController.txtEntregaAs,
-                                  decoration: InputDecoration(labelText: 'às'),
-                                  keyboardType: TextInputType.number,
-                                ),
-
-                                if(labelEntrega == 'Entrega')
-                                  Column(
-                                    children: <Widget>[
-                                      SizedBox(height: 20),
-                                      Text(
-                                        "Taxas de Entrega",
-                                        textAlign: TextAlign.left,
-                                      ),
-                                      TextFormField(
-                                        controller:
-                                        widget.mofferController.txtValorTaxa1km,
-                                        decoration:
-                                        InputDecoration(labelText: 'Até 1km'),
-                                        textInputAction: TextInputAction.next,
-                                        //focusNode: _priceFocusNode,
-                                        keyboardType: TextInputType.numberWithOptions(
-                                            decimal: true),
-                                      ),
-                                      TextFormField(
-                                        controller:
-                                        widget.mofferController.txtValorTaxa2km,
-                                        decoration: InputDecoration(
-                                            labelText: 'Entre 1km e 2km'),
-                                        textInputAction: TextInputAction.next,
-                                        //focusNode: _priceFocusNode,
-                                        keyboardType: TextInputType.numberWithOptions(
-                                            decimal: true),
-                                      ),
-                                      TextFormField(
-                                        controller: widget
-                                            .mofferController.txtValorTaxaMaisQue2km,
-                                        decoration: InputDecoration(
-                                            labelText: 'Acima de 2km'),
-                                        textInputAction: TextInputAction.next,
-                                        //focusNode: _priceFocusNode,
-                                        keyboardType: TextInputType.numberWithOptions(
-                                            decimal: true),
-                                      ),
-                                      SizedBox(height: 20),
-                                      Text('Tempo de Entrega após aceite'),
-                                      TextFormField(
-                                        //decoration: InputDecoration(labelText: 'Tempo de entrega após aceite'),
-                                          keyboardType: TextInputType.number),
-                                      DropdownButton<String>(
-                                        items:
-                                        listaTempoEntregaTipo.map((String value) {
-                                          return DropdownMenuItem<String>(
-                                            value: value,
-                                            child: Text(value),
-                                          );
-                                        }).toList(),
-                                        value: tempoEntregaTipoSel,
-                                        onChanged: (String? newValue) {
-                                          setState(() {
-                                            tempoEntregaTipoSel = newValue!;
-                                          });
-                                        },
-                                      ),
-                                      SizedBox(height: 20),
-                                      ElevatedButton(
-                                          onPressed: () => pegarImagemGaleria(),
-                                          child: Row(
-                                            children: [
-                                              Icon(Icons.photo_album),
-                                              const SizedBox(
-                                                width: 16,
-                                              ),
-                                              Text('Adicionar Foto')
-                                            ],
-                                          )),
-                                      SizedBox(height: 20),
-                                      if (widget.imgcloud != '')
-                                        FadeInImage.assetNetwork(
-                                          placeholder: 'assets/images/pholder.png',
-                                          image: widget.imgcloud,
-                                          imageErrorBuilder: (context, url, error) =>
-                                          new Icon(Icons.local_offer_outlined),
-                                          height: 250,
-                                        ),
-                                      if (image != null)
-                                        Image.file(
-                                          image!,
-                                          fit: BoxFit.contain,
-                                        ),
-
-                                      SizedBox(height: 20),
-                                      ButtonOffer(
-                                          text: 'Salvar',
-                                          colorText: AppColors.grayBlueButton,
-                                          onPressed: () => uploadFoto(image!)),
-                                    ],
+                              Column(
+                                children: <Widget>[
+                                  Text(
+                                    "Disponibilidade de " + labelEntrega,
+                                    textAlign: TextAlign.center,
                                   ),
+                                  SizedBox(height: 20),
+                                  Text('Agente'),
+                                  DropdownButton<String>(
+                                    items:
+                                        listaFormaEntrega.map((String value) {
+                                      return DropdownMenuItem<String>(
+                                        value: value,
+                                        child: Text(value),
+                                      );
+                                    }).toList(),
+                                    value: agenteEntregaSel,
+                                    onChanged: (String? newValue) {
+                                      setState(() {
+                                        agenteEntregaSel = newValue!;
+                                      });
+                                    },
+                                  ),
+                                  SizedBox(height: 20),
+                                  TextFormField(
+                                    controller: widget
+                                        .mofferController.txtEntregasAPartir,
+                                    decoration: InputDecoration(
+                                        labelText:
+                                            labelEntrega + ' a partir de:'),
+                                    keyboardType: TextInputType.number,
+                                  ),
+                                  Text("Horário de " + labelEntrega),
+                                  TextFormField(
+                                    controller:
+                                        widget.mofferController.txtEntregaDas,
+                                    decoration:
+                                        InputDecoration(labelText: 'Das'),
+                                    keyboardType: TextInputType.number,
+                                  ),
+                                  TextFormField(
+                                    controller:
+                                        widget.mofferController.txtEntregaAs,
+                                    decoration:
+                                        InputDecoration(labelText: 'às'),
+                                    keyboardType: TextInputType.number,
+                                  ),
+                                  if (labelEntrega == 'Entrega')
+                                    Column(
+                                      children: <Widget>[
+                                        SizedBox(height: 20),
+                                        Text(
+                                          "Taxas de Entrega",
+                                          textAlign: TextAlign.left,
+                                        ),
+                                        TextFormField(
+                                          controller: widget
+                                              .mofferController.txtValorTaxa1km,
+                                          decoration: InputDecoration(
+                                              labelText: 'Até 1km'),
+                                          textInputAction: TextInputAction.next,
+                                          //focusNode: _priceFocusNode,
+                                          keyboardType:
+                                              TextInputType.numberWithOptions(
+                                                  decimal: true),
+                                        ),
+                                        TextFormField(
+                                          controller: widget
+                                              .mofferController.txtValorTaxa2km,
+                                          decoration: InputDecoration(
+                                              labelText: 'Entre 1km e 2km'),
+                                          textInputAction: TextInputAction.next,
+                                          //focusNode: _priceFocusNode,
+                                          keyboardType:
+                                              TextInputType.numberWithOptions(
+                                                  decimal: true),
+                                        ),
+                                        TextFormField(
+                                          controller: widget.mofferController
+                                              .txtValorTaxaMaisQue2km,
+                                          decoration: InputDecoration(
+                                              labelText: 'Acima de 2km'),
+                                          textInputAction: TextInputAction.next,
+                                          //focusNode: _priceFocusNode,
+                                          keyboardType:
+                                              TextInputType.numberWithOptions(
+                                                  decimal: true),
+                                        ),
+                                        SizedBox(height: 20),
+                                        Text('Tempo de Entrega após aceite'),
+                                        TextFormField(
+                                            //decoration: InputDecoration(labelText: 'Tempo de entrega após aceite'),
+                                            keyboardType: TextInputType.number),
+                                        DropdownButton<String>(
+                                          items: listaTempoEntregaTipo
+                                              .map((String value) {
+                                            return DropdownMenuItem<String>(
+                                              value: value,
+                                              child: Text(value),
+                                            );
+                                          }).toList(),
+                                          value: tempoEntregaTipoSel,
+                                          onChanged: (String? newValue) {
+                                            setState(() {
+                                              tempoEntregaTipoSel = newValue!;
+                                            });
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                ],
+                              ),
 
-                              ],),
-
-
+                            if (showCamposBasicos)
+                              Column(children: <Widget>[
+                                SizedBox(height: 20),
+                                ElevatedButton(
+                                    onPressed: () => pegarImagemGaleria(),
+                                    child: Row(
+                                      children: [
+                                        Icon(Icons.photo_album),
+                                        const SizedBox(
+                                          width: 16,
+                                        ),
+                                        Text('Adicionar Foto')
+                                      ],
+                                    )),
+                                SizedBox(height: 20),
+                                if (widget.imgcloud != '')
+                                  FadeInImage.assetNetwork(
+                                    placeholder: 'assets/images/pholder.png',
+                                    image: widget.imgcloud,
+                                    imageErrorBuilder: (context, url, error) =>
+                                        new Icon(Icons.local_offer_outlined),
+                                    height: 250,
+                                  ),
+                                if (image != null)
+                                  Image.file(
+                                    image!,
+                                    fit: BoxFit.contain,
+                                  ),
+                                SizedBox(height: 20),
+                                ButtonOffer(
+                                    text: 'Salvar',
+                                    colorText: AppColors.grayBlueButton,
+                                    onPressed: () => uploadFoto(image == null? null : image)),
+                              ])
                           ],
                         ),
                       ),
@@ -1537,10 +1628,10 @@ class _MOfferPage extends State<MOfferPage> {
     }
   }
 
-  uploadFoto(File foto) async {
+  uploadFoto(File? foto) async {
     await _saveForm();
 
-    if (widget.imgEdited) {
+    if (widget.imgEdited && foto != null) {
       await Firebase.initializeApp();
 
       print('passou no upload');

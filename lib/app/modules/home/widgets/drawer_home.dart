@@ -24,9 +24,9 @@ class DrawerHome extends StatelessWidget {
       child: Column(
         children: [
           Container(
-              padding: const EdgeInsets.symmetric(horizontal: 3),
+              padding: const EdgeInsets.symmetric(horizontal: 2),
               color: Colors.amber,
-              height: Get.height * 0.14,
+              height: Get.height * 0.13,
               //margin: EdgeInsets.only(top: 10, left: 1, right: 1),
               child: Column(
                   children: [
@@ -134,12 +134,21 @@ class DrawerHome extends StatelessWidget {
           //   ),
           //   onTap: () {},
           // ),
+
+          // RowCategoriesDrawerHome(
+          //   text: 'Minha conta',
+          //   isSelected: index == 4,
+          //   icon: Icons.person_outline,
+          //   onTap: () => Get.toNamed(AppRoutes.account),
+          // ),
+
           RowCategoriesDrawerHome(
-            text: 'Minha conta',
+            text: 'Minhas lojas',
             isSelected: index == 4,
-            icon: Icons.person_outline,
+            icon: Icons.store,
             onTap: () => Get.toNamed(AppRoutes.account),
           ),
+
           RowCategoriesDrawerHome(
             text: 'Endereços',
             isSelected: index == 5,
