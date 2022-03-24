@@ -63,28 +63,13 @@ class _MOfferPage extends State<MOfferPage> {
   var listaTempoEntregaTipo = ['selecione', 'minutos', 'horas', 'dias'];
   var listaFormaFechamento = [
     'selecione',
-    'mensagem',
-    'pagamento no aplicativo'
+    'mensagem no aplicativo (seguro)',
+    'whatsapp'
+    'pagamento no aplicativo (seguro)'
   ]; // pegar da API
   var listaFormaEntrega = ['selecione', 'vendedor', 'comprador', 'parceiro'];
   var listaFormaEntrega2 = ['selecione', 'vendedor', 'comprador'];
   var listaParceiros = ['selecione']; // pegar da API
-  var listaMaterias = [
-    'selecione',
-    'Plástico',
-    'Ferro',
-    'Cobre',
-    'Alumínio',
-    'Metal'
-  ]; // pegar da API
-  var listaVoltagem = [
-    'selecione',
-    '110v',
-    '220v',
-    'bivolt',
-    'bivolt auto',
-    'nenhum'
-  ];
   var valueSel = 'selecione';
   late String categSel = 'selecione';
   var tempoEntregaTipoSel = 'selecione';
@@ -275,44 +260,10 @@ class _MOfferPage extends State<MOfferPage> {
         var response = await post(
           Uri.parse('${Constants.baseUrl}mofferadd'), headers: Constants.headers,
           body: offerToSend.toJsonPost(),
-          //body: jsonEncode(<String, String>{
-          // "CategoriaChave": "BELEZA",
-          // "Oferta24hs": "true",
-          // "OfertaAceitaAuto": "false",
-          // "OfertaAceitaEncomenda": "false",
-          // "OfertaAceitaProposta": "false",
-          // "OfertaCEP": "05735-030",
-          // "OfertaCodigoAlt": "codigo",
-          // "OfertaCores": "VERDE/AZUL/ROSA",
-          // "OfertaDetalhe": "PRODUTO DE BELEZA CHEIROSO",
-          // "OfertaDiasValidade": "90",
-          // "OfertaDispoTipo": "1",
-          // "OfertaDistanciaKm": "3",
-          // "OfertaFormaFechamento": "",
-          // "OfertaMarcaRevenda": "BOTICARDIO",
-          // "OfertaMostraAval": "true",
-          // "OfertaPeso": "100",
-          // "OfertaPesoUnidade": "ml",
-          // //"OfertaPrazoEntregaMinutos": "90",
-          // "OfertaPreco": "50.0",
-          // "OfertaPrecoMin": "42.0",
-          // "OfertaQtdAviso": "3",
-          // "OfertaQtdDispo": "7",
-          // "OfertaQtdMaxVenda": "2",
-          // "OfertaSomenteEncomenda": "false",
-          // "OfertaTamanhos": "P/M/G",
-          // "OfertaTempoEntrega": "90",
-          // "OfertaTempoEntregaUnidade": "min",
-          // "OfertaTitulo": "PERFUME PIRATA",
-          // "ValorEntregaAte1": "3.0",
-          // "ValorEntregaAte2": "5.0",
-          // "ValorEntregaMaisDe2": "7.0"
-          //})
         );
 
         print(response.body);
 
-        //{"insert_Ofertas_one":{"OfertaGUID":"a9feeceb-9858-40a3-8ba0-4d9b2c8c54d1"}}
         var jsonResp = jsonDecode(response.body);
         var strGuid = jsonResp['insert_Ofertas_one']['OfertaGUID'];
 
@@ -335,54 +286,6 @@ class _MOfferPage extends State<MOfferPage> {
         print('guid: ' + strGuid);
       }
 
-
-    // if (isEditing) {
-    //
-    //   }
-
-    // if (!_form.currentState.validate()) return;
-    //
-    // _form.currentState.save();
-    // final product = ProductProvider.Product(
-    //   id: _formData['id'],
-    //   title: _formData['title'],
-    //   price: _formData['price'],
-    //   description: _formData['description'],
-    //   imageUrl: _formData['imageUrl'],
-    // );
-    //
-    // setState(() {
-    //   _isLoading = true;
-    // });
-    //
-    // final products =
-    // Provider.of<ProductsProvider.Products>(context, listen: false);
-    // try {
-    //   if (_formData['id'] == null) {
-    //     await products.addProduct(product);
-    //   } else {
-    //     await products.updateProduct(product);
-    //   }
-    //   Navigator.of(context).pop();
-    // } catch (e) {
-    //   await showDialog<Null>(
-    //     context: context,
-    //     builder: (ctx) => AlertDialog(
-    //       title: Text('Ocorreu um erro'),
-    //       content: Text('Erro inesperado ao salvar '),
-    //       actions: [
-    //         FlatButton(
-    //           child: Text('Fechar'),
-    //           onPressed: () => Navigator.of(context).pop(),
-    //         ),
-    //       ],
-    //     ),
-    //   );
-    // } finally {
-    //   setState(() {
-    //     _isLoading = false;
-    //   });
-    // }
   }
 
   // somente para testes - em producao virá a partir do Firebase
@@ -758,23 +661,6 @@ class _MOfferPage extends State<MOfferPage> {
 
       widget.offerGuid = widget.mofferController.mofferGuid!;
 
-      //String? shit = oferta.OfertaMarcaRevenda == 'null' ? 'vazio' : oferta.OfertaMarcaRevenda;
-      //print('marca: ' + shit!);
-
-      //widget.mofferController.txtPreco.text = oferta.OfertaPreco.toString();
-
-      //widget.categoriesController.selecionaCategoria(oferta.CategoriaChave.toString());
-
-      //widget.mofferController.txtDescricao.text = oferta.Ofertade.toString();
-      //widget.mofferController.txtTempoEntrega.text = oferta.OfertaTempoEntrega.toString();
-      // this.tempoEntregaTipoSel = oferta.OfertaTempoEntregaUnidade.toString();
-      // this.valSomenteEncomenda = oferta.OfertaSomenteEncomenda as bool;
-      // this.valMostraAval = oferta.OfertaMostraAval as bool;
-      // //this.valDispoImediata = oferta.OfertaDispoTipo;
-      // this.val24hs = oferta.Oferta24hs as bool;
-      // this.valAceitaProposta = oferta.OfertaAceitaProposta as bool;
-      // this.valAceitaEncomenda = oferta.OfertaAceitaEncomenda as bool;
-      // this.valAceiteAuto = oferta.OfertaAceitaAuto as bool;
     } else {
       isEditing = false;
       var nowFormatted = '01' + '03' + '2022';
@@ -1600,7 +1486,7 @@ class _MOfferPage extends State<MOfferPage> {
                                 SizedBox(height: 20),
                                 ButtonOffer(
                                     text: 'Salvar',
-                                    colorText: AppColors.grayBlueButton,
+                                    colorText: AppColors.primaryColorButton,
                                     onPressed: () => uploadFoto(image == null? null : image)),
                               ])
                           ],

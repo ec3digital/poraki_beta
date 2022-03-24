@@ -17,7 +17,7 @@ class ShoppingCartPage extends StatelessWidget {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        backgroundColor: AppColors.grayLightContainer,
+        backgroundColor: AppColors.containerLightColor,
         appBar: appBarCart(),
        // drawer: DrawerHome(-1),
         body: TabBarView(

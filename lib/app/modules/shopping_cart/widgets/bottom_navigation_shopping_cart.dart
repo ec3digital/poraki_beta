@@ -103,7 +103,7 @@ class BottomNavigationShoppingCart extends StatelessWidget {
                               },
                               text: 'Esvaziar o carrinho',
                               colorText: AppColors.primaryColor,
-                              colorButton: AppColors.grayBlueButton,
+                              colorButton: AppColors.primaryColorButton,
                             ),
                           ]),
                     )

@@ -22,7 +22,7 @@ class TabBarShoppingCart extends StatelessWidget {
           icon: Icon(Icons.search),
         )
       ],
-      backgroundColor: AppColors.yellowComum,
+      backgroundColor: AppColors.primaryBackground,
       bottom: TabBar(
         indicatorColor: Colors.black,
         tabs: [

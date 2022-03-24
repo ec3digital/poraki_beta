@@ -20,7 +20,7 @@ class ContainerDialogShoppingCart extends StatelessWidget {
       padding: const EdgeInsets.symmetric(
           horizontal: 10, vertical: 04),
       decoration: BoxDecoration(
-        border: Border.all(color: AppColors.grayComum),
+        border: Border.all(color: AppColors.borderColor),
         borderRadius: BorderRadius.circular(07),
       ),
       child: Row(

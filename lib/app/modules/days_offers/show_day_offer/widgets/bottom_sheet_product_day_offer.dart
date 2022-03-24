@@ -45,7 +45,7 @@ class BottomSheetProductDayOffer extends StatelessWidget {
                     children: [
                       Container(
                         height: 1,
-                        color: AppColors.grayLightContainer,
+                        color: AppColors.containerLightColor,
                       ),
                       ColumnOptionsAmount(
                         text: '1 unidade',

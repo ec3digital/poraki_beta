@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:poraki/app/theme/app_theme.dart';
 
-import '../../../../theme/custom_colors.dart';
 import '../sign_up_controller.dart';
 import 'signup_form.dart';
 
@@ -26,8 +26,8 @@ class SignupBody extends StatelessWidget {
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
-            CustomColors().getGradientSecondaryColor(),
-            CustomColors().getGradientMainColor(),
+            AppColors.primaryBackground,
+            AppColors.secondaryBackground
           ],
         ),
       ),
@@ -51,7 +51,7 @@ class SignupBody extends StatelessWidget {
                 controller.doSignUp();
               },
               child: Text("Casdastrar"),
-              color: CustomColors().getActiveSecondaryButton(),
+              color: AppColors.secondaryColorButton,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(50),
               ),

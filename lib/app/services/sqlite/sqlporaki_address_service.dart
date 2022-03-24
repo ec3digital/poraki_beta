@@ -117,9 +117,21 @@ class sqlPorakiAddressService {
 
     var existe = await db.rawQuery(_verificaTabelaEnderecos);
     if (existe.isEmpty) {
-      print('cria tab ends');
       await db.execute(_createTableEnderecos);
+      print('tabela endereços construída');
     }
+  }
+
+  Future<void> redefineTabela() async {
+    String path = join(await getDatabasesPath(), 'poraki');
+    Database db = await openDatabase(
+    path,
+    version: 1,
+    );
+
+    await db.execute("DROP TABLE IF EXISTS enderecos");
+    print('tabela enderecos destruída');
+    await verificaTabela();
   }
 
   // pra ver se a tabela de enderecos existe

@@ -2,7 +2,9 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:poraki/app/modules/auth/login/login_controller.dart';
 import 'package:poraki/app/routes/app_routes.dart';
+import 'package:poraki/app/services/sqlite/sqlporaki_address_service.dart';
 import 'package:poraki/app/shared/porakiprefs.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../home_page.dart';
@@ -20,6 +22,8 @@ class DrawerHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    LoginController _login = Get.find();
+
     return Drawer(
       child: Column(
         children: [
@@ -32,28 +36,30 @@ class DrawerHome extends StatelessWidget {
                   children: [
                     Center(child: Text('')),
                     Center(child: Text('')),
-                FutureBuilder(
-                    future: hivePorakiUserService().GetUserName(),
-                    initialData: "...",
-                    builder: (context, snapshot) {
-                      return Center(
-                        child: Text(
-                          snapshot.data.toString(),
-                          style: TextStyle(fontSize: 22.0),
-                        ),
-                      );
-                    }),
-                FutureBuilder(
-                    future: hivePorakiUserService().GetUserCep(),
-                    initialData: "...",
-                    builder: (context, snapshot) {
-                      return Center(
-                        child: Text(
-                          'CEP: ' + snapshot.data.toString(),
-                          style: TextStyle(fontSize: 18.0),
-                        ),
-                      );
-                    }),
+                    Center(child: Text(_login.usuNome.toString())),
+                    Center(child: Text(_login.usuCep.toString())),
+                // FutureBuilder(
+                //     future: hivePorakiUserService().GetUserName(),
+                //     initialData: "...",
+                //     builder: (context, snapshot) {
+                //       return Center(
+                //         child: Text(
+                //           snapshot.data.toString(),
+                //           style: TextStyle(fontSize: 22.0),
+                //         ),
+                //       );
+                //     }),
+                // FutureBuilder(
+                //     future: hivePorakiUserService().GetUserCep(),
+                //     initialData: "...",
+                //     builder: (context, snapshot) {
+                //       return Center(
+                //         child: Text(
+                //           'CEP: ' + snapshot.data.toString(),
+                //           style: TextStyle(fontSize: 18.0),
+                //         ),
+                //       );
+                //     }),
                     // FutureBuilder(
                     //     future: hivePorakiUserService().GetUserEmail(),
                     //     initialData: "...",
@@ -189,7 +195,7 @@ class DrawerHome extends StatelessWidget {
   }
 }
 void _runSpecialCmds() {
-
+  sqlPorakiAddressService().redefineTabela();
 }
 
 class RowCategoriesDrawerHome extends StatelessWidget {

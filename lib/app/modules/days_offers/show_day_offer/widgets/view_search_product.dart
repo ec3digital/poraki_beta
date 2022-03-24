@@ -17,7 +17,7 @@ class ViewSearchProduct extends StatelessWidget {
             hintText: 'Busca em PorAki',
             hintStyle: Get.textTheme.bodyText1!.copyWith(
               fontSize: 14,
-              color: AppColors.black54Text,
+              color: AppColors.darkText,
             ),
             border: OutlineInputBorder(borderSide: BorderSide.none),
             enabledBorder: OutlineInputBorder(borderSide: BorderSide.none),

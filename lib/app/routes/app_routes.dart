@@ -22,4 +22,6 @@ abstract class AppRoutes {
   static const loginGoogle = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBf0c_00pHeEbgDtdfFPMYV4AoG1aFYZEY';
   static const mOffer = '/moffer';
   static const mOffers = '/moffers';
+  static const store = '/store';
+  static const stores = '/stores';
 }

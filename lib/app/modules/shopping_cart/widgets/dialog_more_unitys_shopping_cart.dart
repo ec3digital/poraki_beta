@@ -24,7 +24,7 @@ class DialogMoreUnitysShoppingCart extends StatelessWidget {
             topLeft: Radius.circular(08),
             topRight: Radius.circular(08),
           ),
-          color: AppColors.grayLightContainer,
+          color: AppColors.containerLightColor,
         ),
         child: Center(
           child: Text(

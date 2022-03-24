@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:poraki/app/app_widget.dart';
-import 'package:poraki/app/modules/auth/login/login_service.dart';
-import 'package:poraki/app/services/fbporaki_service.dart';
-import 'package:poraki/app/services/hive/hive_poraki_user_service.dart';
-import 'package:poraki/app/shared/porakiprefs.dart';
-import 'package:poraki/app/theme/custom_colors.dart';
+import 'package:poraki/app/theme/app_theme.dart';
 import 'package:poraki/app/modules/auth/sign_up/sign_up_page.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:poraki/app/services/sqlite/sqlporaki_login_service.dart';
 
 class LoginPage extends StatefulWidget {
@@ -54,8 +49,8 @@ class _LoginPageState extends State<LoginPage> {
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
-                    CustomColors().getGradientMainColor(),
-                    CustomColors().getGradientSecondaryColor(),
+                    AppColors.primaryBackground,
+                    AppColors.secondaryBackground
                   ],
                 ),
               ),
@@ -201,7 +196,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all<Color>(
-                          CustomColors().getActivePrimaryButtonColor(),
+                          AppColors.primaryColorButton,
                         ),
                         shape: MaterialStateProperty.all<OutlinedBorder>(
                           RoundedRectangleBorder(
@@ -234,7 +229,7 @@ class _LoginPageState extends State<LoginPage> {
                           );
                         },
                         child: Text("Cadastre-se"),
-                        color: CustomColors().getActiveSecondaryButton(),
+                        color: AppColors.secondaryColorButton,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(50),
                         ),
@@ -267,16 +262,16 @@ class _LoginPageState extends State<LoginPage> {
       //TODO: tratar a resposta do login
 
       // salva usuario no hive, cria instancia do hive e abre a box
-      new hivePorakiUserService().SetUserEmail(_mailInputController.text.trim());
+      // new hivePorakiUserService().SetUserEmail(_mailInputController.text.trim());
       // recupera os dados do SQLite e joga no Hive para facilitar as buscas no app
       listUser = await buscaSqlUserData();
       for(var u in listUser!) //{
         listUser!.forEach((element) {
-          hivePorakiUserService().SetUserName(element["usuNome"].toString());
-          hivePorakiUserService().SetLastLogin(DateTime.now().toString());
-          hivePorakiUserService().SetUserCep(element["usuCEP"].toString());
-          // hivePorakiUserService().SetUserCep('05735-030');
-          hivePorakiUserService().SetUserUID('eyCv21RfaURoMn0SUndCg6LPyJP2');
+          // hivePorakiUserService().SetUserName(element["usuNome"].toString());
+          // hivePorakiUserService().SetLastLogin(DateTime.now().toString());
+          // hivePorakiUserService().SetUserCep(element["usuCEP"].toString());
+          // // hivePorakiUserService().SetUserCep('05735-030');
+          // hivePorakiUserService().SetUserUID('eyCv21RfaURoMn0SUndCg6LPyJP2');
         });
 
       Navigator.push(

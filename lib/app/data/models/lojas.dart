@@ -4,6 +4,7 @@ class Lojas {
   // String? LojaInativaAdminID;
   String? LojaTemplateChave;
   String? LojaNome;
+  String? LojaCEP;
   String? LojaSlogan;
   String? LojaGUID;
   String? VendedorID;
@@ -12,12 +13,13 @@ class Lojas {
   String? Categorias;
   String? LojaConfigs;
 
-  Lojas(this.LojaAtivaDesde, this.LojaTemplateChave, this.LojaNome, this.LojaSlogan, this.LojaGUID, this.VendedorID, this.LojaCNPJ, this.LojaRazao, this.Categorias, this.LojaConfigs);
+  Lojas(this.LojaAtivaDesde, this.LojaTemplateChave, this.LojaNome, this.LojaCEP, this.LojaSlogan, this.LojaGUID, this.VendedorID, this.LojaCNPJ, this.LojaRazao, this.Categorias, this.LojaConfigs);
 
   Lojas.fromJson(Map<String, dynamic> json) {
     LojaAtivaDesde = json['LojaAtivaDesde'];
     LojaTemplateChave = json['LojaTemplateChave'];
     LojaNome = json['LojaNome'];
+    LojaCEP = json['LojaCEP'];
     LojaSlogan = json['LojaSlogan'];
     LojaGUID = json['LojaGUID'];
     VendedorID = json['VendedorID'];
@@ -32,6 +34,7 @@ class Lojas {
     data['LojaAtivaDesde'] = this.LojaAtivaDesde;
     data['LojaTemplateChave'] = this.LojaTemplateChave;
     data['LojaNome'] = this.LojaNome;
+    data['LojaCEP'] = this.LojaCEP;
     data['LojaSlogan'] = this.LojaSlogan;
     data['LojaGUID'] = this.LojaGUID;
     data['VendedorID'] = this.VendedorID;

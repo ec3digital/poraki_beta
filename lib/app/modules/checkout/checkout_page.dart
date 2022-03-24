@@ -11,7 +11,7 @@ class CheckoutPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.grayLightContainer,
+      backgroundColor: AppColors.containerLightColor,
       appBar: appBarCheckout(),
       body: BodyCheckOut(),
     );

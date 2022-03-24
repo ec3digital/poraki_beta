@@ -90,6 +90,12 @@ class AppPages {
     ),GetPage(
       name: AppRoutes.mOffer,
       page: () => MOfferPage(offer: null),
+    ),GetPage(
+      name: AppRoutes.stores,
+      page: () => MoffersPage(),
+    ),GetPage(
+      name: AppRoutes.store,
+      page: () => MOfferPage(offer: null),
     ),
   ];
 }

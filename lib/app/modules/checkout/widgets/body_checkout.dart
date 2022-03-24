@@ -72,7 +72,7 @@ class _BodyCheckOut extends State<BodyCheckOut> {
                         },
                         colorText: AppColors.primaryColor,
                         text: 'Finalizar',
-                        colorButton: AppColors.grayBlueButton,
+                        colorButton: AppColors.primaryColorButton,
                       ),
                     ),
                     flex: 10,

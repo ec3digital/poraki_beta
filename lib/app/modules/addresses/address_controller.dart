@@ -2,6 +2,8 @@ import 'package:extended_masked_text/extended_masked_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:poraki/app/data/models/sql/sqlEndereco.dart';
+import 'package:poraki/app/data/repositories/address_repository.dart';
+import 'package:poraki/app/modules/auth/login/login_controller.dart';
 import 'package:poraki/app/services/sqlite/sqlporaki_address_service.dart';
 
 class AddressController extends GetxController {
@@ -23,6 +25,8 @@ class AddressController extends GetxController {
 
   List<sqlEndereco> enderecos = [];
   late sqlEndereco enderecoSingle;
+  AddressRepository repo = new AddressRepository();
+  LoginController _login = Get.find();
 
   // Future<void> getAllCategories() async {
   //   try {
@@ -69,6 +73,34 @@ class AddressController extends GetxController {
 
       enderecos.add(endereco);
     });
+
+    // se a tabela estiver vazia no sqlite, busca da nuvem
+    if (enderecos.isEmpty)
+      {
+        var lista = await repo.getAllAddresses(_login.usuGuid.toString());
+        lista.forEach((itemApi) {
+          var endereco = new sqlEndereco(
+              itemApi.EnderecoGuid.toString(),
+              itemApi.UsuEmail.toString(),
+              itemApi.EnderecoGuid.toString(),
+              itemApi.EnderecoCEP.toString(),
+              itemApi.EnderecoLogra.toString(),
+              itemApi.EnderecoNumero.toString(),
+              itemApi.EnderecoCompl.toString(),
+              itemApi.EnderecoTipo.toString(),
+              itemApi.EnderecoAtual!,
+              itemApi.EnderecoUltData.toString(),
+              itemApi.EnderecoLat,
+              itemApi.EnderecoLong.toString()
+            //item.enderecoDesde.toString(),
+          );
+
+          enderecos.add(endereco);
+
+          // adiciona na base local
+          sqlPorakiAddressService().insertEndereco(endereco);
+        });
+      }
   }
 
   Future<sqlEndereco> EnderecoAtual() async {

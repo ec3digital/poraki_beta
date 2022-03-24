@@ -2,8 +2,8 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:poraki/app/theme/app_theme.dart';
 
-import '../../../theme/custom_colors.dart';
 import '../days_offers_controller.dart';
 
 class ListCategoriesDaysOffers extends StatelessWidget {
@@ -27,7 +27,7 @@ class ListCategoriesDaysOffers extends StatelessWidget {
             child: Container(
               margin: EdgeInsets.only(top: 10, left: 1, right: 1),
               decoration: BoxDecoration(
-                color: CustomColors().getGradientMainColor(),
+                color: AppColors.primaryBackground,
                 borderRadius: BorderRadius.all(Radius.circular(20)),
               ),
               width: 120,

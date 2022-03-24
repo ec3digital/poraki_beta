@@ -48,7 +48,7 @@ class ListPicsOffer extends StatelessWidget {
             bottom: 0,
             child: FloatingActionButton(
               elevation: 0,
-              backgroundColor: AppColors.grayLightContainer,
+              backgroundColor: AppColors.containerLightColor,
               mini: true,
               onPressed: () {},
               child: Icon(Icons.share_outlined, color: Colors.black,),

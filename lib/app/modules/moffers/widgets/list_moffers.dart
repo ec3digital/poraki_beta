@@ -7,15 +7,22 @@ import 'package:poraki/app/modules/offers/widgets/button_offer.dart';
 import 'package:poraki/app/routes/app_routes.dart';
 import 'package:poraki/app/theme/app_theme.dart';
 
-class ListMoffers extends StatelessWidget {
+class ListMoffers extends StatefulWidget {
   ListMoffers({
     Key? key,
   }) : super(key: key);
 
   @override
+  State<ListMoffers> createState() => _ListMoffersState();
+}
+
+class _ListMoffersState extends State<ListMoffers> {
+  @override
   Widget build(BuildContext context) {
     final MofferController mofferController = Get.put(MofferController());
 
+    var listStores = ['Nenhuma', 'Loja 1'];
+    var selStore = 'Nenhuma';
 
     return FutureBuilder(
         future: mofferController.getMoffers(),
@@ -44,11 +51,42 @@ class ListMoffers extends StatelessWidget {
                           onPressed: () {
                             Get.toNamed(AppRoutes.mOffer);
                           },
-                          colorText: AppColors.yellowComum,
+                          colorText: AppColors.primaryBackground,
                           text: 'Criar nova oferta',
-                          colorButton: AppColors.primaryColor,
+                          colorButton: AppColors.primaryColorButton,
                         ),
                         SizedBox(height: 20),
+                        ListTile(
+                          leading: Text('Lojas'),
+                          trailing: DropdownButton<String>(
+                            items: listStores.map((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value),
+                              );
+                            }).toList(),
+                            value: selStore,
+                            onChanged: (String? newValue) {
+                              setState(() {
+                                selStore = newValue!;
+                              });
+                            },
+                          ),
+                        ),
+                        SizedBox(height: 20),
+                        ButtonOffer(
+                          onPressed: () {
+                            Get.toNamed(AppRoutes.store);
+                          },
+                          colorText: AppColors.primaryBackground,
+                          text: 'Criar Loja',
+                          colorButton: AppColors.secondaryColorButton,
+                        ),
+                        SizedBox(height: 20),
+                            IconButton(icon: Icon(Icons.store),
+                                onPressed: () => Get.toNamed(AppRoutes.stores)
+                            ),
+                            SizedBox(height: 20),
                         GridView.builder(
                           shrinkWrap: true,
                           scrollDirection: Axis.vertical,
@@ -62,11 +100,11 @@ class ListMoffers extends StatelessWidget {
                             Oferta _oferta = mofferController.moffers[index];
                             return InkWell(
                               onTap: () {
-                                Get.toNamed(AppRoutes.mOffer,
-                                    arguments: [{'offer': _oferta}]);
+                                Get.toNamed(AppRoutes.mOffer, arguments: [
+                                  {'offer': _oferta}
+                                ]);
                                 print('offer arg send: ');
-                                print (_oferta.OfertaTitulo.toString());
-
+                                print(_oferta.OfertaTitulo.toString());
                               },
                               // arguments: _oferta.OfertaID.toString()),
                               child: Container(

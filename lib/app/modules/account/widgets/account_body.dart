@@ -359,7 +359,7 @@ class _AccountBodyState extends State<AccountBody> {
                                     child: const Text('Informações salvas!'))));
                         ScaffoldMessenger.of(context).showSnackBar(snackBar);
                       },
-                      colorText: AppColors.yellowComum,
+                      colorText: AppColors.primaryBackground,
                       text: 'Salvar',
                       colorButton: AppColors.primaryColor,
                     ),
@@ -369,7 +369,7 @@ class _AccountBodyState extends State<AccountBody> {
                       },
                       colorText: AppColors.primaryColor,
                       text: 'Mudar senha',
-                      colorButton: AppColors.grayBlueButton,
+                      colorButton: AppColors.primaryColorButton,
                     ),
                     // )
                   ])

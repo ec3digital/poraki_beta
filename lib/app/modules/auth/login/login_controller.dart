@@ -17,6 +17,10 @@ class LoginController extends GetxController {
   get obscurePassword => _obscurePassword;
 
   bool _obscurePassword = false;
+  String? usuCep = '';
+  String? usuNome = '';
+  String? usuEmail = '';
+  String? usuGuid = '';
 
   void changeCheckBox(bool newObscurePassword) {
     _obscurePassword = newObscurePassword;
@@ -36,12 +40,31 @@ class LoginController extends GetxController {
     //   );
 
       // salva usuario no hive, cria instancia do hive e abre a box
-      new hivePorakiUserService().SetUserEmail(mailInputController.text.removeAllWhitespace);
+      //new hivePorakiUserService().SetUserEmail(mailInputController.text.removeAllWhitespace);
+
+    usuCep = '05735-030';
+    usuNome = 'Danilo';
+    usuGuid = 'eyCv21RfaURoMn0SUndCg6LPyJP2';
 
       // redireciona para a home de ofertas
       Get.toNamed(AppRoutes.offer);
     // } else {
     //   print("invalido");
     // }
+
+    //atualiza endereços com a nuvem
+
+
+
+    //atualiza lojas com a nuvem
+
+
+    //compara qtd de pedidos fechados com a nuvem e atualiza se for o caso
+
+
+    //executa comandos na base local
+
+
+
   }
 }

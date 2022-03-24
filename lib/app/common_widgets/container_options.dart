@@ -16,7 +16,7 @@ class ContainerOptions extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
-          color: AppColors.grayLightContainer,
+          color: AppColors.containerLightColor,
           borderRadius: BorderRadius.circular(08),
         ),
         child: Row(

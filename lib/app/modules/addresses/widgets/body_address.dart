@@ -259,7 +259,7 @@ class _AddressBodyState extends State<AddressBody> {
                                 content: Container( height: 40, child: Center(child: const Text('Informações salvas 1!'))));
                             ScaffoldMessenger.of(context).showSnackBar(snackBar);
                           },
-                          colorText: AppColors.yellowComum,
+                          colorText: AppColors.primaryBackground,
                           text: 'Salvar',
                           colorButton: AppColors.primaryColor,
                         ),
@@ -278,7 +278,7 @@ class _AddressBodyState extends State<AddressBody> {
                           },
                           colorText: AppColors.primaryColor,
                           text: 'Definir como endereço atual',
-                          colorButton: AppColors.grayBlueButton,
+                          colorButton: AppColors.primaryColorButton,
                         ),
                         // )
                       ]

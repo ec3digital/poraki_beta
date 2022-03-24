@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../../theme/custom_colors.dart';
+import '../../../../theme/app_theme.dart';
 
 class GradientTopLogin extends StatelessWidget {
   final Widget child;
@@ -18,8 +18,8 @@ class GradientTopLogin extends StatelessWidget {
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
-            CustomColors().getGradientMainColor(),
-            CustomColors().getGradientSecondaryColor(),
+            AppColors.primaryBackground,
+            AppColors.secondaryBackground
           ],
         ),
       ),

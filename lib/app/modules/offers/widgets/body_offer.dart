@@ -108,7 +108,7 @@ class BodyOffer extends StatelessWidget {
                     },
                     colorText: AppColors.primaryColor,
                     text: 'Adicionar ao carrinho',
-                    colorButton: AppColors.grayBlueButton,
+                    colorButton: AppColors.primaryColorButton,
                   ),
                 ],
               ),

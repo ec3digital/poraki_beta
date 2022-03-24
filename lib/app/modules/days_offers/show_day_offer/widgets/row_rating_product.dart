@@ -36,7 +36,7 @@ class RowRatingProduct extends StatelessWidget {
           style: Get.textTheme.bodyText1!.copyWith(
             fontSize: 12,
             fontWeight: FontWeight.w400,
-            color: AppColors.black54Text,
+            color: AppColors.darkText,
           ),
         )
       ],

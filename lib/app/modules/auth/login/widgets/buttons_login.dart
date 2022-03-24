@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:poraki/app/routes/app_routes.dart';
-
-import '../../../../theme/custom_colors.dart';
 import '../../sign_up/sign_up_page.dart';
 import '../login_controller.dart';
+import 'package:poraki/app/theme/app_theme.dart';
 
 class ButtonsFooterLogin extends StatelessWidget {
   const ButtonsFooterLogin({
@@ -60,7 +59,7 @@ class ButtonsFooterLogin extends StatelessWidget {
           ),
           style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all<Color>(
-              CustomColors().getActivePrimaryButtonColor(),
+                AppColors.primaryColorButton
             ),
             shape: MaterialStateProperty.all<OutlinedBorder>(
               RoundedRectangleBorder(
@@ -87,7 +86,7 @@ class ButtonsFooterLogin extends StatelessWidget {
               Get.toNamed(AppRoutes.signUp);
             },
             style: ElevatedButton.styleFrom(
-              primary: CustomColors().getActiveSecondaryButton(),
+              primary: AppColors.secondaryColorButton,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(50),
               ),

@@ -21,7 +21,7 @@ class AppBarShowDayOffer extends StatelessWidget {
           Text(
             'Produto',
             style: Get.textTheme.bodyText1!.copyWith(
-              color: AppColors.black54Text,
+              color: AppColors.darkText,
               fontWeight: FontWeight.w400,
             ),
           ),
@@ -60,14 +60,14 @@ class AppBarShowDayOffer extends StatelessWidget {
                   adressUser!,
                   style: Get.textTheme.bodyText1!.copyWith(
                     fontSize: 12,
-                    color: AppColors.black54Text,
+                    color: AppColors.darkText,
                     fontWeight: FontWeight.w400,
                   ),
                 ),
                 Icon(
                   Icons.arrow_forward_ios_sharp,
                   size: 12,
-                  color: AppColors.black54Text,
+                  color: AppColors.darkText,
                 )
               ],
             ),

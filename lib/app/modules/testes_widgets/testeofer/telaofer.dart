@@ -5,7 +5,7 @@
 // entire card.
 
 import 'package:flutter/material.dart';
-import 'package:poraki/app/theme/custom_colors.dart';
+import 'package:poraki/app/theme/app_theme.dart';
 
 void main() => runApp(const TelaOfer());
 
@@ -23,7 +23,7 @@ class TelaOfer extends StatelessWidget {
       home: Scaffold(
         appBar: AppBar(
           title: const Text(_title),
-          backgroundColor: CustomColors().getGradientMainColor(),
+          backgroundColor: AppColors.primaryBackground,
         ),
         body: const MyStatelessWidget(),
       ),
