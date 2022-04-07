@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:poraki/app/data/models/oferta.dart';
 import 'package:poraki/app/modules/moffers/moffer_controller.dart';
 import 'package:poraki/app/modules/offers/widgets/button_offer.dart';
+import 'package:poraki/app/modules/stores/store_controller.dart';
 import 'package:poraki/app/routes/app_routes.dart';
 import 'package:poraki/app/theme/app_theme.dart';
 
@@ -17,15 +18,23 @@ class ListMoffers extends StatefulWidget {
 }
 
 class _ListMoffersState extends State<ListMoffers> {
+
+
   @override
   Widget build(BuildContext context) {
     final MofferController mofferController = Get.put(MofferController());
+    final StoreController storeController = Get.put(StoreController());
 
     var listStores = ['Nenhuma', 'Loja 1'];
     var selStore = 'Nenhuma';
 
+    Future<void> loadObjs() async {
+      await storeController.carregaLojas();
+      await mofferController.getMoffers();
+    }
+
     return FutureBuilder(
-        future: mofferController.getMoffers(),
+        future: loadObjs(),
         builder: (context, futuro) {
           if (futuro.connectionState == ConnectionState.waiting) {
             return Center(
@@ -76,17 +85,24 @@ class _ListMoffersState extends State<ListMoffers> {
                         SizedBox(height: 20),
                         ButtonOffer(
                           onPressed: () {
+                            Future.delayed(Duration.zero, () async {
+                              storeController.emptyLoja();
+                            });
+
                             Get.toNamed(AppRoutes.store);
+                            // Get.toNamed(AppRoutes.store,arguments: [{
+                            //   "lojaObj": null
+                            // }]);
                           },
                           colorText: AppColors.primaryBackground,
                           text: 'Criar Loja',
                           colorButton: AppColors.secondaryColorButton,
                         ),
                         SizedBox(height: 20),
-                            IconButton(icon: Icon(Icons.store),
-                                onPressed: () => Get.toNamed(AppRoutes.stores)
-                            ),
-                            SizedBox(height: 20),
+                        IconButton(
+                            icon: Icon(Icons.store),
+                            onPressed: () => Get.toNamed(AppRoutes.stores)),
+                        SizedBox(height: 20),
                         GridView.builder(
                           shrinkWrap: true,
                           scrollDirection: Axis.vertical,

@@ -21,13 +21,13 @@ class CardCategories extends StatelessWidget {
         children: [
           Card(
             elevation: 1,
-            color: Colors.white,
+            color: Color(0xddE13E9A),
             shape: CircleBorder(),
             child: Container(
               //color: Colors.grey,
               height: Get.height * 0.07,
               width: Get.width * 0.14,
-              child: IconButton(icon: Icon(iconData),
+              child: IconButton(icon: Icon(iconData), color: Color(0xffFFFFFF),
                 onPressed: () => Get.toNamed(AppRoutes.offers, arguments: [
                   {'cep': '05735030'}, {'category': chave.toString() }, {'title': null}] )
                 ),
@@ -38,7 +38,7 @@ class CardCategories extends StatelessWidget {
             child: AutoSizeText(
               text,
               style: TextStyle(
-                color: Colors.black,
+                color: Color(0xffE13E9A),
                 fontWeight: FontWeight.w400,
                 fontSize: 16,
               ),

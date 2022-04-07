@@ -52,9 +52,11 @@ class AddressController extends GetxController {
 
   Future<void> carregaEnderecos() async {
     print('carregaEnderecos');
+    enderecos.clear();
 
     var lista = await sqlPorakiAddressService().buscaEnderecos(false);
     lista.forEach((item) {
+      print('item endereco atual: ' + item.enderecoAtual.toString());
       var endereco = new sqlEndereco(
           item.enderecoGuid.toString(),
           item.usuEmail.toString(),
@@ -65,20 +67,24 @@ class AddressController extends GetxController {
           item.enderecoCompl.toString(),
           item.enderecoTipo.toString(),
           item.enderecoAtual,
-          item.enderecoUltData.toString(),
-          item.enderecoLat,
-          item.enderecoLong.toString()
+          item.enderecoUltData.toString(), "",""
+          // item.enderecoLat,
+          // item.enderecoLong.toString()
           //item.enderecoDesde.toString(),
           );
 
       enderecos.add(endereco);
     });
 
+    print('enderecos empty? - ' + enderecos.isEmpty.toString());
     // se a tabela estiver vazia no sqlite, busca da nuvem
     if (enderecos.isEmpty)
       {
-        var lista = await repo.getAllAddresses(_login.usuGuid.toString());
+        print('enderecos empty - usuGuid: ' + _login.usuGuid.toString());
+        var lista = await repo.getAllAddresses();
+        print('lista endereco nuvem qtd: ' + lista.length.toString());
         lista.forEach((itemApi) {
+          print('itemApi: ' + itemApi.toJson().toString());
           var endereco = new sqlEndereco(
               itemApi.EnderecoGuid.toString(),
               itemApi.UsuEmail.toString(),
@@ -87,11 +93,11 @@ class AddressController extends GetxController {
               itemApi.EnderecoLogra.toString(),
               itemApi.EnderecoNumero.toString(),
               itemApi.EnderecoCompl.toString(),
-              itemApi.EnderecoTipo.toString(),
-              itemApi.EnderecoAtual!,
-              itemApi.EnderecoUltData.toString(),
-              itemApi.EnderecoLat,
-              itemApi.EnderecoLong.toString()
+              itemApi.EnderecoTipo.toString(),1,
+              //itemApi.EnderecoAtual!,
+              itemApi.EnderecoUltData.toString(),"", ""
+              // itemApi.EnderecoLat,
+              // itemApi.EnderecoLong.toString()
             //item.enderecoDesde.toString(),
           );
 
@@ -119,14 +125,45 @@ class AddressController extends GetxController {
           item.enderecoCompl.toString(),
           item.enderecoTipo.toString(),
           item.enderecoAtual,
-          item.enderecoUltData.toString(),
-          item.enderecoLat,
-          item.enderecoLong.toString()
+          item.enderecoUltData.toString(),"",""
+          // item.enderecoLat,
+          // item.enderecoLong.toString()
           //item.enderecoDesde.toString(),
           );
     });
 
     return endereco;
+  }
+
+  Future<String> getCepAtualLocal() async {
+    var lista = await sqlPorakiAddressService().buscaEnderecos(true);
+    late sqlEndereco endereco;
+    lista.forEach((item) {
+      endereco = new sqlEndereco(
+          item.enderecoGuid.toString(),
+          item.usuEmail.toString(),
+          item.enderecoGuid.toString(),
+          item.enderecoCEP.toString(),
+          item.enderecoLogra.toString(),
+          item.enderecoNumero.toString(),
+          item.enderecoCompl.toString(),
+          item.enderecoTipo.toString(),
+          item.enderecoAtual,
+          item.enderecoUltData.toString(),"",""
+          // item.enderecoLat,
+          // item.enderecoLong.toString()
+        //item.enderecoDesde.toString(),
+      );
+    });
+
+    print('cep atual: ' + endereco.enderecoCEP);
+
+    return endereco.enderecoCEP;
+  }
+
+  Future<String?> getCepAtualCloud() async {
+    var endereco = await repo.getCurrentAddress();
+    return endereco.EnderecoCEP;
   }
 
   Future<void> carregaEnderecoSingle(String enderecoGuid) async {

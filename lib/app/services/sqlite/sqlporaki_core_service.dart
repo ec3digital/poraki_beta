@@ -14,7 +14,7 @@ class sqlPorakiCoreService {
     await verificaTabela();
 
     try {
-      var list = await db.query('core', where: "chave = ?", whereArgs: [chave]) as List<sqlCore>;
+      var list = await db.query('appcore', where: "coreChave = ?", whereArgs: [chave]) as List<sqlCore>;
 
       return list.first;
     } catch (e) {
@@ -22,23 +22,42 @@ class sqlPorakiCoreService {
     }
   }
 
-  Future<sqlCore> buscaValorCep(String chave, String cep) async {
+
+  Future<sqlCore> buscaValorCep(String chave) async {
     String path = join(await getDatabasesPath(), 'poraki');
     Database db = await openDatabase(
       path,
       version: 1,
     );
 
-    await verificaTabela();
+    await verificaTabelaCep();
 
     try {
-      var list = await db.query('core', where: "chave = ? and cep = ?", whereArgs: [chave, cep]) as List<sqlCore>;
+      var list = await db.query('appcorecep', where: "coreChave = ?", whereArgs: [chave]) as List<sqlCore>;
 
       return list.first;
     } catch (e) {
       return Future.error(e);
     }
   }
+
+  // Future<sqlCore> buscaValorCep(String chave, String cep) async {
+  //   String path = join(await getDatabasesPath(), 'poraki');
+  //   Database db = await openDatabase(
+  //     path,
+  //     version: 1,
+  //   );
+  //
+  //   await verificaTabela();
+  //
+  //   try {
+  //     var list = await db.query('appcore', where: "coreChave = ? and cep = ?", whereArgs: [chave, cep]) as List<sqlCore>;
+  //
+  //     return list.first;
+  //   } catch (e) {
+  //     return Future.error(e);
+  //   }
+  // }
 
   Future<List<sqlCore>> buscaTodosValores() async {
     String path = join(await getDatabasesPath(), 'poraki');
@@ -50,16 +69,87 @@ class sqlPorakiCoreService {
     await verificaTabela();
     List<sqlCore> valores = [];
 
-    List<Map<String, dynamic>> list = await db.query('core');
+    List<Map<String, dynamic>> list = await db.query('appcore');
+
+    if(list.length == 0) {
+      print('buscaTodosValores / valoresIniciais');
+      await valoresIniciais();
+    }
+
     print('query qtd: ' + list.length.toString());
     list.forEach((item) {
     valores.add(new sqlCore(
-    item['chave'],
-    item['valores'],
-    item['cep']));
+    item['coreChave'],
+    item['coreValor'],
+    // item['cep']
+    ));
     });
 
+    print('core local qtd: ' + list.length.toString());
     return valores;
+  }
+
+  Future<List<sqlCore>> buscaTodosValoresCep() async {
+    String path = join(await getDatabasesPath(), 'poraki');
+    Database db = await openDatabase(
+      path,
+      version: 1,
+    );
+
+    await verificaTabelaCep();
+    List<sqlCore> valoresCep = [];
+
+    List<Map<String, dynamic>> listCep = await db.query('appcorecep');
+
+    if(listCep.length == 0) {
+      await valoresIniciais();
+    }
+
+    print('query qtd: ' + listCep.length.toString());
+    listCep.forEach((item) {
+      valoresCep.add(new sqlCore(
+        item['coreChave'],
+        item['coreValor'],
+        // item['cep']
+      ));
+    });
+
+    print('core local qtd: ' + listCep.length.toString());
+    return valoresCep;
+  }
+
+  Future<void> resetaTabela() async {
+    String dbPath = join(await getDatabasesPath(), 'poraki');
+    var db = await openDatabase(dbPath, version: 1);
+
+    await db.execute('DELETE FROM appcore');
+    print('tabela appcore limpa');
+  }
+
+  Future<void> resetaTabelaCep() async {
+    String dbPath = join(await getDatabasesPath(), 'poraki');
+    var db = await openDatabase(dbPath, version: 1);
+
+    await db.execute('DELETE FROM appcorecep');
+    print('tabela appcorecep limpa');
+  }
+
+  Future<void> atualizaCore(sqlCore coreUpdate) async {
+    String dbPath = join(await getDatabasesPath(), 'poraki');
+    var db = await openDatabase(dbPath, version: 1);
+
+    var sqlCmd = "UPDATE appcore SET coreValor = '${coreUpdate.coreValor.toString()}' WHERE coreChave = '${coreUpdate.coreChave.toString()}'";
+    print(sqlCmd);
+    await db.rawUpdate(sqlCmd);
+  }
+
+  Future<void> atualizaCoreCep(sqlCore coreUpdate) async {
+    String dbPath = join(await getDatabasesPath(), 'poraki');
+    var db = await openDatabase(dbPath, version: 1);
+
+    var sqlCmd = "UPDATE appcorecep SET coreValor = '${coreUpdate.coreValor.toString()}' WHERE coreChave = '${coreUpdate.coreChave.toString()}'";
+    print(sqlCmd);
+    await db.rawUpdate(sqlCmd);
   }
 
     Future<void> verificaTabela() async {
@@ -69,9 +159,21 @@ class sqlPorakiCoreService {
     var existe = await db.rawQuery(_verificaTabela);
     if (existe.isEmpty) {
       await db.execute(_createTable);
-      print('tabela core construída');
+      print('verificaTabela - tabela core construída');
       await valoresIniciais();
-      print('valor iniciais criados');
+      print('verificaTabela - valor iniciais criados');
+    }
+  }
+
+  Future<void> verificaTabelaCep() async {
+    String dbPath = join(await getDatabasesPath(), 'poraki');
+    var db = await openDatabase(dbPath, version: 1);
+
+    var existe = await db.rawQuery(_verificaTabelaCep);
+    if (existe.isEmpty) {
+      await db.execute(_createTableCep);
+      print('tabela appcorecep construída');
+      await valoresIniciaisCep();
     }
   }
 
@@ -84,54 +186,97 @@ class sqlPorakiCoreService {
 
     await verificaTabela();
     Batch batch = db.batch();
-    batch.insert('core', {'chave': 'apibase', 'valor': 'https://poraki.hasura.app/api/rest/', 'cep': '*'});
-    batch.insert('core', {'chave': 'apiPessoa', 'valor': 'pessoardz'});
-    batch.insert('core', {'chave': 'apiCategorias', 'valor': 'categorias'});
-    batch.insert('core', {'chave': 'apiOfertas', 'valor': 'ofertasdodia'});
-    batch.insert('core', {'chave': 'apiEnderecos', 'valor': 'enderecosPorEmail'});
-    batch.insert('core', {'chave': 'apiEnderecoAdd', 'valor': 'enderecoadd'});
-    batch.insert('core', {'chave': 'apiMoffer', 'valor': 'moffer'});
-    batch.insert('core', {'chave': 'apiMofferAdd', 'valor': 'mofferadd'});
-    batch.insert('core', {'chave': 'apiMoffers', 'valor': 'moffers'});
-    batch.insert('core', {'chave': 'apiPedidoAdd', 'valor': 'pedidoadd'});
-    batch.insert('core', {'chave': 'apiPedidoItens', 'valor': 'pedidoitens'});
-    batch.insert('core', {'chave': 'apiPedidoItensAdd', 'valor': 'pedidoitensadd'});
-    batch.insert('core', {'chave': 'apiPedidosClienteOpen', 'valor': 'pedidoporclienteopen'});
-    batch.insert('core', {'chave': 'apiPedidosCliente', 'valor': 'pedidosporcliente'});
-    batch.insert('core', {'chave': 'apiPedidosVendedor', 'valor': 'pedidosporvendedor'});
-    batch.insert('core', {'chave': 'apiPedidosVendedorOpen', 'valor': 'pedidosporvendedoropen'});
-    batch.insert('core', {'chave': 'header-user', 'valor': 'x-hasura-admin-secret', 'cep': ''});
-    batch.insert('core', {'chave': 'header-secret', 'valor': 'iy67sW4CLrijAZ3dSDeKpzo565EqoWWnk81DQX8hu1bEE7Q7nCntduiiS2IdKJNR', 'cep': ''});
-    batch.insert('core', {'chave': 'uuidservice', 'valor': 'https://www.uuidgenerator.net/api/version4'});
-    batch.insert('core', {'chave': 'cepservice', 'valor': 'https://brasilapi.com.br/api/cep/v2/'});
-    batch.insert('core', {'chave': 'primaryColor', 'valor': '0xff0000FF'});
-    batch.insert('core', {'chave': 'secondaryColor', 'valor': '0xff00F000'});
-    batch.insert('core', {'chave': 'primaryColorButton', 'valor': '0xffb3c9f2'});
-    batch.insert('core', {'chave': 'secondaryColorButton', 'valor': '0xffb3c9f2'});
-    batch.insert('core', {'chave': 'containerLightColor', 'valor': '0xffEEEEEE'});
-    batch.insert('core', {'chave': 'borderColor', 'valor': '0xff9E9E9E'});
-    batch.insert('core', {'chave': 'darkText', 'valor': '0x8a000000'});
-    batch.insert('core', {'chave': 'primaryDark', 'valor': '0xff161616'});
-    batch.insert('core', {'chave': 'primaryLight', 'valor': '0xffF7F7F7'});
-    batch.insert('core', {'chave': 'primaryBackground', 'valor': '0xfdfdfd'});
-    batch.insert('core', {'chave': 'secondaryBackground', 'valor': '0xfFFfEB3B'});
-    batch.insert('core', {'chave': 'cepatual', 'valor': ''});
+    batch.insert('appcore', {'coreChave': 'apiCategorias', 'coreValor': 'categorias'});
+    batch.insert('appcore', {'coreChave': 'apiCategoriasBarra', 'coreValor': 'categoriasbarra'});
+    batch.insert('appcore', {'coreChave': 'apiEndereco', 'coreValor': 'endereco'});
+    batch.insert('appcore', {'coreChave': 'apiEnderecoAtual', 'coreValor': 'enderecoatual'});
+    batch.insert('appcore', {'coreChave': 'apiEnderecos', 'coreValor': 'enderecos'});
+    batch.insert('appcore', {'coreChave': 'apiLojasPorVendedor', 'coreValor': 'lojasporvendedor'});
+    batch.insert('appcore', {'coreChave': 'apiLoja', 'coreValor': 'loja'});
+    batch.insert('appcore', {'coreChave': 'apiMelhoresOfertas', 'coreValor': 'melhoresofertas'});
+    batch.insert('appcore', {'coreChave': 'apiMoffer', 'coreValor': 'moffer'});
+    batch.insert('appcore', {'coreChave': 'apiMoffers', 'coreValor': 'moffers'});
+    batch.insert('appcore', {'coreChave': 'apiOferta', 'coreValor': 'oferta'});
+    batch.insert('appcore', {'coreChave': 'apiOfertas', 'coreValor': 'ofertasdodia'});
+    batch.insert('appcore', {'coreChave': 'apiOfertasCategoria', 'coreValor': 'ofertasporcepcategoria'});
+    batch.insert('appcore', {'coreChave': 'apiOfertasCategoriaTitulo', 'coreValor': 'ofertasporcepcategoriatitulo'});
+    batch.insert('appcore', {'coreChave': 'apiOfertasMaisFrescas', 'coreValor': 'ofertasmaisfrescas'});
+    batch.insert('appcore', {'coreChave': 'apiOfertasMaisVendidas', 'coreValor': 'ofertasmaisvendidas'});
+    batch.insert('appcore', {'coreChave': 'apiOfertasTitulo', 'coreValor': 'ofertasporceptitulo'});
+    batch.insert('appcore', {'coreChave': 'apiPedido', 'coreValor': 'pedido'});
+    batch.insert('appcore', {'coreChave': 'apiPedidoItens', 'coreValor': 'pedidoitens'});
+    batch.insert('appcore', {'coreChave': 'apiPedidosPorCliente', 'coreValor': 'pedidosporcliente'});
+    batch.insert('appcore', {'coreChave': 'apiPedidosPorClienteOpen', 'coreValor': 'pedidoporclienteopen'});
+    batch.insert('appcore', {'coreChave': 'apiPedidosPorVendedor', 'coreValor': 'pedidosporvendedor'});
+    batch.insert('appcore', {'coreChave': 'apiPedidosPorVendedorOpen', 'coreValor': 'pedidosporvendedoropen'});
+    batch.insert('appcore', {'coreChave': 'apiUsuarioSus', 'coreValor': 'ususus'});
+    batch.insert('appcore', {'coreChave': 'uuidservice', 'coreValor': 'https://www.uuidgenerator.net/api/version4'});
+    batch.insert('appcore', {'coreChave': 'cepservice', 'coreValor': 'https://brasilapi.com.br/api/cep/v2/'});
+    batch.insert('appcore', {'coreChave': 'primaryColor', 'coreValor': '0xff0000FF'});
+    batch.insert('appcore', {'coreChave': 'secondaryColor', 'coreValor': '0xff00F000'});
+    batch.insert('appcore', {'coreChave': 'primaryColorButton', 'coreValor': '0xffb3c9f2'});
+    batch.insert('appcore', {'coreChave': 'secondaryColorButton', 'coreValor': '0xffb3c9f2'});
+    batch.insert('appcore', {'coreChave': 'containerLightColor', 'coreValor': '0xffEEEEEE'});
+    batch.insert('appcore', {'coreChave': 'borderColor', 'coreValor': '0xff9E9E9E'});
+    batch.insert('appcore', {'coreChave': 'darkText', 'coreValor': '0x8a000000'});
+    batch.insert('appcore', {'coreChave': 'primaryDark', 'coreValor': '0xff161616'});
+    batch.insert('appcore', {'coreChave': 'primaryLight', 'coreValor': '0xffF7F7F7'});
+    batch.insert('appcore', {'coreChave': 'primaryBackground', 'coreValor': '0xffEE782D'});
+    batch.insert('appcore', {'coreChave': 'secondaryBackground', 'coreValor': '0xffC3D99E'});
+    batch.insert('appcore', {'coreChave': 'lastreload', 'coreValor': '20220401'});
+    batch.insert('appcore', {'coreChave': 'apiBase', 'coreValor': 'https://poraki.hasura.app/api/rest/'});
+    batch.insert('appcore', {'coreChave': 'header-user', 'coreValor': 'x-hasura-admin-secret'}); //, 'cep': ''
+    batch.insert('appcore', {'coreChave': 'header-secret', 'coreValor': 'iy67sW4CLrijAZ3dSDeKpzo565EqoWWnk81DQX8hu1bEE7Q7nCntduiiS2IdKJNR'});
+
+    print('valor iniciais criados');
+    await batch.commit(noResult: true);
+  }
+
+  Future<void> valoresIniciaisCep() async {
+    String path = join(await getDatabasesPath(), 'poraki');
+    Database db = await openDatabase(
+      path,
+      version: 1,
+    );
+
+    await verificaTabelaCep();
+    Batch batch = db.batch();
+    batch.insert('appcorecep', {'coreChave': 'apiBase', 'coreValor': 'https://poraki.hasura.app/api/rest/'});
+    batch.insert('appcorecep', {'coreChave': 'header-user', 'coreValor': 'x-hasura-admin-secret'}); //, 'cep': ''
+    batch.insert('appcorecep', {'coreChave': 'header-secret', 'coreValor': 'iy67sW4CLrijAZ3dSDeKpzo565EqoWWnk81DQX8hu1bEE7Q7nCntduiiS2IdKJNR'});
+    batch.insert('appcorecep', {'coreChave': 'lastreload', 'coreValor': '20220401'});
+
+    print('valor iniciais cep criados');
+    await batch.commit(noResult: true);
   }
 
   // pra ver se a tabela de enderecos existe
   final String _verificaTabela = '''
-  SELECT * FROM sqlite_master WHERE name ='core' and type='table'; 
+  SELECT * FROM sqlite_master WHERE name ='appcore' and type='table'; 
   ''';
 
   // Tipos de Endereços: Home / Work / School / Others
   final String _createTable = '''
-    CREATE TABLE IF NOT EXISTS core (
-    chave TEXT,
-    valor TEXT
+    CREATE TABLE IF NOT EXISTS appcore (
+    coreChave TEXT,
+    coreValor TEXT
     );
   ''';
 
-  final String _createStartValues = '''
-    INSERT INTO core (chave, valor) VALUES ()
+  // pra ver se a tabela de enderecos existe
+  final String _verificaTabelaCep = '''
+  SELECT * FROM sqlite_master WHERE name ='appcorecep' and type='table'; 
   ''';
+
+  // Tipos de Endereços: Home / Work / School / Others
+  final String _createTableCep = '''
+    CREATE TABLE IF NOT EXISTS appcorecep (
+    coreChave TEXT,
+    coreValor TEXT
+    );
+  ''';
+
+  // final String _createStartValues = '''
+  //   INSERT INTO appcore (chave, valor) VALUES ()
+  // ''';
 }

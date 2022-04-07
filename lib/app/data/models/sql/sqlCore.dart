@@ -1,15 +1,15 @@
 class sqlCore {
-  String? chave;
-  String? valor;
-  String? cep;
+  String? coreChave;
+  String? coreValor;
+  // String? cep;
 
-  sqlCore(this.chave, this.valor, this.cep);
+  sqlCore(this.coreChave, this.coreValor); //, this.cep);
 
   Map<String, dynamic> toMap() {
     return <String, dynamic> {
-      "chave": chave,
-      "valor": valor,
-      "cep": cep
+      "coreChave": coreChave,
+      "coreValor": coreValor,
+      // "cep": cep
     };
   }
 }

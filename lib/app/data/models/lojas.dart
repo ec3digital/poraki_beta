@@ -29,6 +29,24 @@ class Lojas {
     LojaConfigs = json['LojaConfigs'];
   }
 
+  // Lojas.listFromJson(List<Map<String, dynamic>> json) {
+  //   //List<Lojas> retList = new List<Lojas>();
+  //   json.forEach((element) {
+  //
+  //   });
+  //   LojaAtivaDesde = json['LojaAtivaDesde'];
+  //   LojaTemplateChave = json['LojaTemplateChave'];
+  //   LojaNome = json['LojaNome'];
+  //   LojaCEP = json['LojaCEP'];
+  //   LojaSlogan = json['LojaSlogan'];
+  //   LojaGUID = json['LojaGUID'];
+  //   VendedorID = json['VendedorID'];
+  //   LojaCNPJ = json['LojaCNPJ'];
+  //   LojaRazao = json['LojaRazao'];
+  //   Categorias = json['Categorias'];
+  //   LojaConfigs = json['LojaConfigs'];
+  // }
+
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['LojaAtivaDesde'] = this.LojaAtivaDesde;

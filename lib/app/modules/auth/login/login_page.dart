@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
+//import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get.dart';
 import 'package:poraki/app/app_widget.dart';
+import 'package:poraki/app/data/models/sql/sqlCore.dart';
+import 'package:poraki/app/services/fbporaki_service.dart';
+import 'package:poraki/app/services/sqlite/sqlporaki_core_service.dart';
 import 'package:poraki/app/theme/app_theme.dart';
 import 'package:poraki/app/modules/auth/sign_up/sign_up_page.dart';
 import 'package:poraki/app/services/sqlite/sqlporaki_login_service.dart';
+
+import 'login_controller.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -10,14 +17,19 @@ class LoginPage extends StatefulWidget {
 }
 
 Future<List<Map<String,dynamic>>> buscaSqlUserData() async {
+  // var termos = await fbPorakiService().getValueFromFirebase('akitermos', 'termos', 'ptbr');
+  // print('termos new: ' + termos.toString());
+
   var sqlSvc = new sqlPorakiLoginService();
   await sqlSvc.openCreateDB();
   return await sqlSvc.buscaUsuDados();
 }
 
+
 class _LoginPageState extends State<LoginPage> {
   TextEditingController _mailInputController = TextEditingController();
   TextEditingController _passwordInputController = TextEditingController();
+
   bool _obscurePassword = true;
 
   final _formKey = GlobalKey<FormState>();
@@ -25,7 +37,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    _mailInputController.text = 'test';
+    // _mailInputController.text = 'test';
     return FutureBuilder(future: buscaSqlUserData(),
       builder: (context, futuro) {
         if (!futuro.hasData) {
@@ -258,21 +270,22 @@ class _LoginPageState extends State<LoginPage> {
       //
       // LoginService().login(_mailInputController.text, _passwordInputController.text);
 
-
+      LoginController _loginController = Get.put(LoginController());
+      await _loginController.runCore();
       //TODO: tratar a resposta do login
 
-      // salva usuario no hive, cria instancia do hive e abre a box
-      // new hivePorakiUserService().SetUserEmail(_mailInputController.text.trim());
-      // recupera os dados do SQLite e joga no Hive para facilitar as buscas no app
-      listUser = await buscaSqlUserData();
-      for(var u in listUser!) //{
-        listUser!.forEach((element) {
-          // hivePorakiUserService().SetUserName(element["usuNome"].toString());
-          // hivePorakiUserService().SetLastLogin(DateTime.now().toString());
-          // hivePorakiUserService().SetUserCep(element["usuCEP"].toString());
-          // // hivePorakiUserService().SetUserCep('05735-030');
-          // hivePorakiUserService().SetUserUID('eyCv21RfaURoMn0SUndCg6LPyJP2');
-        });
+      // // salva usuario no hive, cria instancia do hive e abre a box
+      // // new hivePorakiUserService().SetUserEmail(_mailInputController.text.trim());
+      // // recupera os dados do SQLite e joga no Hive para facilitar as buscas no app
+      // listUser = await buscaSqlUserData();
+      // for(var u in listUser!) //{
+      //   listUser!.forEach((element) {
+      //     // hivePorakiUserService().SetUserName(element["usuNome"].toString());
+      //     // hivePorakiUserService().SetLastLogin(DateTime.now().toString());
+      //     // hivePorakiUserService().SetUserCep(element["usuCEP"].toString());
+      //     // // hivePorakiUserService().SetUserCep('05735-030');
+      //     // hivePorakiUserService().SetUserUID('eyCv21RfaURoMn0SUndCg6LPyJP2');
+      //   });
 
       Navigator.push(
         context,

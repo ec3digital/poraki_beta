@@ -9,6 +9,8 @@ import 'package:poraki/app/modules/moffers/moffers_page.dart';
 import 'package:poraki/app/modules/offers/offer_page.dart';
 import 'package:poraki/app/modules/orders/order_page.dart';
 import 'package:poraki/app/modules/orders/orders_page.dart';
+import 'package:poraki/app/modules/stores/store_page.dart';
+import 'package:poraki/app/modules/stores/stores_list_page.dart';
 import '../modules/auth/login/login_page.dart';
 import '../modules/auth/sign_up/sign_up_page.dart';
 import '../modules/days_offers/days_offers_page.dart';
@@ -47,16 +49,15 @@ class AppPages {
     ),
     GetPage(
       name: AppRoutes.offer,
-      page: () => OfferPage(offerId: 0,),
+      page: () => OfferPage(
+        offerId: 0,
+      ),
     ),
     GetPage(
       name: AppRoutes.shoppingCart,
       page: () => ShoppingCartPage(),
     ),
-    GetPage(
-        name: AppRoutes.offers,
-        page: () => OffersPage()
-    ),
+    GetPage(name: AppRoutes.offers, page: () => OffersPage()),
     GetPage(
       name: AppRoutes.categories,
       page: () => CategoriesPage(),
@@ -84,18 +85,22 @@ class AppPages {
     GetPage(
       name: AppRoutes.order,
       page: () => OrderPage(pedido: null),
-    ), GetPage(
+    ),
+    GetPage(
       name: AppRoutes.mOffers,
       page: () => MoffersPage(),
-    ),GetPage(
+    ),
+    GetPage(
       name: AppRoutes.mOffer,
       page: () => MOfferPage(offer: null),
-    ),GetPage(
-      name: AppRoutes.stores,
-      page: () => MoffersPage(),
-    ),GetPage(
-      name: AppRoutes.store,
-      page: () => MOfferPage(offer: null),
     ),
+    GetPage(
+      name: AppRoutes.store,
+      page: () => StorePage(lojaObj: null),
+    ),
+    GetPage(
+      name: AppRoutes.stores,
+      page: () => StoresListPage(),
+    )
   ];
 }

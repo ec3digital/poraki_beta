@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:poraki/app/modules/auth/login/login_controller.dart';
 import 'package:poraki/app/routes/app_routes.dart';
 import '../home_controller.dart';
 
@@ -11,9 +12,12 @@ class AppBarHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var txtBuscaCtrl = TextEditingController();
+    LoginController _loginController = Get.find();
+    print('cor da appBar: ' + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'primaryBackground').first.coreValor.toString());
+    print('cor da busca: ' + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'secondaryBackground').first.coreValor.toString());
 
     return AppBar(
-      backgroundColor: Colors.amber,
+      backgroundColor: Color(0xeeEE782D), // _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'primaryBackground').first.coreValor.toString()),//Colors.amber,
       elevation: 0,
       titleSpacing: 0,
       title: Container(
@@ -24,13 +28,13 @@ class AppBarHome extends StatelessWidget {
               child: Container(
                 height: 34,
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: Colors.white, // _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'secondaryBackground').first.coreValor.toString()),
                   borderRadius: BorderRadius.all(Radius.circular(30)),
                 ),
                 child: TextFormField(
                   onFieldSubmitted: (String value) {
                     Get.toNamed(AppRoutes.offers, arguments: [
-                      {'cep': '05735030'}, {'category': null }, {'title': txtBuscaCtrl.text}] );
+                      {'cep': _loginController.usuCep}, {'category': null }, {'title': txtBuscaCtrl.text}] );
                   } ,
                   controller: txtBuscaCtrl,
                   decoration: InputDecoration(

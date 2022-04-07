@@ -17,7 +17,7 @@ class OffersController extends GetxController {
 
   @override
   void onInit() async {
-    print('offers onInit');
+    print('offers controller onInit');
     this.cep = Get.arguments[0]['cep'];
     this.category = Get.arguments[1]['category'];
     this.title = Get.arguments[2]['title'];

@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 class Enderecos {
   String? EnderecoGuid;
   String? UsuEmail;
@@ -16,24 +18,24 @@ class Enderecos {
   Enderecos(this.EnderecoGuid, this.UsuEmail, this.UsuGuid, this.EnderecoCEP, this.EnderecoLogra, this.EnderecoNumero, this.EnderecoCompl, this.EnderecoTipo, this.EnderecoAtual, this.EnderecoUltData, this.EnderecoDesde, this.EnderecoLat, this.EnderecoLong);
 
   Enderecos.fromJson(Map<String, dynamic> json) {
-    EnderecoGuid = json['EnderecoGuid'];
-    UsuEmail = json['UsuEmail'];
-    UsuGuid = json['UsuGuid'];
-    EnderecoCEP = json['EnderecoCEP'];
-    EnderecoLogra = json['EnderecoLogra'];
-    EnderecoNumero = json['EnderecoNumero'];
-    EnderecoCompl = json['EnderecoCompl'];
-    EnderecoTipo = json['EnderecoTipo'];
-    EnderecoAtual = json['EnderecoAtual'];
-    EnderecoUltData = json['EnderecoUltData'];
-    EnderecoDesde = json['EnderecoDesde'];
-    EnderecoLat = json['EnderecoLat'];
-    EnderecoLong = json['EnderecoLong'];
+    EnderecoGuid = json['EnderecoGUID'].toString();
+    UsuEmail = json['UsuEmail'].toString();
+    UsuGuid = json['UsuGuid'].toString();
+    EnderecoCEP = json['EnderecoCEP'].toString();
+    EnderecoLogra = json['EnderecoLogra'].toString();
+    EnderecoNumero = json['EnderecoNumero'].toString();
+    EnderecoCompl = json['EnderecoCompl'].toString();
+    EnderecoTipo = json['EnderecoTipo'].toString();
+    // EnderecoAtual = int.parse(json['EnderecoAtual'].toString());
+    EnderecoUltData = json['EnderecoUltData'].toString();
+    EnderecoDesde = json['EnderecoDesde'].toString();
+    // EnderecoLat = json['EnderecoLat'].toString();
+    // EnderecoLong = json['EnderecoLong'].toString();
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['EnderecoGuid'] = this.EnderecoGuid;
+    data['EnderecoGUID'] = this.EnderecoGuid;
     data['UsuEmail'] = this.UsuEmail;
     data['UsuGuid'] = this.UsuGuid;
     data['EnderecoCEP'] = this.EnderecoCEP;
@@ -41,7 +43,7 @@ class Enderecos {
     data['EnderecoNumero'] = this.EnderecoNumero;
     data['EnderecoCompl'] = this.EnderecoCompl;
     data['EnderecoTipo'] = this.EnderecoTipo;
-    data['EnderecoAtual'] = this.EnderecoAtual;
+    // data['EnderecoAtual'] = this.EnderecoAtual;
     data['EnderecoUltData'] = this.EnderecoUltData;
     data['EnderecoDesde'] = this.EnderecoDesde;
     data['EnderecoLat'] = this.EnderecoLat;

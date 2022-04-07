@@ -22,7 +22,7 @@ class TelaOfer extends StatelessWidget {
       title: _title,
       home: Scaffold(
         appBar: AppBar(
-          title: const Text(_title),
+          title: const Text(_title), foregroundColor: Color(0xffEE782D),
           backgroundColor: AppColors.primaryBackground,
         ),
         body: const MyStatelessWidget(),

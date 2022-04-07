@@ -27,8 +27,8 @@ class sqlEndereco {
       "enderecoTipo": enderecoTipo,
       "enderecoAtual": enderecoAtual,
       "enderecoUltData": enderecoUltData,
-      "enderecoLat": enderecoLat,
-      "enderecoLong": enderecoLong,
+      "enderecoLatitude": enderecoLat,
+      "enderecoLongitude": enderecoLong,
     };
   }
 }

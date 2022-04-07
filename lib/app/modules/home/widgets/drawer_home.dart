@@ -18,184 +18,193 @@ class DrawerHome extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  // late final SharedPreferences _sharedPreferences;
+  LoginController _login = Get.put(LoginController());
+
+  Future<void> _loadLogin() async {
+    print('_loadLogin');
+    await _login.loadUserData();
+  }
 
   @override
   Widget build(BuildContext context) {
-    LoginController _login = Get.find();
-
-    return Drawer(
-      child: Column(
-        children: [
-          Container(
-              padding: const EdgeInsets.symmetric(horizontal: 2),
-              color: Colors.amber,
-              height: Get.height * 0.13,
-              //margin: EdgeInsets.only(top: 10, left: 1, right: 1),
+    return FutureBuilder(
+        future: _loadLogin(),
+        builder: (context, futuro) {
+          if (futuro.connectionState == ConnectionState.waiting) {
+            return Scaffold();
+          } else {
+            return Drawer(
               child: Column(
-                  children: [
-                    Center(child: Text('')),
-                    Center(child: Text('')),
-                    Center(child: Text(_login.usuNome.toString())),
-                    Center(child: Text(_login.usuCep.toString())),
-                // FutureBuilder(
-                //     future: hivePorakiUserService().GetUserName(),
-                //     initialData: "...",
-                //     builder: (context, snapshot) {
-                //       return Center(
-                //         child: Text(
-                //           snapshot.data.toString(),
-                //           style: TextStyle(fontSize: 22.0),
-                //         ),
-                //       );
-                //     }),
-                // FutureBuilder(
-                //     future: hivePorakiUserService().GetUserCep(),
-                //     initialData: "...",
-                //     builder: (context, snapshot) {
-                //       return Center(
-                //         child: Text(
-                //           'CEP: ' + snapshot.data.toString(),
-                //           style: TextStyle(fontSize: 18.0),
-                //         ),
-                //       );
-                //     }),
-                    // FutureBuilder(
-                    //     future: hivePorakiUserService().GetUserEmail(),
-                    //     initialData: "...",
-                    //     builder: (context, snapshot) {
-                    //       return Center(
-                    //         child: Text(
-                    //           snapshot.data.toString(),
-                    //           style: TextStyle(fontSize: 14.0),
-                    //         ),
-                    //       );
-                    //     }),
-              ])
-          ),
+                children: [
+                  Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 2),
+                      color: Colors.amber,
+                      height: Get.height * 0.13,
+                      //margin: EdgeInsets.only(top: 10, left: 1, right: 1),
+                      child: Column(children: [
+                        Center(child: Text('')),
+                        Center(child: Text('')),
+                        Center(child: Text(_login.usuNome.toString())),
+                        Center(child: Text(_login.usuCep.toString())),
+                        // FutureBuilder(
+                        //     future: hivePorakiUserService().GetUserName(),
+                        //     initialData: "...",
+                        //     builder: (context, snapshot) {
+                        //       return Center(
+                        //         child: Text(
+                        //           snapshot.data.toString(),
+                        //           style: TextStyle(fontSize: 22.0),
+                        //         ),
+                        //       );
+                        //     }),
+                        // FutureBuilder(
+                        //     future: hivePorakiUserService().GetUserCep(),
+                        //     initialData: "...",
+                        //     builder: (context, snapshot) {
+                        //       return Center(
+                        //         child: Text(
+                        //           'CEP: ' + snapshot.data.toString(),
+                        //           style: TextStyle(fontSize: 18.0),
+                        //         ),
+                        //       );
+                        //     }),
+                        // FutureBuilder(
+                        //     future: hivePorakiUserService().GetUserEmail(),
+                        //     initialData: "...",
+                        //     builder: (context, snapshot) {
+                        //       return Center(
+                        //         child: Text(
+                        //           snapshot.data.toString(),
+                        //           style: TextStyle(fontSize: 14.0),
+                        //         ),
+                        //       );
+                        //     }),
+                      ])),
 
+                  // child:
+                  // GestureDetector(
+                  //     onTap: () {},
+                  //     child: Row(
+                  //       children: [
+                  //         CircleAvatar(
+                  //           //backgroundImage: AssetImage('assets/images/photodune.png'),
+                  //         ),
+                  //         const SizedBox(width: 15),
+                  //
+                  //         AutoSizeText(
+                  //           hivePorakiUserService().GetUserEmail(),
+                  //           style: Get.textTheme.bodyText1!.copyWith(
+                  //             fontWeight: FontWeight.normal,
+                  //             fontSize: 18,
+                  //           ),
+                  //         ),
+                  //         Spacer(),
+                  //         Icon(
+                  //           Icons.arrow_forward_ios_sharp,
+                  //           size: 15,
+                  //         )
+                  //       ],
+                  //     ),
+                  //   ),
 
-          // child:
-          // GestureDetector(
-          //     onTap: () {},
-          //     child: Row(
-          //       children: [
-          //         CircleAvatar(
-          //           //backgroundImage: AssetImage('assets/images/photodune.png'),
-          //         ),
-          //         const SizedBox(width: 15),
-          //
-          //         AutoSizeText(
-          //           hivePorakiUserService().GetUserEmail(),
-          //           style: Get.textTheme.bodyText1!.copyWith(
-          //             fontWeight: FontWeight.normal,
-          //             fontSize: 18,
-          //           ),
-          //         ),
-          //         Spacer(),
-          //         Icon(
-          //           Icons.arrow_forward_ios_sharp,
-          //           size: 15,
-          //         )
-          //       ],
-          //     ),
-          //   ),
+                  RowCategoriesDrawerHome(
+                    text: 'Inicio',
+                    isSelected: index == 0,
+                    icon: Icons.home_outlined,
+                    onTap: () => Get.toNamed(AppRoutes.home),
+                  ),
+                  const Divider(),
+                  RowCategoriesDrawerHome(
+                    text: 'Carrinho',
+                    isSelected: index == 1,
+                    icon: Icons.shopping_bag_outlined,
+                    onTap: () => Get.toNamed(AppRoutes.shoppingCart),
+                  ),
+                  RowCategoriesDrawerHome(
+                    text: 'Categorias',
+                    isSelected: index == 1,
+                    icon: Icons.category,
+                    onTap: () => Get.toNamed(AppRoutes.categories),
+                  ),
 
-          RowCategoriesDrawerHome(
-            text: 'Inicio',
-            isSelected: index == 0,
-            icon: Icons.home_outlined,
-            onTap: () => Get.toNamed(AppRoutes.home),
-          ),
-          const Divider(),
-          RowCategoriesDrawerHome(
-            text: 'Carrinho',
-            isSelected: index == 1,
-            icon: Icons.shopping_bag_outlined,
-            onTap: () => Get.toNamed(AppRoutes.shoppingCart),
-          ),
-          RowCategoriesDrawerHome(
-            text: 'Categorias',
-            isSelected: index == 1,
-            icon: Icons.category,
-            onTap: () => Get.toNamed(AppRoutes.categories),
-          ),
+                  RowCategoriesDrawerHome(
+                    text: 'Minhas Compras',
+                    isSelected: index == 2,
+                    icon: Icons.shopping_bag_outlined,
+                    onTap: () => Get.toNamed(AppRoutes.orders),
+                  ),
+                  RowCategoriesDrawerHome(
+                    text: 'Minhas ofertas',
+                    isSelected: index == 3,
+                    icon: Icons.local_offer_rounded,
+                    onTap: () => Get.toNamed(AppRoutes.mOffers),
+                  ),
+                  // RowCategoriesDrawerHome(
+                  //   text: 'Ofertas do dia',
+                  //   icon: Icon(
+                  //     Icons.web_rounded,
+                  //   ),
+                  //   onTap: () {},
+                  // ),
 
-          RowCategoriesDrawerHome(
-            text: 'Minhas Compras',
-            isSelected: index == 2,
-            icon: Icons.shopping_bag_outlined,
-            onTap: () => Get.toNamed(AppRoutes.orders),
-          ),
-          RowCategoriesDrawerHome(
-            text: 'Minhas ofertas',
-            isSelected: index == 3,
-            icon: Icons.local_offer_rounded,
-              onTap: () => Get.toNamed(AppRoutes.mOffers),
-          ),
-          // RowCategoriesDrawerHome(
-          //   text: 'Ofertas do dia',
-          //   icon: Icon(
-          //     Icons.web_rounded,
-          //   ),
-          //   onTap: () {},
-          // ),
+                  RowCategoriesDrawerHome(
+                    text: 'Minha conta',
+                    isSelected: index == 4,
+                    icon: Icons.person_outline,
+                    onTap: () => Get.toNamed(AppRoutes.account),
+                  ),
 
-          // RowCategoriesDrawerHome(
-          //   text: 'Minha conta',
-          //   isSelected: index == 4,
-          //   icon: Icons.person_outline,
-          //   onTap: () => Get.toNamed(AppRoutes.account),
-          // ),
+                  // RowCategoriesDrawerHome(
+                  //   text: 'Minhas lojas',
+                  //   isSelected: index == 4,
+                  //   icon: Icons.store,
+                  //   onTap: () => Get.toNamed(AppRoutes.account),
+                  // ),
 
-          RowCategoriesDrawerHome(
-            text: 'Minhas lojas',
-            isSelected: index == 4,
-            icon: Icons.store,
-            onTap: () => Get.toNamed(AppRoutes.account),
-          ),
-
-          RowCategoriesDrawerHome(
-            text: 'Endereços',
-            isSelected: index == 5,
-            icon: Icons.map,
-            onTap: () => Get.toNamed(AppRoutes.addresses),
-          ),
-          const Divider(),
-          RowCategoriesDrawerHome(
-            text: 'Vendas',
-            isSelected: index == 6,
-            icon: Icons.monetization_on_outlined,
-             onTap: () => Get.toNamed(AppRoutes.orders),
-          ),
-          RowCategoriesDrawerHome(
-            text: 'Entregas',
-            isSelected: index == 7,
-            icon: Icons.shopping_cart_outlined,
-            onTap: () {},
-          ),
-          const Divider(),
-          RowCategoriesDrawerHome(
-            text: 'Sair',
-            isSelected: index == 8,
-            onTap: () {
-              Get.deleteAll(force: true);
-              _runSpecialCmds();
-              Get.offAllNamed(AppRoutes.signIn);
-              },
-            icon: Icons.arrow_back,
-          )
-        ],
-      ),
-    );
+                  RowCategoriesDrawerHome(
+                    text: 'Endereços',
+                    isSelected: index == 5,
+                    icon: Icons.map,
+                    onTap: () => Get.toNamed(AppRoutes.addresses),
+                  ),
+                  const Divider(),
+                  RowCategoriesDrawerHome(
+                    text: 'Vendas',
+                    isSelected: index == 6,
+                    icon: Icons.monetization_on_outlined,
+                    onTap: () => Get.toNamed(AppRoutes.orders),
+                  ),
+                  RowCategoriesDrawerHome(
+                    text: 'Entregas',
+                    isSelected: index == 7,
+                    icon: Icons.shopping_cart_outlined,
+                    onTap: () {},
+                  ),
+                  const Divider(),
+                  RowCategoriesDrawerHome(
+                    text: 'Sair',
+                    isSelected: index == 8,
+                    onTap: () {
+                      Get.deleteAll(force: true);
+                      _runSpecialCmds();
+                      Get.offAllNamed(AppRoutes.signIn);
+                    },
+                    icon: Icons.arrow_back,
+                  )
+                ],
+              ),
+            );
+          }
+        });
   }
 
   Future<String?> getUserData() async {
     return PorAkiPrefs().getPrefStr("userEmail");
   }
 }
+
 void _runSpecialCmds() {
-  sqlPorakiAddressService().redefineTabela();
+  //sqlPorakiAddressService().redefineTabela();
 }
 
 class RowCategoriesDrawerHome extends StatelessWidget {

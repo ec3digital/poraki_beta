@@ -6,22 +6,23 @@ import 'package:poraki/app/data/repositories/store_repository.dart';
 import 'package:poraki/app/modules/auth/login/login_controller.dart';
 
 class StoreController extends GetxController {
+  StoreRepository storeRepo = StoreRepository();
+  bool isLoading = false;
+  // final formKey = GlobalKey<FormState>();
+  LoginController _login = Get.find();
   // enderecoGuid;
   // final String  usuEmail;
   // final String  usuGuid;
-  final MaskedTextController txtLojaCEP = MaskedTextController(mask: '00000-000');
+  final MaskedTextController txtLojaCEP =
+      MaskedTextController(mask: '00000-000');
   final TextEditingController txtLojaNome = TextEditingController();
   final TextEditingController txtLojaSlogan = TextEditingController();
   final TextEditingController txtLojaCNPJ = TextEditingController();
   final TextEditingController txtLojaRazao = TextEditingController();
+  String? lojaGuid;
   // final int     txtEnderecoAtual;
   // final String? txtEnderecoUltData;
   // final String? txtEnderecoDesde;
-
-  StoreRepository storeRepo = StoreRepository();
-  bool isLoading = false;
-  final formKey = GlobalKey<FormState>();
-  LoginController _login = Get.find();
 
   List<Lojas> lojas = [];
   Lojas? loja;
@@ -30,7 +31,9 @@ class StoreController extends GetxController {
   Future<void> carregaLojas() async {
     try {
       changeLoading(true);
-      lojas = await storeRepo.getAllStores(_login.usuGuid.toString());
+      var lojasTemp = await storeRepo.getAllStores(_login.usuGuid.toString());
+      print('lojasTemp: ' + lojasTemp.length.toString());
+      lojas = lojasTemp;
     } catch (e) {
       print('Erro no carregaLojas() controller ${e.toString()}');
     } finally {
@@ -45,23 +48,24 @@ class StoreController extends GetxController {
 
   // @override
   // void onInit() async {
-  //   await carregaUsuario();
+  //   print('store controller onInit');
+  //   this.lojaGuid = Get.arguments[0]['lojaGuid'];
+  //   print('lojaGuid on Init: ' + this.lojaGuid.toString());
   //   super.onInit();
   // }
 
-  Future<void> carregaLoja(String guid) async {
+  Future<void> carregaLoja(String? guid) async {
     print('carregaLoja');
 
     try {
       changeLoading(true);
-      loja = await storeRepo.getStore(guid);
+      if (guid != "") loja = await storeRepo.getStore(guid!);
 
       txtLojaCEP.text = loja!.LojaCEP.toString();
       txtLojaCNPJ.text = loja!.LojaCNPJ.toString();
       txtLojaNome.text = loja!.LojaNome.toString();
       txtLojaRazao.text = loja!.LojaRazao.toString();
       txtLojaSlogan.text = loja!.LojaSlogan.toString();
-
     } catch (e) {
       print('Erro no carregaLoja() controller ${e.toString()}');
     } finally {
@@ -69,6 +73,27 @@ class StoreController extends GetxController {
     }
   }
 
+  void bindLoja() async {
+    print('bindLoja');
+
+    txtLojaCEP.text = loja!.LojaCEP.toString();
+    txtLojaCNPJ.text = loja!.LojaCNPJ.toString();
+    txtLojaNome.text = loja!.LojaNome.toString();
+    txtLojaRazao.text = loja!.LojaRazao.toString();
+    txtLojaSlogan.text = loja!.LojaSlogan.toString();
+  }
+
+  void emptyLoja() {
+    print('emptyLoja()');
+    loja = null;
+
+    txtLojaCEP.text = "";
+    txtLojaCNPJ.text = "";
+    txtLojaNome.text = "";
+    txtLojaRazao.text = "";
+    txtLojaSlogan.text = "";
+    this.refresh();
+  }
 
   // Future<void> atualizaLoja(sqlEndereco endereco) async {
   //   await sqlPorakiAddressService().updateEndereco(endereco);

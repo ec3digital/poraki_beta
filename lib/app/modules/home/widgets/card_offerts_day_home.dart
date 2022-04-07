@@ -31,7 +31,7 @@ class CardOffertsDayHome extends StatelessWidget {
             width: double.maxFinite,
             child: Card(
               elevation: 3,
-              color: Colors.white,
+              color: Color(0xffFFFFFF),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -39,7 +39,7 @@ class CardOffertsDayHome extends StatelessWidget {
                     padding: const EdgeInsets.all(15.0),
                     child: Text(
                       widgetTitle,
-                      style: Get.textTheme.headline1,
+                      style: TextStyle(color: Color(0xffEE782D),fontSize: 28) //Get.textTheme.headline1,
                     ),
                   ),
                   Divider(),
@@ -76,7 +76,7 @@ class CardOffertsDayHome extends StatelessWidget {
                         Text(
                           'R\$ $price',
                           style: Get.textTheme.headline1!.copyWith(
-                            color: Colors.green,
+                            color: Color(0xddE13E9A),
                           ),
                         ),
                         Text(

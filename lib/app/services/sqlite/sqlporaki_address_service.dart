@@ -28,8 +28,8 @@ class sqlPorakiAddressService {
             item['enderecoTipo'],
             item['enderecoAtual'],
             item['enderecoUltData'],
-            item['enderecoLat'],
-            item['enderecoLong']));
+            item['enderecoLatitude'],
+            item['enderecoLongitude']));
       });
     } else {
       List<Map<String, dynamic>> list = await db
@@ -47,8 +47,8 @@ class sqlPorakiAddressService {
             item['enderecoTipo'],
             item['enderecoAtual'],
             item['enderecoUltData'],
-            item['enderecoLat'],
-            item['enderecoLong']));
+            item['enderecoLatitude'],
+            item['enderecoLongitude']));
       });
     }
     return enderecos;
