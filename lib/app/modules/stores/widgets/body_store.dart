@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:poraki/app/data/models/lojas.dart';
+import 'package:poraki/app/modules/auth/login/login_controller.dart';
 import 'package:poraki/app/modules/home/widgets/gradient_header_home.dart';
 import 'package:poraki/app/modules/offers/widgets/button_offer.dart';
 import 'package:poraki/app/routes/app_routes.dart';
@@ -16,246 +17,189 @@ class StoreBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     StoreController controller = Get.find();
+    LoginController _loginController = Get.find();
+    Color textColor = _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'textDark').first.coreValor.toString());
 
-    //String _storeGuid = ModalRoute.of(context)!.settings.arguments.toString();
-
-    // var args = ModalRoute.of(context)?.settings.arguments as String;
     return Container(child: GetBuilder<StoreController>(builder: (context) {
       if (controller.isLoading) {
         return Center(
           child: Container(),
         );
       } else {
-
-        if(controller.loja != null) {
+        if (controller.loja != null) {
           Future.delayed(Duration.zero, () async {
             controller.bindLoja();
           });
         }
 
         return SingleChildScrollView(
-          child: Container(
-              margin: const EdgeInsets.fromLTRB(12, 12, 12, 0),
+          child: GradientHeaderHome(
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                SizedBox(height: 20),
-                Center(
-                  child: Text(
-                    "Loja",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 22),
-                  ),
-                ),
-                Form(
-                  // key: controller.formKey,
-                  child: Column(children: [
-                    TextFormField(
-                      // validator: (value) {
-                      //   if (value!.length < 4) {
-                      //     return "Digite um nome maior";
-                      //   }
-                      //   return null;
-                      // },
-                      controller: controller.txtLojaCEP,
-                      autofocus: true,
-                      style: TextStyle(color: Colors.brown),
-                      decoration: InputDecoration(
-                        labelText: "CEP",
-                        labelStyle: TextStyle(color: Colors.brown),
-                        prefixIcon: Icon(
-                          Icons.location_on_outlined,
-                          color: Colors.brown,
-                        ),
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.brown),
-                        ),
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.brown),
-                        ),
+                    SizedBox(height: 20),
+                    Center(
+                      child: Text(
+                        "Loja",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 22),
                       ),
-                      onEditingComplete: () {
-                        print('onEditingComplete');
-                        buscaCep();
+                    ),
+                    Form(
+                      // key: controller.formKey,
+                      child: Column(children: [
+                        TextFormField(
+                          // validator: (value) {
+                          //   if (value!.length < 4) {
+                          //     return "Digite um nome maior";
+                          //   }
+                          //   return null;
+                          // },
+                          controller: controller.txtLojaCEP,
+                          autofocus: true,
+                          style: TextStyle(color: textColor),
+                          decoration: InputDecoration(
+                            labelText: "CEP",
+                            labelStyle: TextStyle(color: textColor),
+                            prefixIcon: Icon(
+                              Icons.location_on_outlined,
+                              color: textColor,
+                            ),
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: textColor),
+                            ),
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: textColor),
+                            ),
+                          ),
+                          onEditingComplete: () {
+                            print('onEditingComplete');
+                            buscaCep();
+                          },
+                        ),
+                        TextFormField(
+                          // validator: (value) {
+                          //   if (value!.length < 10) {
+                          //     return "Digite um nome maior";
+                          //   }
+                          //   return null;
+                          // },
+                          controller: controller.txtLojaNome,
+                          // keyboardType: TextInputType.streetAddress,
+                          autofocus: true,
+                          style: TextStyle(color: textColor),
+                          decoration: InputDecoration(
+                            labelText: "Nome da Loja",
+                            labelStyle: TextStyle(color: textColor),
+                            prefixIcon: Icon(
+                              Icons.storefront_rounded,
+                              color: textColor,
+                            ),
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: textColor),
+                            ),
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: textColor),
+                            ),
+                          ),
+                        ),
+                        TextFormField(
+                          // validator: (value) {
+                          //   if (value!.length != 11) {
+                          //     return "CPF inválido";
+                          //   }
+                          //   return null;
+                          // },
+                          controller: controller.txtLojaSlogan,
+                          // keyboardType: TextInputType.number,
+                          autofocus: true,
+                          // focusNode: txtEnderecoNroFocus,
+                          style: TextStyle(color: textColor),
+                          decoration: InputDecoration(
+                            labelText: "Slogan",
+                            labelStyle: TextStyle(color: textColor),
+                            prefixIcon: Icon(
+                              Icons.local_offer_outlined,
+                              color: textColor,
+                            ),
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: textColor),
+                            ),
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: textColor),
+                            ),
+                          ),
+                        ),
+                        TextFormField(
+                          // validator: (value) {
+                          //   if (value!.length != 11) {
+                          //     return "Por favor digite um telefone válido";
+                          //   }
+                          //   return null;
+                          // },
+                          controller: controller.txtLojaCNPJ,
+                          autofocus: true,
+                          style: TextStyle(color: textColor),
+                          decoration: InputDecoration(
+                            labelText: "CNPJ",
+                            labelStyle: TextStyle(color: textColor),
+                            prefixIcon: Icon(
+                              Icons.work_outline,
+                              color: textColor,
+                            ),
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: textColor),
+                            ),
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: textColor),
+                            ),
+                          ),
+                        ),
+
+                        TextFormField(
+                          // validator: (value) {
+                          //   if (value!.length != 11) {
+                          //     return "Por favor digite um telefone válido";
+                          //   }
+                          //   return null;
+                          // },
+                          controller: controller.txtLojaRazao,
+                          autofocus: true,
+                          style: TextStyle(color: textColor),
+                          decoration: InputDecoration(
+                            labelText: "Razão Social",
+                            labelStyle: TextStyle(color: textColor),
+                            prefixIcon: Icon(
+                              Icons.location_city_outlined,
+                              color: textColor,
+                            ),
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: textColor),
+                            ),
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: textColor),
+                            ),
+                          ),
+                        ),
+                      ]),
+                    ),
+                    SizedBox(height: 20),
+                    ButtonOffer(
+                      onPressed: () {
+                        salvar("");
+
+                        final snackBar = SnackBar(
+                            backgroundColor: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'textDark').first.coreValor.toString()),
+                            content: Container( height: 40, child: Center(child: const Text('Informações salvas 1!'))));
+                        // ScaffoldMessenger.of(context).showSnackBar(snackBar);
                       },
-                    ),
-                    TextFormField(
-                      // validator: (value) {
-                      //   if (value!.length < 10) {
-                      //     return "Digite um nome maior";
-                      //   }
-                      //   return null;
-                      // },
-                      controller: controller.txtLojaNome,
-                      // keyboardType: TextInputType.streetAddress,
-                      autofocus: true,
-                      style: TextStyle(color: Colors.brown),
-                      decoration: InputDecoration(
-                        labelText: "Nome da Loja",
-                        labelStyle: TextStyle(color: Colors.brown),
-                        prefixIcon: Icon(
-                          Icons.storefront_rounded,
-                          color: Colors.brown,
-                        ),
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.brown),
-                        ),
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.brown),
-                        ),
-                      ),
-                    ),
-                    TextFormField(
-                      // validator: (value) {
-                      //   if (value!.length != 11) {
-                      //     return "CPF inválido";
-                      //   }
-                      //   return null;
-                      // },
-                      controller: controller.txtLojaSlogan,
-                      // keyboardType: TextInputType.number,
-                      autofocus: true,
-                      // focusNode: txtEnderecoNroFocus,
-                      style: TextStyle(color: Colors.brown),
-                      decoration: InputDecoration(
-                        labelText: "Slogan",
-                        labelStyle: TextStyle(color: Colors.brown),
-                        prefixIcon: Icon(
-                          Icons.local_offer_outlined,
-                          color: Colors.brown,
-                        ),
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.brown),
-                        ),
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.brown),
-                        ),
-                      ),
-                    ),
-                    TextFormField(
-                      // validator: (value) {
-                      //   if (value!.length != 11) {
-                      //     return "Por favor digite um telefone válido";
-                      //   }
-                      //   return null;
-                      // },
-                      controller: controller.txtLojaCNPJ,
-                      autofocus: true,
-                      style: TextStyle(color: Colors.brown),
-                      decoration: InputDecoration(
-                        labelText: "CNPJ",
-                        labelStyle: TextStyle(color: Colors.brown),
-                        prefixIcon: Icon(
-                          Icons.work_outline,
-                          color: Colors.brown,
-                        ),
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.brown),
-                        ),
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.brown),
-                        ),
-                      ),
+                      colorText: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'textLight').first.coreValor.toString()),
+                      text: 'Salvar',
+                      colorButton: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'iconColor').first.coreValor.toString()),
                     ),
 
-                    TextFormField(
-                      // validator: (value) {
-                      //   if (value!.length != 11) {
-                      //     return "Por favor digite um telefone válido";
-                      //   }
-                      //   return null;
-                      // },
-                      controller: controller.txtLojaRazao,
-                      autofocus: true,
-                      style: TextStyle(color: Colors.brown),
-                      decoration: InputDecoration(
-                        labelText: "Razão Social",
-                        labelStyle: TextStyle(color: Colors.brown),
-                        prefixIcon: Icon(
-                          Icons.location_city_outlined,
-                          color: Colors.brown,
-                        ),
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.brown),
-                        ),
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.brown),
-                        ),
-                      ),
-                    ),
-
-                    // Text('Tipo'),
-                    // DropdownButton<String>(
-                    //   items: tipos.map((String value) {
-                    //     return DropdownMenuItem<String>(
-                    //       value: value,
-                    //       child: Text(value),
-                    //     );
-                    //   }).toList(),
-                    //   value: tipoSel,
-                    //   onChanged: (String? newValue) {
-                    //     setState(() {
-                    //       tipoSel = newValue!;
-                    //     });
-                    //   },
-
-                    // onChanged: (String value) {
-                    //   setState(() {
-                    //     tipoSel = value;
-                    //   });
-                    // },
-                    //),
-                    // TextFormField(
-                    //   // validator: (value) {
-                    //   //   if (value!.length < 5) {
-                    //   //     return "Esse e-mail parece curto demais";
-                    //   //   } else if (!value.contains("@")) {
-                    //   //     return "Esse e-mail está meio estranho, não?";
-                    //   //   }
-                    //   //   return null;
-                    //   // },
-                    //   controller: widget._controller.txtEnderecoTipo,
-                    //   autofocus: true,
-                    //   style: TextStyle(color: Colors.brown),
-                    //   decoration: InputDecoration(
-                    //     labelText: "Tipo: Casa, Trabalho, Estudo, Outros",
-                    //     labelStyle: TextStyle(
-                    //       color: Colors.brown,
-                    //     ),
-                    //     prefixIcon: Icon(
-                    //       Icons.house_outlined,
-                    //       color: Colors.brown,
-                    //     ),
-                    //     focusedBorder: UnderlineInputBorder(
-                    //       borderSide: BorderSide(color: Colors.brown),
-                    //     ),
-                    //     enabledBorder: UnderlineInputBorder(
-                    //       borderSide: BorderSide(color: Colors.brown),
-                    //     ),
-                    //   ),
-                    // ),
-                  ]),
-                ),
-                SizedBox(height: 20),
-                ButtonOffer(
-                  onPressed: () {
-                    salvar("");
-
-                    final snackBar = SnackBar(
-                        backgroundColor: AppColors.primaryColor,
-                        content: Container(
-                            height: 40,
-                            child: Center(
-                                child: const Text('Informações salvas !'))));
-                    // ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                  },
-                  colorText: AppColors.primaryBackground,
-                  text: 'Salvar',
-                  colorButton: AppColors.primaryColor,
-                ),
-
-                // )
-              ])
+                    // )
+                  ])
               // ],
               ),
         );

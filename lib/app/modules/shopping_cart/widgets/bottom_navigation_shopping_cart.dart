@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:poraki/app/data/models/sql/sqlEndereco.dart';
 import 'package:poraki/app/modules/addresses/address_controller.dart';
+import 'package:poraki/app/modules/auth/login/login_controller.dart';
 import 'package:poraki/app/modules/offers/widgets/button_offer.dart';
 import 'package:poraki/app/routes/app_routes.dart';
 import '../../../theme/app_theme.dart';
@@ -22,6 +23,9 @@ class BottomNavigationShoppingCart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    LoginController _loginController = Get.find();
+    Color darkText = _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'textDark').first.coreValor.toString());
+
     return FutureBuilder(
         future: getEnderecoAtual(),
         builder: (context, futuro) {
@@ -46,20 +50,12 @@ class BottomNavigationShoppingCart extends StatelessWidget {
                         children: [
                           Text(
                             'Envio: ',
-                            style: Get.textTheme.bodyText1!.copyWith(
-                              color: AppColors.primaryColor,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 15,
-                            ),
+                            style: TextStyle(color: darkText, fontSize: 15),
                           ),
                           Text(
                             endAtual.enderecoCEP,
                             // 'Rua tal com tal coisa 85, São Paulo',
-                            style: Get.textTheme.bodyText1!.copyWith(
-                              color: AppColors.primaryColor,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 15,
-                            ),
+                            style: TextStyle(color: darkText, fontSize: 15),
                           ),
                         ],
                       ),
@@ -73,8 +69,8 @@ class BottomNavigationShoppingCart extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('Total'),
-                          Text('R\$ ' + total.toString()),
+                          Text('Total', style: TextStyle(color: darkText, fontSize: 16),),
+                          Text('R\$ ' + total.toStringAsFixed(2), style: TextStyle(color: darkText, fontSize: 16),),
                         ],
                       ),
                     ),
@@ -90,8 +86,8 @@ class BottomNavigationShoppingCart extends StatelessWidget {
                                 Get.toNamed(AppRoutes.checkout);
                               },
                               text: 'Pagar',
-                              colorText: Colors.white,
-                              colorButton: Colors.brown,
+                              colorText: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'textLight').first.coreValor.toString()),
+                              colorButton: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'iconColor').first.coreValor.toString()),
                             ),
                             ButtonOffer(
                               onPressed: () {
@@ -102,8 +98,8 @@ class BottomNavigationShoppingCart extends StatelessWidget {
                                 Navigator.pop(context);
                               },
                               text: 'Esvaziar o carrinho',
-                              colorText: AppColors.primaryColor,
-                              colorButton: AppColors.primaryColorButton,
+                              colorText: darkText,
+                              colorButton: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'backDark').first.coreValor.toString()),
                             ),
                           ]),
                     )

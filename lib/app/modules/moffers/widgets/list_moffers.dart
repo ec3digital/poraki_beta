@@ -2,6 +2,8 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:poraki/app/data/models/oferta.dart';
+import 'package:poraki/app/modules/auth/login/login_controller.dart';
+import 'package:poraki/app/modules/home/widgets/gradient_header_home.dart';
 import 'package:poraki/app/modules/moffers/moffer_controller.dart';
 import 'package:poraki/app/modules/offers/widgets/button_offer.dart';
 import 'package:poraki/app/modules/stores/store_controller.dart';
@@ -24,6 +26,7 @@ class _ListMoffersState extends State<ListMoffers> {
   Widget build(BuildContext context) {
     final MofferController mofferController = Get.put(MofferController());
     final StoreController storeController = Get.put(StoreController());
+    LoginController _loginController = Get.find();
 
     var listStores = ['Nenhuma', 'Loja 1'];
     var selStore = 'Nenhuma';
@@ -49,20 +52,31 @@ class _ListMoffersState extends State<ListMoffers> {
                     child: CircularProgressIndicator(),
                   );
                 } else {
-                  return SingleChildScrollView(
+                  return SingleChildScrollView(child: GradientHeaderHome(
                       child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                         SizedBox(height: 20),
-                        Center(child: Text("Minhas Ofertas")),
+                        Center(child: Text("Minhas Ofertas",
+                          style: TextStyle(fontSize: 24),)),
                         SizedBox(height: 20),
                         ButtonOffer(
                           onPressed: () {
                             Get.toNamed(AppRoutes.mOffer);
                           },
-                          colorText: AppColors.primaryBackground,
-                          text: 'Criar nova oferta',
-                          colorButton: AppColors.primaryColorButton,
+                          colorText: _loginController.colorFromHex(_loginController
+                              .listCore
+                              .where((coreItem) => coreItem.coreChave == 'textLight')
+                              .first
+                              .coreValor
+                              .toString()),
+                          text: 'Nova oferta',
+                          colorButton: _loginController.colorFromHex(_loginController
+                              .listCore
+                              .where((coreItem) => coreItem.coreChave == 'textDark')
+                              .first
+                              .coreValor
+                              .toString()),
                         ),
                         SizedBox(height: 20),
                         ListTile(
@@ -82,26 +96,26 @@ class _ListMoffersState extends State<ListMoffers> {
                             },
                           ),
                         ),
-                        SizedBox(height: 20),
-                        ButtonOffer(
-                          onPressed: () {
-                            Future.delayed(Duration.zero, () async {
-                              storeController.emptyLoja();
-                            });
-
-                            Get.toNamed(AppRoutes.store);
-                            // Get.toNamed(AppRoutes.store,arguments: [{
-                            //   "lojaObj": null
-                            // }]);
-                          },
-                          colorText: AppColors.primaryBackground,
-                          text: 'Criar Loja',
-                          colorButton: AppColors.secondaryColorButton,
-                        ),
-                        SizedBox(height: 20),
-                        IconButton(
-                            icon: Icon(Icons.store),
-                            onPressed: () => Get.toNamed(AppRoutes.stores)),
+                        // SizedBox(height: 20),
+                        // ButtonOffer(
+                        //   onPressed: () {
+                        //     Future.delayed(Duration.zero, () async {
+                        //       storeController.emptyLoja();
+                        //     });
+                        //
+                        //     Get.toNamed(AppRoutes.store);
+                        //     // Get.toNamed(AppRoutes.store,arguments: [{
+                        //     //   "lojaObj": null
+                        //     // }]);
+                        //   },
+                        //   colorText: AppColors.primaryBackground,
+                        //   text: 'Criar Loja',
+                        //   colorButton: AppColors.secondaryColorButton,
+                        // ),
+                        // SizedBox(height: 20),
+                        // IconButton(
+                        //     icon: Icon(Icons.store),
+                        //     onPressed: () => Get.toNamed(AppRoutes.stores)),
                         SizedBox(height: 20),
                         GridView.builder(
                           shrinkWrap: true,
@@ -155,6 +169,7 @@ class _ListMoffersState extends State<ListMoffers> {
                                           style: TextStyle(
                                             fontWeight: FontWeight.w700,
                                             fontSize: 14,
+                                            color: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'textDark').first.coreValor.toString())
                                           ),
                                           maxLines: 2,
                                         ),
@@ -167,7 +182,7 @@ class _ListMoffersState extends State<ListMoffers> {
                                           style: TextStyle(
                                             fontWeight: FontWeight.w700,
                                             fontSize: 14,
-                                            color: Colors.green,
+                                            color: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'backDark').first.coreValor.toString()),
                                           ),
                                         ),
                                       ),
@@ -203,7 +218,7 @@ class _ListMoffersState extends State<ListMoffers> {
                             );
                           },
                         )
-                      ]));
+                      ])));
                 }
               }),
             );

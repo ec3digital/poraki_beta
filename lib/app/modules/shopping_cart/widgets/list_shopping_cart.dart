@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:poraki/app/modules/auth/login/login_controller.dart';
 import 'package:poraki/app/routes/app_routes.dart';
 import '../../../theme/app_theme.dart';
 import '../shopping_cart_controller.dart';
@@ -20,12 +21,14 @@ class ListShoppingCart extends StatefulWidget {
 class _ListShoppingCartState extends State<ListShoppingCart> {
   @override
   Widget build(BuildContext context) {
+    LoginController _loginController = Get.find();
+    Color linkText = _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'backDark').first.coreValor.toString());
+    Color darkText = _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'textDark').first.coreValor.toString());
 
     return FutureBuilder(
         future: widget.controller.carregaCarrinho(),
         builder: (context, futuro) {
           print('cart qty:' + widget.controller.listShoppingCart.length.toString());
-
 
           if (futuro.connectionState == ConnectionState.waiting) {
             return Center(
@@ -34,7 +37,7 @@ class _ListShoppingCartState extends State<ListShoppingCart> {
             //   return Center(child: Text(futuro.error.toString()));
           } else {
             if (widget.controller.listShoppingCart.length == 0) {
-              return Center(child: Text("carrinho vazio"));
+              return Center(child: Text("carrinho vazio", style: TextStyle(fontSize: 22, color: darkText),));
             } else {
               return ListView.builder(
                   itemCount: widget.controller.listShoppingCart.length,
@@ -63,12 +66,7 @@ class _ListShoppingCartState extends State<ListShoppingCart> {
                                     Expanded(
                                       child: Text(
                                         widget.controller
-                                            .listShoppingCart[index].name,
-                                        style:
-                                            Get.textTheme.bodyText1!.copyWith(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.normal,
-                                        ),
+                                            .listShoppingCart[index].name, style: TextStyle(fontSize: 18, color: darkText)
                                       ),
                                     ),
                                   ],
@@ -83,7 +81,7 @@ class _ListShoppingCartState extends State<ListShoppingCart> {
                                  children: [
                                   const SizedBox(width: 05),
                                   Text(
-                                    'R\$ ${widget.controller.listShoppingCart[index].value?.toStringAsFixed(2) ?? ''}',
+                                    'R\$ ${widget.controller.listShoppingCart[index].value?.toStringAsFixed(2) ?? ''}', style: TextStyle(fontSize: 18, color: darkText)
                                   ),
                                 ],
                               ),
@@ -117,11 +115,7 @@ class _ListShoppingCartState extends State<ListShoppingCart> {
                                     },
                                     child: Text(
                                       'Excluir',
-                                      style: Get.textTheme.bodyText1!.copyWith(
-                                        fontWeight: FontWeight.w400,
-                                        color: AppColors.primaryColor,
-                                        fontSize: 14,
-                                      ),
+                                      style: TextStyle(fontSize: 15, color: linkText)
                                     ),
                                   ),
                                   const SizedBox(width: 30),
@@ -134,11 +128,7 @@ class _ListShoppingCartState extends State<ListShoppingCart> {
                                         ]), //TODO: falta fazer fkid
                                     child: Text(
                                       'Ver outros produtos deste vendedor',
-                                      style: Get.textTheme.bodyText1!.copyWith(
-                                        fontWeight: FontWeight.w400,
-                                        color: AppColors.primaryColor,
-                                        fontSize: 14,
-                                      ),
+                                        style: TextStyle(fontSize: 15, color: linkText)
                                     ),
                                   ),
                                 ],

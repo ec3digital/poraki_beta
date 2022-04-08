@@ -35,8 +35,9 @@ dependencies:
   sqflite: ^2.0.1
   #number_inc_dec: ^0.8.0
   #provider: ^5.0.0
-  hive: ^2.0.5
-  hive_flutter: ^1.1.0
+  #hive: ^2.0.5
+  #hive_flutter: ^1.1.0
+  intl: ^0.17.0
   path: ^1.8.0
   #path_provider: ^2.0.4
   extended_masked_text: ^2.3.1

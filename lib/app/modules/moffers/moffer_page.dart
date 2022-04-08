@@ -10,7 +10,9 @@ import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:poraki/app/data/models/categorias.dart';
 import 'package:poraki/app/data/models/oferta.dart';
+import 'package:poraki/app/modules/auth/login/login_controller.dart';
 import 'package:poraki/app/modules/categories/categories_controller.dart';
+import 'package:poraki/app/modules/home/widgets/gradient_header_home.dart';
 //import 'package:poraki/app/modules/home/home_controller.dart';
 //import 'package:poraki/app/modules/home/widgets/app_bar_home.dart';
 //import 'package:poraki/app/modules/home/widgets/drawer_home.dart';
@@ -47,6 +49,7 @@ class MOfferPage extends StatefulWidget {
 }
 
 class _MOfferPage extends State<MOfferPage> {
+
   File? image;
   bool isEditing = false;
 
@@ -64,7 +67,7 @@ class _MOfferPage extends State<MOfferPage> {
   var listaFormaFechamento = [
     'selecione',
     'mensagem no aplicativo (seguro)',
-    'whatsapp'
+    'whatsapp',
     'pagamento no aplicativo (seguro)'
   ]; // pegar da API
   var listaFormaEntrega = ['selecione', 'vendedor', 'comprador', 'parceiro'];
@@ -702,6 +705,9 @@ class _MOfferPage extends State<MOfferPage> {
 
   @override
   Widget build(BuildContext context) {
+    LoginController _loginController = Get.find();
+    Color textColor = _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'textDark').first.coreValor.toString());
+
     return FutureBuilder(
         future:
             carregaObjs(), // widget.categoriesController.getCategoriesNames(),
@@ -719,9 +725,14 @@ class _MOfferPage extends State<MOfferPage> {
                 child: AppBar(
                   elevation: 0,
                   centerTitle: false,
+                  backgroundColor: _loginController.colorFromHex(_loginController.listCore
+                      .where((coreItem) => coreItem.coreChave == 'backLight')
+                      .first
+                      .coreValor
+                      .toString()),
                   title: Text(
                     'Minha oferta',
-                    style: Get.textTheme.headline1!.copyWith(fontSize: 25),
+                    style: TextStyle(fontSize: 25, color: textColor),
                   ),
                 ),
               ),
@@ -730,9 +741,11 @@ class _MOfferPage extends State<MOfferPage> {
                   ? Center(
                       child: CircularProgressIndicator(),
                     )
-                  : Padding(
+                  : GradientHeaderHome(child: Padding(
                       padding: const EdgeInsets.all(15.0),
-                      child: Form(
+                      child:
+
+                      Form(
                         key: _form,
                         child: ListView(
                           children: [
@@ -1460,6 +1473,16 @@ class _MOfferPage extends State<MOfferPage> {
                                 SizedBox(height: 20),
                                 ElevatedButton(
                                     onPressed: () => pegarImagemGaleria(),
+                                    style: ButtonStyle(
+                                        backgroundColor: MaterialStateProperty.all<Color>(
+                                          _loginController.colorFromHex(_loginController
+                                              .listCore
+                                              .where((coreItem) => coreItem.coreChave == 'backDark')
+                                              .first
+                                              .coreValor
+                                              .toString()),
+                                        )),
+
                                     child: Row(
                                       children: [
                                         Icon(Icons.photo_album),
@@ -1486,12 +1509,23 @@ class _MOfferPage extends State<MOfferPage> {
                                 SizedBox(height: 20),
                                 ButtonOffer(
                                     text: 'Salvar',
-                                    colorText: AppColors.primaryColorButton,
+                                    colorText: _loginController.colorFromHex(_loginController
+                                        .listCore
+                                        .where((coreItem) => coreItem.coreChave == 'textLight')
+                                        .first
+                                        .coreValor
+                                        .toString()),
+                                    colorButton: _loginController.colorFromHex(_loginController
+                                        .listCore
+                                        .where((coreItem) => coreItem.coreChave == 'iconColor')
+                                        .first
+                                        .coreValor
+                                        .toString()),
                                     onPressed: () => uploadFoto(image == null? null : image)),
                               ])
                           ],
                         ),
-                      ),
+                      ),)
                     ),
             );
           }

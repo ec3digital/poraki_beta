@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:poraki/app/data/models/sql/sqlCarrinho.dart';
+import 'package:poraki/app/modules/auth/login/login_controller.dart';
 import 'package:poraki/app/modules/offers/widgets/button_offer.dart';
 import 'package:poraki/app/modules/offers/widgets/detail_offer.dart';
 import 'package:poraki/app/routes/app_routes.dart';
@@ -19,6 +20,9 @@ class BodyOffer extends StatelessWidget {
   Widget build(BuildContext context) {
     //OffersController offersController = Get.put(OffersController());
     OffersController offersController = Get.find();
+    LoginController _loginController = Get.find();
+    Color darkText = _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'textDark').first.coreValor.toString());
+
     return Container(
       child: GetBuilder<OffersController>(builder: (context) {
         if (offersController.isLoading) {
@@ -48,8 +52,7 @@ class BodyOffer extends StatelessWidget {
                     child: Text(
                       _product.ofertaTitulo.toString(),
                       textAlign: TextAlign.start,
-                      style: Get.textTheme.bodyText1!
-                          .copyWith(fontSize: 14, fontWeight: FontWeight.w400),
+                      style: TextStyle(fontSize: 22, fontWeight: FontWeight.w400, color: darkText),
                     ),
                   ),
                   const SizedBox(height: 10),
@@ -59,12 +62,12 @@ class BodyOffer extends StatelessWidget {
                   SizedBox(height: 10),
                   Text(
                     'R\$ ${_product.ofertaPreco?.toStringAsFixed(2) ?? ''}',
-                    style: Get.textTheme.bodyText1!.copyWith(
-                      fontSize: 25,
+                    style: TextStyle(
+                      fontSize: 25, color: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'backDark').first.coreValor.toString())
                     ),
                   ),
                   const SizedBox(height: 10),
-                  Text('Quantidade: 1'),
+                  Text('Quantidade: 1', style: TextStyle(color: darkText),),
                   SizedBox(height: 10),
                   ButtonOffer(
                     onPressed: () {
@@ -83,9 +86,9 @@ class BodyOffer extends StatelessWidget {
 
                       Get.toNamed(AppRoutes.shoppingCart);
                     },
-                    colorText: Colors.white,
+                    colorText: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'textLight').first.coreValor.toString()),
                     text: 'Comprar agora',
-                    colorButton: AppColors.primaryColor,
+                    colorButton: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'iconColor').first.coreValor.toString()),
                   ),
                   ButtonOffer(
                     onPressed: () {
@@ -106,9 +109,9 @@ class BodyOffer extends StatelessWidget {
                         AppRoutes.shoppingCart,
                       );
                     },
-                    colorText: AppColors.primaryColor,
+                    colorText: darkText,
                     text: 'Adicionar ao carrinho',
-                    colorButton: AppColors.primaryColorButton,
+                    colorButton: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'backDark').first.coreValor.toString()),
                   ),
                 ],
               ),

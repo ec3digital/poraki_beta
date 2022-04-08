@@ -16,7 +16,7 @@ class ListOrders extends StatelessWidget {
     Widget _buildRow(sqlPedido pedido) {
       print(pedido.toMap());
       return Column(children: [ListTile(
-        leading: Icon(Icons.work_outlined),
+        leading: Icon(Icons.monetization_on_outlined),
         onTap: () => Get.toNamed(AppRoutes.order, arguments: [pedido.toMap()]),
         // ),
         title: Text('Pedido em: ' + pedido.pedidoEm + ' no valor de ' + pedido.pedidoValorTotal + ' - a partir do CEP: ' + pedido.pedidoCEP

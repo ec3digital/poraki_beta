@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:poraki/app/data/models/sql/sqlPedido.dart';
+import 'package:poraki/app/modules/auth/login/login_controller.dart';
 import 'package:poraki/app/modules/home/widgets/gradient_header_home.dart';
 import 'package:poraki/app/theme/app_theme.dart';
 
@@ -15,6 +16,7 @@ class ListOrderItems extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return FutureBuilder(
         future: orderController
             .buscaPedido(''), //'c09cd10b-5aa2-43c2-bb42-10031c0d4280'),
@@ -74,23 +76,28 @@ class ListOrderItems extends StatelessWidget {
 
   checkoutItem() {
     print('items qt: ' + orderController.listaPedidosItems.length.toString());
+
+    LoginController _loginController = Get.find();
+    Color colorText = _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'textDark').first.coreValor.toString());
+
     return Container(
       margin: EdgeInsets.all(4),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(4)),
       ),
       child: Card(
+        color: Colors.transparent,
         elevation: 0,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(4))),
         child: Container(
           decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(4)),
-              border: Border.all(color: Colors.grey.shade200)),
+              border: Border.all(color: colorText)),
           padding: EdgeInsets.only(left: 12, top: 8, right: 12, bottom: 8),
           child: ListView.builder(
             itemBuilder: (context, position) {
-              return checkoutListItem(position);
+              return checkoutListItem(position, colorText);
             },
             itemCount: orderController.listaPedidosItems.length,
             shrinkWrap: true,
@@ -102,7 +109,7 @@ class ListOrderItems extends StatelessWidget {
     );
   }
 
-  checkoutListItem(int index) {
+  checkoutListItem(int index, Color colorText) {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 4),
       child: Row(
@@ -123,7 +130,7 @@ class ListOrderItems extends StatelessWidget {
             // ),
 
             decoration:
-                BoxDecoration(border: Border.all(color: Colors.grey, width: 1)),
+                BoxDecoration(border: Border.all(color: colorText, width: 1)),
           ),
           SizedBox(
             width: 8,
@@ -131,30 +138,30 @@ class ListOrderItems extends StatelessWidget {
           Expanded(
               child: Text(
             orderController.listaPedidosItems[index].ofertaTitulo,
-            style: Get.textTheme.bodyText1!.copyWith(
+            style: TextStyle(
                 fontSize: 16,
-                color: AppColors.primaryColor,
-                fontWeight: FontWeight.w900),
+                color: colorText,
+                fontWeight: FontWeight.w500),
           )),
           Text(
             orderController.listaPedidosItems[index].ofertaQtd.toString(),
-            style: Get.textTheme.bodyText1!.copyWith(
+            style: TextStyle(
                 fontSize: 16,
-                color: AppColors.primaryColor,
+                color: colorText,
                 fontWeight: FontWeight.w900),
           ),
           Text(
             ' x ',
-            style: Get.textTheme.bodyText1!.copyWith(
+            style: TextStyle(
                 fontSize: 16,
-                color: AppColors.primaryColor,
+                color: colorText,
                 fontWeight: FontWeight.w900),
           ),
-          Text(
-            orderController.listaPedidosItems[index].ofertaPreco.toString(),
-            style: Get.textTheme.bodyText1!.copyWith(
+          Text("R\$ " +
+            orderController.listaPedidosItems[index].ofertaPreco.toStringAsFixed(2),
+            style: TextStyle(
                 fontSize: 16,
-                color: AppColors.primaryColor,
+                color: colorText,
                 fontWeight: FontWeight.w900),
           ),
         ],

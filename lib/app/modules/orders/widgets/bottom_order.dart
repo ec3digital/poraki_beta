@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:poraki/app/data/models/sql/sqlPedido.dart';
-import 'package:poraki/app/modules/orders/order_controller.dart';
+import 'package:poraki/app/modules/auth/login/login_controller.dart';
 import '../../../theme/app_theme.dart';
 
 class BottomOrder extends StatelessWidget {
@@ -23,6 +24,16 @@ class BottomOrder extends StatelessWidget {
     final gPedido = Get.arguments as List<Map<String, String>>;
     print('gpedido bottom: ' + gPedido.toString());
 
+    DateTime datetime = DateTime.now();
+    print(datetime.toString());
+//output: 2021-10-17 20:04:17.118089
+
+    String datetime1 = DateFormat("yyyy-MM-dd").format(datetime);
+    print(datetime1);
+
+    LoginController _loginController = Get.find();
+    Color colorText = _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'textDark').first.coreValor.toString());
+
     // return FutureBuilder(
     //     future: getPedidoAtual(),
     //     builder: (context, futuro) {
@@ -34,6 +45,7 @@ class BottomOrder extends StatelessWidget {
     //       }
     //       else {
             return Card(
+              color: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'backDark').first.coreValor.toString()),
               margin: const EdgeInsets.all(0),
               elevation: 4,
               child: Container(
@@ -54,12 +66,12 @@ class BottomOrder extends StatelessWidget {
                           //   ),
                           // ),
                           Text(
-                            'Pedido realizado em: ' + gPedido[0]['pedidoEm'].toString(),
+                            'Pedido realizado em: ' + DateFormat("dd/MM/yyyy HH:mm").format(DateTime.parse(gPedido[0]['pedidoEm'].toString())),
                             // 'Rua tal com tal coisa 85, São Paulo',
-                            style: Get.textTheme.bodyText1!.copyWith(
-                              color: AppColors.primaryColor,
+                            style: TextStyle(
+                              color: colorText,
                               fontWeight: FontWeight.w500,
-                              fontSize: 15,
+                              fontSize: 18,
                             ),
                           ),
                         ],
@@ -74,27 +86,29 @@ class BottomOrder extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('Total'),
-                          Text('R\$ ' + gPedido[0]['pedidoValorTotal'].toString(),
+                          Text('Total', style: TextStyle(color: colorText, fontSize: 20),),
+                          Text('R\$ ' + double.parse(gPedido[0]['pedidoValorTotal'].toString()).toStringAsFixed(2), style: TextStyle(color: colorText, fontSize: 20),
                           )],
                       ),
                     ),
                     const SizedBox(height: 20),
                     Text(
-                      'Pago por: ' + gPedido[0]['pedidoFormaPagto'].toString(),
-                      style: Get.textTheme.bodyText1!.copyWith(
-                        color: AppColors.primaryColor,
+                      'Pago por ' + gPedido[0]['pedidoFormaPagto'].toString(),
+                      style: TextStyle(
+                        color: colorText,
                         fontWeight: FontWeight.w500,
-                        fontSize: 15,
+                        fontSize: 16,
                       ),
                     ),
                     const SizedBox(height: 20),
+                    Text('Entregue no endereço ', style: TextStyle(color: colorText),),
+                    const SizedBox(height: 5),
                     Text(
-                      'Entregue no endereço: ' + gPedido[0]['pedidoEndereco'].toString(),
-                      style: Get.textTheme.bodyText1!.copyWith(
-                        color: AppColors.primaryColor,
+                      gPedido[0]['pedidoEndereco'].toString(),
+                      style: TextStyle(
+                        color: colorText,
                         fontWeight: FontWeight.w500,
-                        fontSize: 15,
+                        fontSize: 16,
                       ),
                     ),
                   ],

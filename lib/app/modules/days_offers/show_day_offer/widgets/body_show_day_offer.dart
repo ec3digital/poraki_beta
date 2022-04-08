@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:poraki/app/data/models/produto_oferta.dart';
+import 'package:poraki/app/modules/auth/login/login_controller.dart';
 import '../../../../theme/app_theme.dart';
 import '../show_day_offer_controller.dart';
 import 'button_day_offer.dart';
@@ -15,8 +16,12 @@ class BodyShowDayOffer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ShowDayOfferController _controller = Get.find(); // Get.put(ShowDayOfferController());
+    final ShowDayOfferController _controller = Get.find();
+    LoginController _loginController = Get.find();
+
+    //TODO: resolver essa parada
     _controller.getOfferTapped(3);
+
     return Container(
         child: GetBuilder<ShowDayOfferController>(builder: (context) {
           if (_controller.isLoading) {

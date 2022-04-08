@@ -8,11 +8,11 @@ import 'package:poraki/app/modules/home/widgets/drawer_home.dart';
 
 class AddressPage extends StatelessWidget {
   final String? enderecoGuid;
-  final HomeController controller = Get.find(); // Get.put(HomeController());
   AddressPage({Key? key, this.enderecoGuid}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    HomeController controller = Get.find();
     LoginController _loginController = Get.find();
 
     return Scaffold(

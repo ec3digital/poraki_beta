@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:poraki/app/data/models/lojas.dart';
+import 'package:poraki/app/modules/auth/login/login_controller.dart';
 import 'package:poraki/app/modules/home/widgets/gradient_header_home.dart';
 import 'package:poraki/app/modules/offers/widgets/button_offer.dart';
 import 'package:poraki/app/modules/stores/store_controller.dart';
@@ -13,12 +14,12 @@ class ListStores extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final StoreController controller = Get.find(); //.put(StoreController());
+    LoginController _loginController = Get.find();
 
     Widget _buildRow(Lojas loja) {
-      return ListTile(
+      return Column(children: [ListTile(
           leading: Text(
             loja.LojaNome.toString(),
-            // style: _biggerFont,
           ),
           onTap: () {
             controller.loja = loja;
@@ -26,12 +27,12 @@ class ListStores extends StatelessWidget {
           },
           title: Text(
             loja.LojaCEP.toString(),
-            // style: _biggerFont,
           )
-          //   subtitle: Text(lojaCEP),
-          //   //trailing: Icon(IconData(int.parse(iconcode), fontFamily: 'MaterialIcons'))
-          // );
-          );
+      ),
+        const SizedBox(height: 5),
+        const Divider(),
+        const SizedBox(height: 5),
+      ]);
     }
 
     return FutureBuilder(
@@ -56,9 +57,13 @@ class ListStores extends StatelessWidget {
                           child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                        SizedBox(height: 20),
-                        Center(child: Text("Minhas lojas")),
-                        SizedBox(height: 20),
+                                const SizedBox(height: 15),
+                                Center(
+                                    child: Text(
+                                      "Minhas lojas",
+                                      style: TextStyle(fontSize: 24),
+                                    )),
+                                const SizedBox(height: 15),
                         ButtonOffer(
                           onPressed: () {
                             Future.delayed(Duration.zero, () async {
@@ -66,9 +71,19 @@ class ListStores extends StatelessWidget {
                             });
                             Get.toNamed(AppRoutes.store);
                           },
-                          colorText: AppColors.primaryBackground,
-                          text: 'Criar loja',
-                          colorButton: AppColors.primaryColor,
+                          colorText: _loginController.colorFromHex(_loginController
+                              .listCore
+                              .where((coreItem) => coreItem.coreChave == 'textLight')
+                              .first
+                              .coreValor
+                              .toString()),
+                          text: 'Criar Loja',
+                          colorButton: _loginController.colorFromHex(_loginController
+                              .listCore
+                              .where((coreItem) => coreItem.coreChave == 'textDark')
+                              .first
+                              .coreValor
+                              .toString()),
                         ),
                         Scrollbar(
                           child: ListView.builder(

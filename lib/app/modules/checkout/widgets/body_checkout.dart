@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
+import 'package:poraki/app/modules/auth/login/login_controller.dart';
 import 'package:poraki/app/modules/offers/widgets/button_offer.dart';
 import 'package:poraki/app/modules/shopping_cart/shopping_cart_controller.dart';
 import 'package:poraki/app/theme/app_theme.dart';
@@ -21,6 +22,19 @@ class _BodyCheckOut extends State<BodyCheckOut> {
 
   @override
   Widget build(BuildContext context) {
+    LoginController _loginController = Get.find();
+
+    Color lightText = _loginController.colorFromHex(_loginController.listCore
+        .where((coreItem) => coreItem.coreChave == 'textLight')
+        .first
+        .coreValor
+        .toString());
+    Color darkText = _loginController.colorFromHex(_loginController.listCore
+        .where((coreItem) => coreItem.coreChave == 'textDark')
+        .first
+        .coreValor
+        .toString());
+
     return FutureBuilder(
         future: widget.controller.carregaCarrinho(),
         builder: (context, futuro) {
@@ -42,11 +56,11 @@ class _BodyCheckOut extends State<BodyCheckOut> {
                     child: Container(
                       child: ListView(
                         children: <Widget>[
-                          paymentSection(),
-                          selectedAddressSection(),
-                          widgetEntrega(),
-                          checkoutItem(),
-                          priceSection()
+                          paymentSection(darkText),
+                          selectedAddressSection(darkText),
+                          widgetEntrega(darkText),
+                          checkoutItem(darkText),
+                          priceSection(darkText)
                         ],
                       ),
                     ),
@@ -58,11 +72,10 @@ class _BodyCheckOut extends State<BodyCheckOut> {
                       margin: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
                       child: ButtonOffer(
                         onPressed: () async {
-
                           await widget.controller.saveBuy();
 
                           final snackBar = SnackBar(
-                              backgroundColor: AppColors.primaryColor,
+                              backgroundColor: darkText,
                               content: Container(
                                   height: 40,
                                   child: Center(
@@ -70,9 +83,15 @@ class _BodyCheckOut extends State<BodyCheckOut> {
                                           'Obrigado por sua compra!'))));
                           ScaffoldMessenger.of(context).showSnackBar(snackBar);
                         },
-                        colorText: AppColors.primaryColor,
+                        colorText: lightText,
                         text: 'Finalizar',
-                        colorButton: AppColors.primaryColorButton,
+                        colorButton: _loginController.colorFromHex(
+                            _loginController.listCore
+                                .where((coreItem) =>
+                                    coreItem.coreChave == 'iconColor')
+                                .first
+                                .coreValor
+                                .toString()),
                       ),
                     ),
                     flex: 10,
@@ -84,7 +103,7 @@ class _BodyCheckOut extends State<BodyCheckOut> {
         });
   }
 
-  selectedAddressSection() {
+  selectedAddressSection(Color textColor) {
     return Container(
       margin: EdgeInsets.all(4),
       decoration: BoxDecoration(
@@ -97,7 +116,7 @@ class _BodyCheckOut extends State<BodyCheckOut> {
         child: Container(
           decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(4)),
-              border: Border.all(color: Colors.grey.shade200)),
+              border: Border.all(color: textColor)),
           padding: EdgeInsets.only(left: 12, top: 8, right: 12),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -115,9 +134,9 @@ class _BodyCheckOut extends State<BodyCheckOut> {
                       )),
                 ],
               ),
-              createAddressText("Rua Carlos Magalhães, 100", 16),
-              createAddressText("CEP 05735-030", 6),
-              createAddressText("São Paulo - SP", 6),
+              createAddressText("Rua Carlos Magalhães, 100", 16, textColor),
+              createAddressText("CEP 05735-030", 6, textColor),
+              createAddressText("São Paulo - SP", 6, textColor),
               SizedBox(
                 height: 6,
               ),
@@ -125,7 +144,7 @@ class _BodyCheckOut extends State<BodyCheckOut> {
                 height: 16,
               ),
               Container(
-                color: Colors.grey.shade300,
+                color: textColor,
                 height: 1,
                 width: double.infinity,
               ),
@@ -137,15 +156,15 @@ class _BodyCheckOut extends State<BodyCheckOut> {
     );
   }
 
-  createAddressText(String strAddress, double topMargin) {
+  createAddressText(String strAddress, double topMargin, Color textColor) {
     return Container(
         margin: EdgeInsets.only(top: topMargin),
         child: Text(
           strAddress,
-          style: Get.textTheme.bodyText1!.copyWith(
+          style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.normal,
-            color: AppColors.primaryColor,
+            color: textColor,
           ),
         ));
   }
@@ -182,13 +201,12 @@ class _BodyCheckOut extends State<BodyCheckOut> {
     );
   }
 
-  widgetEntrega() {
+  widgetEntrega(Color textColor) {
     return Container(
       decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(4)),
-          border:
-              Border.all(color: Colors.tealAccent.withOpacity(0.4), width: 1),
-          color: Colors.tealAccent.withOpacity(0.2)),
+          border: Border.all(color: textColor.withOpacity(0.4), width: 1),
+          color: textColor.withOpacity(0.2)),
       margin: EdgeInsets.all(8),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -197,7 +215,7 @@ class _BodyCheckOut extends State<BodyCheckOut> {
             value: 1,
             groupValue: 1,
             onChanged: (isChecked) {},
-            activeColor: Colors.tealAccent.shade400,
+            activeColor: textColor,
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -205,9 +223,9 @@ class _BodyCheckOut extends State<BodyCheckOut> {
             children: <Widget>[
               Text(
                 "Entrega Normal",
-                style: Get.textTheme.bodyText1!.copyWith(
+                style: TextStyle(
                     fontSize: 16,
-                    color: AppColors.primaryColor,
+                    color: textColor,
                     fontWeight: FontWeight.w600),
               ),
               SizedBox(
@@ -215,9 +233,9 @@ class _BodyCheckOut extends State<BodyCheckOut> {
               ),
               Text(
                 'Previsão de Entrega - ${DateTime.now().day.toString()}/${DateTime.now().month.toString()}/${DateTime.now().year.toString()}',
-                style: Get.textTheme.bodyText1!.copyWith(
+                style: TextStyle(
                     fontSize: 16,
-                    color: AppColors.primaryColor,
+                    color: textColor,
                     fontWeight: FontWeight.w600),
               )
             ],
@@ -227,7 +245,7 @@ class _BodyCheckOut extends State<BodyCheckOut> {
     );
   }
 
-  checkoutItem() {
+  checkoutItem(Color textColor) {
     return Container(
       margin: EdgeInsets.all(4),
       decoration: BoxDecoration(
@@ -240,11 +258,11 @@ class _BodyCheckOut extends State<BodyCheckOut> {
         child: Container(
           decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(4)),
-              border: Border.all(color: Colors.grey.shade200)),
+              border: Border.all(color: textColor)),
           padding: EdgeInsets.only(left: 12, top: 8, right: 12, bottom: 8),
           child: ListView.builder(
             itemBuilder: (context, position) {
-              return checkoutListItem(position);
+              return checkoutListItem(position, textColor);
             },
             itemCount: widget.controller.listShoppingCart.length,
             shrinkWrap: true,
@@ -256,18 +274,19 @@ class _BodyCheckOut extends State<BodyCheckOut> {
     );
   }
 
-  checkoutListItem(int index) {
+  checkoutListItem(int index, Color textColor) {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 4),
       child: Row(
         children: <Widget>[
           Container(
-
             child: FadeInImage.assetNetwork(
               placeholder: 'assets/images/pholder.png',
               image: widget.controller.listShoppingCart[index].picture,
-              imageErrorBuilder: (context, url, error) => new Icon(Icons.local_offer_outlined),
-              height: 30, fit: BoxFit.fitHeight,
+              imageErrorBuilder: (context, url, error) =>
+                  new Icon(Icons.local_offer_outlined),
+              height: 30,
+              fit: BoxFit.fitHeight,
             ),
 
             // child: Image.network(
@@ -277,47 +296,40 @@ class _BodyCheckOut extends State<BodyCheckOut> {
             //   fit: BoxFit.fitHeight,
             // ),
             decoration:
-                BoxDecoration(border: Border.all(color: Colors.grey, width: 1)),
+                BoxDecoration(border: Border.all(color: textColor, width: 1)),
           ),
           SizedBox(
             width: 8,
           ),
           Expanded(
-          child:
-          Text(
+              child: Text(
             widget.controller.listShoppingCart[index].name,
-            style: Get.textTheme.bodyText1!.copyWith(
-                fontSize: 16,
-                color: AppColors.primaryColor,
-                fontWeight: FontWeight.w900),
+            style: TextStyle(
+                fontSize: 16, color: textColor, fontWeight: FontWeight.w500),
           )),
           Text(
             widget.controller.listShoppingCart[index].qty.toString(),
-            style: Get.textTheme.bodyText1!.copyWith(
-                fontSize: 16,
-                color: AppColors.primaryColor,
-                fontWeight: FontWeight.w900),
+            style: TextStyle(
+                fontSize: 16, color: textColor, fontWeight: FontWeight.w900),
           ),
           Text(
             ' x ',
-            style: Get.textTheme.bodyText1!.copyWith(
-                fontSize: 16,
-                color: AppColors.primaryColor,
-                fontWeight: FontWeight.w900),
+            style: TextStyle(
+                fontSize: 16, color: textColor, fontWeight: FontWeight.w900),
           ),
           Text(
-            widget.controller.listShoppingCart[index].value.toString(),
-            style: Get.textTheme.bodyText1!.copyWith(
-                fontSize: 16,
-                color: AppColors.primaryColor,
-                fontWeight: FontWeight.w900),
+            "R\$ " +
+                widget.controller.listShoppingCart[index].value
+                    .toStringAsFixed(2),
+            style: TextStyle(
+                fontSize: 16, color: textColor, fontWeight: FontWeight.w900),
           ),
         ],
       ),
     );
   }
 
-  priceSection() {
+  priceSection(Color textColor) {
     return Container(
       margin: EdgeInsets.all(4),
       decoration: BoxDecoration(
@@ -330,7 +342,7 @@ class _BodyCheckOut extends State<BodyCheckOut> {
         child: Container(
           decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(4)),
-              border: Border.all(color: Colors.grey.shade200)),
+              border: Border.all(color: textColor)),
           padding: EdgeInsets.only(left: 12, top: 8, right: 12, bottom: 8),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -340,9 +352,9 @@ class _BodyCheckOut extends State<BodyCheckOut> {
               ),
               Text(
                 "VALOR DETALHADO",
-                style: Get.textTheme.bodyText1!.copyWith(
+                style: TextStyle(
                     fontSize: 16,
-                    color: AppColors.primaryColor,
+                    color: textColor,
                     fontWeight: FontWeight.w900),
               ),
               SizedBox(
@@ -352,16 +364,20 @@ class _BodyCheckOut extends State<BodyCheckOut> {
                 width: double.infinity,
                 height: 0.5,
                 margin: EdgeInsets.symmetric(vertical: 4),
-                color: Colors.grey.shade400,
+                color: textColor,
               ),
               SizedBox(
                 height: 8,
               ),
-              createPriceItem("Total Produtos", getFormattedCurrency(widget.controller.cartTotalItems)),
-              createPriceItem("Descontos", getFormattedCurrency(widget.controller.cartDiscount)),
-              createPriceItem("Taxas", getFormattedCurrency(widget.controller.cartTaxes)),
+              createPriceItem("Total Produtos",
+                  getFormattedCurrency(widget.controller.cartTotalItems)),
+              createPriceItem("Descontos",
+                  getFormattedCurrency(widget.controller.cartDiscount)),
+              createPriceItem(
+                  "Taxas", getFormattedCurrency(widget.controller.cartTaxes)),
               // createPriceItem("TOTAL", getFormattedCurrency(widget.controller.cartTotal)),
-              createPriceItem("Taxa Entrega", getFormattedCurrency(widget.controller.cartDelivery)),
+              createPriceItem("Taxa Entrega",
+                  getFormattedCurrency(widget.controller.cartDelivery)),
               SizedBox(
                 height: 8,
               ),
@@ -369,7 +385,7 @@ class _BodyCheckOut extends State<BodyCheckOut> {
                 width: double.infinity,
                 height: 0.5,
                 margin: EdgeInsets.symmetric(vertical: 4),
-                color: Colors.grey.shade400,
+                color: textColor,
               ),
               SizedBox(
                 height: 8,
@@ -380,10 +396,10 @@ class _BodyCheckOut extends State<BodyCheckOut> {
                 children: <Widget>[
                   Text(
                     "TOTAL GERAL",
-                    style: Get.textTheme.bodyText1!.copyWith(
-                        fontSize: 16,
-                        color: AppColors.primaryColor,
-                        fontWeight: FontWeight.w900),
+                    style: TextStyle(
+                        fontSize: 18,
+                        color: textColor,
+                        fontWeight: FontWeight.w700),
                   ),
                   Text(
                     getFormattedCurrency(widget.controller.cartTotal),
@@ -407,7 +423,7 @@ class _BodyCheckOut extends State<BodyCheckOut> {
     // return fmf.formattedLeftSymbol;
   }
 
-  paymentSection() {
+  paymentSection(Color textColor) {
     return Container(
         margin: EdgeInsets.all(4),
         decoration: BoxDecoration(
@@ -420,7 +436,7 @@ class _BodyCheckOut extends State<BodyCheckOut> {
             child: Container(
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(4)),
-                    border: Border.all(color: Colors.grey.shade200)),
+                    border: Border.all(color: textColor)),
                 padding: EdgeInsets.only(left: 6, top: 6, right: 4, bottom: 4),
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -429,11 +445,11 @@ class _BodyCheckOut extends State<BodyCheckOut> {
                         height: 4,
                       ),
                       Text(
-                        "Escolha a forma de pagamento",
-                        style: Get.textTheme.bodyText1!.copyWith(
-                            fontSize: 16,
-                            color: AppColors.primaryColor,
-                            fontWeight: FontWeight.w900),
+                        "Escolha a melhor forma de pagamento",
+                        style: TextStyle(
+                            fontSize: 18,
+                            color: textColor,
+                            fontWeight: FontWeight.w500),
                       ),
                       SizedBox(
                         height: 2,
@@ -442,7 +458,7 @@ class _BodyCheckOut extends State<BodyCheckOut> {
                         width: double.infinity,
                         height: 0.5,
                         margin: EdgeInsets.symmetric(vertical: 4),
-                        color: Colors.grey.shade400,
+                        color: textColor,
                       ),
                       SizedBox(
                         height: 4,
@@ -451,10 +467,10 @@ class _BodyCheckOut extends State<BodyCheckOut> {
                         children: <Widget>[
                           ListTile(
                             title: Text('Cartão',
-                                style: Get.textTheme.bodyText1!.copyWith(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                )),
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    color: textColor)),
                             leading: Radio<FormasPagto>(
                               value: FormasPagto.Cartao,
                               groupValue: formaPagto,
@@ -467,10 +483,10 @@ class _BodyCheckOut extends State<BodyCheckOut> {
                           ),
                           ListTile(
                             title: Text('PixQR',
-                                style: Get.textTheme.bodyText1!.copyWith(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                )),
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    color: textColor)),
                             leading: Radio<FormasPagto>(
                               value: FormasPagto.PixQR,
                               groupValue: formaPagto,
@@ -483,10 +499,10 @@ class _BodyCheckOut extends State<BodyCheckOut> {
                           ),
                           ListTile(
                             title: Text('Carteiras Digitais',
-                                style: Get.textTheme.bodyText1!.copyWith(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                )),
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    color: textColor)),
                             leading: Radio<FormasPagto>(
                               value: FormasPagto.CarteirasDigitais,
                               groupValue: formaPagto,
@@ -498,12 +514,12 @@ class _BodyCheckOut extends State<BodyCheckOut> {
                             ),
                           ),
                           ListTile(
-                            title:
-                                Text('Direto com o vendedor (não recomendado)',
-                                    style: Get.textTheme.bodyText1!.copyWith(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.normal,
-                                    )),
+                            title: Text(
+                                'Direto com o vendedor (não recomendado)',
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.normal,
+                                    color: textColor)),
                             leading: Radio<FormasPagto>(
                               value: FormasPagto.Direto,
                               groupValue: formaPagto,
@@ -546,6 +562,7 @@ class _BodyCheckOut extends State<BodyCheckOut> {
         children: <Widget>[
           Text(
             key,
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.normal),
           ),
           Text(
             value,

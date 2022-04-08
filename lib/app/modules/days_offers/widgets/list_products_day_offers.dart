@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:poraki/app/modules/auth/login/login_controller.dart';
 import 'package:poraki/app/routes/app_routes.dart';
 import '../../../data/models/produto_oferta.dart';
 import '../days_offers_controller.dart';
@@ -13,6 +14,8 @@ class ListProductsDayOffers extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final DaysOffersController controller = Get.find(); // Get.put(DaysOffersController());
+    LoginController _loginController = Get.find();
+
     return Expanded(
       child: Container(
           child: GetBuilder<DaysOffersController>(builder: (context) {
@@ -66,6 +69,7 @@ class ListProductsDayOffers extends StatelessWidget {
                               style: TextStyle(
                                 fontWeight: FontWeight.w700,
                                 fontSize: 14,
+                                color: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'textDark').first.coreValor.toString())
                               ),
                               maxLines: 2,
                             ),
@@ -77,20 +81,20 @@ class ListProductsDayOffers extends StatelessWidget {
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontWeight: FontWeight.w700,
-                                fontSize: 14,
-                                color: Colors.green,
+                                fontSize: 16,
+                                color: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'backDark').first.coreValor.toString()),
                               ),
                             ),
                           ),
                           Container(
-                            margin: EdgeInsets.only(top: 2),
+                            margin: EdgeInsets.only(top: 2, left: 3),
                             child: Text(
                               "CEP: ${_product.ofertaCEP}",
                               textAlign: TextAlign.left,
                               style: TextStyle(
                                 fontWeight: FontWeight.w700,
-                                fontSize: 10,
-                                color: Colors.blue,
+                                fontSize: 12,
+                                color: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'iconColor').first.coreValor.toString()),
                               ),
                             ),
                           ),

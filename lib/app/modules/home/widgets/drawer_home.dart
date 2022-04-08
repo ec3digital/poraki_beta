@@ -1,11 +1,9 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:poraki/app/modules/auth/login/login_controller.dart';
 import 'package:poraki/app/routes/app_routes.dart';
 import 'package:poraki/app/shared/porakiprefs.dart';
-import '../../../theme/app_theme.dart';
 
 class DrawerHome extends StatelessWidget {
   final int index;
@@ -24,7 +22,7 @@ class DrawerHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     LoginController _loginController = Get.find();
-    Color lightBack = _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'backDark').first.coreValor.toString());
+    // Color lightBack = _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'backDark').first.coreValor.toString());
 
     return FutureBuilder(
         future: _loadLogin(),
@@ -126,7 +124,6 @@ class DrawerHome extends StatelessWidget {
                     icon: Icons.category,
                     onTap: () => Get.toNamed(AppRoutes.categories),
                   ),
-
                   RowCategoriesDrawerHome(
                     text: 'Minhas Compras',
                     isSelected: index == 2,
@@ -134,8 +131,14 @@ class DrawerHome extends StatelessWidget {
                     onTap: () => Get.toNamed(AppRoutes.orders),
                   ),
                   RowCategoriesDrawerHome(
-                    text: 'Minhas ofertas',
+                    text: 'Minhas Lojas',
                     isSelected: index == 3,
+                    icon: Icons.store,
+                    onTap: () => Get.toNamed(AppRoutes.stores),
+                  ),
+                  RowCategoriesDrawerHome(
+                    text: 'Minhas ofertas',
+                    isSelected: index == 4,
                     icon: Icons.local_offer_rounded,
                     onTap: () => Get.toNamed(AppRoutes.mOffers),
                   ),
@@ -146,44 +149,41 @@ class DrawerHome extends StatelessWidget {
                   //   ),
                   //   onTap: () {},
                   // ),
-
                   RowCategoriesDrawerHome(
                     text: 'Minha conta',
-                    isSelected: index == 4,
+                    isSelected: index == 5,
                     icon: Icons.person_outline,
                     onTap: () => Get.toNamed(AppRoutes.account),
                   ),
-
                   // RowCategoriesDrawerHome(
                   //   text: 'Minhas lojas',
                   //   isSelected: index == 4,
                   //   icon: Icons.store,
                   //   onTap: () => Get.toNamed(AppRoutes.account),
                   // ),
-
                   RowCategoriesDrawerHome(
                     text: 'Endereços',
-                    isSelected: index == 5,
+                    isSelected: index == 6,
                     icon: Icons.map,
                     onTap: () => Get.toNamed(AppRoutes.addresses),
                   ),
                   // Divider(color: lightBack),
                   RowCategoriesDrawerHome(
                     text: 'Vendas',
-                    isSelected: index == 6,
+                    isSelected: index == 7,
                     icon: Icons.monetization_on_outlined,
                     onTap: () => Get.toNamed(AppRoutes.orders),
                   ),
                   RowCategoriesDrawerHome(
                     text: 'Entregas',
-                    isSelected: index == 7,
+                    isSelected: index == 8,
                     icon: Icons.shopping_cart_outlined,
                     onTap: () {},
                   ),
                   // Divider(color: lightBack),
                   RowCategoriesDrawerHome(
                     text: 'Sair',
-                    isSelected: index == 8,
+                    isSelected: index == 9,
                     onTap: () {
                       Get.deleteAll(force: true);
                       _runSpecialCmds();
