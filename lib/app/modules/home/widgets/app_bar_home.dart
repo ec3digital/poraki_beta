@@ -13,11 +13,9 @@ class AppBarHome extends StatelessWidget {
   Widget build(BuildContext context) {
     var txtBuscaCtrl = TextEditingController();
     LoginController _loginController = Get.find();
-    print('cor da appBar: ' + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'primaryBackground').first.coreValor.toString());
-    print('cor da busca: ' + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'secondaryBackground').first.coreValor.toString());
 
     return AppBar(
-      backgroundColor: Color(0xeeEE782D), // _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'primaryBackground').first.coreValor.toString()),//Colors.amber,
+      backgroundColor: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'backDark').first.coreValor.toString()),
       elevation: 0,
       titleSpacing: 0,
       title: Container(
@@ -28,7 +26,7 @@ class AppBarHome extends StatelessWidget {
               child: Container(
                 height: 34,
                 decoration: BoxDecoration(
-                  color: Colors.white, // _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'secondaryBackground').first.coreValor.toString()),
+                  color: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'textLight').first.coreValor.toString()),
                   borderRadius: BorderRadius.all(Radius.circular(30)),
                 ),
                 child: TextFormField(
@@ -43,7 +41,7 @@ class AppBarHome extends StatelessWidget {
                       borderSide: BorderSide.none,
                     ),
                     prefixIcon: Icon(Icons.search),
-                    labelText: 'Poraki você busca por...',
+                    labelText: _loginController.listCore.where((coreItem) => coreItem.coreChave == 'textSearch').first.coreValor.toString(),
 
                   ),
                 ),

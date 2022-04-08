@@ -212,17 +212,17 @@ class sqlPorakiCoreService {
     batch.insert('appcore', {'coreChave': 'apiUsuarioSus', 'coreValor': 'ususus'});
     batch.insert('appcore', {'coreChave': 'uuidservice', 'coreValor': 'https://www.uuidgenerator.net/api/version4'});
     batch.insert('appcore', {'coreChave': 'cepservice', 'coreValor': 'https://brasilapi.com.br/api/cep/v2/'});
-    batch.insert('appcore', {'coreChave': 'primaryColor', 'coreValor': '0xff0000FF'});
-    batch.insert('appcore', {'coreChave': 'secondaryColor', 'coreValor': '0xff00F000'});
-    batch.insert('appcore', {'coreChave': 'primaryColorButton', 'coreValor': '0xffb3c9f2'});
-    batch.insert('appcore', {'coreChave': 'secondaryColorButton', 'coreValor': '0xffb3c9f2'});
-    batch.insert('appcore', {'coreChave': 'containerLightColor', 'coreValor': '0xffEEEEEE'});
-    batch.insert('appcore', {'coreChave': 'borderColor', 'coreValor': '0xff9E9E9E'});
-    batch.insert('appcore', {'coreChave': 'darkText', 'coreValor': '0x8a000000'});
-    batch.insert('appcore', {'coreChave': 'primaryDark', 'coreValor': '0xff161616'});
-    batch.insert('appcore', {'coreChave': 'primaryLight', 'coreValor': '0xffF7F7F7'});
-    batch.insert('appcore', {'coreChave': 'primaryBackground', 'coreValor': '0xffEE782D'});
-    batch.insert('appcore', {'coreChave': 'secondaryBackground', 'coreValor': '0xffC3D99E'});
+    batch.insert('appcore', {'coreChave': 'backDark', 'coreValor': '0xFF21B6A8'});
+    batch.insert('appcore', {'coreChave': 'backLight', 'coreValor': '0xFFA3EBB1'});
+    batch.insert('appcore', {'coreChave': 'iconColor', 'coreValor': '0xDDFF8885'});
+    batch.insert('appcore', {'coreChave': 'textDark', 'coreValor': '0xFF116530'});
+    batch.insert('appcore', {'coreChave': 'textLight', 'coreValor': '0xffFFFFFF'});
+    batch.insert('appcore', {'coreChave': 'textSearch', 'coreValor': 'buscar poraki...'});
+    batch.insert('appcore', {'coreChave': 'textCard1', 'coreValor': 'Ofertas do dia'});
+    batch.insert('appcore', {'coreChave': 'textCard2', 'coreValor': 'Melhores ofertas'});
+    batch.insert('appcore', {'coreChave': 'textCard3', 'coreValor': 'Mais vendidos'});
+    batch.insert('appcore', {'coreChave': 'imgpath', 'coreValor': 'https://firebasestorage.googleapis.com/v0/b/ec3digrepo.appspot.com/o/ofertas%2F'});
+    batch.insert('appcore', {'coreChave': 'imgpathsuffix', 'coreValor': '.jpg?alt=media'});
     batch.insert('appcore', {'coreChave': 'lastreload', 'coreValor': '20220401'});
     batch.insert('appcore', {'coreChave': 'apiBase', 'coreValor': 'https://poraki.hasura.app/api/rest/'});
     batch.insert('appcore', {'coreChave': 'header-user', 'coreValor': 'x-hasura-admin-secret'}); //, 'cep': ''

@@ -20,6 +20,10 @@ Future<List<Map<String,dynamic>>> buscaSqlUserData() async {
   // var termos = await fbPorakiService().getValueFromFirebase('akitermos', 'termos', 'ptbr');
   // print('termos new: ' + termos.toString());
 
+  //aproveita e carrega os dados de sqlCore
+  // verifica tabela core local
+  await sqlPorakiCoreService().verificaTabela();
+
   var sqlSvc = new sqlPorakiLoginService();
   await sqlSvc.openCreateDB();
   return await sqlSvc.buscaUsuDados();
@@ -208,7 +212,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all<Color>(
-                          AppColors.primaryColorButton,
+                          Color(0xFF116530),
                         ),
                         shape: MaterialStateProperty.all<OutlinedBorder>(
                           RoundedRectangleBorder(
@@ -241,7 +245,7 @@ class _LoginPageState extends State<LoginPage> {
                           );
                         },
                         child: Text("Cadastre-se"),
-                        color: AppColors.secondaryColorButton,
+                        color: Color(0xFFA3EBB1),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(50),
                         ),

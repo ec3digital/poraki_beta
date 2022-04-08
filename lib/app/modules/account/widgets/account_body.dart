@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:poraki/app/data/models/sql/sqlUsuario.dart';
 import 'package:poraki/app/modules/account/account_controller.dart';
+import 'package:poraki/app/modules/auth/login/login_controller.dart';
 import 'package:poraki/app/modules/home/widgets/gradient_header_home.dart';
 import 'package:poraki/app/modules/offers/widgets/button_offer.dart';
 import 'package:poraki/app/theme/app_theme.dart';
@@ -21,6 +22,9 @@ class AccountBody extends StatefulWidget {
 class _AccountBodyState extends State<AccountBody> {
   @override
   Widget build(BuildContext context) {
+    LoginController _loginController = Get.find();
+    Color textDark = _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'textDark').first.coreValor.toString());
+
     return FutureBuilder(
         future: widget._controller.carregaUsuario(),
         builder: (context, futuro) {
@@ -55,19 +59,19 @@ class _AccountBodyState extends State<AccountBody> {
                           // },
                           controller: widget._controller.txtNome,
                           autofocus: true,
-                          style: TextStyle(color: Colors.brown),
+                          style: TextStyle(color: textDark),
                           decoration: InputDecoration(
                             labelText: "Nome",
-                            labelStyle: TextStyle(color: Colors.brown),
+                            labelStyle: TextStyle(color: textDark),
                             prefixIcon: Icon(
                               Icons.person,
-                              color: Colors.brown,
+                              color: textDark,
                             ),
                             focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.brown),
+                              borderSide: BorderSide(color: textDark),
                             ),
                             enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.brown),
+                              borderSide: BorderSide(color: textDark),
                             ),
                           ),
                         ),
@@ -80,19 +84,19 @@ class _AccountBodyState extends State<AccountBody> {
                           // },
                           controller: widget._controller.txtSobreNome,
                           autofocus: true,
-                          style: TextStyle(color: Colors.brown),
+                          style: TextStyle(color: textDark),
                           decoration: InputDecoration(
                             labelText: "Sobrenome",
-                            labelStyle: TextStyle(color: Colors.brown),
+                            labelStyle: TextStyle(color: textDark),
                             prefixIcon: Icon(
                               Icons.person,
-                              color: Colors.brown,
+                              color: textDark,
                             ),
                             focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.brown),
+                              borderSide: BorderSide(color: textDark),
                             ),
                             enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.brown),
+                              borderSide: BorderSide(color: textDark),
                             ),
                           ),
                         ),
@@ -106,19 +110,19 @@ class _AccountBodyState extends State<AccountBody> {
                           controller: widget._controller.txtCPF,
                           keyboardType: TextInputType.number,
                           autofocus: true,
-                          style: TextStyle(color: Colors.brown),
+                          style: TextStyle(color: textDark),
                           decoration: InputDecoration(
                             labelText: "CPF",
-                            labelStyle: TextStyle(color: Colors.brown),
+                            labelStyle: TextStyle(color: textDark),
                             prefixIcon: Icon(
                               Icons.assignment_ind,
-                              color: Colors.brown,
+                              color: textDark,
                             ),
                             focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.brown),
+                              borderSide: BorderSide(color: textDark),
                             ),
                             enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.brown),
+                              borderSide: BorderSide(color: textDark),
                             ),
                           ),
                         ),
@@ -132,19 +136,19 @@ class _AccountBodyState extends State<AccountBody> {
                           controller: widget._controller.txtTelefone,
                           keyboardType: TextInputType.phone,
                           autofocus: true,
-                          style: TextStyle(color: Colors.brown),
+                          style: TextStyle(color: textDark),
                           decoration: InputDecoration(
                             labelText: "Telefone Celular",
-                            labelStyle: TextStyle(color: Colors.brown),
+                            labelStyle: TextStyle(color: textDark),
                             prefixIcon: Icon(
                               Icons.phone,
-                              color: Colors.brown,
+                              color: textDark,
                             ),
                             focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.brown),
+                              borderSide: BorderSide(color: textDark),
                             ),
                             enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.brown),
+                              borderSide: BorderSide(color: textDark),
                             ),
                           ),
                         ),
@@ -160,21 +164,21 @@ class _AccountBodyState extends State<AccountBody> {
                           controller: widget._controller.txtEmail,
                           keyboardType: TextInputType.emailAddress,
                           autofocus: true,
-                          style: TextStyle(color: Colors.brown),
+                          style: TextStyle(color: textDark),
                           decoration: InputDecoration(
                             labelText: "E-mail",
                             labelStyle: TextStyle(
-                              color: Colors.brown,
+                              color: textDark,
                             ),
                             prefixIcon: Icon(
                               Icons.mail_outline,
-                              color: Colors.brown,
+                              color: textDark,
                             ),
                             focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.brown),
+                              borderSide: BorderSide(color: textDark),
                             ),
                             enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.brown),
+                              borderSide: BorderSide(color: textDark),
                             ),
                           ),
                         ),
@@ -188,19 +192,19 @@ class _AccountBodyState extends State<AccountBody> {
                           controller: widget._controller.txtCEP,
                           keyboardType: TextInputType.number,
                           autofocus: true,
-                          style: TextStyle(color: Colors.brown),
+                          style: TextStyle(color: textDark),
                           decoration: InputDecoration(
                             labelText: "CEP",
-                            labelStyle: TextStyle(color: Colors.brown),
+                            labelStyle: TextStyle(color: textDark),
                             prefixIcon: Icon(
                               Icons.map,
                               color: Colors.brown,
                             ),
                             focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.brown),
+                              borderSide: BorderSide(color: textDark),
                             ),
                             enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.brown),
+                              borderSide: BorderSide(color: textDark),
                             ),
                           ),
                         ),
@@ -214,19 +218,19 @@ class _AccountBodyState extends State<AccountBody> {
                           controller: widget._controller.txtDtNasc,
                           keyboardType: TextInputType.datetime,
                           autofocus: true,
-                          style: TextStyle(color: Colors.brown),
+                          style: TextStyle(color: textDark),
                           decoration: InputDecoration(
                             labelText: "Data de Nascimento",
-                            labelStyle: TextStyle(color: Colors.brown),
+                            labelStyle: TextStyle(color: textDark),
                             prefixIcon: Icon(
                               Icons.event,
-                              color: Colors.brown,
+                              color: textDark,
                             ),
                             focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.brown),
+                              borderSide: BorderSide(color: textDark),
                             ),
                             enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.brown),
+                              borderSide: BorderSide(color: textDark),
                             ),
                           ),
                         ),
@@ -352,24 +356,24 @@ class _AccountBodyState extends State<AccountBody> {
                             null));
 
                         final snackBar = SnackBar(
-                            backgroundColor: AppColors.primaryColor,
+                            backgroundColor: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'textDark').first.coreValor.toString()),
                             content: Container(
                                 height: 40,
                                 child: Center(
                                     child: const Text('Informações salvas!'))));
                         ScaffoldMessenger.of(context).showSnackBar(snackBar);
                       },
-                      colorText: AppColors.primaryBackground,
+                      colorText: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'textLight').first.coreValor.toString()),
                       text: 'Salvar',
-                      colorButton: AppColors.primaryColor,
+                      colorButton: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'iconColor').first.coreValor.toString()),
                     ),
                     ButtonOffer(
                       onPressed: () {
                         // redireciona pra tela de alterar senha
                       },
-                      colorText: AppColors.primaryColor,
+                      colorText: textDark,
                       text: 'Mudar senha',
-                      colorButton: AppColors.primaryColorButton,
+                      colorButton: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'backLight').first.coreValor.toString()),
                     ),
                     // )
                   ])

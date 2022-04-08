@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:poraki/app/modules/auth/login/login_controller.dart';
 import '../home_controller.dart';
 import 'card_banner_alone_home.dart';
 import 'card_offerts_day_home.dart';
@@ -20,6 +21,8 @@ class BodyHome extends StatelessWidget {
     // final imageUrl = await imageLink.getDownloadUrl();
     // Image.network(imageUrl.toString());
 
+    LoginController _loginController = Get.find();
+
     return SingleChildScrollView(
       child: GradientHeaderHome(
         child: Column(
@@ -36,13 +39,13 @@ class BodyHome extends StatelessWidget {
                   return Container();
                 } else {
                   return CardOffertsDayHome(
-                    widgetTitle: "Ofertas do dia",
+                    widgetTitle: _loginController.listCore.where((coreItem) => coreItem.coreChave == 'textCard1').first.coreValor.toString(),
                     title: _controller.offerToday!.ofertaTitulo ?? '',
                     price: _controller.offerToday!.ofertaPreco.toString(),
                     details: _controller.offerToday!.ofertaDetalhe ?? '',
                     cepOffer: _controller.offerToday!.ofertaCEP ?? '',
-                    imgOffer:
-                      'https://firebasestorage.googleapis.com/v0/b/ec3digrepo.appspot.com/o/ofertas%2F' + _controller.offerToday!.ofertaID.toString() + '.jpg?alt=media',
+                    imgOffer:_loginController.listCore.where((coreItem) => coreItem.coreChave == 'imgpath').first.coreValor.toString() + _controller.offerToday!.ofertaID.toString() + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'imgpathsuffix').first.coreValor.toString(),
+                      //'https://firebasestorage.googleapis.com/v0/b/ec3digrepo.appspot.com/o/ofertas%2F' + _controller.offerToday!.ofertaID.toString() + '.jpg?alt=media',
                         // 'https://cdn2.iconfinder.com/data/icons/black-friday-shopping-3/252/Asset_1140-256.png',
                   );
                 }
@@ -54,13 +57,13 @@ class BodyHome extends StatelessWidget {
                   return Container();
                 } else {
                   return CardOffertsDayHome(
-                    widgetTitle: "Melhores Ofertas",
+                    widgetTitle: _loginController.listCore.where((coreItem) => coreItem.coreChave == 'textCard2').first.coreValor.toString(),
                     title: _controller.bestoffer!.ofertaTitulo ?? '',
                     price: _controller.bestoffer!.ofertaPreco.toString(),
                     details: _controller.bestoffer!.ofertaDetalhe ?? '',
                     cepOffer: _controller.bestoffer!.ofertaCEP ?? '',
-                    imgOffer:
-                    'https://firebasestorage.googleapis.com/v0/b/ec3digrepo.appspot.com/o/ofertas%2F' + _controller.bestoffer!.ofertaID.toString() + '.jpg?alt=media',
+                    imgOffer: _loginController.listCore.where((coreItem) => coreItem.coreChave == 'imgpath').first.coreValor.toString() + _controller.bestoffer!.ofertaID.toString() + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'imgpathsuffix').first.coreValor.toString(),
+                    //'https://firebasestorage.googleapis.com/v0/b/ec3digrepo.appspot.com/o/ofertas%2F' + _controller.bestoffer!.ofertaID.toString() + '.jpg?alt=media',
                     // 'https://cdn2.iconfinder.com/data/icons/black-friday-shopping-3/252/Asset_1140-256.png',
                   );
                 }
@@ -72,13 +75,13 @@ class BodyHome extends StatelessWidget {
                   return Container();
                 } else {
                   return CardOffertsDayHome(
-                    widgetTitle: "Mais vendidos",
+                    widgetTitle: _loginController.listCore.where((coreItem) => coreItem.coreChave == 'textCard3').first.coreValor.toString(),
                     title: _controller.bestselleroffer!.ofertaTitulo ?? '',
                     price: _controller.bestselleroffer!.ofertaPreco.toString(),
                     details: _controller.bestselleroffer!.ofertaDetalhe ?? '',
                     cepOffer: _controller.bestselleroffer!.ofertaCEP ?? '',
-                    imgOffer:
-                    'https://firebasestorage.googleapis.com/v0/b/ec3digrepo.appspot.com/o/ofertas%2F' + _controller.bestselleroffer!.ofertaID.toString() + '.jpg?alt=media',
+                    imgOffer:_loginController.listCore.where((coreItem) => coreItem.coreChave == 'imgpath').first.coreValor.toString() + _controller.bestselleroffer!.ofertaID.toString() + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'imgpathsuffix').first.coreValor.toString(),
+                    //'https://firebasestorage.googleapis.com/v0/b/ec3digrepo.appspot.com/o/ofertas%2F' + _controller.bestselleroffer!.ofertaID.toString() + '.jpg?alt=media',
                     // 'https://cdn2.iconfinder.com/data/icons/black-friday-shopping-3/252/Asset_1140-256.png',
                   );
                 }

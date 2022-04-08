@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:poraki/app/modules/auth/login/login_controller.dart';
 import 'package:poraki/app/routes/app_routes.dart';
 import '../home_controller.dart';
 
@@ -23,6 +24,8 @@ class CardOffertsDayHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    LoginController _loginController = Get.find();
+
     return GetBuilder<HomeController>(builder: (_controller) {
       if (!_controller.isLoading) {
         return Padding(
@@ -30,7 +33,7 @@ class CardOffertsDayHome extends StatelessWidget {
           child: SizedBox(
             width: double.maxFinite,
             child: Card(
-              elevation: 3,
+              elevation: 8,
               color: Color(0xffFFFFFF),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -39,7 +42,7 @@ class CardOffertsDayHome extends StatelessWidget {
                     padding: const EdgeInsets.all(15.0),
                     child: Text(
                       widgetTitle,
-                      style: TextStyle(color: Color(0xffEE782D),fontSize: 28) //Get.textTheme.headline1,
+                      style: TextStyle(color: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'textDark').first.coreValor.toString()), fontSize: 30) //Get.textTheme.headline1,
                     ),
                   ),
                   Divider(),
@@ -76,20 +79,21 @@ class CardOffertsDayHome extends StatelessWidget {
                         Text(
                           'R\$ $price',
                           style: Get.textTheme.headline1!.copyWith(
-                            color: Color(0xddE13E9A),
+                            color: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'backDark').first.coreValor.toString()),
                           ),
                         ),
                         Text(
                           details,
                           style: Get.textTheme.bodyText1!.copyWith(
                             fontWeight: FontWeight.w400,
-                            color: Colors.black87,
+                            color: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'textDark').first.coreValor.toString()),
                           ),
                         ),
                         Text(
                           'Cep da oferta: $cepOffer',
                           style: Get.textTheme.bodyText1!.copyWith(
                             fontWeight: FontWeight.w400,
+                            color: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'textDark').first.coreValor.toString()),
                           ),
                         ),
                       ],
@@ -107,11 +111,11 @@ class CardOffertsDayHome extends StatelessWidget {
                         children: [
                           Text(
                             'Ver todas',
-                            style: TextStyle(color: Colors.blue),
+                            style: TextStyle(color: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'textDark').first.coreValor.toString()),),
                           ),
                           Icon(
                             Icons.arrow_forward_ios_rounded,
-                            color: Colors.blue,
+                            color: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'iconColor').first.coreValor.toString()),
                           )
                         ],
                       ),

@@ -4,12 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:poraki/app/modules/auth/login/login_controller.dart';
 import 'package:poraki/app/routes/app_routes.dart';
-import 'package:poraki/app/services/sqlite/sqlporaki_address_service.dart';
 import 'package:poraki/app/shared/porakiprefs.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import '../home_page.dart';
 import '../../../theme/app_theme.dart';
-import 'package:poraki/app/services/hive/hive_poraki_user_service.dart';
 
 class DrawerHome extends StatelessWidget {
   final int index;
@@ -27,6 +23,9 @@ class DrawerHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    LoginController _loginController = Get.find();
+    Color lightBack = _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'backDark').first.coreValor.toString());
+
     return FutureBuilder(
         future: _loadLogin(),
         builder: (context, futuro) {
@@ -34,11 +33,12 @@ class DrawerHome extends StatelessWidget {
             return Scaffold();
           } else {
             return Drawer(
+              backgroundColor: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'backLight').first.coreValor.toString()),
               child: Column(
                 children: [
                   Container(
                       padding: const EdgeInsets.symmetric(horizontal: 2),
-                      color: Colors.amber,
+                      color: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'backDark').first.coreValor.toString()),
                       height: Get.height * 0.13,
                       //margin: EdgeInsets.only(top: 10, left: 1, right: 1),
                       child: Column(children: [
@@ -113,7 +113,7 @@ class DrawerHome extends StatelessWidget {
                     icon: Icons.home_outlined,
                     onTap: () => Get.toNamed(AppRoutes.home),
                   ),
-                  const Divider(),
+                  //Divider(color: lightBack),
                   RowCategoriesDrawerHome(
                     text: 'Carrinho',
                     isSelected: index == 1,
@@ -167,7 +167,7 @@ class DrawerHome extends StatelessWidget {
                     icon: Icons.map,
                     onTap: () => Get.toNamed(AppRoutes.addresses),
                   ),
-                  const Divider(),
+                  // Divider(color: lightBack),
                   RowCategoriesDrawerHome(
                     text: 'Vendas',
                     isSelected: index == 6,
@@ -180,7 +180,7 @@ class DrawerHome extends StatelessWidget {
                     icon: Icons.shopping_cart_outlined,
                     onTap: () {},
                   ),
-                  const Divider(),
+                  // Divider(color: lightBack),
                   RowCategoriesDrawerHome(
                     text: 'Sair',
                     isSelected: index == 8,
@@ -223,19 +223,22 @@ class RowCategoriesDrawerHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    LoginController _loginController = Get.find();
+
     return ListTile(
       onTap: onTap,
+      tileColor: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'backLight').first.coreValor.toString()),
       minLeadingWidth: (Get.width * 0.8) * 0.02,
       title: Text(
         text,
         style: Get.textTheme.bodyText1!.copyWith(
           fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-          color: isSelected ? AppColors.primaryColor : Colors.black,
+          color: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'textDark').first.coreValor.toString()),
         ),
       ),
       leading: Icon(
         icon,
-        color: isSelected ? AppColors.primaryColor : Colors.black,
+        color: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'textDark').first.coreValor.toString()),
       ),
     );
   }

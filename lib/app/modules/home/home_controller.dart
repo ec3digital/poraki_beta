@@ -31,6 +31,7 @@ class HomeController extends GetxController {
     super.onInit();
   }
 
+  //TODO: pegar os banners do firebase
   List<String> listBanners = [
     'http://poraki-assets.ec3.digital/wp-content/uploads/2021/11/PORAKI-Banner-sm_default1.jpg',
     // 'https://cdn.pixabay.com/photo/2015/02/07/20/58/tv-627876_960_720.jpg',

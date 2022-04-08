@@ -15,7 +15,7 @@ class ListOrders extends StatelessWidget {
 
     Widget _buildRow(sqlPedido pedido) {
       print(pedido.toMap());
-      return ListTile(
+      return Column(children: [ListTile(
         leading: Icon(Icons.work_outlined),
         onTap: () => Get.toNamed(AppRoutes.order, arguments: [pedido.toMap()]),
         // ),
@@ -25,7 +25,11 @@ class ListOrders extends StatelessWidget {
         subtitle: Text(pedido.pedidoPagtoEm == '' ? 'Em aberto': 'Pago em' + pedido.pedidoPagtoEm
         ),
         //trailing: Icon(IconData(int.parse(iconcode), fontFamily: 'MaterialIcons'))
-      );
+      ),
+        const SizedBox(height: 5),
+        const Divider(),
+        const SizedBox(height: 5),
+      ]);
     }
 
     final OrderController orderController = Get.put(OrderController());
@@ -44,9 +48,9 @@ class ListOrders extends StatelessWidget {
                     child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          SizedBox(height: 20),
-                          Center(child: Text("Pedidos")),
-                          SizedBox(height: 20),
+                          const SizedBox(height: 15),
+                          Center(child: Text("Pedidos",style: TextStyle(fontSize: 24),)),
+                          const SizedBox(height: 5),
                           Scrollbar(
                             child: ListView.builder(
                               scrollDirection: Axis.vertical,

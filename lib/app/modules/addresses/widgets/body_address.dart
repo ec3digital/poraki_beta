@@ -4,6 +4,7 @@ import 'package:poraki/app/data/models/cepApiBrasil.dart';
 import 'package:poraki/app/data/models/sql/sqlEndereco.dart';
 import 'package:poraki/app/data/repositories/CepApiBrasil_repository.dart';
 import 'package:poraki/app/modules/addresses/address_controller.dart';
+import 'package:poraki/app/modules/auth/login/login_controller.dart';
 import 'package:poraki/app/modules/home/widgets/gradient_header_home.dart';
 import 'package:poraki/app/modules/offers/widgets/button_offer.dart';
 import 'package:poraki/app/routes/app_routes.dart';
@@ -66,6 +67,9 @@ class _AddressBodyState extends State<AddressBody> {
 
   @override
   Widget build(BuildContext context) {
+    LoginController _loginController = Get.find();
+    Color textDark = _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'textDark').first.coreValor.toString());
+
     return FutureBuilder(
         future: null, // widget._controller.carregaUsuario(),
         builder: (context, futuro) {
@@ -98,19 +102,19 @@ class _AddressBodyState extends State<AddressBody> {
                                   // },
                                   controller: widget._controller.txtCEP,
                                   autofocus: true,
-                                  style: TextStyle(color: Colors.brown),
-                                  decoration: InputDecoration(
+                                  style: TextStyle(color: textDark),
+                                    decoration: InputDecoration(
                                     labelText: "CEP",
-                                    labelStyle: TextStyle(color: Colors.brown),
-                                    prefixIcon: Icon(
+                                    labelStyle: TextStyle(color: textDark),
+                                      prefixIcon: Icon(
                                       Icons.map,
-                                      color: Colors.brown,
+                                      color: textDark,
                                     ),
                                     focusedBorder: UnderlineInputBorder(
-                                      borderSide: BorderSide(color: Colors.brown),
+                                      borderSide: BorderSide(color: textDark),
                                     ),
                                     enabledBorder: UnderlineInputBorder(
-                                      borderSide: BorderSide(color: Colors.brown),
+                                      borderSide: BorderSide(color: textDark),
                                     ),
                                   ),
                                   onEditingComplete: () {
@@ -128,19 +132,19 @@ class _AddressBodyState extends State<AddressBody> {
                                   controller: widget._controller.txtEnderecoLogra,
                                   keyboardType: TextInputType.streetAddress,
                                   autofocus: true,
-                                  style: TextStyle(color: Colors.brown),
+                                  style: TextStyle(color: textDark),
                                   decoration: InputDecoration(
                                     labelText: "Endereço SEM número",
-                                    labelStyle: TextStyle(color: Colors.brown),
+                                    labelStyle: TextStyle(color: textDark),
                                     prefixIcon: Icon(
                                       Icons.location_on_outlined,
-                                      color: Colors.brown,
+                                      color: textDark,
                                     ),
                                     focusedBorder: UnderlineInputBorder(
-                                      borderSide: BorderSide(color: Colors.brown),
+                                      borderSide: BorderSide(color: textDark),
                                     ),
                                     enabledBorder: UnderlineInputBorder(
-                                      borderSide: BorderSide(color: Colors.brown),
+                                      borderSide: BorderSide(color: textDark),
                                     ),
                                   ),
                                 ),
@@ -155,19 +159,19 @@ class _AddressBodyState extends State<AddressBody> {
                                   keyboardType: TextInputType.number,
                                   autofocus: true,
                                   focusNode: txtEnderecoNroFocus,
-                                  style: TextStyle(color: Colors.brown),
+                                  style: TextStyle(color: textDark),
                                   decoration: InputDecoration(
                                     labelText: "Número",
-                                    labelStyle: TextStyle(color: Colors.brown),
+                                    labelStyle: TextStyle(color: textDark),
                                     prefixIcon: Icon(
                                       Icons.format_list_numbered,
-                                      color: Colors.brown,
+                                      color: textDark,
                                     ),
                                     focusedBorder: UnderlineInputBorder(
-                                      borderSide: BorderSide(color: Colors.brown),
+                                      borderSide: BorderSide(color: textDark),
                                     ),
                                     enabledBorder: UnderlineInputBorder(
-                                      borderSide: BorderSide(color: Colors.brown),
+                                      borderSide: BorderSide(color: textDark),
                                     ),
                                   ),
                                 ),
@@ -180,19 +184,19 @@ class _AddressBodyState extends State<AddressBody> {
                                   // },
                                   controller: widget._controller.txtEnderecoCompl,
                                   autofocus: true,
-                                  style: TextStyle(color: Colors.brown),
+                                  style: TextStyle(color: textDark),
                                   decoration: InputDecoration(
                                     labelText: "Complemento (apto, bloco, etc...)",
-                                    labelStyle: TextStyle(color: Colors.brown),
+                                    labelStyle: TextStyle(color: textDark),
                                     prefixIcon: Icon(
                                       Icons.location_city_outlined,
-                                      color: Colors.brown,
+                                      color: textDark,
                                     ),
                                     focusedBorder: UnderlineInputBorder(
-                                      borderSide: BorderSide(color: Colors.brown),
+                                      borderSide: BorderSide(color: textDark),
                                     ),
                                     enabledBorder: UnderlineInputBorder(
-                                      borderSide: BorderSide(color: Colors.brown),
+                                      borderSide: BorderSide(color: textDark),
                                     ),
                                   ),
                                 ),
@@ -255,13 +259,13 @@ class _AddressBodyState extends State<AddressBody> {
                             salvar(0);
 
                             final snackBar = SnackBar(
-                                backgroundColor: AppColors.primaryColor,
+                                backgroundColor: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'textDark').first.coreValor.toString()),
                                 content: Container( height: 40, child: Center(child: const Text('Informações salvas 1!'))));
                             ScaffoldMessenger.of(context).showSnackBar(snackBar);
                           },
-                          colorText: AppColors.primaryBackground,
+                          colorText: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'textLight').first.coreValor.toString()),
                           text: 'Salvar',
-                          colorButton: AppColors.primaryColor,
+                          colorButton: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'iconColor').first.coreValor.toString()),
                         ),
                         ButtonOffer(
                           onPressed: () {
@@ -269,16 +273,16 @@ class _AddressBodyState extends State<AddressBody> {
                             salvar(1);
 
                             final snackBar = SnackBar(
-                                backgroundColor: AppColors.primaryColor,
+                                backgroundColor: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'textDark').first.coreValor.toString()),
                                 content: Container( height: 40, child: Center(child: const Text('Definido como endereço atual'))));
                             ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
                             Get.toNamed(AppRoutes.addresses);
 
                           },
-                          colorText: AppColors.primaryColor,
+                          colorText: textDark,
                           text: 'Definir como endereço atual',
-                          colorButton: AppColors.primaryColorButton,
+                          colorButton: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'backLight').first.coreValor.toString()),
                         ),
                         // )
                       ]

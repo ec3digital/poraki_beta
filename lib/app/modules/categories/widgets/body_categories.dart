@@ -18,6 +18,9 @@ class BodyCategories extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
+            const SizedBox(height: 15),
+            Center(child: Text("Categorias",style: TextStyle(fontSize: 24),)),
+            const SizedBox(height: 5),
             ListVerticalCategories(controller: _controller)
           ],
         ),

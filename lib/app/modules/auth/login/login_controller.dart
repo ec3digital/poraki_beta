@@ -64,8 +64,9 @@ class LoginController extends GetxController {
   // atualiza tabela core local com a nuvem
   Future<void> runCore() async {
     // pega os valores da tabela nuvem
+    var listCoreTemp = [];
     var coreFB = await fbPorakiService().getListFromFirebase("akicore", "core");
-    listCore = await sqlPorakiCoreService().buscaTodosValores();
+    listCoreTemp = await sqlPorakiCoreService().buscaTodosValores();
 
     var coreFBcep =
         await fbPorakiService().getListFromFirebase("akicore", "057");
@@ -84,23 +85,30 @@ class LoginController extends GetxController {
       //faz o iteracao da tabela local contra a nuvem pra nao causar erro caso haja mais chaves na nuvem
       coreSqlCep.forEach((coreItem) {
         coreFBcep.forEach((key, value) {
-          var coreSqlUpdate =
-              coreSqlCep.where((coreItem) => coreItem.coreChave == key).first;
-          if (coreSqlUpdate.coreValor != value) {
-            coreSqlUpdate.coreValor = value.toString();
-            sqlPorakiCoreService().atualizaCoreCep(coreSqlUpdate);
-          }
+        //   print(key);
+        //   var coreSqlUpdate =
+        //       coreSqlCep.where((coreItem) => coreItem.coreChave == key).first;
+        //   if (coreSqlUpdate.coreValor != value) {
+        //     coreSqlUpdate.coreValor = value.toString();
+        //     sqlPorakiCoreService().atualizaCoreCep(coreSqlUpdate);
+        //   }
+        var coreFBcepTemp = coreFB.entries.where((element) => element.key == coreItem.coreChave).first;
+        if(coreItem.coreValor != coreFBcepTemp.value) {
+          coreItem.coreValor = coreFBcepTemp.value;
+
+          sqlPorakiCoreService().atualizaCoreCep(coreItem);
+        }
         });
       });
 
       // atualiza lista de params core
       listCoreCep = await sqlPorakiCoreService().buscaTodosValoresCep();
-      print('listCoreCep final qtd: ' + listCoreCep.length.toString());
+      // print('listCoreCep final qtd: ' + listCoreCep.length.toString());
     }
 
     // se chegaram dados da nuvem
     if (coreFB.isNotEmpty) {
-      coreFB.forEach((key, value) {print('key: ' + key + ' / value: ' + value);});
+      // coreFB.forEach((key, value) {print('key: ' + key + ' / value: ' + value);});
       // reseta tabela core local
       await sqlPorakiCoreService().resetaTabela();
       // verifica tabela core local
@@ -109,8 +117,8 @@ class LoginController extends GetxController {
       await sqlPorakiCoreService().valoresIniciais();
 
       // pega os valores da tabela local
-      var coreSql = listCore;
-      print('coreSql new qtd: ' + coreSql.length.toString());
+      var coreSql = listCoreTemp;
+      // print('coreSql new qtd: ' + coreSql.length.toString());
 
       //faz o iteracao da tabela local contra a nuvem pra nao causar erro caso haja mais chaves na nuvem
       coreSql.forEach((coreItem) {
