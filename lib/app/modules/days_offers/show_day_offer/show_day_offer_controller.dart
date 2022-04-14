@@ -30,7 +30,7 @@ class ShowDayOfferController extends GetxController {
     if(offerId != null) {
       print('offerId: ' + this.offerId!.toString());
       //await getOfferTapped(offerId!.toInt());
-      await getOfferTapped(this.offerId!.toInt());
+      await getOfferTapped(this.offerId.toString());
     }
 
     print('Arguments: ${Get.arguments}');
@@ -66,27 +66,28 @@ class ShowDayOfferController extends GetxController {
     Get.back();
   }
 
-  Future<void> getOfferTapped(int offerIdx) async {
-    try {
-      changeLoading(true);
-      //if (this.offerId != null)
-        //{
-      //this.offerId = 2;
-        this.offerId = Get.arguments[0]['id'];
-        print('getOfferTapped id: ' + this.offerId.toString());
-        List<ProdutoOferta> ofertaById = await offerRepository.getOfferById(offerId!.toInt());
-        offerTapped = ofertaById.first;
-       // /}
-      //else
-        //{
-          //return null;
-        //}
-
-    } catch (e) {
-      print('Erro no getOfferTapped() - controller ${e.toString()}');
-    } finally {
-      changeLoading(false);
-    }
+  Future<void> getOfferTapped(String offerGuid) async {
+    return null;
+    // try {
+    //   changeLoading(true);
+    //   //if (this.offerId != null)
+    //     //{
+    //   //this.offerId = 2;
+    //     this.offerId = Get.arguments[0]['id'];
+    //     print('getOfferTapped id: ' + this.offerId.toString());
+    //   offerTapped = (await offerRepository.getOfferByGuid(offerGuid)) as ProdutoOferta?;
+    //     //offerTapped = ofertaByGuid.first;
+    //    // /}
+    //   //else
+    //     //{
+    //       //return null;
+    //     //}
+    //
+    // } catch (e) {
+    //   print('Erro no getOfferTapped() - controller ${e.toString()}');
+    // } finally {
+    //   changeLoading(false);
+    // }
   }
 
   void changeLoading(bool newValue) {

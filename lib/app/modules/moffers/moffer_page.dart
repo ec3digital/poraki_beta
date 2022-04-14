@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -13,21 +12,16 @@ import 'package:poraki/app/data/models/oferta.dart';
 import 'package:poraki/app/modules/auth/login/login_controller.dart';
 import 'package:poraki/app/modules/categories/categories_controller.dart';
 import 'package:poraki/app/modules/home/widgets/gradient_header_home.dart';
-//import 'package:poraki/app/modules/home/home_controller.dart';
-//import 'package:poraki/app/modules/home/widgets/app_bar_home.dart';
-//import 'package:poraki/app/modules/home/widgets/drawer_home.dart';
 import 'package:poraki/app/modules/moffers/moffer_controller.dart';
 import 'package:poraki/app/modules/offers/widgets/button_offer.dart';
 import 'package:poraki/app/shared/constants/constants.dart';
-import 'package:poraki/app/theme/app_theme.dart';
-//import 'package:intl/date_symbol_data_http_request.dart';
 
 class MOfferPage extends StatefulWidget {
   //final String? offerGuid;
   final Oferta? offer;
-  //final HomeController homeController = Get.find();
   final CategoriesController categoriesController = Get.find();
   final MofferController mofferController = Get.find();
+  // final LoginController loginController = Get.find();
   //final MofferController mofferController = Get.put(MofferController());
   final String tipo = 'G';
   late Categorias categSelecionada = new Categorias();
@@ -59,8 +53,6 @@ class _MOfferPage extends State<MOfferPage> {
   final _imageURLController = TextEditingController();
   final _form = GlobalKey<FormState>();
 
-  //late Categorias? categ;
-  // final _formData = Map<String, Object>();
   bool _isLoading = false;
   var listaCategs = ['selecione']; // pegar da API
   var listaTempoEntregaTipo = ['selecione', 'minutos', 'horas', 'dias'];
@@ -177,11 +169,11 @@ class _MOfferPage extends State<MOfferPage> {
     _imageURLFocusNode.dispose();
   }
 
-  Future<void> _saveForm() async {
+  Future<void> _saveForm(String usuGuid) async {
     var offerToSend = new Oferta(
         0,
         widget.categSelecionada.categoriaChave,
-        'eyCv21RfaURoMn0SUndCg6LPyJP2',
+        usuGuid,
         widget.mofferController.txtTitulo.text,
         widget.mofferController.txtDetalhes.text,
         double.parse(widget.mofferController.txtPreco.text),
@@ -1521,7 +1513,7 @@ class _MOfferPage extends State<MOfferPage> {
                                         .first
                                         .coreValor
                                         .toString()),
-                                    onPressed: () => uploadFoto(image == null? null : image)),
+                                    onPressed: () => uploadFoto(image == null? null : image, _loginController.usuGuid.toString())),
                               ])
                           ],
                         ),
@@ -1548,8 +1540,8 @@ class _MOfferPage extends State<MOfferPage> {
     }
   }
 
-  uploadFoto(File? foto) async {
-    await _saveForm();
+  uploadFoto(File? foto, String usuGuid) async {
+    await _saveForm(usuGuid);
 
     if (widget.imgEdited && foto != null) {
       await Firebase.initializeApp();
@@ -1571,4 +1563,5 @@ class _MOfferPage extends State<MOfferPage> {
     final snackBar = SnackBar(content: Text(snackText), duration: d);
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
+
 }

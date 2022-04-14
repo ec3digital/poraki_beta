@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:poraki/app/modules/auth/login/login_controller.dart';
 import '../../data/models/categorias.dart';
 import '../../data/models/produto_oferta.dart';
 import '../../data/repositories/categories_repository.dart';
@@ -8,8 +9,9 @@ class HomeController extends GetxController {
 
   OfferRepository offerRepository = OfferRepository();
   CategoriesRepository categoriesRepository = CategoriesRepository();
+  LoginController _loginController = Get.find();
   // PeopleRepository peopleRepository = PeopleRepository();
-  String strCep = "05735030";
+  //String strCep = "05735030";
 
   ProdutoOferta? offerToday;
   ProdutoOferta? bestoffer;
@@ -22,11 +24,11 @@ class HomeController extends GetxController {
 
   @override
   void onInit() async {
-    await getOffers(strCep);
+    await getOffers(_loginController.usuCep.toString());
     await getCategories();
-    await getBestOffers(strCep);
+    await getBestOffers(_loginController.usuCep.toString());
     // await getMostFreshOffers(strCep);
-    await getBestSellersOffers(strCep);
+    await getBestSellersOffers(_loginController.usuCep.toString());
     // await getPeople();
     super.onInit();
   }
@@ -40,7 +42,7 @@ class HomeController extends GetxController {
   Future<void> getOffers(String cep) async {
     try {
       changeLoading(true);
-      List<ProdutoOferta> ofertas = await offerRepository.getDayOfferByCEP(cep);
+      List<ProdutoOferta> ofertas = await offerRepository.getDayOfferByCEP();
       offerToday = ofertas.first;
       
     } catch (e) {
@@ -53,7 +55,7 @@ class HomeController extends GetxController {
   Future<void> getBestOffers(String cep) async {
     try {
       changeLoading(true);
-      List<ProdutoOferta> ofertas = await offerRepository.getBestOffers(cep);
+      List<ProdutoOferta> ofertas = await offerRepository.getBestOffers();
       bestoffer = ofertas.first;
 
     } catch (e) {
@@ -66,7 +68,7 @@ class HomeController extends GetxController {
   Future<void> getMostFreshOffers(String cep) async {
     try {
       changeLoading(true);
-      List<ProdutoOferta> ofertas = await offerRepository.getMostFreshOffers(cep);
+      List<ProdutoOferta> ofertas = await offerRepository.getMostFreshOffers();
       mostfresheroffer = ofertas.first;
 
     } catch (e) {
@@ -79,7 +81,7 @@ class HomeController extends GetxController {
   Future<void> getBestSellersOffers(String cep) async {
     try {
       changeLoading(true);
-      List<ProdutoOferta> ofertas = await offerRepository.getBestSellersOffers(cep);
+      List<ProdutoOferta> ofertas = await offerRepository.getBestSellersOffers();
       bestselleroffer = ofertas.first;
 
     } catch (e) {

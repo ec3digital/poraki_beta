@@ -75,10 +75,10 @@ class MofferController extends GetxController {
     super.onClose();
   }
 
-  Future<void> getMoffers() async {
+  Future<void> getMoffers(String sellerGuid) async {
     try {
       changeLoading(true);
-      moffers = await offerRepository.getOfferBySellerGuid('eyCv21RfaURoMn0SUndCg6LPyJP2');
+      moffers = await offerRepository.getOfferBySellerGuid(sellerGuid);
       // print('getMoffers result - ' + moffers.toString());
     } catch (e) {
       changeLoading(false);
@@ -106,12 +106,5 @@ class MofferController extends GetxController {
     update();
   }
 
-  void getSingleOffer(){
-    singleOffer = offerRepository.getOfferByGuid(this.mofferGuid.toString());
-    //
-    // txtValorTaxaMaisQue2km.text = singleOffer?.ValorEntregaMaisDe2!.toString() as String;
-    // txtValorTaxa1km.text = singleOffer?.ValorEntregaAte1!.toString() as String;
-    // txtEncomendasAPartir.value = singleOffer?.OfertaEncomendasAPartirDe!.toString() as String;
-  }
 
 }

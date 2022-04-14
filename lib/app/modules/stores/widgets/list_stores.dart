@@ -13,7 +13,7 @@ class ListStores extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final StoreController controller = Get.find(); //.put(StoreController());
+    final StoreController controller = Get.put(StoreController());
     LoginController _loginController = Get.find();
 
     Widget _buildRow(Lojas loja) {

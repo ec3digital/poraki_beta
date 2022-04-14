@@ -13,7 +13,7 @@ class StoreRepository extends GetConnect {
   Future<List<Lojas>> getAllStores(String usuguid) async {
     // var response = await get(urlAll + usuguid, headers: Constants.headers);
     // var response = await get('${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiLojasPorVendedor').first.coreValor.toString()}/' + usuguid, headers: Constants.headers);
-    Uri uri = Uri.parse('${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiLojasPorVendedor').first.coreValor.toString()}/' + usuguid);
+    //Uri uri = Uri.parse('${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiLojasPorVendedor').first.coreValor.toString()}/' + usuguid);
     // print('uri getAllStores: ' + uri.toString());
     var response = await get('${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiLojasPorVendedor').first.coreValor.toString()}/' + usuguid, headers: Constants.headers);
     print('response getAllStores 1: ' + response.body.toString());

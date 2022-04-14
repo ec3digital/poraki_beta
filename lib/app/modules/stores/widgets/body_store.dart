@@ -1,18 +1,30 @@
+import 'dart:io';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:poraki/app/data/models/lojas.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:poraki/app/modules/auth/login/login_controller.dart';
 import 'package:poraki/app/modules/home/widgets/gradient_header_home.dart';
 import 'package:poraki/app/modules/offers/widgets/button_offer.dart';
-import 'package:poraki/app/routes/app_routes.dart';
-import 'package:poraki/app/theme/app_theme.dart';
-
 import '../store_controller.dart';
 
 // ignore: must_be_immutable
-class StoreBody extends StatelessWidget {
+class StoreBody extends StatefulWidget {
   // final Lojas? loja;
   StoreBody({Key? key}) : super(key: key);
+
+  @override
+  State<StoreBody> createState() => _StoreBodyState();
+}
+
+class _StoreBodyState extends State<StoreBody> {
+  File? image;
+  bool isEditing = false;
+  bool imgEdited = false;
+  String storeGuid = '';
+  String imgcloud = '';
 
   @override
   Widget build(BuildContext context) {
@@ -184,6 +196,43 @@ class StoreBody extends StatelessWidget {
                       ]),
                     ),
                     SizedBox(height: 20),
+                SizedBox(height: 20),
+                ElevatedButton(
+                    onPressed: () => pegarImagemGaleria(),
+                    style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                          _loginController.colorFromHex(_loginController
+                              .listCore
+                              .where((coreItem) => coreItem.coreChave == 'backDark')
+                              .first
+                              .coreValor
+                              .toString()),
+                        )),
+
+                    child: Row(
+                      children: [
+                        Icon(Icons.photo_album),
+                        const SizedBox(
+                          width: 16,
+                        ),
+                        Text('Adicionar Foto')
+                      ],
+                    )),
+                SizedBox(height: 20),
+                if (imgcloud != '')
+                  FadeInImage.assetNetwork(
+                    placeholder: 'assets/images/pholder.png',
+                    image: imgcloud,
+                    imageErrorBuilder: (context, url, error) =>
+                    new Icon(Icons.local_offer_outlined),
+                    height: 250,
+                  ),
+                if (image != null)
+                  Image.file(
+                    image!,
+                    fit: BoxFit.contain,
+                  ),
+                SizedBox(height: 20),
                     ButtonOffer(
                       onPressed: () {
                         salvar("");
@@ -209,15 +258,6 @@ class StoreBody extends StatelessWidget {
   }
 
   // FocusNode txtEnderecoNroFocus = new FocusNode();
-  // var tipos = ["Casa", "Trabalho", "Estudo", "Outros"];
-  // var tipoSel = "Casa";
-  //
-  // void _dropDownItemSelected(String novoItem){
-  //   setState(() {
-  //     this.tipoSel = novoItem;
-  //   });
-  // }
-
   Future<void> salvar(String storeGuid) async {
     // String enderecoGuid = "xxx";
     // var end = new sqlEndereco(enderecoGuid,
@@ -248,4 +288,40 @@ class StoreBody extends StatelessWidget {
     //
     // //widget._controller.txtEnderecoTipo.text.trimLeft().trimRight(),
   }
+
+  Future pegarImagemGaleria() async {
+    try {
+      final foto = await ImagePicker().pickImage(
+          source: ImageSource.gallery, imageQuality: 70, maxHeight: 300);
+      if (foto == null) return;
+
+      final imageTemp = File(foto.path);
+
+      setState(() => this.image = imageTemp);
+
+      imgEdited = true;
+    } on PlatformException catch (e) {
+      print('erro tentando abrir album de fotos: $e');
+    }
+  }
+
+  uploadFoto(File? foto) async {
+    // await _saveForm();
+
+    if (imgEdited && foto != null) {
+      await Firebase.initializeApp();
+
+      print('passou no upload');
+      Reference ref = FirebaseStorage.instance
+          .ref()
+          .child("lojas")
+          .child(storeGuid + '.jpg');
+
+      await ref.putFile(image!);
+      //var downloadURL = await ref.getDownloadURL();
+    }
+    // showSnackBar("Oferta salva! - " + widget.offerGuid, Duration(seconds: 3));
+
+  }
+
 }

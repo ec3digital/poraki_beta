@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:poraki/app/data/models/pedido.dart';
 import 'package:poraki/app/data/models/sql/sqlPedido.dart';
 import 'package:poraki/app/modules/auth/login/login_controller.dart';
 import 'package:poraki/app/modules/home/widgets/gradient_header_home.dart';
@@ -9,17 +10,29 @@ import '../order_controller.dart';
 
 // ignore: must_be_immutable
 class ListOrderItems extends StatelessWidget {
-  final sqlPedido? pedido;
+  final sqlPedido? sqlPed;
+  final Pedido? ped;
   final OrderController orderController = Get.find(); //put(OrderController());
 
-  ListOrderItems({Key? key, required this.pedido}) : super(key: key);
+  ListOrderItems({Key? key, this.sqlPed, this.ped}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
 
+    Future<void> loadDataItem() async {
+      if (sqlPed != null) {
+        await orderController.carregaPedidoLocalItems(sqlPed!.pedidoGUID.toString());
+        print('qtd itens pedido sql: ' + orderController.listaPedidosItems.length.toString());
+      }
+      else {
+        await orderController.carregaPedidoCloudItems(ped!.PedidoGUID.toString());
+        print('qtd itens pedido cloud: ' + orderController.listaPedidosItemsCloud.length.toString());
+      }
+
+    }
+
     return FutureBuilder(
-        future: orderController
-            .buscaPedido(''), //'c09cd10b-5aa2-43c2-bb42-10031c0d4280'),
+        future: loadDataItem(),
         builder: (context, futuro) {
           if (futuro.connectionState == ConnectionState.waiting) {
             return Center(
@@ -27,8 +40,7 @@ class ListOrderItems extends StatelessWidget {
             // } else if (futuro.hasError) {
             //   return Center(child: Text(futuro.error.toString()));
           } else {
-            print('qt pedidos: ' +
-                orderController.listaPedidos.length.toString());
+
             //return SingleChildScrollView(
                 // child: GradientHeaderHome(
                 //     child: Column(
@@ -75,7 +87,7 @@ class ListOrderItems extends StatelessWidget {
   //}
 
   checkoutItem() {
-    print('items qt: ' + orderController.listaPedidosItems.length.toString());
+    //print('items qt: ' + orderController.listaPedidosItems.length.toString());
 
     LoginController _loginController = Get.find();
     Color colorText = _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'textDark').first.coreValor.toString());
@@ -99,7 +111,7 @@ class ListOrderItems extends StatelessWidget {
             itemBuilder: (context, position) {
               return checkoutListItem(position, colorText);
             },
-            itemCount: orderController.listaPedidosItems.length,
+            itemCount: sqlPed != null ? orderController.listaPedidosItems.length : orderController.listaPedidosItemsCloud.length,
             shrinkWrap: true,
             primary: false,
             scrollDirection: Axis.vertical,
@@ -118,7 +130,7 @@ class ListOrderItems extends StatelessWidget {
 
             child: FadeInImage.assetNetwork(
               placeholder: 'assets/images/pholder.png',
-              image: orderController.listaPedidosItems[index].ofertaImgPath.toString(),
+              image: sqlPed != null ? orderController.listaPedidosItems[index].ofertaImgPath.toString() : orderController.listaPedidosItemsCloud[index].OfertaImgPath.toString(),
               imageErrorBuilder: (context, url, error) => new Icon(Icons.local_offer_outlined),
               height: 30, fit: BoxFit.fitHeight,
             ),
@@ -136,15 +148,15 @@ class ListOrderItems extends StatelessWidget {
             width: 8,
           ),
           Expanded(
-              child: Text(
-            orderController.listaPedidosItems[index].ofertaTitulo,
+              child: Text(sqlPed != null ?
+            orderController.listaPedidosItems[index].ofertaTitulo : orderController.listaPedidosItemsCloud[index].OfertaTitulo,
             style: TextStyle(
                 fontSize: 16,
                 color: colorText,
                 fontWeight: FontWeight.w500),
           )),
-          Text(
-            orderController.listaPedidosItems[index].ofertaQtd.toString(),
+          Text(sqlPed != null ?
+            orderController.listaPedidosItems[index].ofertaQtd.toString() : orderController.listaPedidosItemsCloud[index].OfertaQtd.toString(),
             style: TextStyle(
                 fontSize: 16,
                 color: colorText,
@@ -157,8 +169,8 @@ class ListOrderItems extends StatelessWidget {
                 color: colorText,
                 fontWeight: FontWeight.w900),
           ),
-          Text("R\$ " +
-            orderController.listaPedidosItems[index].ofertaPreco.toStringAsFixed(2),
+          Text(sqlPed != null ? "R\$ " + orderController.listaPedidosItems[index].ofertaPreco.toStringAsFixed(2) :
+          "R\$ " + orderController.listaPedidosItemsCloud[index].OfertaPreco.toStringAsFixed(2),
             style: TextStyle(
                 fontSize: 16,
                 color: colorText,

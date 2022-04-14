@@ -4,8 +4,9 @@ class Categorias {
   String? secao;
   String? iconcode;
   String? categoriaNomeLista;
+  bool? categoriaRevisao;
 
-  Categorias({this.categoriaNome, this.categoriaChave, this.secao, this.iconcode, this.categoriaNomeLista});
+  Categorias({this.categoriaNome, this.categoriaChave, this.secao, this.iconcode, this.categoriaNomeLista, this.categoriaRevisao});
 
   Categorias.fromJson(Map<String, dynamic> json) {
     categoriaNome = json['CategoriaNome'];
@@ -13,6 +14,7 @@ class Categorias {
     secao = json['Secao'];
     iconcode = json['iconcode'];
     categoriaNomeLista = json['categoriaNomeLista'];
+    categoriaRevisao = json['categoriaRevisao'];
   }
 
   Map<String, dynamic> toJson() {
@@ -22,6 +24,7 @@ class Categorias {
     data['Secao'] = this.secao;
     data['iconcode'] = this.iconcode;
     data['categoriaNomeLista'] = this.categoriaNomeLista;
+    data['categoriaRevisao'] = this.categoriaRevisao;
     return data;
   }
 }

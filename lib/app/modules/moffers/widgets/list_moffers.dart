@@ -33,7 +33,7 @@ class _ListMoffersState extends State<ListMoffers> {
 
     Future<void> loadObjs() async {
       await storeController.carregaLojas();
-      await mofferController.getMoffers();
+      await mofferController.getMoffers(_loginController.usuGuid.toString());
     }
 
     return FutureBuilder(

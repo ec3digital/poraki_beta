@@ -212,6 +212,17 @@ class sqlPorakiCoreService {
     batch.insert('appcore', {'coreChave': 'apiUsuarioSus', 'coreValor': 'ususus'});
     batch.insert('appcore', {'coreChave': 'uuidservice', 'coreValor': 'https://www.uuidgenerator.net/api/version4'});
     batch.insert('appcore', {'coreChave': 'cepservice', 'coreValor': 'https://brasilapi.com.br/api/cep/v2/'});
+
+    batch.insert('appcore', {'coreChave': 'apiPedidoAvalia', 'coreValor': 'pedidoavalia'});
+    batch.insert('appcore', {'coreChave': 'apiPedidoCancela', 'coreValor': 'pedidocancela'});
+    batch.insert('appcore', {'coreChave': 'apiPedidoEntrega', 'coreValor': 'pedidoentrega'});
+    batch.insert('appcore', {'coreChave': 'apiPedidoPagto', 'coreValor': 'pedidopagto'});
+    batch.insert('appcore', {'coreChave': 'apiLojaInativar', 'coreValor': 'inativloja'});
+    batch.insert('appcore', {'coreChave': 'apiOfertaInativar', 'coreValor': 'inativoferta'});
+    batch.insert('appcore', {'coreChave': 'apiOfertaAvalia', 'coreValor': 'avaliaoferta'});
+    batch.insert('appcore', {'coreChave': 'apiEnderecoAtual', 'coreValor': 'enderecoatual'});
+    batch.insert('appcore', {'coreChave': 'apiEnderecoNAtual', 'coreValor': 'endereconatual'});
+
     batch.insert('appcore', {'coreChave': 'backDark', 'coreValor': '0xFF21B6A8'});
     batch.insert('appcore', {'coreChave': 'backLight', 'coreValor': '0xFFA3EBB1'});
     batch.insert('appcore', {'coreChave': 'iconColor', 'coreValor': '0xDDFF8885'});

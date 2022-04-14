@@ -20,7 +20,7 @@ class BodyShowDayOffer extends StatelessWidget {
     LoginController _loginController = Get.find();
 
     //TODO: resolver essa parada
-    _controller.getOfferTapped(3);
+    // _controller.getOfferTapped(3);
 
     return Container(
         child: GetBuilder<ShowDayOfferController>(builder: (context) {
