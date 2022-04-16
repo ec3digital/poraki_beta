@@ -35,28 +35,20 @@ class MofferController extends GetxController {
 
   final MaskedTextController   txtSegDas    = MaskedTextController(mask: '00:00');
   final MaskedTextController   txtSegAs     = MaskedTextController(mask: '00:00');
-
   final MaskedTextController   txtTerDas    = MaskedTextController(mask: '00:00');
   final MaskedTextController   txtTerAs     = MaskedTextController(mask: '00:00');
-
   final MaskedTextController   txtQuaDas    = MaskedTextController(mask: '00:00');
   final MaskedTextController   txtQuaAs     = MaskedTextController(mask: '00:00');
-
   final MaskedTextController   txtQuiDas    = MaskedTextController(mask: '00:00');
   final MaskedTextController   txtQuiAs     = MaskedTextController(mask: '00:00');
-
   final MaskedTextController   txtSexDas    = MaskedTextController(mask: '00:00');
   final MaskedTextController   txtSexAs     = MaskedTextController(mask: '00:00');
-
   final MaskedTextController   txtSabDas    = MaskedTextController(mask: '00:00');
   final MaskedTextController   txtSabAs     = MaskedTextController(mask: '00:00');
-
   final MaskedTextController   txtDomDas    = MaskedTextController(mask: '00:00');
   final MaskedTextController   txtDomAs     = MaskedTextController(mask: '00:00');
-
   final MaskedTextController   txtEntregaDas    = MaskedTextController(mask: '00:00');
   final MaskedTextController   txtEntregaAs     = MaskedTextController(mask: '00:00');
-
   final MaskedTextController   txtEncomendasAPartir     = MaskedTextController(mask: '00/00/0000');
   final MaskedTextController   txtEntregasAPartir       = MaskedTextController(mask: '00/00/0000');
 

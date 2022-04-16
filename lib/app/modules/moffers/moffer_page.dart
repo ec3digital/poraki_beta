@@ -43,7 +43,6 @@ class MOfferPage extends StatefulWidget {
 }
 
 class _MOfferPage extends State<MOfferPage> {
-
   File? image;
   bool isEditing = false;
 
@@ -170,6 +169,18 @@ class _MOfferPage extends State<MOfferPage> {
   }
 
   Future<void> _saveForm(String usuGuid) async {
+    var formaFechto = '';
+    switch (formaFechSel) {
+      case 'mensagem no aplicativo (seguro)':
+        formaFechto = 'chatapp';
+        break;
+      case 'pagamento no aplicativo (seguro)':
+        formaFechto = 'gatewayapi';
+        break;
+      default:
+        formaFechto = formaFechSel;
+    }
+
     var offerToSend = new Oferta(
         0,
         widget.categSelecionada.categoriaChave,
@@ -190,7 +201,9 @@ class _MOfferPage extends State<MOfferPage> {
         0,
         0,
         null,
-        widget.mofferController.mofferGuid == null ? null : widget.mofferController.mofferGuid.toString(),
+        widget.mofferController.mofferGuid == null
+            ? null
+            : widget.mofferController.mofferGuid.toString(),
         int.parse(widget.mofferController.txtQtdDispo.text),
         int.parse(widget.mofferController.txtQtdMaxPorVenda.text),
         int.parse(widget.mofferController.txtQtdAviso.text),
@@ -203,9 +216,10 @@ class _MOfferPage extends State<MOfferPage> {
         valAceitaEncomenda,
         valSomenteEncomenda,
         valAceitaProposta,
-        int.parse(widget.mofferController.txtTempoEntrega.text), //int.parse(widget.mofferController.txtTempoEntrega.text),
+        int.parse(widget.mofferController.txtTempoEntrega
+            .text), //int.parse(widget.mofferController.txtTempoEntrega.text),
         tempoEntregaTipoSel,
-        formaFechSel,
+        formaFechto,
         agenteEntregaSel,
         '',
         '',
@@ -250,37 +264,35 @@ class _MOfferPage extends State<MOfferPage> {
 
     // Uri url = Uri.https("ec3digrepo-default-rtdb.firebaseio.com", "/words.json");
 
-    if(widget.mofferController.mofferGuid == null)
-      {
-        var response = await post(
-          Uri.parse('${Constants.baseUrl}mofferadd'), headers: Constants.headers,
-          body: offerToSend.toJsonPost(),
-        );
+    if (widget.mofferController.mofferGuid == null) {
+      var response = await post(
+        Uri.parse('${Constants.baseUrl}mofferadd'),
+        headers: Constants.headers,
+        body: offerToSend.toJsonPost(),
+      );
 
-        print(response.body);
+      print(response.body);
 
-        var jsonResp = jsonDecode(response.body);
-        var strGuid = jsonResp['insert_Ofertas_one']['OfertaGUID'];
+      var jsonResp = jsonDecode(response.body);
+      var strGuid = jsonResp['insert_Ofertas_one']['OfertaGUID'];
 
-        widget.offerGuid = strGuid;
-        print('guid: ' + strGuid);
-      }
-    else
-      {
-        print(offerToSend.toJsonPut());
-        var response = await put(
-          Uri.parse('${Constants.baseUrl}mofferupd'), headers: Constants.headers,
-          body: offerToSend.toJsonPut(),
-        );
+      widget.offerGuid = strGuid;
+      print('guid: ' + strGuid);
+    } else {
+      print(offerToSend.toJsonPut());
+      var response = await put(
+        Uri.parse('${Constants.baseUrl}mofferupd'),
+        headers: Constants.headers,
+        body: offerToSend.toJsonPut(),
+      );
 
-        print(response.body);
+      print(response.body);
 
-        var jsonResp = jsonDecode(response.body);
-        var strGuid = jsonResp['update_Ofertas']['returning'][0]['OfertaGUID'];
+      var jsonResp = jsonDecode(response.body);
+      var strGuid = jsonResp['update_Ofertas']['returning'][0]['OfertaGUID'];
 
-        print('guid: ' + strGuid);
-      }
-
+      print('guid: ' + strGuid);
+    }
   }
 
   // somente para testes - em producao virá a partir do Firebase
@@ -574,7 +586,8 @@ class _MOfferPage extends State<MOfferPage> {
 
       print('guidOffer: ' + oferta.OfertaGUID.toString());
       widget.mofferController.mofferGuid = oferta.OfertaGUID.toString();
-      print('widget guidOffer: ' + widget.mofferController.mofferGuid.toString());
+      print(
+          'widget guidOffer: ' + widget.mofferController.mofferGuid.toString());
       widget.mofferController.txtTitulo.text = oferta.OfertaTitulo.toString();
 
       if (widget.categoriesController.listaCategorias == null)
@@ -588,9 +601,9 @@ class _MOfferPage extends State<MOfferPage> {
       widget.mofferController.txtEncomendasAPartir.text =
           oferta.OfertaEncomendasAPartirDe.toString();
       widget.mofferController.txtValorTaxa1km.text =
-      oferta.ValorEntregaAte1 == null
-          ? '0'
-          : oferta.ValorEntregaAte1.toString();
+          oferta.ValorEntregaAte1 == null
+              ? '0'
+              : oferta.ValorEntregaAte1.toString();
       widget.mofferController.txtValorTaxaMaisQue2km.text =
           oferta.ValorEntregaMaisDe2 == null
               ? '0'
@@ -650,12 +663,12 @@ class _MOfferPage extends State<MOfferPage> {
           : oferta.OfertaQtdAviso.toString();
       widget.mofferController.txtPreco.text =
           oferta.OfertaPreco == null ? '0.00' : oferta.OfertaPreco.toString();
-      widget.mofferController.txtTempoEntrega.text = oferta.OfertaTempoEntrega == null
-          ? '0'
-          : oferta.OfertaTempoEntrega.toString();
+      widget.mofferController.txtTempoEntrega.text =
+          oferta.OfertaTempoEntrega == null
+              ? '0'
+              : oferta.OfertaTempoEntrega.toString();
 
       widget.offerGuid = widget.mofferController.mofferGuid!;
-
     } else {
       isEditing = false;
       var nowFormatted = '01' + '03' + '2022';
@@ -698,7 +711,11 @@ class _MOfferPage extends State<MOfferPage> {
   @override
   Widget build(BuildContext context) {
     LoginController _loginController = Get.find();
-    Color textColor = _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'textDark').first.coreValor.toString());
+    Color textColor = _loginController.colorFromHex(_loginController.listCore
+        .where((coreItem) => coreItem.coreChave == 'textDark')
+        .first
+        .coreValor
+        .toString());
 
     return FutureBuilder(
         future:
@@ -717,11 +734,14 @@ class _MOfferPage extends State<MOfferPage> {
                 child: AppBar(
                   elevation: 0,
                   centerTitle: false,
-                  backgroundColor: _loginController.colorFromHex(_loginController.listCore
-                      .where((coreItem) => coreItem.coreChave == 'backLight')
-                      .first
-                      .coreValor
-                      .toString()),
+                  backgroundColor: _loginController.colorFromHex(
+                      _loginController
+                          .listCore
+                          .where(
+                              (coreItem) => coreItem.coreChave == 'backLight')
+                          .first
+                          .coreValor
+                          .toString()),
                   title: Text(
                     'Minha oferta',
                     style: TextStyle(fontSize: 25, color: textColor),
@@ -733,11 +753,10 @@ class _MOfferPage extends State<MOfferPage> {
                   ? Center(
                       child: CircularProgressIndicator(),
                     )
-                  : GradientHeaderHome(child: Padding(
+                  : GradientHeaderHome(
+                      child: Padding(
                       padding: const EdgeInsets.all(15.0),
-                      child:
-
-                      Form(
+                      child: Form(
                         key: _form,
                         child: ListView(
                           children: [
@@ -991,8 +1010,7 @@ class _MOfferPage extends State<MOfferPage> {
                                   controller:
                                       widget.mofferController.txtValidade,
                                   decoration: InputDecoration(
-                                      labelText:
-                                          '$labelValidade (ex: 5 dias)'),
+                                      labelText: '$labelValidade (ex: 5 dias)'),
                                   keyboardType: TextInputType.number),
 
                             if (showTxtCep)
@@ -1008,7 +1026,8 @@ class _MOfferPage extends State<MOfferPage> {
                                 controller:
                                     widget.mofferController.txtCepDistancia,
                                 decoration: InputDecoration(
-                                    labelText: 'Distância de $labelEntrega em Km'),
+                                    labelText:
+                                        'Distância de $labelEntrega em Km'),
                                 keyboardType: TextInputType.number,
                               ),
 
@@ -1466,15 +1485,18 @@ class _MOfferPage extends State<MOfferPage> {
                                 ElevatedButton(
                                     onPressed: () => pegarImagemGaleria(),
                                     style: ButtonStyle(
-                                        backgroundColor: MaterialStateProperty.all<Color>(
-                                          _loginController.colorFromHex(_loginController
+                                        backgroundColor:
+                                            MaterialStateProperty.all<Color>(
+                                      _loginController.colorFromHex(
+                                          _loginController
                                               .listCore
-                                              .where((coreItem) => coreItem.coreChave == 'backDark')
+                                              .where((coreItem) =>
+                                                  coreItem.coreChave ==
+                                                  'backDark')
                                               .first
                                               .coreValor
                                               .toString()),
-                                        )),
-
+                                    )),
                                     child: Row(
                                       children: [
                                         Icon(Icons.photo_album),
@@ -1501,24 +1523,30 @@ class _MOfferPage extends State<MOfferPage> {
                                 SizedBox(height: 20),
                                 ButtonOffer(
                                     text: 'Salvar',
-                                    colorText: _loginController.colorFromHex(_loginController
-                                        .listCore
-                                        .where((coreItem) => coreItem.coreChave == 'textLight')
-                                        .first
-                                        .coreValor
-                                        .toString()),
-                                    colorButton: _loginController.colorFromHex(_loginController
-                                        .listCore
-                                        .where((coreItem) => coreItem.coreChave == 'iconColor')
-                                        .first
-                                        .coreValor
-                                        .toString()),
-                                    onPressed: () => uploadFoto(image == null? null : image, _loginController.usuGuid.toString())),
+                                    colorText: _loginController.colorFromHex(
+                                        _loginController.listCore
+                                            .where((coreItem) =>
+                                                coreItem.coreChave ==
+                                                'textLight')
+                                            .first
+                                            .coreValor
+                                            .toString()),
+                                    colorButton: _loginController.colorFromHex(
+                                        _loginController.listCore
+                                            .where((coreItem) =>
+                                                coreItem.coreChave ==
+                                                'iconColor')
+                                            .first
+                                            .coreValor
+                                            .toString()),
+                                    onPressed: () => uploadFoto(
+                                        image == null ? null : image,
+                                        _loginController.usuGuid.toString())),
                               ])
                           ],
                         ),
-                      ),)
-                    ),
+                      ),
+                    )),
             );
           }
         });
@@ -1563,5 +1591,4 @@ class _MOfferPage extends State<MOfferPage> {
     final snackBar = SnackBar(content: Text(snackText), duration: d);
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
-
 }

@@ -133,7 +133,7 @@ class _AddressBodyState extends State<AddressBody> {
                                   autofocus: true,
                                   style: TextStyle(color: textDark),
                                   decoration: InputDecoration(
-                                    labelText: "Endereço SEM número",
+                                    labelText: "Endereço SEM o número",
                                     labelStyle: TextStyle(color: textDark),
                                     prefixIcon: Icon(
                                       Icons.location_on_outlined,

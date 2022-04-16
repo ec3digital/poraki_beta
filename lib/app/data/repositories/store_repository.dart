@@ -47,24 +47,26 @@ class StoreRepository extends GetConnect {
         .toList().first;
   }
 
-  Future<void> postStore(Lojas loja) async {
+  Future<String?> postStore(Lojas loja) async {
     var response = await post(
         '${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiLoja').first.coreValor.toString()}',
         loja.toJson(),
     );
 
     print(response.body);
+    return response.bodyString;
     // var jsonResp = jsonDecode(response.body);
     // var strGuid = jsonResp['insert_Ofertas_one']['OfertaGUID'];
   }
 
-  Future<void> putStore(Lojas loja) async {
+  Future<String?> putStore(Lojas loja) async {
     var response = await put(
       '${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiLoja').first.coreValor.toString()}',
       loja.toJson(),
     );
 
     print(response.body);
+    return response.bodyString;
   }
 
   // Future<void> inactiveStore(String lojaGuid) async {

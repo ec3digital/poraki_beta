@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-import 'package:poraki/app/modules/auth/login/login_controller.dart';
 import '../../data/models/categorias.dart';
 import '../../data/models/produto_oferta.dart';
 import '../../data/repositories/categories_repository.dart';
@@ -9,7 +8,6 @@ class HomeController extends GetxController {
 
   OfferRepository offerRepository = OfferRepository();
   CategoriesRepository categoriesRepository = CategoriesRepository();
-  LoginController _loginController = Get.find();
   // PeopleRepository peopleRepository = PeopleRepository();
   //String strCep = "05735030";
 
@@ -24,11 +22,11 @@ class HomeController extends GetxController {
 
   @override
   void onInit() async {
-    await getOffers(_loginController.usuCep.toString());
+    await getOffers();
     await getCategories();
-    await getBestOffers(_loginController.usuCep.toString());
-    // await getMostFreshOffers(strCep);
-    await getBestSellersOffers(_loginController.usuCep.toString());
+    await getBestOffers();
+    await getMostFreshOffers();
+    await getBestSellersOffers();
     // await getPeople();
     super.onInit();
   }
@@ -39,7 +37,7 @@ class HomeController extends GetxController {
     // 'https://cdn.pixabay.com/photo/2015/02/07/20/58/tv-627876_960_720.jpg',
   ];
 
-  Future<void> getOffers(String cep) async {
+  Future<void> getOffers() async {
     try {
       changeLoading(true);
       List<ProdutoOferta> ofertas = await offerRepository.getDayOfferByCEP();
@@ -52,7 +50,7 @@ class HomeController extends GetxController {
     }
   }
 
-  Future<void> getBestOffers(String cep) async {
+  Future<void> getBestOffers() async {
     try {
       changeLoading(true);
       List<ProdutoOferta> ofertas = await offerRepository.getBestOffers();
@@ -65,7 +63,7 @@ class HomeController extends GetxController {
     }
   }
 
-  Future<void> getMostFreshOffers(String cep) async {
+  Future<void> getMostFreshOffers() async {
     try {
       changeLoading(true);
       List<ProdutoOferta> ofertas = await offerRepository.getMostFreshOffers();
@@ -78,7 +76,7 @@ class HomeController extends GetxController {
     }
   }
 
-  Future<void> getBestSellersOffers(String cep) async {
+  Future<void> getBestSellersOffers() async {
     try {
       changeLoading(true);
       List<ProdutoOferta> ofertas = await offerRepository.getBestSellersOffers();

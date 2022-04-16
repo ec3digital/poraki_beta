@@ -79,11 +79,9 @@ class _ListOrdersState extends State<ListOrders> {
 
     Future<void> loadOrderData() async {
       if (closed)
-        await orderController
-            .listaTodosPedidos(_loginController.usuGuid.toString());
+        await orderController.carregaPedidosFechadosLocal(_loginController.usuGuid.toString());
       else
-        await orderController.listaPedidosPorClienteOpenCloud(
-            _loginController.usuGuid.toString());
+        await orderController.carregaPedidosPorClienteOpenCloud(_loginController.usuGuid.toString());
     }
 
     return FutureBuilder(

@@ -84,7 +84,7 @@ class AppPages {
     ),
     GetPage(
       name: AppRoutes.order,
-      page: () => OrderPage(pedido: null),
+      page: () => OrderPage(sqlPed: null, ped: null),
     ),
     GetPage(
       name: AppRoutes.mOffers,

@@ -15,6 +15,9 @@ class StoreController extends GetxController {
   // final String  usuGuid;
   final MaskedTextController txtLojaCEP =
       MaskedTextController(mask: '00000-000');
+  final TextEditingController txtLojaLogra = TextEditingController();
+  final TextEditingController txtLojaNumero = TextEditingController();
+  final TextEditingController? txtLojaCompl = TextEditingController();
   final TextEditingController txtLojaNome = TextEditingController();
   final TextEditingController txtLojaSlogan = TextEditingController();
   final TextEditingController txtLojaCNPJ = TextEditingController();
@@ -66,6 +69,9 @@ class StoreController extends GetxController {
       txtLojaNome.text = loja!.LojaNome.toString();
       txtLojaRazao.text = loja!.LojaRazao.toString();
       txtLojaSlogan.text = loja!.LojaSlogan.toString();
+      txtLojaLogra.text = loja!.LojaLogra.toString();
+      txtLojaNumero.text = loja!.LojaNumero.toString();
+      txtLojaCompl?.text = loja!.LojaCompl.toString();
     } catch (e) {
       print('Erro no carregaLoja() controller ${e.toString()}');
     } finally {
@@ -81,6 +87,9 @@ class StoreController extends GetxController {
     txtLojaNome.text = loja!.LojaNome.toString();
     txtLojaRazao.text = loja!.LojaRazao.toString();
     txtLojaSlogan.text = loja!.LojaSlogan.toString();
+    txtLojaLogra.text = loja!.LojaLogra.toString();
+    txtLojaNumero.text = loja!.LojaNumero.toString();
+    txtLojaCompl?.text = loja!.LojaCompl.toString();
   }
 
   void emptyLoja() {
@@ -92,7 +101,21 @@ class StoreController extends GetxController {
     txtLojaNome.text = "";
     txtLojaRazao.text = "";
     txtLojaSlogan.text = "";
+    txtLojaLogra.text = "";
+    txtLojaNumero.text = "";
+    txtLojaCompl?.text = "";
     this.refresh();
+  }
+
+  Future<String?> saveLoja(Lojas loja) async {
+    String? resp;
+    if (loja.LojaGUID == '') {
+      resp = await storeRepo.postStore(loja);
+    } else {
+      resp = await storeRepo.putStore(loja);
+    }
+
+    return resp;
   }
 
   // Future<void> atualizaLoja(sqlEndereco endereco) async {

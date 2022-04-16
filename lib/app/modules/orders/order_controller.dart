@@ -76,7 +76,7 @@ class OrderController extends GetxController {
     });
   }
 
-  Future<void> carregaPedidosFechados(String userGUID) async {
+  Future<void> carregaPedidosFechadosLocal(String userGUID) async {
     listaPedidos.clear();
 
     List<sqlPedido> pedidos = await sqlPorakiPedidoService().listOrders(userGUID);
@@ -124,19 +124,19 @@ class OrderController extends GetxController {
   // Future<void> apagaPedido(String pedidoGUID) async {
   //   await sqlPorakiPedidoService().deleteOrder(pedidoGUID);
   // }
-
-  Future<void> atualizaPedido(sqlPedido pedido) async {
-    await sqlPorakiPedidoService().updateOrder(pedido);
-  }
-
-  Future<void> buscaPedidoItems(String pedidoGUID) async {
-    await sqlPorakiPedidoService().listOrderItems(pedidoGUID);
-  }
-
+  //
+  // Future<void> atualizaPedido(sqlPedido pedido) async {
+  //   await sqlPorakiPedidoService().updateOrder(pedido);
+  // }
+  //
+  // Future<void> buscaPedidoItems(String pedidoGUID) async {
+  //   await sqlPorakiPedidoService().listOrderItems(pedidoGUID);
+  // }
+  //
 
 
   // CLOUD
-  Future<Pedido> pegaPedido(String pedidoGUID) async {
+  Future<Pedido> pegaPedidoCloud(String pedidoGUID) async {
     return await OrdersRepository().getOrder(pedidoGUID);
   }
 
@@ -319,7 +319,7 @@ class OrderController extends GetxController {
 
   Future<void> atualizaPedidoLocal(String pedidoGUID) async {
     // pega o pedido da nuvem
-    Pedido pedCloud = await pegaPedido(pedidoGUID);
+    Pedido pedCloud = await pegaPedidoCloud(pedidoGUID);
 
     if(pedCloud != null) {
       // transforma o pedido da nuvem em pedido local
