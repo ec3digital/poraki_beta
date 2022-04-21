@@ -138,27 +138,6 @@ class _MOfferPage extends State<MOfferPage> {
     _manageCampos();
   }
 
-  void _updateImageUrl() {
-    if (isValidImageUrl(_imageURLController.text)) {
-      setState(() {});
-    }
-  }
-
-  // Future<void> inicia() async {
-  //   _manageCampos();
-  // }
-
-  bool isValidImageUrl(String url) {
-    bool startWithHttp = url.toLowerCase().startsWith('http://');
-    bool startWithHttps = url.toLowerCase().startsWith('https://');
-    bool endWithPng = url.toLowerCase().endsWith('.png');
-    bool endWithJpg = url.toLowerCase().endsWith('.jpg');
-    bool endWithJpeg = url.toLowerCase().endsWith('.jpeg');
-
-    return (startWithHttp || startWithHttps) &&
-        (endWithPng || endWithJpg || endWithJpeg);
-  }
-
   @override
   void dispose() {
     super.dispose();
@@ -166,546 +145,6 @@ class _MOfferPage extends State<MOfferPage> {
     _descriptionFocusNode.dispose();
     _imageURLFocusNode.removeListener(_updateImageUrl);
     _imageURLFocusNode.dispose();
-  }
-
-  Future<void> _saveForm(String usuGuid) async {
-    var formaFechto = '';
-    switch (formaFechSel) {
-      case 'mensagem no aplicativo (seguro)':
-        formaFechto = 'chatapp';
-        break;
-      case 'pagamento no aplicativo (seguro)':
-        formaFechto = 'gatewayapi';
-        break;
-      default:
-        formaFechto = formaFechSel;
-    }
-
-    var offerToSend = new Oferta(
-        0,
-        widget.categSelecionada.categoriaChave,
-        usuGuid,
-        widget.mofferController.txtTitulo.text,
-        widget.mofferController.txtDetalhes.text,
-        double.parse(widget.mofferController.txtPreco.text),
-        null,
-        null,
-        null,
-        '',
-        1,
-        widget.mofferController.txtCep.text.replaceAll('-', ''),
-        null,
-        null,
-        0,
-        0,
-        0,
-        0,
-        null,
-        widget.mofferController.mofferGuid == null
-            ? null
-            : widget.mofferController.mofferGuid.toString(),
-        int.parse(widget.mofferController.txtQtdDispo.text),
-        int.parse(widget.mofferController.txtQtdMaxPorVenda.text),
-        int.parse(widget.mofferController.txtQtdAviso.text),
-        double.parse(widget.mofferController.txtPesoPorcao.text),
-        widget.mofferController.txtPesoPorcaoUn.text,
-        int.parse(widget.mofferController.txtValidade.text),
-        double.parse(widget.mofferController.txtValorMin.text),
-        valMostraReview,
-        valAceiteAuto,
-        valAceitaEncomenda,
-        valSomenteEncomenda,
-        valAceitaProposta,
-        int.parse(widget.mofferController.txtTempoEntrega
-            .text), //int.parse(widget.mofferController.txtTempoEntrega.text),
-        tempoEntregaTipoSel,
-        formaFechto,
-        agenteEntregaSel,
-        '',
-        '',
-        widget.mofferController.txtMarca.text,
-        widget.mofferController.txtCores.text,
-        widget.mofferController.txtTamanhos.text,
-        val24hs,
-        int.parse(widget.mofferController.txtCepDistancia.text),
-        0.00, // double.parse(widget.mofferController.txtValorSinalOrc.text),
-        widget.mofferController.txtEncomendasAPartir.text,
-        widget.mofferController.txtEntregasAPartir.text,
-        widget.mofferController.txtCodigoAlt.text,
-        double.parse(widget.mofferController.txtValorTaxa1km.text),
-        double.parse(widget.mofferController.txtValorTaxa2km.text),
-        double.parse(widget.mofferController.txtValorTaxaMaisQue2km.text),
-        valQtd,
-        valSinalPercentual ? "P" : "V",
-        valPrecoInicial,
-        valPrecoCombinar,
-        valSeg,
-        valTer,
-        valQua,
-        valQui,
-        valSex,
-        valSab,
-        valDom,
-        widget.mofferController.txtSegDas.text,
-        widget.mofferController.txtSegAs.text,
-        widget.mofferController.txtTerDas.text,
-        widget.mofferController.txtTerAs.text,
-        widget.mofferController.txtQuaDas.text,
-        widget.mofferController.txtQuaAs.text,
-        widget.mofferController.txtQuiDas.text,
-        widget.mofferController.txtQuiAs.text,
-        widget.mofferController.txtSexDas.text,
-        widget.mofferController.txtSexAs.text,
-        widget.mofferController.txtSabDas.text,
-        widget.mofferController.txtSabAs.text,
-        widget.mofferController.txtDomDas.text,
-        widget.mofferController.txtDomAs.text,
-        null);
-
-    // Uri url = Uri.https("ec3digrepo-default-rtdb.firebaseio.com", "/words.json");
-
-    if (widget.mofferController.mofferGuid == null) {
-      var response = await post(
-        Uri.parse('${Constants.baseUrl}mofferadd'),
-        headers: Constants.headers,
-        body: offerToSend.toJsonPost(),
-      );
-
-      print(response.body);
-
-      var jsonResp = jsonDecode(response.body);
-      var strGuid = jsonResp['insert_Ofertas_one']['OfertaGUID'];
-
-      widget.offerGuid = strGuid;
-      print('guid: ' + strGuid);
-    } else {
-      print(offerToSend.toJsonPut());
-      var response = await put(
-        Uri.parse('${Constants.baseUrl}mofferupd'),
-        headers: Constants.headers,
-        body: offerToSend.toJsonPut(),
-      );
-
-      print(response.body);
-
-      var jsonResp = jsonDecode(response.body);
-      var strGuid = jsonResp['update_Ofertas']['returning'][0]['OfertaGUID'];
-
-      print('guid: ' + strGuid);
-    }
-  }
-
-  // somente para testes - em producao virá a partir do Firebase
-  void _manageCampos() {
-    //print('manageCampos: ' + widget.categSelecionada.secao.toString());
-    if (widget.categSelecionada.secao == null) {
-      labelEntrega = 'Entrega';
-      showCamposBasicos = false;
-      showCamposEntrega = false;
-      showPreco = false;
-      showTxtQtdDispo = false;
-      showTxtValorMin = false;
-      showTxtMarca = false;
-      showTxtCep = false;
-      //showTxtQtdMaxPorVenda = false;
-      //showTxtQtdAviso = false;
-      show24hs = false;
-      showAceitaProposta = false;
-      showSomenteEncomenda = false;
-      showAceitaEncomenda = false;
-      showAceiteAuto = false;
-      showMostraAval = false;
-      showMostraReview = false;
-      showDispoImediata = false;
-      // showListaFormaEntrega = false;
-      // showListaFormaEntrega2 = false;
-      // showListaParceiros = false;
-      // showListaTempoEntregaTipo = false;
-      // showTxtTempoEntrega = false;
-      showTxtCores = false;
-      showTxtTamanhos = false;
-      showTxtPesoPorcao = false;
-      showTxtPesoPorcaoUn = false;
-      showTxtValidade = false;
-      showTxtValorSinalOrc = false;
-      // showTxtEntregaTaxas = false;
-      showTxtCodigoAlt = false;
-    }
-    if (widget.categSelecionada.secao == 'SEC-SERV-CASA' ||
-        widget.categSelecionada.secao == 'SEC-SERV-FRETE' ||
-        widget.categSelecionada.secao == 'SEC-SERV-VOCE' ||
-        widget.categSelecionada.secao == 'SEC-SERV-CARRO' ||
-        widget.categSelecionada.secao == 'SEC-SERV-PET') {
-      labelEntrega = 'Atendimento';
-      labelValidade = 'Garantia';
-      showCamposBasicos = true;
-      showPreco = true;
-      showTxtQtdDispo = false;
-      showTxtValorMin = false;
-      showTxtMarca = false;
-      showTxtCep = true;
-      valQtd = false;
-      // showTxtQtdMaxPorVenda = false;
-      // showTxtQtdAviso = false;
-      show24hs = true;
-      showAceitaProposta = true;
-      showSomenteEncomenda = false;
-      showAceitaEncomenda = false;
-      showAceiteAuto = false;
-      showMostraAval = true;
-      showMostraReview = true;
-      showDispoImediata = true;
-      showCamposEntrega = false;
-      // showListaFormaEntrega = false;
-      // showListaFormaEntrega2 = false;
-      // showListaParceiros = false;
-      //showListaTempoEntregaTipo = false;
-      // showTxtTempoEntrega = false;
-      showTxtCores = false;
-      showTxtTamanhos = false;
-      showTxtPesoPorcao = false;
-      showTxtPesoPorcaoUn = false;
-      showTxtValidade = true;
-      showTxtValorSinalOrc = true;
-      // showTxtEntregaTaxas = false;
-      showTxtCodigoAlt = false;
-    }
-    if (widget.categSelecionada.secao == 'SEC-PROD-DESAPEGO') {
-      labelEntrega = 'Entrega';
-      showCamposBasicos = true;
-      showCamposEntrega = true;
-      showPreco = true;
-      showTxtQtdDispo = true;
-      showTxtValorMin = false;
-      showTxtMarca = true;
-      showTxtCep = true;
-      // showTxtQtdMaxPorVenda = true;
-      // showTxtQtdAviso = false;
-      show24hs = false;
-      showAceitaProposta = true;
-      showSomenteEncomenda = false;
-      showAceitaEncomenda = false;
-      showAceiteAuto = true;
-      showMostraAval = false;
-      showMostraReview = false;
-      showDispoImediata = true;
-      // showListaFormaEntrega = false;
-      // showListaFormaEntrega2 = false;
-      // showListaParceiros = true;
-      // showListaTempoEntregaTipo = true;
-      // showTxtTempoEntrega = true;
-      showTxtCores = true;
-      showTxtTamanhos = true;
-      showTxtPesoPorcao = false;
-      showTxtPesoPorcaoUn = false;
-      showTxtValidade = false;
-      showTxtValorSinalOrc = false;
-      // showTxtEntregaTaxas = true;
-      showTxtCodigoAlt = false;
-    }
-    if (widget.categSelecionada.secao == 'SEC-PROD-ACHADOPERDIDO') {
-      labelEntrega = 'Entrega';
-      showCamposBasicos = true;
-      showPreco = false;
-      showTxtQtdDispo = true;
-      showTxtValorMin = false;
-      showTxtMarca = true;
-      showTxtCep = true;
-      // showTxtQtdMaxPorVenda = true;
-      // showTxtQtdAviso = false;
-      show24hs = false;
-      showAceitaProposta = true;
-      showSomenteEncomenda = false;
-      showAceitaEncomenda = false;
-      showAceiteAuto = true;
-      showMostraAval = false;
-      showMostraReview = false;
-      showDispoImediata = true;
-      showCamposEntrega = false;
-      // showListaFormaEntrega = false;
-      // showListaFormaEntrega2 = false;
-      // showListaParceiros = true;
-      // showListaTempoEntregaTipo = true;
-      // showTxtTempoEntrega = true;
-      showTxtCores = true;
-      showTxtTamanhos = true;
-      showTxtPesoPorcao = false;
-      showTxtPesoPorcaoUn = false;
-      showTxtValidade = false;
-      showTxtValorSinalOrc = false;
-      // showTxtEntregaTaxas = false;
-      showTxtCodigoAlt = false;
-    }
-    if (widget.categSelecionada.secao == 'SEC-PROD-BELEZA') {
-      labelEntrega = 'Entrega';
-      showCamposBasicos = true;
-      showPreco = true;
-      showTxtQtdDispo = true;
-      showTxtValorMin = true;
-      showTxtMarca = true;
-      showTxtCep = true;
-      // showTxtQtdMaxPorVenda = true;
-      // showTxtQtdAviso = true;
-      show24hs = false;
-      showAceitaProposta = true;
-      showSomenteEncomenda = true;
-      showAceitaEncomenda = true;
-      showAceiteAuto = true;
-      showMostraAval = true;
-      showMostraReview = true;
-      showDispoImediata = true;
-      showCamposEntrega = true;
-      // showListaFormaEntrega = true;
-      // showListaFormaEntrega2 = true;
-      // showListaParceiros = true;
-      // showListaTempoEntregaTipo = true;
-      // showTxtTempoEntrega = true;
-      showTxtCores = true;
-      showTxtTamanhos = true;
-      showTxtPesoPorcao = true;
-      showTxtPesoPorcaoUn = true;
-      showTxtValidade = false;
-      showTxtValorSinalOrc = false;
-      // showTxtEntregaTaxas = true;
-      showTxtCodigoAlt = true;
-    }
-    if (widget.categSelecionada.secao == 'SEC-PROD-COMIDA') {
-      labelEntrega = 'Entrega';
-      labelValidade = 'Validade';
-      showCamposBasicos = true;
-      showPreco = true;
-      showTxtQtdDispo = true;
-      showTxtValorMin = true;
-      showTxtMarca = false;
-      showTxtCep = true;
-      // showTxtQtdMaxPorVenda = true;
-      // showTxtQtdAviso = true;
-      show24hs = false;
-      showAceitaProposta = true;
-      showSomenteEncomenda = true;
-      showAceitaEncomenda = true;
-      showAceiteAuto = true;
-      showMostraAval = true;
-      showMostraReview = true;
-      showDispoImediata = true;
-      showCamposEntrega = true;
-      // showListaFormaEntrega = true;
-      // showListaFormaEntrega2 = true;
-      // showListaParceiros = true;
-      // showListaTempoEntregaTipo = true;
-      // showTxtTempoEntrega = true;
-      showTxtCores = false;
-      showTxtTamanhos = false;
-      showTxtPesoPorcao = true;
-      showTxtPesoPorcaoUn = true;
-      showTxtValidade = true;
-      showTxtValorSinalOrc = false;
-      // showTxtEntregaTaxas = true;
-      showTxtCodigoAlt = false;
-    }
-    if (widget.categSelecionada.secao == 'SEC-PROD-OBJETO') {
-      labelEntrega = 'Entrega';
-      labelValidade = 'Validade';
-      showCamposBasicos = true;
-      showPreco = true;
-      showTxtQtdDispo = true;
-      showTxtValorMin = true;
-      showTxtMarca = true;
-      showTxtCep = true;
-      // showTxtQtdMaxPorVenda = true;
-      // showTxtQtdAviso = true;
-      show24hs = false;
-      showAceitaProposta = true;
-      showSomenteEncomenda = true;
-      showAceitaEncomenda = true;
-      showAceiteAuto = true;
-      showMostraAval = true;
-      showMostraReview = true;
-      showDispoImediata = true;
-      showCamposEntrega = true;
-      // showListaFormaEntrega = true;
-      // showListaFormaEntrega2 = true;
-      // showListaParceiros = true;
-      // showListaTempoEntregaTipo = true;
-      // showTxtTempoEntrega = true;
-      showTxtCores = true;
-      showTxtTamanhos = true;
-      showTxtPesoPorcao = true;
-      showTxtPesoPorcaoUn = true;
-      showTxtValidade = false;
-      showTxtValorSinalOrc = false;
-      // showTxtEntregaTaxas = true;
-      showTxtCodigoAlt = false;
-    }
-    if (widget.categSelecionada.secao == 'SEC-PROD-VEST') {
-      labelEntrega = 'Entrega';
-      showCamposBasicos = true;
-      showPreco = true;
-      // showTxtQtdDispo = true;
-      // showTxtQtdAviso = true;
-      showTxtValorMin = true;
-      showTxtMarca = true;
-      showTxtCep = true;
-      showTxtQtdMaxPorVenda = true;
-      show24hs = false;
-      showAceitaProposta = true;
-      showSomenteEncomenda = true;
-      showAceitaEncomenda = true;
-      showAceiteAuto = true;
-      showMostraAval = true;
-      showMostraReview = true;
-      showDispoImediata = true;
-      showCamposEntrega = true;
-      // showListaFormaEntrega = true;
-      // showListaFormaEntrega2 = true;
-      // showListaParceiros = true;
-      // showListaTempoEntregaTipo = true;
-      // showTxtTempoEntrega = true;
-      showTxtCores = true;
-      showTxtTamanhos = true;
-      showTxtPesoPorcao = false;
-      showTxtPesoPorcaoUn = false;
-      showTxtValidade = false;
-      showTxtValorSinalOrc = false;
-      // showTxtEntregaTaxas = true;
-      showTxtCodigoAlt = false;
-    }
-  }
-
-  Future<void> carregaObjs() async {
-    if (ModalRoute.of(context)?.settings.arguments != null) {
-      var args = ModalRoute.of(context)?.settings.arguments
-          as List<Map<String, Oferta>>;
-
-      Oferta oferta = args.first.values.first;
-      widget.editMode = true;
-      widget.imgcloud =
-          'https://firebasestorage.googleapis.com/v0/b/ec3digrepo.appspot.com/o/ofertas%2F' +
-              oferta.OfertaGUID.toString() +
-              '.jpg?alt=media';
-
-      print('guidOffer: ' + oferta.OfertaGUID.toString());
-      widget.mofferController.mofferGuid = oferta.OfertaGUID.toString();
-      print(
-          'widget guidOffer: ' + widget.mofferController.mofferGuid.toString());
-      widget.mofferController.txtTitulo.text = oferta.OfertaTitulo.toString();
-
-      if (widget.categoriesController.listaCategorias == null)
-        await widget.categoriesController.getAllCategories();
-
-      widget.categSelecionada = widget.categoriesController
-          .selecionaCategoriaPorChave(oferta.CategoriaChave.toString())!;
-      categoriaSel = widget.categSelecionada.categoriaNome!;
-      _manageCampos();
-
-      widget.mofferController.txtEncomendasAPartir.text =
-          oferta.OfertaEncomendasAPartirDe.toString();
-      widget.mofferController.txtValorTaxa1km.text =
-          oferta.ValorEntregaAte1 == null
-              ? '0'
-              : oferta.ValorEntregaAte1.toString();
-      widget.mofferController.txtValorTaxaMaisQue2km.text =
-          oferta.ValorEntregaMaisDe2 == null
-              ? '0'
-              : oferta.ValorEntregaMaisDe2.toString();
-      widget.mofferController.txtValorTaxa2km.text =
-          oferta.ValorEntregaAte2 == null
-              ? '0'
-              : oferta.ValorEntregaAte2.toString();
-      widget.mofferController.txtEntregasAPartir.text =
-          oferta.OfertaEntregasAPartirDe.toString();
-      widget.mofferController.txtCodigoAlt.text =
-          oferta.OfertaCodigoAlt! == 'null'
-              ? ''
-              : oferta.OfertaCodigoAlt.toString();
-      oferta.OfertaDistanciaKm == null
-          ? '0'
-          : oferta.OfertaDistanciaKm.toString();
-      //widget.mofferController.txtEntregaAs.text = oferta.Ate.toString();
-      widget.mofferController.txtValorSinalOrc.text =
-          oferta.OfertaSinal == null ? '0' : oferta.OfertaSinal.toString();
-      widget.mofferController.txtValidade.text =
-          oferta.OfertaDiasValidade == null
-              ? '0'
-              : oferta.OfertaDiasValidade.toString();
-      widget.mofferController.txtPesoPorcao.text =
-          oferta.OfertaPeso == null ? '0' : oferta.OfertaPeso.toString();
-      //widget.mofferController.txtPesoPorcaoUn.text =oferta.OfertaPesoUnidade == 'null' ? '' :  oferta.OfertaPesoUnidade.toString();
-      widget.mofferController.txtDescricao.text =
-          oferta.OfertaDetalhe! == 'null'
-              ? ''
-              : oferta.OfertaDetalhe.toString();
-      widget.mofferController.txtDetalhes.text = oferta.OfertaDetalhe! == 'null'
-          ? ''
-          : oferta.OfertaDetalhe.toString();
-      widget.mofferController.txtTamanhos.text =
-          oferta.OfertaTamanhos! == 'null'
-              ? ''
-              : oferta.OfertaTamanhos.toString();
-      widget.mofferController.txtCores.text =
-          oferta.OfertaCores! == 'null' ? '' : oferta.OfertaCores.toString();
-      widget.mofferController.txtValorMin.text = oferta.OfertaPrecoMin == null
-          ? '0'
-          : oferta.OfertaPrecoMin.toString();
-      widget.mofferController.txtMarca.text =
-          oferta.OfertaMarcaRevenda! == 'null'
-              ? ''
-              : oferta.OfertaMarcaRevenda!;
-      widget.mofferController.txtQtdMaxPorVenda.text =
-          oferta.OfertaQtdMaxVenda == null
-              ? '0'
-              : oferta.OfertaQtdMaxVenda.toString();
-      widget.mofferController.txtQtdDispo.text = oferta.OfertaQtdDispo == null
-          ? '0'
-          : oferta.OfertaQtdDispo.toString();
-      widget.mofferController.txtQtdAviso.text = oferta.OfertaQtdAviso == null
-          ? '0'
-          : oferta.OfertaQtdAviso.toString();
-      widget.mofferController.txtPreco.text =
-          oferta.OfertaPreco == null ? '0.00' : oferta.OfertaPreco.toString();
-      widget.mofferController.txtTempoEntrega.text =
-          oferta.OfertaTempoEntrega == null
-              ? '0'
-              : oferta.OfertaTempoEntrega.toString();
-
-      widget.offerGuid = widget.mofferController.mofferGuid!;
-    } else {
-      isEditing = false;
-      var nowFormatted = '01' + '03' + '2022';
-      var dia = DateTime.now().day < 10
-          ? '0' + DateTime.now().day.toString()
-          : DateTime.now().day.toString();
-      var mes = DateTime.now().month < 10
-          ? '0' + DateTime.now().month.toString()
-          : DateTime.now().month.toString();
-      var ano = DateTime.now().year.toString();
-      nowFormatted = dia + mes + ano;
-      print('nowFormatted: ' + nowFormatted);
-      widget.mofferController.txtEntregasAPartir.text = nowFormatted;
-      widget.mofferController.txtEncomendasAPartir.text = nowFormatted;
-
-      widget.mofferController.txtTitulo.text = '';
-      widget.mofferController.txtEncomendasAPartir.text = '';
-      widget.mofferController.txtValorTaxa1km.text = '0.00';
-      widget.mofferController.txtValorTaxaMaisQue2km.text = '0.00';
-      widget.mofferController.txtValorTaxa2km.text = '0.00';
-      widget.mofferController.txtCodigoAlt.text = '';
-      widget.mofferController.txtCepDistancia.text = '0';
-      widget.mofferController.txtValorSinalOrc.text = '0.00';
-      widget.mofferController.txtValidade.text = '0';
-      widget.mofferController.txtPesoPorcao.text = '0.00';
-      widget.mofferController.txtPesoPorcaoUn.text = '';
-      widget.mofferController.txtDescricao.text = '';
-      widget.mofferController.txtDetalhes.text = '';
-      widget.mofferController.txtTamanhos.text = '';
-      widget.mofferController.txtCores.text = '';
-      widget.mofferController.txtPreco.text = '0.00';
-      widget.mofferController.txtValorMin.text = '0.00';
-      widget.mofferController.txtMarca.text = '';
-      widget.mofferController.txtQtdMaxPorVenda.text = '0';
-      widget.mofferController.txtQtdDispo.text = '0';
-      widget.mofferController.txtQtdAviso.text = '0';
-    }
   }
 
   @override
@@ -1591,4 +1030,568 @@ class _MOfferPage extends State<MOfferPage> {
     final snackBar = SnackBar(content: Text(snackText), duration: d);
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
+
+  void _updateImageUrl() {
+    if (isValidImageUrl(_imageURLController.text)) {
+      setState(() {});
+    }
+  }
+
+  // Future<void> inicia() async {
+  //   _manageCampos();
+  // }
+
+  bool isValidImageUrl(String url) {
+    bool startWithHttp = url.toLowerCase().startsWith('http://');
+    bool startWithHttps = url.toLowerCase().startsWith('https://');
+    bool endWithPng = url.toLowerCase().endsWith('.png');
+    bool endWithJpg = url.toLowerCase().endsWith('.jpg');
+    bool endWithJpeg = url.toLowerCase().endsWith('.jpeg');
+
+    return (startWithHttp || startWithHttps) &&
+        (endWithPng || endWithJpg || endWithJpeg);
+  }
+
+
+  Future<void> _saveForm(String usuGuid) async {
+    var formaFechto = '';
+    switch (formaFechSel) {
+      case 'mensagem no aplicativo (seguro)':
+        formaFechto = 'chatapp';
+        break;
+      case 'pagamento no aplicativo (seguro)':
+        formaFechto = 'gatewayapi';
+        break;
+      default:
+        formaFechto = formaFechSel;
+    }
+
+    var offerToSend = new Oferta(
+        0,
+        widget.categSelecionada.categoriaChave,
+        usuGuid,
+        widget.mofferController.txtTitulo.text,
+        widget.mofferController.txtDetalhes.text,
+        double.parse(widget.mofferController.txtPreco.text),
+        null,
+        null,
+        null,
+        '',
+        1,
+        widget.mofferController.txtCep.text.replaceAll('-', ''),
+        null,
+        null,
+        0,
+        0,
+        0,
+        0,
+        null,
+        widget.mofferController.mofferGuid == null
+            ? null
+            : widget.mofferController.mofferGuid.toString(),
+        int.parse(widget.mofferController.txtQtdDispo.text),
+        int.parse(widget.mofferController.txtQtdMaxPorVenda.text),
+        int.parse(widget.mofferController.txtQtdAviso.text),
+        double.parse(widget.mofferController.txtPesoPorcao.text),
+        widget.mofferController.txtPesoPorcaoUn.text,
+        int.parse(widget.mofferController.txtValidade.text),
+        double.parse(widget.mofferController.txtValorMin.text),
+        valMostraReview,
+        valAceiteAuto,
+        valAceitaEncomenda,
+        valSomenteEncomenda,
+        valAceitaProposta,
+        int.parse(widget.mofferController.txtTempoEntrega
+            .text), //int.parse(widget.mofferController.txtTempoEntrega.text),
+        tempoEntregaTipoSel,
+        formaFechto,
+        agenteEntregaSel,
+        '',
+        '',
+        widget.mofferController.txtMarca.text,
+        widget.mofferController.txtCores.text,
+        widget.mofferController.txtTamanhos.text,
+        val24hs,
+        int.parse(widget.mofferController.txtCepDistancia.text),
+        0.00, // double.parse(widget.mofferController.txtValorSinalOrc.text),
+        widget.mofferController.txtEncomendasAPartir.text,
+        widget.mofferController.txtEntregasAPartir.text,
+        widget.mofferController.txtCodigoAlt.text,
+        double.parse(widget.mofferController.txtValorTaxa1km.text),
+        double.parse(widget.mofferController.txtValorTaxa2km.text),
+        double.parse(widget.mofferController.txtValorTaxaMaisQue2km.text),
+        valQtd,
+        valSinalPercentual ? "P" : "V",
+        valPrecoInicial,
+        valPrecoCombinar,
+        valSeg,
+        valTer,
+        valQua,
+        valQui,
+        valSex,
+        valSab,
+        valDom,
+        widget.mofferController.txtSegDas.text,
+        widget.mofferController.txtSegAs.text,
+        widget.mofferController.txtTerDas.text,
+        widget.mofferController.txtTerAs.text,
+        widget.mofferController.txtQuaDas.text,
+        widget.mofferController.txtQuaAs.text,
+        widget.mofferController.txtQuiDas.text,
+        widget.mofferController.txtQuiAs.text,
+        widget.mofferController.txtSexDas.text,
+        widget.mofferController.txtSexAs.text,
+        widget.mofferController.txtSabDas.text,
+        widget.mofferController.txtSabAs.text,
+        widget.mofferController.txtDomDas.text,
+        widget.mofferController.txtDomAs.text,
+        null);
+
+    // Uri url = Uri.https("ec3digrepo-default-rtdb.firebaseio.com", "/words.json");
+
+    if (widget.mofferController.mofferGuid == null) {
+      var response = await post(
+        Uri.parse('${Constants.baseUrl}mofferadd'),
+        headers: Constants.headers,
+        body: offerToSend.toJsonPost(),
+      );
+
+      print(response.body);
+
+      var jsonResp = jsonDecode(response.body);
+      var strGuid = jsonResp['insert_Ofertas_one']['OfertaGUID'];
+
+      widget.offerGuid = strGuid;
+      print('guid: ' + strGuid);
+    } else {
+      print(offerToSend.toJsonPut());
+      var response = await put(
+        Uri.parse('${Constants.baseUrl}mofferupd'),
+        headers: Constants.headers,
+        body: offerToSend.toJsonPut(),
+      );
+
+      print(response.body);
+
+      var jsonResp = jsonDecode(response.body);
+      var strGuid = jsonResp['update_Ofertas']['returning'][0]['OfertaGUID'];
+
+      print('guid: ' + strGuid);
+    }
+  }
+
+  // somente para testes - em producao virá a partir do Firebase
+  void _manageCampos() {
+    //print('manageCampos: ' + widget.categSelecionada.secao.toString());
+    if (widget.categSelecionada.secao == null) {
+      labelEntrega = 'Entrega';
+      showCamposBasicos = false;
+      showCamposEntrega = false;
+      showPreco = false;
+      showTxtQtdDispo = false;
+      showTxtValorMin = false;
+      showTxtMarca = false;
+      showTxtCep = false;
+      //showTxtQtdMaxPorVenda = false;
+      //showTxtQtdAviso = false;
+      show24hs = false;
+      showAceitaProposta = false;
+      showSomenteEncomenda = false;
+      showAceitaEncomenda = false;
+      showAceiteAuto = false;
+      showMostraAval = false;
+      showMostraReview = false;
+      showDispoImediata = false;
+      // showListaFormaEntrega = false;
+      // showListaFormaEntrega2 = false;
+      // showListaParceiros = false;
+      // showListaTempoEntregaTipo = false;
+      // showTxtTempoEntrega = false;
+      showTxtCores = false;
+      showTxtTamanhos = false;
+      showTxtPesoPorcao = false;
+      showTxtPesoPorcaoUn = false;
+      showTxtValidade = false;
+      showTxtValorSinalOrc = false;
+      // showTxtEntregaTaxas = false;
+      showTxtCodigoAlt = false;
+    }
+    if (widget.categSelecionada.secao == 'SEC-SERV-CASA' ||
+        widget.categSelecionada.secao == 'SEC-SERV-FRETE' ||
+        widget.categSelecionada.secao == 'SEC-SERV-VOCE' ||
+        widget.categSelecionada.secao == 'SEC-SERV-CARRO' ||
+        widget.categSelecionada.secao == 'SEC-SERV-PET') {
+      labelEntrega = 'Atendimento';
+      labelValidade = 'Garantia';
+      showCamposBasicos = true;
+      showPreco = true;
+      showTxtQtdDispo = false;
+      showTxtValorMin = false;
+      showTxtMarca = false;
+      showTxtCep = true;
+      valQtd = false;
+      // showTxtQtdMaxPorVenda = false;
+      // showTxtQtdAviso = false;
+      show24hs = true;
+      showAceitaProposta = true;
+      showSomenteEncomenda = false;
+      showAceitaEncomenda = false;
+      showAceiteAuto = false;
+      showMostraAval = true;
+      showMostraReview = true;
+      showDispoImediata = true;
+      showCamposEntrega = false;
+      // showListaFormaEntrega = false;
+      // showListaFormaEntrega2 = false;
+      // showListaParceiros = false;
+      //showListaTempoEntregaTipo = false;
+      // showTxtTempoEntrega = false;
+      showTxtCores = false;
+      showTxtTamanhos = false;
+      showTxtPesoPorcao = false;
+      showTxtPesoPorcaoUn = false;
+      showTxtValidade = true;
+      showTxtValorSinalOrc = true;
+      // showTxtEntregaTaxas = false;
+      showTxtCodigoAlt = false;
+    }
+    if (widget.categSelecionada.secao == 'SEC-PROD-DESAPEGO') {
+      labelEntrega = 'Entrega';
+      showCamposBasicos = true;
+      showCamposEntrega = true;
+      showPreco = true;
+      showTxtQtdDispo = true;
+      showTxtValorMin = false;
+      showTxtMarca = true;
+      showTxtCep = true;
+      // showTxtQtdMaxPorVenda = true;
+      // showTxtQtdAviso = false;
+      show24hs = false;
+      showAceitaProposta = true;
+      showSomenteEncomenda = false;
+      showAceitaEncomenda = false;
+      showAceiteAuto = true;
+      showMostraAval = false;
+      showMostraReview = false;
+      showDispoImediata = true;
+      // showListaFormaEntrega = false;
+      // showListaFormaEntrega2 = false;
+      // showListaParceiros = true;
+      // showListaTempoEntregaTipo = true;
+      // showTxtTempoEntrega = true;
+      showTxtCores = true;
+      showTxtTamanhos = true;
+      showTxtPesoPorcao = false;
+      showTxtPesoPorcaoUn = false;
+      showTxtValidade = false;
+      showTxtValorSinalOrc = false;
+      // showTxtEntregaTaxas = true;
+      showTxtCodigoAlt = false;
+    }
+    if (widget.categSelecionada.secao == 'SEC-PROD-ACHADOPERDIDO') {
+      labelEntrega = 'Entrega';
+      showCamposBasicos = true;
+      showPreco = false;
+      showTxtQtdDispo = true;
+      showTxtValorMin = false;
+      showTxtMarca = true;
+      showTxtCep = true;
+      // showTxtQtdMaxPorVenda = true;
+      // showTxtQtdAviso = false;
+      show24hs = false;
+      showAceitaProposta = true;
+      showSomenteEncomenda = false;
+      showAceitaEncomenda = false;
+      showAceiteAuto = true;
+      showMostraAval = false;
+      showMostraReview = false;
+      showDispoImediata = true;
+      showCamposEntrega = false;
+      // showListaFormaEntrega = false;
+      // showListaFormaEntrega2 = false;
+      // showListaParceiros = true;
+      // showListaTempoEntregaTipo = true;
+      // showTxtTempoEntrega = true;
+      showTxtCores = true;
+      showTxtTamanhos = true;
+      showTxtPesoPorcao = false;
+      showTxtPesoPorcaoUn = false;
+      showTxtValidade = false;
+      showTxtValorSinalOrc = false;
+      // showTxtEntregaTaxas = false;
+      showTxtCodigoAlt = false;
+    }
+    if (widget.categSelecionada.secao == 'SEC-PROD-BELEZA') {
+      labelEntrega = 'Entrega';
+      showCamposBasicos = true;
+      showPreco = true;
+      showTxtQtdDispo = true;
+      showTxtValorMin = true;
+      showTxtMarca = true;
+      showTxtCep = true;
+      // showTxtQtdMaxPorVenda = true;
+      // showTxtQtdAviso = true;
+      show24hs = false;
+      showAceitaProposta = true;
+      showSomenteEncomenda = true;
+      showAceitaEncomenda = true;
+      showAceiteAuto = true;
+      showMostraAval = true;
+      showMostraReview = true;
+      showDispoImediata = true;
+      showCamposEntrega = true;
+      // showListaFormaEntrega = true;
+      // showListaFormaEntrega2 = true;
+      // showListaParceiros = true;
+      // showListaTempoEntregaTipo = true;
+      // showTxtTempoEntrega = true;
+      showTxtCores = true;
+      showTxtTamanhos = true;
+      showTxtPesoPorcao = true;
+      showTxtPesoPorcaoUn = true;
+      showTxtValidade = false;
+      showTxtValorSinalOrc = false;
+      // showTxtEntregaTaxas = true;
+      showTxtCodigoAlt = true;
+    }
+    if (widget.categSelecionada.secao == 'SEC-PROD-COMIDA') {
+      labelEntrega = 'Entrega';
+      labelValidade = 'Validade';
+      showCamposBasicos = true;
+      showPreco = true;
+      showTxtQtdDispo = true;
+      showTxtValorMin = true;
+      showTxtMarca = false;
+      showTxtCep = true;
+      // showTxtQtdMaxPorVenda = true;
+      // showTxtQtdAviso = true;
+      show24hs = false;
+      showAceitaProposta = true;
+      showSomenteEncomenda = true;
+      showAceitaEncomenda = true;
+      showAceiteAuto = true;
+      showMostraAval = true;
+      showMostraReview = true;
+      showDispoImediata = true;
+      showCamposEntrega = true;
+      // showListaFormaEntrega = true;
+      // showListaFormaEntrega2 = true;
+      // showListaParceiros = true;
+      // showListaTempoEntregaTipo = true;
+      // showTxtTempoEntrega = true;
+      showTxtCores = false;
+      showTxtTamanhos = false;
+      showTxtPesoPorcao = true;
+      showTxtPesoPorcaoUn = true;
+      showTxtValidade = true;
+      showTxtValorSinalOrc = false;
+      // showTxtEntregaTaxas = true;
+      showTxtCodigoAlt = false;
+    }
+    if (widget.categSelecionada.secao == 'SEC-PROD-OBJETO') {
+      labelEntrega = 'Entrega';
+      labelValidade = 'Validade';
+      showCamposBasicos = true;
+      showPreco = true;
+      showTxtQtdDispo = true;
+      showTxtValorMin = true;
+      showTxtMarca = true;
+      showTxtCep = true;
+      // showTxtQtdMaxPorVenda = true;
+      // showTxtQtdAviso = true;
+      show24hs = false;
+      showAceitaProposta = true;
+      showSomenteEncomenda = true;
+      showAceitaEncomenda = true;
+      showAceiteAuto = true;
+      showMostraAval = true;
+      showMostraReview = true;
+      showDispoImediata = true;
+      showCamposEntrega = true;
+      // showListaFormaEntrega = true;
+      // showListaFormaEntrega2 = true;
+      // showListaParceiros = true;
+      // showListaTempoEntregaTipo = true;
+      // showTxtTempoEntrega = true;
+      showTxtCores = true;
+      showTxtTamanhos = true;
+      showTxtPesoPorcao = true;
+      showTxtPesoPorcaoUn = true;
+      showTxtValidade = false;
+      showTxtValorSinalOrc = false;
+      // showTxtEntregaTaxas = true;
+      showTxtCodigoAlt = false;
+    }
+    if (widget.categSelecionada.secao == 'SEC-PROD-VEST') {
+      labelEntrega = 'Entrega';
+      showCamposBasicos = true;
+      showPreco = true;
+      // showTxtQtdDispo = true;
+      // showTxtQtdAviso = true;
+      showTxtValorMin = true;
+      showTxtMarca = true;
+      showTxtCep = true;
+      showTxtQtdMaxPorVenda = true;
+      show24hs = false;
+      showAceitaProposta = true;
+      showSomenteEncomenda = true;
+      showAceitaEncomenda = true;
+      showAceiteAuto = true;
+      showMostraAval = true;
+      showMostraReview = true;
+      showDispoImediata = true;
+      showCamposEntrega = true;
+      // showListaFormaEntrega = true;
+      // showListaFormaEntrega2 = true;
+      // showListaParceiros = true;
+      // showListaTempoEntregaTipo = true;
+      // showTxtTempoEntrega = true;
+      showTxtCores = true;
+      showTxtTamanhos = true;
+      showTxtPesoPorcao = false;
+      showTxtPesoPorcaoUn = false;
+      showTxtValidade = false;
+      showTxtValorSinalOrc = false;
+      // showTxtEntregaTaxas = true;
+      showTxtCodigoAlt = false;
+    }
+  }
+
+  Future<void> carregaObjs() async {
+    if (ModalRoute.of(context)?.settings.arguments != null) {
+      var args = ModalRoute.of(context)?.settings.arguments
+      as List<Map<String, Oferta>>;
+
+      Oferta oferta = args.first.values.first;
+      widget.editMode = true;
+      widget.imgcloud =
+          'https://firebasestorage.googleapis.com/v0/b/ec3digrepo.appspot.com/o/ofertas%2F' +
+              oferta.OfertaGUID.toString() +
+              '.jpg?alt=media';
+
+      print('guidOffer: ' + oferta.OfertaGUID.toString());
+      widget.mofferController.mofferGuid = oferta.OfertaGUID.toString();
+      print(
+          'widget guidOffer: ' + widget.mofferController.mofferGuid.toString());
+      widget.mofferController.txtTitulo.text = oferta.OfertaTitulo.toString();
+
+      if (widget.categoriesController.listaCategorias == null)
+        await widget.categoriesController.getAllCategories();
+
+      widget.categSelecionada = widget.categoriesController
+          .selecionaCategoriaPorChave(oferta.CategoriaChave.toString())!;
+      categoriaSel = widget.categSelecionada.categoriaNome!;
+      _manageCampos();
+
+      widget.mofferController.txtEncomendasAPartir.text =
+          oferta.OfertaEncomendasAPartirDe.toString();
+      widget.mofferController.txtValorTaxa1km.text =
+      oferta.ValorEntregaAte1 == null
+          ? '0'
+          : oferta.ValorEntregaAte1.toString();
+      widget.mofferController.txtValorTaxaMaisQue2km.text =
+      oferta.ValorEntregaMaisDe2 == null
+          ? '0'
+          : oferta.ValorEntregaMaisDe2.toString();
+      widget.mofferController.txtValorTaxa2km.text =
+      oferta.ValorEntregaAte2 == null
+          ? '0'
+          : oferta.ValorEntregaAte2.toString();
+      widget.mofferController.txtEntregasAPartir.text =
+          oferta.OfertaEntregasAPartirDe.toString();
+      widget.mofferController.txtCodigoAlt.text =
+      oferta.OfertaCodigoAlt! == 'null'
+          ? ''
+          : oferta.OfertaCodigoAlt.toString();
+      oferta.OfertaDistanciaKm == null
+          ? '0'
+          : oferta.OfertaDistanciaKm.toString();
+      //widget.mofferController.txtEntregaAs.text = oferta.Ate.toString();
+      widget.mofferController.txtValorSinalOrc.text =
+      oferta.OfertaSinal == null ? '0' : oferta.OfertaSinal.toString();
+      widget.mofferController.txtValidade.text =
+      oferta.OfertaDiasValidade == null
+          ? '0'
+          : oferta.OfertaDiasValidade.toString();
+      widget.mofferController.txtPesoPorcao.text =
+      oferta.OfertaPeso == null ? '0' : oferta.OfertaPeso.toString();
+      //widget.mofferController.txtPesoPorcaoUn.text =oferta.OfertaPesoUnidade == 'null' ? '' :  oferta.OfertaPesoUnidade.toString();
+      widget.mofferController.txtDescricao.text =
+      oferta.OfertaDetalhe! == 'null'
+          ? ''
+          : oferta.OfertaDetalhe.toString();
+      widget.mofferController.txtDetalhes.text = oferta.OfertaDetalhe! == 'null'
+          ? ''
+          : oferta.OfertaDetalhe.toString();
+      widget.mofferController.txtTamanhos.text =
+      oferta.OfertaTamanhos! == 'null'
+          ? ''
+          : oferta.OfertaTamanhos.toString();
+      widget.mofferController.txtCores.text =
+      oferta.OfertaCores! == 'null' ? '' : oferta.OfertaCores.toString();
+      widget.mofferController.txtValorMin.text = oferta.OfertaPrecoMin == null
+          ? '0'
+          : oferta.OfertaPrecoMin.toString();
+      widget.mofferController.txtMarca.text =
+      oferta.OfertaMarcaRevenda! == 'null'
+          ? ''
+          : oferta.OfertaMarcaRevenda!;
+      widget.mofferController.txtQtdMaxPorVenda.text =
+      oferta.OfertaQtdMaxVenda == null
+          ? '0'
+          : oferta.OfertaQtdMaxVenda.toString();
+      widget.mofferController.txtQtdDispo.text = oferta.OfertaQtdDispo == null
+          ? '0'
+          : oferta.OfertaQtdDispo.toString();
+      widget.mofferController.txtQtdAviso.text = oferta.OfertaQtdAviso == null
+          ? '0'
+          : oferta.OfertaQtdAviso.toString();
+      widget.mofferController.txtPreco.text =
+      oferta.OfertaPreco == null ? '0.00' : oferta.OfertaPreco.toString();
+      widget.mofferController.txtTempoEntrega.text =
+      oferta.OfertaTempoEntrega == null
+          ? '0'
+          : oferta.OfertaTempoEntrega.toString();
+
+      widget.offerGuid = widget.mofferController.mofferGuid!;
+    } else {
+      isEditing = false;
+      var nowFormatted = '01' + '03' + '2022';
+      var dia = DateTime.now().day < 10
+          ? '0' + DateTime.now().day.toString()
+          : DateTime.now().day.toString();
+      var mes = DateTime.now().month < 10
+          ? '0' + DateTime.now().month.toString()
+          : DateTime.now().month.toString();
+      var ano = DateTime.now().year.toString();
+      nowFormatted = dia + mes + ano;
+      print('nowFormatted: ' + nowFormatted);
+      widget.mofferController.txtEntregasAPartir.text = nowFormatted;
+      widget.mofferController.txtEncomendasAPartir.text = nowFormatted;
+
+      widget.mofferController.txtTitulo.text = '';
+      widget.mofferController.txtEncomendasAPartir.text = '';
+      widget.mofferController.txtValorTaxa1km.text = '0.00';
+      widget.mofferController.txtValorTaxaMaisQue2km.text = '0.00';
+      widget.mofferController.txtValorTaxa2km.text = '0.00';
+      widget.mofferController.txtCodigoAlt.text = '';
+      widget.mofferController.txtCepDistancia.text = '0';
+      widget.mofferController.txtValorSinalOrc.text = '0.00';
+      widget.mofferController.txtValidade.text = '0';
+      widget.mofferController.txtPesoPorcao.text = '0.00';
+      widget.mofferController.txtPesoPorcaoUn.text = '';
+      widget.mofferController.txtDescricao.text = '';
+      widget.mofferController.txtDetalhes.text = '';
+      widget.mofferController.txtTamanhos.text = '';
+      widget.mofferController.txtCores.text = '';
+      widget.mofferController.txtPreco.text = '0.00';
+      widget.mofferController.txtValorMin.text = '0.00';
+      widget.mofferController.txtMarca.text = '';
+      widget.mofferController.txtQtdMaxPorVenda.text = '0';
+      widget.mofferController.txtQtdDispo.text = '0';
+      widget.mofferController.txtQtdAviso.text = '0';
+    }
+  }
+
+
 }

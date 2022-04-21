@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:poraki/app/data/models/cepApiBrasil.dart';
+import 'package:poraki/app/data/models/enderecos.dart';
 import 'package:poraki/app/data/models/sql/sqlEndereco.dart';
 import 'package:poraki/app/data/repositories/CepApiBrasil_repository.dart';
 import 'package:poraki/app/modules/addresses/address_controller.dart';
@@ -33,25 +34,18 @@ class _AddressBodyState extends State<AddressBody> {
     });
   }
 
-  Future<void> salvar (int EnderecoAtual) async {
-    String enderecoGuid = "xxx";
-    var end = new sqlEndereco(enderecoGuid,
-        '',
-        '',
-        widget._controller.txtCEP.text.trimLeft().trimRight(),
-        widget._controller.txtEnderecoLogra.text.trimLeft().trimRight(),
-        widget._controller.txtEnderecoNumero.text.trimLeft().trimRight(),
-        widget._controller.txtEnderecoCompl!.text.trimLeft().trimRight(),
-        tipoSel,
-        0,
-        null,null,null
-    );//
+  Future<void> tornarEndAtual (String enderecoGuid) async {
+    widget._controller.tornarEnderecoAtual(enderecoGuid);
+  }
+
+  Future<void> salvar () async {
+    var end = new Enderecos(widget._controller.enderecoSingle.enderecoGuid, widget._controller.enderecoSingle.usuEmail, widget._controller.enderecoSingle.usuGuid,
+        widget._controller.txtCEP.text.removeAllWhitespace, widget._controller.txtEnderecoLogra.text.trimRight(), widget._controller.txtEnderecoNumero.text.trimRight(),
+        widget._controller.txtEnderecoCompl?.text.trimRight(), tipoSel, widget._controller.enderecoSingle.enderecoAtual, widget._controller.enderecoSingle.enderecoUltData,
+        null, widget._controller.enderecoSingle.enderecoLat, widget._controller.enderecoSingle.enderecoLong);
+
         //DateTime.now().toString());
-
     await widget._controller.adicionaEndereco(end);
-
-    if(EnderecoAtual == 1)
-      await widget._controller.tornarEnderecoAtual(enderecoGuid);
   }
 
   Future<void> buscaCep() async {
@@ -70,7 +64,7 @@ class _AddressBodyState extends State<AddressBody> {
     Color textDark = _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'textDark').first.coreValor.toString());
 
     return FutureBuilder(
-        future: null, // widget._controller.carregaUsuario(),
+        future: widget._controller.bindEndereco(),
         builder: (context, futuro) {
           if (futuro.connectionState == ConnectionState.waiting) {
             return Center(
@@ -255,7 +249,7 @@ class _AddressBodyState extends State<AddressBody> {
                         SizedBox(height: 20),
                         ButtonOffer(
                           onPressed: () {
-                            salvar(0);
+                            salvar();
 
                             final snackBar = SnackBar(
                                 backgroundColor: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'textDark').first.coreValor.toString()),
@@ -269,7 +263,7 @@ class _AddressBodyState extends State<AddressBody> {
                         ButtonOffer(
                           onPressed: () {
                             // salva e define como endereço atual
-                            salvar(1);
+                            salvar();
 
                             final snackBar = SnackBar(
                                 backgroundColor: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'textDark').first.coreValor.toString()),

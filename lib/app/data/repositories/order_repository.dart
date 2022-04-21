@@ -12,22 +12,24 @@ class OrdersRepository extends GetConnect {
   Future<Pedido> getOrder(String orderGuid) async {
     var response = await get('${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiPedido').first.coreValor.toString()}/' + orderGuid, headers: Constants.headers);
     if (response.hasError) throw 'Ocorreu um erro em OrdersRepository().getOrder()';
-    return (response.body['Pedido'] as List)
+    return (response.body['Pedidos'] as List)
         .map((pedidos) => Pedido.fromJson(pedidos)).first;
   }
 
   Future<List<Pedido>> getOrdersBySellerOpen(String sellerGuid) async {
     var response = await get('${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiPedidosPorVendedorOpen').first.coreValor.toString()}/' + sellerGuid, headers: Constants.headers);
     if (response.hasError) throw 'Ocorreu um erro em OrdersRepository().getOrdersBySellerOpen()';
-    return (response.body['Pedido'] as List)
+    return (response.body['Pedidos'] as List)
         .map((pedidos) => Pedido.fromJson(pedidos))
         .toList();
   }
 
   Future<List<Pedido>> getOrdersByCustomerOpen(String usuGuid) async {
+    print('url: ' + '${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiPedidosPorClienteOpen').first.coreValor.toString()}/' + usuGuid);
     var response = await get('${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiPedidosPorClienteOpen').first.coreValor.toString()}/' + usuGuid, headers: Constants.headers);
+    print(response.bodyString);
     if (response.hasError) throw 'Ocorreu um erro em OrdersRepository().getOrdersByCustomerOpen()';
-    return (response.body['Pedido'] as List)
+    return (response.body['Pedidos'] as List)
         .map((pedidos) => Pedido.fromJson(pedidos))
         .toList();
   }
@@ -35,7 +37,7 @@ class OrdersRepository extends GetConnect {
   Future<List<Pedido>> getOrdersBySellerClosed(String sellerGuid) async {
     var response = await get('${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiPedidosPorVendedor').first.coreValor.toString()}/' + sellerGuid, headers: Constants.headers);
     if (response.hasError) throw 'Ocorreu um erro em OrdersRepository().getOrdersBySellerClosed()';
-    return (response.body['Pedido'] as List)
+    return (response.body['Pedidos'] as List)
         .map((pedidos) => Pedido.fromJson(pedidos))
         .toList();
   }
@@ -43,7 +45,7 @@ class OrdersRepository extends GetConnect {
   Future<List<Pedido>> getOrdersByCustomerClosed(String usuGuid) async {
     var response = await get('${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiPedidosPorCliente').first.coreValor.toString()}/' + usuGuid, headers: Constants.headers);
     if (response.hasError) throw 'Ocorreu um erro em OrdersRepository().getOrdersByCustomerClosed()';
-    return (response.body['Pedido'] as List)
+    return (response.body['Pedidos'] as List)
         .map((pedidos) => Pedido.fromJson(pedidos))
         .toList();
   }
@@ -81,7 +83,7 @@ class OrdersRepository extends GetConnect {
   Future<List<PedidoItem>> getOrderItems(String orderGuid) async {
     var response = await get('${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiPedidoItens').first.coreValor.toString()}/' + orderGuid, headers: Constants.headers);
     if (response.hasError) throw 'Ocorreu um erro em OrdersRepository().getOrder()';
-    return (response.body['PedidoItem'] as List)
+    return (response.body['PedidoItens'] as List)
         .map((pedidoitem) => PedidoItem.fromJson(pedidoitem)).toList();
   }
 

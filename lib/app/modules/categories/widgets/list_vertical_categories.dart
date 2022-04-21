@@ -15,7 +15,7 @@ class ListVerticalCategories extends StatelessWidget {
   Widget build(BuildContext context) {
     Widget _buildRow(int idx, String categoryName, String chave, String iconcode) {
       return ListTile(
-        leading: Icon(IconData(int.parse(iconcode), fontFamily: 'MaterialIcons')),
+        leading: Icon(IconData(0xf184,fontFamily: 'MaterialIcons')), //Icon(IconData(int.parse(iconcode), fontFamily: 'MaterialIcons')),
         onTap: () => Get.toNamed(AppRoutes.offers, arguments: [
           {'cep': '05735030'}, {'category': chave.toString() }, {'title': null}] ),
         title: Text(

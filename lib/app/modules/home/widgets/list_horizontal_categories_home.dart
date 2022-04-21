@@ -27,7 +27,8 @@ class ListHorizontalCategoriesHome extends StatelessWidget {
               Categorias categories = controller.categorias![index];
               return CardCategories(
                 text: categories.categoriaNome!,
-                iconData: IconData(int.parse(categories.iconcode!), fontFamily: 'MaterialIcons'),
+                // iconData: IconData(int.parse(categories.iconcode.toString()), fontFamily: 'MaterialIcons'),
+                iconData: IconData(0xf184,fontFamily: 'MaterialIcons'),
                 chave: categories.categoriaChave!,
                 // iconData: Icons.image_outlined,
               );

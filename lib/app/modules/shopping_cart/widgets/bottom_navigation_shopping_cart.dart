@@ -13,18 +13,17 @@ class BottomNavigationShoppingCart extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  late sqlEndereco endAtual;
-  late double total;
+  late String cepAtual;
 
   Future<void> getEnderecoAtual() async {
-    endAtual = await AddressController().EnderecoAtual();
-    total = 200.00;
+    cepAtual = await AddressController().getCepAtualCloud().toString();
   }
 
   @override
   Widget build(BuildContext context) {
     LoginController _loginController = Get.find();
     Color darkText = _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'textDark').first.coreValor.toString());
+    double total = 200.00;
 
     return FutureBuilder(
         future: getEnderecoAtual(),
@@ -53,7 +52,7 @@ class BottomNavigationShoppingCart extends StatelessWidget {
                             style: TextStyle(color: darkText, fontSize: 15),
                           ),
                           Text(
-                            endAtual.enderecoCEP,
+                            cepAtual,
                             // 'Rua tal com tal coisa 85, São Paulo',
                             style: TextStyle(color: darkText, fontSize: 15),
                           ),

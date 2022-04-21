@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import 'package:poraki/app/modules/auth/login/login_controller.dart';
+import 'package:poraki/app/services/fbporaki_service.dart';
 import '../../data/models/categorias.dart';
 import '../../data/models/produto_oferta.dart';
 import '../../data/repositories/categories_repository.dart';
@@ -34,8 +36,21 @@ class HomeController extends GetxController {
   //TODO: pegar os banners do firebase
   List<String> listBanners = [
     'http://poraki-assets.ec3.digital/wp-content/uploads/2021/11/PORAKI-Banner-sm_default1.jpg',
-    // 'https://cdn.pixabay.com/photo/2015/02/07/20/58/tv-627876_960_720.jpg',
   ];
+
+  Future<void> getListBannersFromFBCloud() async {
+    LoginController loginController = Get.find();
+
+    var tempBannersApp = await fbPorakiService().getListFromFirebase("akibanners", "core");
+    tempBannersApp.forEach((key, value) {
+      listBanners.add(value);
+    });
+
+    var tempBannersCep = await fbPorakiService().getListFromFirebase("akibanners", loginController.usuCep!.substring(0, 3));
+    tempBannersCep.forEach((key, value) {
+      listBanners.add(value);
+    });
+  }
 
   Future<void> getOffers() async {
     try {
@@ -93,6 +108,7 @@ class HomeController extends GetxController {
     try {
       changeLoading(true);
       categorias = await categoriesRepository.getCategoriesBarra();
+      categorias?.forEach((element) { print(element);});
     } catch (e) {
       print('Erro no getCategories() controller ${e.toString()}');
     } finally {

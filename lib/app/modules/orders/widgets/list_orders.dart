@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:poraki/app/data/models/pedido.dart';
-import 'package:poraki/app/data/models/sql/sqlPedido.dart';
 import 'package:poraki/app/modules/auth/login/login_controller.dart';
 import 'package:poraki/app/modules/home/widgets/gradient_header_home.dart';
 import 'package:poraki/app/modules/orders/order_controller.dart';
@@ -17,59 +16,41 @@ class ListOrders extends StatefulWidget {
 }
 
 class _ListOrdersState extends State<ListOrders> {
+  bool closed = false;
+
   @override
   Widget build(BuildContext context) {
-    bool closed = false;
     final OrderController orderController = Get.put(OrderController());
     final LoginController _loginController = Get.find();
 
-    Widget _buildRowClosed(sqlPedido pedido) {
-      print(pedido.toMap());
-      return Column(children: [
-        ListTile(
-          leading: Icon(Icons.monetization_on_outlined),
-          onTap: () =>
-              Get.toNamed(AppRoutes.order, arguments: [pedido.toMap()]),
-          // ),
-          title: Text('Pedido em: ' +
-                  pedido.pedidoEm +
-                  ' no valor de ' +
-                  pedido.pedidoValorTotal +
-                  ' - a partir do CEP: ' +
-                  pedido.pedidoCEP
-              // style: _biggerFont,
-              ),
-          subtitle: Text(pedido.pedidoPagtoEm == ''
-              ? 'Em aberto'
-              : 'Pago em' + pedido.pedidoPagtoEm),
-          //trailing: Icon(IconData(int.parse(iconcode), fontFamily: 'MaterialIcons'))
-        ),
-        const SizedBox(height: 5),
-        const Divider(),
-        const SizedBox(height: 5),
-      ]);
+    String _formatDate(String strData) {
+      return strData.substring(8, 10) +
+          '/' +
+          strData.substring(5, 7) +
+          '/' +
+          strData.substring(0, 4) +
+          ' às ' +
+          strData.substring(11, 16);
     }
 
-    Widget _buildRowOpen(Pedido pedido) {
-      print(pedido.toMap());
+    Widget _buildRow(Pedido _ped) {
       return Column(children: [
         ListTile(
-          leading: Icon(Icons.monetization_on_outlined),
-          onTap: () =>
-              Get.toNamed(AppRoutes.order, arguments: [pedido.toMap()]),
-          // ),
-          title: Text('Pedido em: ' +
-                  pedido.PedidoEm +
-                  ' no valor de ' +
-                  pedido.PedidoValorTotal +
-                  ' - a partir do CEP: ' +
-                  pedido.PedidoCEP
+          leading: closed
+              ? Icon(Icons.monetization_on)
+              : Icon(Icons.monetization_on_outlined),
+          onTap: () {
+            Get.toNamed(AppRoutes.order, arguments: [
+              {'Pedido': _ped}
+            ]);
+          },
+          title: Text('Pedido realizado em ' +
+                  _formatDate(_ped.PedidoEm) +
+                  ' no valor de R\$ ' + double.parse(_ped.PedidoValorTotal).toStringAsFixed(2).replaceAll('.', ',')
               // style: _biggerFont,
               ),
-          subtitle: Text(pedido.PedidoPagtoEm == ''
-              ? 'Em aberto'
-              : 'Pago em' + pedido.PedidoPagtoEm),
-          //trailing: Icon(IconData(int.parse(iconcode), fontFamily: 'MaterialIcons'))
+          trailing: Text('CEP ' + _ped.PedidoCEP),
+          subtitle: Text('Em aberto'),
         ),
         const SizedBox(height: 5),
         const Divider(),
@@ -78,10 +59,13 @@ class _ListOrdersState extends State<ListOrders> {
     }
 
     Future<void> loadOrderData() async {
-      if (closed)
-        await orderController.carregaPedidosFechadosLocal(_loginController.usuGuid.toString());
-      else
-        await orderController.carregaPedidosPorClienteOpenCloud(_loginController.usuGuid.toString());
+      if (!closed) {
+        await orderController.carregaPedidosPorClienteOpenCloud(
+            _loginController.usuGuid.toString());
+      } else {
+        await orderController
+            .carregaPedidosFechadosLocal(_loginController.usuGuid.toString());
+      }
     }
 
     return FutureBuilder(
@@ -93,8 +77,6 @@ class _ListOrdersState extends State<ListOrders> {
             // } else if (futuro.hasError) {
             //   return Center(child: Text(futuro.error.toString()));
           } else {
-            //print('qt pedidos: ' + orderController.listaPedidos.length.toString());
-
             return SingleChildScrollView(
                 child: GradientHeaderHome(
                     child: Column(
@@ -125,26 +107,15 @@ class _ListOrdersState extends State<ListOrders> {
                     ),
                     SizedBox(width: 20),
                   ]),
-                  Scrollbar(
+                          Container(
+                            height: MediaQuery.of(context).size.height,
                     child: ListView.builder(
                       scrollDirection: Axis.vertical,
                       shrinkWrap: true,
-                      //scrollDirection: Axis.vertical,
-                      // padding: const EdgeInsets.all(16.0),
-                      itemCount: closed
-                          ? orderController.listaPedidos.length
-                          : orderController.listaPedidosCloud.length,
+                      padding: const EdgeInsets.all(16.0),
+                      itemCount: orderController.listaPedidos.length,
                       itemBuilder: (BuildContext context, int index) {
-                        //if (index.isOdd) return const Divider();
-                        //index = index ~/ 2 + 1;
-                        sqlPedido sqlPed =
-                            closed ? orderController.listaPedidos[index] : null;
-                        Pedido ped = closed
-                            ? orderController.listaPedidosCloud[index]
-                            : null;
-                        return closed
-                            ? _buildRowClosed(sqlPed)
-                            : _buildRowOpen(ped);
+                        return _buildRow(orderController.listaPedidos[index]);
                       },
                     ),
                   )

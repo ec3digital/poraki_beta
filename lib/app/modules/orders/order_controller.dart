@@ -9,12 +9,16 @@ import 'package:poraki/app/services/sqlite/sqlporaki_pedido_service.dart';
 
 class OrderController extends GetxController {
 
-  var listaPedidos = [];
-  var listaPedidosCloud = [];
-  List<sqlPedidoItem> listaPedidosItems = [];
-  List<PedidoItem> listaPedidosItemsCloud = [];
-  sqlPedido? pedido;
-  Pedido? pedidoCloud;
+  // var listaPedidos = [];
+  // var listaPedidosCloud = [];
+  // List<sqlPedidoItem> listaPedidosItems = [];
+  // List<PedidoItem> listaPedidosItemsCloud = [];
+  // sqlPedido? pedido;
+  // Pedido? pedidoCloud;
+
+  Pedido? selPedido;
+  List<Pedido> listaPedidos = [];
+  List<PedidoItem> listaPedidoItems = [];
   bool isLoading = false;
 
   @override
@@ -28,52 +32,41 @@ class OrderController extends GetxController {
   }
 
   Future<void> carregaPedidoLocalItems(String pedidoGUID) async {
-    listaPedidosItems.clear();
+    listaPedidoItems.clear();
 
     List<sqlPedidoItem> sqlPedidoItems = await sqlPorakiPedidoService().listOrderItems(pedidoGUID);
     print('qtd items sql: ' + sqlPedidoItems.length.toString());
     sqlPedidoItems.forEach((item) {
-      listaPedidos.add(new sqlPedidoItem(
-          item.pedidoItemGUID,
-          item.pedidoGUID,
-          item.ofertaGuid,
-          item.ofertaTitulo,
-          item.ofertaCEP,
-          item.ofertaVendedorGuid,
-          item.ofertaPreco,
-          item.ofertaQtd,
-          item.ofertaTotal,
-          item.ofertaImgPath,
-          item.categoriaChave,
-          item.ofertaCancelada,
-          item.ofertaEntregueEm)
-      );
+      listaPedidoItems.add(sqlPorakiPedidoService().convertSqlpedItemToPedidoItem(item));
     });
   }
 
   Future<void> carregaPedidoCloudItems(String pedidoGUID) async {
-    listaPedidosItemsCloud.clear();
+    print('carregaPedidoCloudItems');
+    listaPedidoItems.clear();
 
-    List<PedidoItem> pedidoItems = await OrdersRepository().getOrderItems(pedidoGUID);
-    print('qtd items cloud: ' + pedidoItems.length.toString());
-    pedidoItems.forEach((item) {
-      listaPedidosCloud.add(new PedidoItem(
-          item.PedidoItemGUID,
-          item.PedidoGUID,
-          item.OfertaGuid,
-          item.OfertaTitulo,
-          item.OfertaCEP,
-          item.OfertaVendedorGuid,
-          item.OfertaPreco,
-          item.OfertaQtd,
-          item.OfertaTotal,
-          item.OfertaImgPath,
-          item.categoriaChave,
-          item.OfertaCancelada,
-          item.OfertaEntregueEm,
-          item.CategoriaChave,
-          item.PedidoItemDetalhe));
-    });
+    var listaPedidoItemsTemp = await OrdersRepository().getOrderItems(pedidoGUID);
+    print('qtd items cloud: ' + listaPedidoItemsTemp.length.toString());
+    listaPedidoItemsTemp.forEach((item) {listaPedidoItems.add(item);});
+    // pedidoItems.forEach((item) {
+    //   listaPedidoItems.add(item);
+          // new PedidoItem(
+          // item.PedidoItemGUID,
+          // item.PedidoGUID,
+          // item.OfertaGuid,
+          // item.OfertaTitulo,
+          // item.OfertaCEP,
+          // item.OfertaVendedorGuid,
+          // item.OfertaPreco,
+          // item.OfertaQtd,
+          // item.OfertaTotal,
+          // item.OfertaImgPath,
+          // item.OfertaCancelada,
+          // item.OfertaEntregueEm,
+          // item.CategoriaChave,
+          // item.PedidoItemDetalhe)
+     // );
+    // });
   }
 
   Future<void> carregaPedidosFechadosLocal(String userGUID) async {
@@ -81,33 +74,35 @@ class OrderController extends GetxController {
 
     List<sqlPedido> pedidos = await sqlPorakiPedidoService().listOrders(userGUID);
     print('qtd pedidos: ' + pedidos.length.toString());
-    pedidos.forEach((element) {
-      listaPedidos.add(new sqlPedido(
-          element.pedidoGUID,
-          element.pedidoVendedorGUID,
-          element.pedidoVendedorEmail,
-          element.pedidoEm,
-          element.pedidoValorTotal,
-          element.pedidoFormaPagto,
-          element.pedidoCancelada,
-          element.pedidoPagtoEm,
-          element.pedidoPessoaNome,
-          element.pedidoPessoaEmail,
-          element.pedidoUsuGUID,
-          element.pedidoAval,
-          element.pedidoAvalEm,
-          element.pedidoMoeda,
-          element.pedidoCEP,
-          element.pedidoEndereco,
-          element.pedidoNumero,
-          element.pedidoCompl,
-          element.pedidoAutoriza,
-          element.pedidoInstituicao,
-          element.pedidoEntregaPrevista,
-          element.pedidoEntregaRealizadaEm,
-          element.pedidoEntregaPorUsuEmail,
-          element.pedidoEntregaPorUsuNome
-      ));
+    pedidos.forEach((sqlPed) {
+      listaPedidos.add(sqlPorakiPedidoService().convertSqlpedToPedido(sqlPed)
+      //     new sqlPedido(
+      //     element.pedidoGUID,
+      //     element.pedidoVendedorGUID,
+      //     element.pedidoVendedorEmail,
+      //     element.pedidoEm,
+      //     element.pedidoValorTotal,
+      //     element.pedidoFormaPagto,
+      //     element.pedidoCancelada,
+      //     element.pedidoPagtoEm,
+      //     element.pedidoPessoaNome,
+      //     element.pedidoPessoaEmail,
+      //     element.pedidoUsuGUID,
+      //     element.pedidoAval,
+      //     element.pedidoAvalEm,
+      //     element.pedidoMoeda,
+      //     element.pedidoCEP,
+      //     element.pedidoEndereco,
+      //     element.pedidoNumero,
+      //     element.pedidoCompl,
+      //     element.pedidoAutoriza,
+      //     element.pedidoInstituicao,
+      //     element.pedidoEntregaPrevista,
+      //     element.pedidoEntregaRealizadaEm,
+      //     element.pedidoEntregaPorUsuEmail,
+      //     element.pedidoEntregaPorUsuNome
+      // )
+      );
     });
   }
 
@@ -141,145 +136,161 @@ class OrderController extends GetxController {
   }
 
   Future<void> carregaPedidosPorClienteOpenCloud(String userGUID) async {
-    listaPedidosCloud.clear();
+    listaPedidos.clear();
+    //print('carregaPedidosPorClienteOpenCloud');
 
-    List<Pedido> pedidos = await OrdersRepository().getOrdersByCustomerOpen(userGUID);
-    print('qtd pedidos cloud: ' + pedidos.length.toString());
-    pedidos.forEach((element) {
-      listaPedidosCloud.add(new Pedido(
-          element.PedidoGUID,
-          element.PedidoVendedorGUID,
-          element.PedidoVendedorEmail,
-          element.PedidoEm,
-          element.PedidoValorTotal,
-          element.PedidoFormaPagto,
-          element.PedidoCancelada,
-          element.PedidoPagtoEm,
-          element.PedidoPessoaNome,
-          element.PedidoPessoaEmail,
-          element.PedidoUsuGUID,
-          element.PedidoAval,
-          element.PedidoAvalEm,
-          element.PedidoMoeda,
-          element.PedidoCEP,
-          element.PedidoEndereco,
-          element.PedidoNumero,
-          element.PedidoCompl,
-          element.PedidoAutoriza,
-          element.PedidoInstituicao,
-          element.PedidoEntregaPrevista,
-          element.PedidoEntregaRealizadaEm,
-          element.PedidoEntregaPorUsuEmail,
-          element.PedidoEntregaPorUsuNome
-      ));
-    });
+    var listaPedidosTemp = await OrdersRepository().getOrdersByCustomerOpen(userGUID);
+    print('qtd pedidos cloud: ' + listaPedidosTemp.length.toString());
+    listaPedidosTemp.forEach((ped) {listaPedidos.add(ped); });
+    // pedidos.forEach((ped) {
+    //   listaPedidos.add(ped);
+    //   //     new Pedido(
+      //     element.PedidoGUID,
+      //     element.PedidoVendedorGUID,
+      //     element.PedidoVendedorEmail,
+      //     element.PedidoEm,
+      //     element.PedidoValorTotal,
+      //     element.PedidoFormaPagto,
+      //     element.PedidoCancelada,
+      //     element.PedidoPagtoEm,
+      //     element.PedidoPessoaNome,
+      //     element.PedidoPessoaEmail,
+      //     element.PedidoUsuGUID,
+      //     element.PedidoAval,
+      //     element.PedidoAvalEm,
+      //     element.PedidoMoeda,
+      //     element.PedidoCEP,
+      //     element.PedidoEndereco,
+      //     element.PedidoNumero,
+      //     element.PedidoCompl,
+      //     element.PedidoAutoriza,
+      //     element.PedidoInstituicao,
+      //     element.PedidoEntregaPrevista,
+      //     element.PedidoEntregaRealizadaEm,
+      //     element.PedidoEntregaPorUsuEmail,
+      //     element.PedidoEntregaPorUsuNome
+      // )
+      //);
+    //});
   }
 
   Future<void> carregaPedidosPorVendedorOpenCloud(String userGUID) async {
-    listaPedidosCloud.clear();
+    listaPedidos.clear();
 
-    List<Pedido> pedidos = await OrdersRepository().getOrdersBySellerOpen(userGUID);
-    print('qtd pedidos cloud: ' + pedidos.length.toString());
-    pedidos.forEach((element) {
-      listaPedidosCloud.add(new Pedido(
-          element.PedidoGUID,
-          element.PedidoVendedorGUID,
-          element.PedidoVendedorEmail,
-          element.PedidoEm,
-          element.PedidoValorTotal,
-          element.PedidoFormaPagto,
-          element.PedidoCancelada,
-          element.PedidoPagtoEm,
-          element.PedidoPessoaNome,
-          element.PedidoPessoaEmail,
-          element.PedidoUsuGUID,
-          element.PedidoAval,
-          element.PedidoAvalEm,
-          element.PedidoMoeda,
-          element.PedidoCEP,
-          element.PedidoEndereco,
-          element.PedidoNumero,
-          element.PedidoCompl,
-          element.PedidoAutoriza,
-          element.PedidoInstituicao,
-          element.PedidoEntregaPrevista,
-          element.PedidoEntregaRealizadaEm,
-          element.PedidoEntregaPorUsuEmail,
-          element.PedidoEntregaPorUsuNome
-      ));
-    });
+    var listaPedidosTemp = await OrdersRepository().getOrdersBySellerOpen(userGUID);
+    print('qtd pedidos cloud: ' + listaPedidosTemp.length.toString());
+    listaPedidosTemp.forEach((ped) {listaPedidos.add(ped); });
+
+    // List<Pedido> pedidos = await OrdersRepository().getOrdersBySellerOpen(userGUID);
+    // print('qtd pedidos cloud: ' + pedidos.length.toString());
+    // pedidos.forEach((element) {
+    //   listaPedidosCloud.add(new Pedido(
+    //       element.PedidoGUID,
+    //       element.PedidoVendedorGUID,
+    //       element.PedidoVendedorEmail,
+    //       element.PedidoEm,
+    //       element.PedidoValorTotal,
+    //       element.PedidoFormaPagto,
+    //       element.PedidoCancelada,
+    //       element.PedidoPagtoEm,
+    //       element.PedidoPessoaNome,
+    //       element.PedidoPessoaEmail,
+    //       element.PedidoUsuGUID,
+    //       element.PedidoAval,
+    //       element.PedidoAvalEm,
+    //       element.PedidoMoeda,
+    //       element.PedidoCEP,
+    //       element.PedidoEndereco,
+    //       element.PedidoNumero,
+    //       element.PedidoCompl,
+    //       element.PedidoAutoriza,
+    //       element.PedidoInstituicao,
+    //       element.PedidoEntregaPrevista,
+    //       element.PedidoEntregaRealizadaEm,
+    //       element.PedidoEntregaPorUsuEmail,
+    //       element.PedidoEntregaPorUsuNome
+    //   ));
+    // });
   }
 
 
   // CLOUD
   Future<void> carregaPedidosPorClienteClosedCloud(String userGUID) async {
-    listaPedidosCloud.clear();
+    listaPedidos.clear();
 
-    List<Pedido> pedidos = await OrdersRepository().getOrdersByCustomerClosed(userGUID);
-    print('qtd pedidos cloud: ' + pedidos.length.toString());
-    pedidos.forEach((element) {
-      listaPedidosCloud.add(new Pedido(
-          element.PedidoGUID,
-          element.PedidoVendedorGUID,
-          element.PedidoVendedorEmail,
-          element.PedidoEm,
-          element.PedidoValorTotal,
-          element.PedidoFormaPagto,
-          element.PedidoCancelada,
-          element.PedidoPagtoEm,
-          element.PedidoPessoaNome,
-          element.PedidoPessoaEmail,
-          element.PedidoUsuGUID,
-          element.PedidoAval,
-          element.PedidoAvalEm,
-          element.PedidoMoeda,
-          element.PedidoCEP,
-          element.PedidoEndereco,
-          element.PedidoNumero,
-          element.PedidoCompl,
-          element.PedidoAutoriza,
-          element.PedidoInstituicao,
-          element.PedidoEntregaPrevista,
-          element.PedidoEntregaRealizadaEm,
-          element.PedidoEntregaPorUsuEmail,
-          element.PedidoEntregaPorUsuNome
-      ));
-    });
+    var listaPedidosTemp = await OrdersRepository().getOrdersByCustomerClosed(userGUID);
+    print('qtd pedidos cloud: ' + listaPedidosTemp.length.toString());
+    listaPedidosTemp.forEach((ped) {listaPedidos.add(ped); });
+
+    // List<Pedido> pedidos = await OrdersRepository().getOrdersByCustomerClosed(userGUID);
+    // print('qtd pedidos cloud: ' + pedidos.length.toString());
+    // pedidos.forEach((element) {
+    //   listaPedidosCloud.add(new Pedido(
+    //       element.PedidoGUID,
+    //       element.PedidoVendedorGUID,
+    //       element.PedidoVendedorEmail,
+    //       element.PedidoEm,
+    //       element.PedidoValorTotal,
+    //       element.PedidoFormaPagto,
+    //       element.PedidoCancelada,
+    //       element.PedidoPagtoEm,
+    //       element.PedidoPessoaNome,
+    //       element.PedidoPessoaEmail,
+    //       element.PedidoUsuGUID,
+    //       element.PedidoAval,
+    //       element.PedidoAvalEm,
+    //       element.PedidoMoeda,
+    //       element.PedidoCEP,
+    //       element.PedidoEndereco,
+    //       element.PedidoNumero,
+    //       element.PedidoCompl,
+    //       element.PedidoAutoriza,
+    //       element.PedidoInstituicao,
+    //       element.PedidoEntregaPrevista,
+    //       element.PedidoEntregaRealizadaEm,
+    //       element.PedidoEntregaPorUsuEmail,
+    //       element.PedidoEntregaPorUsuNome
+    //   ));
+    // });
   }
 
   Future<void> carregaPedidosPorVendedorClosedCloud(String userGUID) async {
-    listaPedidosCloud.clear();
+    listaPedidos.clear();
 
-    List<Pedido> pedidos = await OrdersRepository().getOrdersBySellerClosed(userGUID);
-    print('qtd pedidos cloud: ' + pedidos.length.toString());
-    pedidos.forEach((element) {
-      listaPedidosCloud.add(new Pedido(
-          element.PedidoGUID,
-          element.PedidoVendedorGUID,
-          element.PedidoVendedorEmail,
-          element.PedidoEm,
-          element.PedidoValorTotal,
-          element.PedidoFormaPagto,
-          element.PedidoCancelada,
-          element.PedidoPagtoEm,
-          element.PedidoPessoaNome,
-          element.PedidoPessoaEmail,
-          element.PedidoUsuGUID,
-          element.PedidoAval,
-          element.PedidoAvalEm,
-          element.PedidoMoeda,
-          element.PedidoCEP,
-          element.PedidoEndereco,
-          element.PedidoNumero,
-          element.PedidoCompl,
-          element.PedidoAutoriza,
-          element.PedidoInstituicao,
-          element.PedidoEntregaPrevista,
-          element.PedidoEntregaRealizadaEm,
-          element.PedidoEntregaPorUsuEmail,
-          element.PedidoEntregaPorUsuNome
-      ));
-    });
+    var listaPedidosTemp = await OrdersRepository().getOrdersBySellerClosed(userGUID);
+    print('qtd pedidos cloud: ' + listaPedidosTemp.length.toString());
+    listaPedidosTemp.forEach((ped) {listaPedidos.add(ped); });
+
+    // List<Pedido> pedidos = await OrdersRepository().getOrdersBySellerClosed(userGUID);
+    // print('qtd pedidos cloud: ' + pedidos.length.toString());
+    // pedidos.forEach((element) {
+    //   listaPedidosCloud.add(new Pedido(
+    //       element.PedidoGUID,
+    //       element.PedidoVendedorGUID,
+    //       element.PedidoVendedorEmail,
+    //       element.PedidoEm,
+    //       element.PedidoValorTotal,
+    //       element.PedidoFormaPagto,
+    //       element.PedidoCancelada,
+    //       element.PedidoPagtoEm,
+    //       element.PedidoPessoaNome,
+    //       element.PedidoPessoaEmail,
+    //       element.PedidoUsuGUID,
+    //       element.PedidoAval,
+    //       element.PedidoAvalEm,
+    //       element.PedidoMoeda,
+    //       element.PedidoCEP,
+    //       element.PedidoEndereco,
+    //       element.PedidoNumero,
+    //       element.PedidoCompl,
+    //       element.PedidoAutoriza,
+    //       element.PedidoInstituicao,
+    //       element.PedidoEntregaPrevista,
+    //       element.PedidoEntregaRealizadaEm,
+    //       element.PedidoEntregaPorUsuEmail,
+    //       element.PedidoEntregaPorUsuNome
+    //   ));
+    // });
   }
 
 

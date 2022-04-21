@@ -9,13 +9,13 @@ class PedidoItem {
   late final double OfertaQtd;
   late final double OfertaTotal;
   late final String? OfertaImgPath;
-  late final String categoriaChave;
+  // late final String categoriaChave;
   late final int? OfertaCancelada;
   late final String? OfertaEntregueEm;
   late final String? CategoriaChave;
   late final String? PedidoItemDetalhe;
 
-  PedidoItem(this.PedidoItemGUID, this.PedidoGUID, this.OfertaGuid, this.OfertaTitulo, this.OfertaCEP, this.OfertaVendedorGuid, this.OfertaPreco, this.OfertaQtd, this.OfertaTotal, this.OfertaImgPath, this.categoriaChave, this.OfertaCancelada, this.OfertaEntregueEm, this.CategoriaChave, this.PedidoItemDetalhe);
+  PedidoItem(this.PedidoItemGUID, this.PedidoGUID, this.OfertaGuid, this.OfertaTitulo, this.OfertaCEP, this.OfertaVendedorGuid, this.OfertaPreco, this.OfertaQtd, this.OfertaTotal, this.OfertaImgPath, this.OfertaCancelada, this.OfertaEntregueEm, this.CategoriaChave, this.PedidoItemDetalhe);
 
   PedidoItem.fromJson(Map<String, dynamic> json) {
     CategoriaChave = json['CategoriaChave'];
@@ -45,7 +45,7 @@ class PedidoItem {
       "OfertaQtd": OfertaQtd,
       "OfertaTotal": OfertaTotal,
       "OfertaImgPath": OfertaImgPath,
-      "CategoriaChave": categoriaChave,
+      "CategoriaChave": CategoriaChave,
       "OfertaCancelada": OfertaCancelada,
       "OfertaEntregueEm": OfertaEntregueEm
     };

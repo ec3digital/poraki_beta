@@ -1,6 +1,7 @@
 import 'package:extended_masked_text/extended_masked_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:poraki/app/data/models/enderecos.dart';
 import 'package:poraki/app/data/models/sql/sqlEndereco.dart';
 import 'package:poraki/app/data/repositories/address_repository.dart';
 import 'package:poraki/app/modules/auth/login/login_controller.dart';
@@ -25,6 +26,7 @@ class AddressController extends GetxController {
 
   List<sqlEndereco> enderecos = [];
   late sqlEndereco enderecoSingle;
+  late Enderecos selEndereco;
   AddressRepository repo = new AddressRepository();
   LoginController _login = Get.find();
 
@@ -49,6 +51,15 @@ class AddressController extends GetxController {
   //   await carregaUsuario();
   //   super.onInit();
   // }
+
+  Future<void> bindEndereco() async {
+    if(enderecoSingle.enderecoGuid != '') {
+      txtEnderecoLogra.text = enderecoSingle.enderecoLogra.toString();
+      txtEnderecoNumero.text = enderecoSingle.enderecoNumero.toString();
+      txtEnderecoTipo.text = enderecoSingle.enderecoTipo.toString();
+      txtCEP.text = enderecoSingle.enderecoCEP.toString();
+    }
+  }
 
   Future<void> carregaEnderecos() async {
     print('carregaEnderecos');
@@ -109,7 +120,7 @@ class AddressController extends GetxController {
       }
   }
 
-  Future<sqlEndereco> EnderecoAtual() async {
+  Future<sqlEndereco> retornaEnderecoAtualSqlLocal() async {
     print('carregaEnderecoAtual');
 
     var lista = await sqlPorakiAddressService().buscaEnderecos(true);
@@ -196,23 +207,55 @@ class AddressController extends GetxController {
     txtEnderecoTipo.text = enderecoSingle.enderecoTipo;
   }
 
-  Future<void> atualizaEndereco(sqlEndereco endereco) async {
-    await sqlPorakiAddressService().updateEndereco(endereco);
+  Future<void> atualizaEndereco(Enderecos endereco) async {
+    //endereco.EnderecoUltData = DateTime.now().toString();
+    var resp = await repo.putAddress(endereco);
+
+    //if (resp.isEmpty)
+    var sqlEnd = new sqlEndereco(endereco.EnderecoGuid.toString(), endereco.UsuEmail.toString(), endereco.UsuGuid.toString(), endereco.EnderecoCEP.toString(),
+        endereco.EnderecoLogra.toString(), endereco.EnderecoNumero.toString(), endereco.EnderecoCompl, endereco.EnderecoTipo.toString(), int.parse(endereco.EnderecoAtual.toString()),
+        DateTime.now().toString(), endereco.EnderecoLat, endereco.EnderecoLong);
+
+    await sqlPorakiAddressService().updateEndereco(sqlEnd);
     // await carregaUsuario();
   }
 
-  Future<void> adicionaEndereco(sqlEndereco endereco) async {
-    await sqlPorakiAddressService().insertEndereco(endereco);
+  Future<void> adicionaEndereco(Enderecos endereco) async {
+    await repo.postAddress(endereco);
+
+    //if (resp.isEmpty)
+    var sqlEnd = new sqlEndereco(endereco.EnderecoGuid.toString(), endereco.UsuEmail.toString(), endereco.UsuGuid.toString(), endereco.EnderecoCEP.toString(),
+        endereco.EnderecoLogra.toString(), endereco.EnderecoNumero.toString(), endereco.EnderecoCompl, endereco.EnderecoTipo.toString(), int.parse(endereco.EnderecoAtual.toString()),
+        DateTime.now().toString(), endereco.EnderecoLat, endereco.EnderecoLong);
+
+    await sqlPorakiAddressService().insertEndereco(sqlEnd);
     // await carregaUsuario();
   }
 
-  Future<void> apagaEndereco(String enderecoGuid) async {
-    await sqlPorakiAddressService().deleteEndereco(enderecoGuid);
+  Future<void> apagaEndereco(Enderecos endereco) async {
+    endereco.EnderecoTipo = 'Inativo';
+    var resp = await repo.putAddress(endereco);
+
+    var sqlEnd = new sqlEndereco(endereco.EnderecoGuid.toString(), endereco.UsuEmail.toString(), endereco.UsuGuid.toString(), endereco.EnderecoCEP.toString(),
+        endereco.EnderecoLogra.toString(), endereco.EnderecoNumero.toString(), endereco.EnderecoCompl, endereco.EnderecoTipo.toString(), int.parse(endereco.EnderecoAtual.toString()),
+        DateTime.now().toString(), endereco.EnderecoLat, endereco.EnderecoLong);
+
+    if (resp.isNotEmpty)
+      await sqlPorakiAddressService().deleteEndereco(endereco.EnderecoGuid.toString());
     // await carregaUsuario();
   }
 
   Future<void> tornarEnderecoAtual(String enderecoGuid) async {
-    await sqlPorakiAddressService().updateEnderecoAtual(enderecoGuid);
+    var resp = await repo.putCurrentAddress(enderecoGuid);
+
+    if (resp.isNotEmpty) {
+      var respn = await repo.putCurrentNAddress(enderecoGuid);
+
+      if (respn.isNotEmpty)
+        await sqlPorakiAddressService().updateEnderecoAtual(enderecoGuid);
+    }
+
     // await carregaUsuario();
   }
+
 }

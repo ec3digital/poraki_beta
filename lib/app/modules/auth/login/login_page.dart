@@ -275,7 +275,9 @@ class _LoginPageState extends State<LoginPage> {
       // LoginService().login(_mailInputController.text, _passwordInputController.text);
 
       LoginController _loginController = Get.put(LoginController());
+
       await _loginController.runCore();
+      await _loginController.loadUserData();
       //TODO: tratar a resposta do login
 
       // // salva usuario no hive, cria instancia do hive e abre a box

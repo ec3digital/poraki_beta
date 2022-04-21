@@ -27,30 +27,30 @@ class Pedido {
   Pedido(this.PedidoGUID, this.PedidoVendedorGUID, this.PedidoVendedorEmail, this.PedidoEm, this.PedidoValorTotal, this.PedidoFormaPagto, this.PedidoCancelada, this.PedidoPagtoEm, this.PedidoPessoaNome, this.PedidoPessoaEmail, this.PedidoUsuGUID, this.PedidoAval, this.PedidoAvalEm, this.PedidoMoeda, this.PedidoCEP, this.PedidoEndereco, this.PedidoNumero, this.PedidoCompl, this.PedidoAutoriza, this.PedidoInstituicao, this.PedidoEntregaPrevista, this.PedidoEntregaRealizadaEm, this.PedidoEntregaPorUsuEmail, this.PedidoEntregaPorUsuNome);
 
   Pedido.fromJson(Map<String, dynamic> json) {
-    PedidoGUID = json['PedidoGUID'];
-    PedidoVendedorGUID = json['PedidoVendedorGUID'];
-    PedidoVendedorEmail = json['PedidoVendedorEmail'];
-    PedidoEm = json['PedidoEm'];
-    PedidoValorTotal = json['PedidoValorTotal'];
-    PedidoFormaPagto = json['PedidoFormaPagto'];
-    PedidoCancelada = json['PedidoCancelada'];
-    PedidoPagtoEm = json['PedidoPagtoEm'];
-    PedidoPessoaNome = json['PedidoPessoaNome'];
-    PedidoPessoaEmail = json['PedidoPessoaEmail'];
+    PedidoGUID = json['PedidoGUID'].toString();
+    PedidoVendedorGUID = json['PedidoVendedorGUID'].toString();
+    PedidoVendedorEmail = json['PedidoVendedorEmail'].toString();
+    PedidoEm = json['PedidoEm'].toString();
+    PedidoValorTotal = json['PedidoValorTotal'].toString();
+    PedidoFormaPagto = json['PedidoFormaPagto'].toString();
+    PedidoCancelada = int.parse(json['PedidoCancelada'].toString());
+    PedidoPagtoEm = json['PedidoPagtoEm'].toString();
+    PedidoPessoaNome = json['PedidoPessoaNome'].toString();
+    PedidoPessoaEmail = json['PedidoPessoaEmail'].toString();
     PedidoUsuGUID = json['PedidoUsuGUID'];
-    PedidoAval = json['PedidoAval'];
-    PedidoAvalEm = json['PedidoAvalEm'];
-    PedidoMoeda = json['PedidoMoeda'];
-    PedidoCEP = json['PedidoCEP'];
-    PedidoEndereco = json['PedidoEndereco'];
-    PedidoNumero = json['PedidoNumero'];
-    PedidoCompl = json['PedidoCompl'];
-    PedidoAutoriza = json['PedidoAutoriza'];
-    PedidoInstituicao = json['PedidoInstituicao'];
-    PedidoEntregaPrevista = json['PedidoEntregaPrevista'];
-    PedidoEntregaRealizadaEm = json['PedidoEntregaRealizadaEm'];
-    PedidoEntregaPorUsuEmail = json['PedidoEntregaPorUsuEmail'];
-    PedidoEntregaPorUsuNome = json['PedidoEntregaPorUsuNome'];
+    PedidoAval = int.parse(json['PedidoAval'].toString());
+    PedidoAvalEm = json['PedidoAvalEm'].toString();
+    PedidoMoeda = json['PedidoMoeda'].toString();
+    PedidoCEP = json['PedidoCEP'].toString();
+    PedidoEndereco = json['PedidoEndereco'].toString();
+    PedidoNumero = json['PedidoNumero'].toString();
+    PedidoCompl = json['PedidoCompl'].toString();
+    PedidoAutoriza = json['PedidoAutoriza'].toString();
+    PedidoInstituicao = json['PedidoInstituicao'].toString();
+    PedidoEntregaPrevista = json['PedidoEntregaPrevista'].toString();
+    PedidoEntregaRealizadaEm = json['PedidoEntregaRealizadaEm'].toString();
+    PedidoEntregaPorUsuEmail = json['PedidoEntregaPorUsuEmail'].toString();
+    PedidoEntregaPorUsuNome = json['PedidoEntregaPorUsuNome'].toString();
   }
 
   Map<String, String> toMap() {
@@ -60,7 +60,7 @@ class Pedido {
       "PedidoVendedorGUID": PedidoVendedorGUID.toString(),
       "PedidoVendedorEmail": PedidoVendedorEmail,
       "PedidoEm": PedidoEm,
-      "PedidoValorTotal": PedidoValorTotal,
+      "PedidoValorTotal": PedidoValorTotal.toString(),
       "PedidoFormaPagto": PedidoFormaPagto.toString(),
       "PedidoCancelada": PedidoCancelada.toString(),
       "PedidoPagtoEm": PedidoPagtoEm,
@@ -89,7 +89,7 @@ class Pedido {
     data["PedidoVendedorGUID"] = PedidoVendedorGUID.toString();
     data["PedidoVendedorEmail"] = PedidoVendedorEmail;
     data["PedidoEm"] = PedidoEm;
-    data["PedidoValorTotal"] = PedidoValorTotal;
+    data["PedidoValorTotal"] = PedidoValorTotal.toString();
     data["PedidoFormaPagto"] = PedidoFormaPagto.toString();
     data["PedidoCancelada"] = PedidoCancelada.toString();
     data["PedidoPagtoEm"] = PedidoPagtoEm;

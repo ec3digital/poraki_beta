@@ -1,125 +1,120 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:poraki/app/data/models/sql/sqlPedido.dart';
+import 'package:poraki/app/data/models/pedido.dart';
 import 'package:poraki/app/modules/auth/login/login_controller.dart';
 import '../../../theme/app_theme.dart';
 
 class BottomOrder extends StatelessWidget {
-  final sqlPedido pedido;
+  final Pedido ped;
   BottomOrder({
-    Key? key, required this.pedido,
+    Key? key,
+    required this.ped,
   }) : super(key: key);
-
-  // sqlPedido? pedidoAtual;
-  // OrderController _controller = Get.put(OrderController());
-  //
-  // Future<void> getPedidoAtual() async {
-  //   await _controller.buscaPedido('c09cd10b-5aa2-43c2-bb42-10031c0d4280');
-  //   pedidoAtual = _controller.pedido;
-  // }
 
   @override
   Widget build(BuildContext context) {
-    final gPedido = Get.arguments as List<Map<String, String>>;
-    print('gpedido bottom: ' + gPedido.toString());
+    var xPedido =
+        ModalRoute.of(context)?.settings.arguments as List<Map<String, Pedido>>;
 
-    DateTime datetime = DateTime.now();
-    print(datetime.toString());
-//output: 2021-10-17 20:04:17.118089
-
-    String datetime1 = DateFormat("yyyy-MM-dd").format(datetime);
-    print(datetime1);
-
+    Pedido pedidoSingle = xPedido.first.values.first;
     LoginController _loginController = Get.find();
-    Color colorText = _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'textDark').first.coreValor.toString());
+    Color colorText = _loginController.colorFromHex(_loginController.listCore
+        .where((coreItem) => coreItem.coreChave == 'textDark')
+        .first
+        .coreValor
+        .toString());
 
-    // return FutureBuilder(
-    //     future: getPedidoAtual(),
-    //     builder: (context, futuro) {
-    //       if (futuro.connectionState == ConnectionState.waiting) {
-    //         return Center(
-    //             child: CircularProgressIndicator()); //Text('carrinho vazio'));
-    //         // } else if (futuro.hasError) {
-    //         //   return Center(child: Text(futuro.error.toString()));
-    //       }
-    //       else {
-            return Card(
-              color: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'backDark').first.coreValor.toString()),
-              margin: const EdgeInsets.all(0),
-              elevation: 4,
-              child: Container(
-                width: Get.width,
-                height: Get.height * 0.30,
-                child: Column(
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.only(left: 10, top: 10),
-                      child: Row(
-                        children: [
-                          // Text(
-                          //   'Envio: ',
-                          //   style: Get.textTheme.bodyText1!.copyWith(
-                          //     color: AppColors.primaryColor,
-                          //     fontWeight: FontWeight.w500,
-                          //     fontSize: 15,
-                          //   ),
-                          // ),
-                          Text(
-                            'Pedido realizado em: ' + DateFormat("dd/MM/yyyy HH:mm").format(DateTime.parse(gPedido[0]['pedidoEm'].toString())),
-                            // 'Rua tal com tal coisa 85, São Paulo',
-                            style: TextStyle(
-                              color: colorText,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 18,
-                            ),
-                          ),
-                        ],
-                      ),
+    return Card(
+      color: _loginController.colorFromHex(_loginController.listCore
+          .where((coreItem) => coreItem.coreChave == 'backDark')
+          .first
+          .coreValor
+          .toString()),
+      margin: const EdgeInsets.all(0),
+      elevation: 4,
+      child: Container(
+        width: Get.width,
+        height: Get.height * 0.30,
+        child: Column(
+          children: [
+            Container(
+              padding: const EdgeInsets.only(left: 10, top: 10),
+              child: Row(
+                children: [
+                  // Text(
+                  //   'Envio: ',
+                  //   style: Get.textTheme.bodyText1!.copyWith(
+                  //     color: AppColors.primaryColor,
+                  //     fontWeight: FontWeight.w500,
+                  //     fontSize: 15,
+                  //   ),
+                  // ),
+                  Text(
+                    'Pedido realizado em: ' +
+                        DateFormat("dd/MM/yyyy HH:mm").format(
+                            DateTime.parse(pedidoSingle.PedidoEm.toString())),
+                    // 'Rua tal com tal coisa 85, São Paulo',
+                    style: TextStyle(
+                      color: colorText,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 18,
                     ),
-                    Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 10),
-                      child: Divider(),
-                    ),
-                    Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text('Total', style: TextStyle(color: colorText, fontSize: 20),),
-                          Text('R\$ ' + double.parse(gPedido[0]['pedidoValorTotal'].toString()).toStringAsFixed(2), style: TextStyle(color: colorText, fontSize: 20),
-                          )],
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    Text(
-                      'Pago por ' + gPedido[0]['pedidoFormaPagto'].toString(),
-                      style: TextStyle(
-                        color: colorText,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 16,
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    Text('Entregue no endereço ', style: TextStyle(color: colorText),),
-                    const SizedBox(height: 5),
-                    Text(
-                      gPedido[0]['pedidoEndereco'].toString(),
-                      style: TextStyle(
-                        color: colorText,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 16,
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            );
-          }
-        //}
-  //   );
-  // }
-
+            ),
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 10),
+              child: Divider(),
+            ),
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Total',
+                    style: TextStyle(color: colorText, fontSize: 20),
+                  ),
+                  Text(
+                    'R\$ ' +
+                        double.parse(pedidoSingle.PedidoValorTotal.toString())
+                            .toStringAsFixed(2)
+                            .replaceAll('.', ','),
+                    style: TextStyle(color: colorText, fontSize: 20),
+                  )
+                ],
+              ),
+            ),
+            const SizedBox(height: 20),
+            Text(
+              'Pago por ' + pedidoSingle.PedidoFormaPagto.toString(),
+              style: TextStyle(
+                color: colorText,
+                fontWeight: FontWeight.w500,
+                fontSize: 16,
+              ),
+            ),
+            const SizedBox(height: 20),
+            Text(
+              'Entregue no endereço ',
+              style: TextStyle(color: colorText),
+            ),
+            const SizedBox(height: 5),
+            Text(
+              pedidoSingle.PedidoEndereco.toString(),
+              style: TextStyle(
+                color: colorText,
+                fontWeight: FontWeight.w500,
+                fontSize: 16,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 
   createAddressText(String strAddress, double topMargin) {
     return Container(
@@ -224,6 +219,4 @@ class BottomOrder extends StatelessWidget {
     // fmf.spaceBetweenSymbolAndNumber = true;
     // return fmf.formattedLeftSymbol;
   }
-
-
 }

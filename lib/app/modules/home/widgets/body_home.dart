@@ -36,6 +36,7 @@ class BodyHome extends StatelessWidget {
             GetBuilder<HomeController>(
               builder: (_) {
                 if (_controller.isLoading || _controller.offerToday == null) {
+                  print('offerToday null');
                   return Container();
                 } else {
                   return CardOffertsDayHome(

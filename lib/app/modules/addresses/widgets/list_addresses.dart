@@ -28,23 +28,18 @@ class ListAddresses extends StatelessWidget {
   Widget build(BuildContext context) {
     LoginController _loginController = Get.find();
 
-    Widget _buildRow(
-        String enderecoGuid,
-        String enderecoCep,
-        String enderecoLogra,
-        String enderecoNro,
-        String enderecoCompl,
-        String enderecoTipo) {
+    Widget _buildRow(sqlEndereco endereco) {
       return Column(children: [ListTile(
-        leading: retIcon(enderecoTipo),
-        onTap: () => Get.toNamed(AppRoutes.address, arguments: [
-          {'enderecoGuid': enderecoGuid}
-        ]),
+        leading: retIcon(endereco.enderecoTipo),
+        onTap: () {
+          controller.enderecoSingle = endereco;
+          Get.toNamed(AppRoutes.address, arguments: [{'enderecoGuid': endereco.enderecoGuid}]);
+        },
         title: Text(
-          enderecoCep,
+          endereco.enderecoCEP,
           // style: _biggerFont,
         ),
-        subtitle: Text(enderecoLogra),
+        subtitle: Text(endereco.enderecoLogra),
         //trailing: Icon(IconData(int.parse(iconcode), fontFamily: 'MaterialIcons'))
       ),
       const SizedBox(height: 5),
@@ -104,13 +99,7 @@ class ListAddresses extends StatelessWidget {
                         //if (index.isOdd) return const Divider();
                         //index = index ~/ 2 + 1;
                         sqlEndereco endereco = controller.enderecos[index];
-                        return _buildRow(
-                            endereco.enderecoGuid,
-                            endereco.enderecoCEP,
-                            endereco.enderecoLogra,
-                            endereco.enderecoNumero,
-                            endereco.enderecoCompl!,
-                            endereco.enderecoTipo);
+                        return _buildRow(endereco);
                       },
                     ),
                   )

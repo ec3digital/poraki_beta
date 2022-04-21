@@ -1,4 +1,6 @@
 import 'package:path/path.dart';
+import 'package:poraki/app/data/models/PedidoItem.dart';
+import 'package:poraki/app/data/models/pedido.dart';
 import 'package:poraki/app/data/models/sql/sqlPedidoItem.dart';
 import 'package:sqflite/sqflite.dart';
 import '../../data/models/sql/sqlPedido.dart';
@@ -172,6 +174,15 @@ class sqlPorakiPedidoService {
     //await db.rawUpdate('UPDATE carrinho set ofertaQtd = ? where ofertaId = ?', [qtd, id]);
 
     await db.close();
+  }
+
+  Pedido convertSqlpedToPedido(sqlPedido sqlPed) {
+    return new Pedido(sqlPed.pedidoGUID, sqlPed.pedidoVendedorGUID, sqlPed.pedidoVendedorEmail, sqlPed.pedidoEm, sqlPed.pedidoValorTotal, sqlPed.pedidoFormaPagto, sqlPed.pedidoCancelada, sqlPed.pedidoPagtoEm, sqlPed.pedidoPessoaNome, sqlPed.pedidoPessoaEmail, sqlPed.pedidoUsuGUID, sqlPed.pedidoAval, sqlPed.pedidoAvalEm, sqlPed.pedidoMoeda, sqlPed.pedidoCEP, sqlPed.pedidoEndereco, sqlPed.pedidoNumero, sqlPed.pedidoCompl, sqlPed.pedidoAutoriza, sqlPed.pedidoInstituicao, sqlPed.pedidoEntregaPrevista, sqlPed.pedidoEntregaRealizadaEm, sqlPed.pedidoEntregaPorUsuEmail, sqlPed.pedidoEntregaPorUsuNome);
+  }
+
+  PedidoItem convertSqlpedItemToPedidoItem(sqlPedidoItem sqlPedItem) {
+    //TODO: adicionar no sqlPedidoItem o Detalhe
+    return new PedidoItem(sqlPedItem.pedidoItemGUID, sqlPedItem.pedidoGUID, sqlPedItem.ofertaGuid, sqlPedItem.ofertaTitulo, sqlPedItem.ofertaCEP, sqlPedItem.ofertaVendedorGuid, sqlPedItem.ofertaPreco, sqlPedItem.ofertaQtd, sqlPedItem.ofertaTotal, sqlPedItem.ofertaImgPath, sqlPedItem.ofertaCancelada, sqlPedItem.ofertaEntregueEm, sqlPedItem.categoriaChave, '');
   }
 
 }

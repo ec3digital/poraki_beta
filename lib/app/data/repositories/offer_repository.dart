@@ -10,7 +10,7 @@ class OfferRepository extends GetConnect {
   late List<Oferta> listOffers = [];
 
   Future<List<ProdutoOferta>> getOffersAll() async {
-    String url = '${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiOfertas').first.coreValor.toString()}/' + _loginController.usuCep.toString();
+    String url = '${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiOfertas').first.coreValor.toString()}/' + _loginController.usuCep.toString().substring(0,3) + '%25';
     var response = await get(url, headers: Constants.headers);
     if (response.hasError) throw 'Ocorreu um erro em getOffersAll()';
     return (response.body['Ofertas'] as List)
@@ -19,7 +19,7 @@ class OfferRepository extends GetConnect {
   }
 
   Future<List<ProdutoOferta>> getDayOfferByCEP() async {
-    String url = '${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiOfertas').first.coreValor.toString()}/' + _loginController.usuCep.toString();
+    String url = '${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiOfertas').first.coreValor.toString()}/' + _loginController.usuCep.toString().substring(0,3) + '%25';
     var response = await get(url, headers: Constants.headers);
     if (response.hasError) throw 'Ocorreu um erro em getDayOfferByCEP()';
     return (response.body['Ofertas'] as List)
@@ -28,7 +28,7 @@ class OfferRepository extends GetConnect {
   }
 
   Future<List<ProdutoOferta>> getOfferByCEPCategory(String category) async {
-    String url = '${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiOfertasCategoria').first.coreValor.toString()}/' + _loginController.usuCep.toString() + '/' + category;
+    String url = '${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiOfertasCategoria').first.coreValor.toString()}/' + _loginController.usuCep.toString().substring(0,3) + '%25' + '/' + category;
     var response = await get(url, headers: Constants.headers);
     if (response.hasError) throw 'Ocorreu um erro em getOfferByCEPCategory()';
     return (response.body['Ofertas'] as List)
@@ -37,7 +37,7 @@ class OfferRepository extends GetConnect {
   }
 
   Future<List<ProdutoOferta>> getOfferByCEPCategoryTitle(String title, String category) async {
-    String url = '${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiOfertasCategoriaTitulo').first.coreValor.toString()}/' + _loginController.usuCep.toString() + '/' + category + '/' + title;
+    String url = '${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiOfertasCategoriaTitulo').first.coreValor.toString()}/' + _loginController.usuCep.toString().substring(0,3) + '%25' + '/' + category + '/' + title;
     var response = await get(url, headers: Constants.headers);
     if (response.hasError) throw 'Ocorreu um erro em getOfferByCEPCategoryTitle()';
     return (response.body['Ofertas'] as List)
@@ -46,7 +46,7 @@ class OfferRepository extends GetConnect {
   }
 
   Future<List<ProdutoOferta>> getOfferByCEPTitle(String title) async {
-    String url = '${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiOfertasTitulo').first.coreValor.toString()}/' + _loginController.usuCep.toString();
+    String url = '${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiOfertasTitulo').first.coreValor.toString()}/' + _loginController.usuCep.toString().substring(0,3) + '%25';
     var response = await get(url, headers: Constants.headers);
     if (response.hasError) throw 'Ocorreu um erro em getOfferByCEPTitle() - '; // + response.bodyString.toString();
     return (response.body['Ofertas'] as List)
@@ -65,16 +65,17 @@ class OfferRepository extends GetConnect {
   // }
 
   Future<List<ProdutoOferta>> getBestOffers() async {
-    String url = '${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiMelhoresOfertas').first.coreValor.toString()}/' + _loginController.usuCep.toString();
+    String url = '${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiMelhoresOfertas').first.coreValor.toString()}/' + _loginController.usuCep.toString().substring(0,3) + '%25';
+    print('url: ' + url);
     var response = await get(url, headers: Constants.headers);
-    if (response.hasError) throw 'Ocorreu um erro em getBestOffers()';
+    if (response.hasError) throw 'Ocorreu um erro em getBestOffers() ' + response.bodyString.toString();
     return (response.body['Ofertas'] as List)
         .map((oferta) => ProdutoOferta.fromJson(oferta))
         .toList();
   }
 
   Future<List<ProdutoOferta>> getBestSellersOffers() async {
-    String url = '${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiOfertasMaisVendidas').first.coreValor.toString()}/' + _loginController.usuCep.toString();
+    String url = '${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiOfertasMaisVendidas').first.coreValor.toString()}/' + _loginController.usuCep.toString().substring(0,3) + '%25';
     var response = await get(url, headers: Constants.headers);
     if (response.hasError) throw 'Ocorreu um erro em getBestSellersOffers()';
     return (response.body['Ofertas'] as List)
@@ -83,7 +84,7 @@ class OfferRepository extends GetConnect {
   }
 
   Future<List<ProdutoOferta>> getMostFreshOffers() async {
-    String url = '${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiOfertasMaisFrescas').first.coreValor.toString()}/' + _loginController.usuCep.toString();
+    String url = '${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiOfertasMaisFrescas').first.coreValor.toString()}/' + _loginController.usuCep.toString().substring(0,3) + '%25';
     var response = await get(url, headers: Constants.headers);
     if (response.hasError) throw 'Ocorreu um erro em getMostFreshOffers()';
     return (response.body['Ofertas'] as List)

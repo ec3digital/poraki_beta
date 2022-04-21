@@ -122,6 +122,7 @@ class LoginController extends GetxController {
 
       //faz o iteracao da tabela local contra a nuvem pra nao causar erro caso haja mais chaves na nuvem
       coreSql.forEach((coreItem) {
+        print('coreItem: ' + coreItem.coreChave);
         var coreFBtemp = coreFB.entries.where((element) => element.key == coreItem.coreChave).first;
         if(coreItem.coreValor != coreFBtemp.value) {
           coreItem.coreValor = coreFBtemp.value;
@@ -144,9 +145,9 @@ class LoginController extends GetxController {
   _getCep() async {
     if (usuCep == null) {
       var _addressController = new AddressController();
-      usuCep = await _addressController.getCepAtualLocal();
+      usuCep = await _addressController.getCepAtualCloud();
     }
-    print('usuCep atual sql:' + usuCep.toString());
+    print('usuCep atual: ' + usuCep.toString());
   }
 
   // valida o login
@@ -164,6 +165,7 @@ class LoginController extends GetxController {
     // salva usuario no hive, cria instancia do hive e abre a box
     //new hivePorakiUserService().SetUserEmail(mailInputController.text.removeAllWhitespace);
 
+    await loadUserData();
     await runCore();
 
     // redireciona para a home de ofertas
