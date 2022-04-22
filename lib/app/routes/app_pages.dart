@@ -80,7 +80,7 @@ class AppPages {
     ),
     GetPage(
       name: AppRoutes.orders,
-      page: () => OrdersPage(),
+      page: () => OrdersPage(tipo: 'Vendas',),
     ),
     GetPage(
       name: AppRoutes.order,

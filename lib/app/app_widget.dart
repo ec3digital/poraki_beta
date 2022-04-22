@@ -15,6 +15,8 @@ class AppWidget extends StatelessWidget {
       themeMode: ThemeMode.light,
       initialRoute: AppRoutes.home,
       debugShowCheckedModeBanner: false,
+      defaultTransition: Transition.noTransition,
+      transitionDuration: Duration(seconds: 0),
     );
   }
 }

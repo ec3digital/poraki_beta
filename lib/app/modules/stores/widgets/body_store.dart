@@ -10,11 +10,11 @@ import 'package:poraki/app/data/repositories/CepApiBrasil_repository.dart';
 import 'package:poraki/app/modules/auth/login/login_controller.dart';
 import 'package:poraki/app/modules/home/widgets/gradient_header_home.dart';
 import 'package:poraki/app/modules/offers/widgets/button_offer.dart';
+import 'package:poraki/app/modules/stores/widgets/app_bar_store.dart';
+import 'package:poraki/app/routes/app_routes.dart';
 import '../store_controller.dart';
 
-// ignore: must_be_immutable
 class StoreBody extends StatefulWidget {
-  // final Lojas? loja;
   StoreBody({Key? key}) : super(key: key);
 
   @override
@@ -33,8 +33,11 @@ class _StoreBodyState extends State<StoreBody> {
 
   @override
   Widget build(BuildContext context) {
-
-    Color textColor = _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'textDark').first.coreValor.toString());
+    Color textColor = _loginController.colorFromHex(_loginController.listCore
+        .where((coreItem) => coreItem.coreChave == 'textDark')
+        .first
+        .coreValor
+        .toString());
 
     return Container(child: GetBuilder<StoreController>(builder: (context) {
       if (storeController.isLoading) {
@@ -46,25 +49,29 @@ class _StoreBodyState extends State<StoreBody> {
           Future.delayed(Duration.zero, () async {
             storeController.bindLoja();
           });
+          imgcloud =
+              'https://firebasestorage.googleapis.com/v0/b/ec3digrepo.appspot.com/o/lojas%2F' +
+                  storeController.loja!.LojaGUID.toString() +
+                  '.jpg?alt=media';
         }
-
-        return SingleChildScrollView(
-          child: GradientHeaderHome(
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    SizedBox(height: 20),
-                    Center(
-                      child: Text(
-                        "Loja",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 22),
-                      ),
-                    ),
+        return Scaffold(
+            appBar: appBarStore(),
+            body: SingleChildScrollView(
+              child: GradientHeaderHome(
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                    // SizedBox(height: 20),
+                    // Center(
+                    //   child: Text(
+                    //     "Loja",
+                    //     textAlign: TextAlign.center,
+                    //     style: TextStyle(fontSize: 22),
+                    //   ),
+                    // ),
                     Form(
                       // key: controller.formKey,
                       child: Column(children: [
-
                         TextFormField(
                           // validator: (value) {
                           //   if (value!.length < 10) {
@@ -143,7 +150,6 @@ class _StoreBodyState extends State<StoreBody> {
                             ),
                           ),
                         ),
-
                         TextFormField(
                           // validator: (value) {
                           //   if (value!.length != 11) {
@@ -278,96 +284,102 @@ class _StoreBodyState extends State<StoreBody> {
                       ]),
                     ),
                     SizedBox(height: 20),
-                SizedBox(height: 20),
-                ElevatedButton(
-                    onPressed: () => pegarImagemGaleria(),
-                    style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>(
+                    SizedBox(height: 20),
+                    ElevatedButton(
+                        onPressed: () => pegarImagemGaleria(),
+                        style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all<Color>(
                           _loginController.colorFromHex(_loginController
                               .listCore
-                              .where((coreItem) => coreItem.coreChave == 'backDark')
+                              .where((coreItem) =>
+                                  coreItem.coreChave == 'backDark')
                               .first
                               .coreValor
                               .toString()),
                         )),
-
-                    child: Row(
-                      children: [
-                        Icon(Icons.photo_album),
-                        const SizedBox(
-                          width: 16,
-                        ),
-                        Text('Adicionar Foto')
-                      ],
-                    )),
-                SizedBox(height: 20),
-                if (imgcloud != '')
-                  FadeInImage.assetNetwork(
-                    placeholder: 'assets/images/pholder.png',
-                    image: imgcloud,
-                    imageErrorBuilder: (context, url, error) =>
-                    new Icon(Icons.local_offer_outlined),
-                    height: 250,
-                  ),
-                if (image != null)
-                  Image.file(
-                    image!,
-                    fit: BoxFit.contain,
-                  ),
-                SizedBox(height: 20),
+                        child: Row(
+                          children: [
+                            Icon(Icons.photo_album),
+                            const SizedBox(
+                              width: 16,
+                            ),
+                            Text('Adicionar Logotipo')
+                          ],
+                        )),
+                    SizedBox(height: 20),
+                    if (imgcloud != '')
+                      FadeInImage.assetNetwork(
+                        placeholder: 'assets/images/pholder.png',
+                        image: imgcloud,
+                        imageErrorBuilder: (context, url, error) =>
+                            new Icon(Icons.store),
+                        height: 250,
+                      ),
+                    if (image != null)
+                      Image.file(
+                        image!,
+                        fit: BoxFit.contain,
+                      ),
+                    SizedBox(height: 20),
                     ButtonOffer(
                       onPressed: () {
-                        salvar("");
+                        salvar();
 
                         final snackBar = SnackBar(
-                            backgroundColor: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'textDark').first.coreValor.toString()),
-                            content: Container( height: 40, child: Center(child: const Text('Informações salvas 1!'))));
-                        // ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                            backgroundColor: _loginController.colorFromHex(
+                                _loginController.listCore
+                                    .where((coreItem) =>
+                                        coreItem.coreChave == 'textDark')
+                                    .first
+                                    .coreValor
+                                    .toString()),
+                            content: Container(
+                                height: 40,
+                                child: Center(
+                                    child:
+                                        const Text('Informações salvas 1!'))));
+                        //ScaffoldMessenger.of(context).showSnackBar(snackBar);
                       },
-                      colorText: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'textLight').first.coreValor.toString()),
+                      colorText: _loginController.colorFromHex(_loginController
+                          .listCore
+                          .where(
+                              (coreItem) => coreItem.coreChave == 'textLight')
+                          .first
+                          .coreValor
+                          .toString()),
                       text: 'Salvar',
-                      colorButton: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'iconColor').first.coreValor.toString()),
+                      colorButton: _loginController.colorFromHex(
+                          _loginController.listCore
+                              .where((coreItem) =>
+                                  coreItem.coreChave == 'iconColor')
+                              .first
+                              .coreValor
+                              .toString()),
                     ),
-
-                    // )
                   ])
-              // ],
-              ),
-        );
-        // );
+                  ),
+            ));
       }
     }));
   }
 
-  // FocusNode txtEnderecoNroFocus = new FocusNode();
-  Future<void> salvar(String storeGuid) async {
-    // String enderecoGuid = "xxx";
-    // var end = new sqlEndereco(enderecoGuid,
-    //     '',
-    //     '',
-    //     widget._controller.txtCEP.text.trimLeft().trimRight(),
-    //     widget._controller.txtEnderecoLogra.text.trimLeft().trimRight(),
-    //     widget._controller.txtEnderecoNumero.text.trimLeft().trimRight(),
-    //     widget._controller.txtEnderecoCompl!.text.trimLeft().trimRight(),
-    //     tipoSel,
-    //     0,
-    //     null,null,null
-    // );//
-    // //DateTime.now().toString());
-    //
-    // await widget._controller.adicionaEndereco(end);
-    //
-    // if(EnderecoAtual == 1)
-    //   await widget._controller.tornarEnderecoAtual(enderecoGuid);
+  Future<void> salvar() async {
+    var storeGuidTemp = await storeController.saveLoja();
+    storeGuid = storeGuidTemp.toString();
+
+    uploadFoto(
+        image == null ? null : image);
+
+    Get.offAndToNamed(AppRoutes.stores);
   }
 
   Future<void> buscaCep() async {
-    CepApiBrasil cepApi = await CepApiBrasilRepository().getCepApiBrasil(storeController.txtLojaCEP.text.trimLeft().trimRight());
+    CepApiBrasil cepApi = await CepApiBrasilRepository().getCepApiBrasil(
+        storeController.txtLojaCEP.text.trimLeft().trimRight());
 
     storeController.txtLojaLogra.text = cepApi.street!;
-    if(storeController.txtLojaLogra.text.isNotEmpty)
+    if (storeController.txtLojaLogra.text.isNotEmpty)
       FocusScope.of(context).requestFocus(txtLojaNroFocus);
-
   }
 
   Future pegarImagemGaleria() async {
@@ -402,7 +414,5 @@ class _StoreBodyState extends State<StoreBody> {
       //var downloadURL = await ref.getDownloadURL();
     }
     // showSnackBar("Oferta salva! - " + widget.offerGuid, Duration(seconds: 3));
-
   }
-
 }

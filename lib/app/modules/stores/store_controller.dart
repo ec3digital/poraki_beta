@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:extended_masked_text/extended_masked_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -10,11 +12,7 @@ class StoreController extends GetxController {
   bool isLoading = false;
   // final formKey = GlobalKey<FormState>();
   LoginController _login = Get.find();
-  // enderecoGuid;
-  // final String  usuEmail;
-  // final String  usuGuid;
-  final MaskedTextController txtLojaCEP =
-      MaskedTextController(mask: '00000-000');
+  final MaskedTextController txtLojaCEP = MaskedTextController(mask: '00000-000');
   final TextEditingController txtLojaLogra = TextEditingController();
   final TextEditingController txtLojaNumero = TextEditingController();
   final TextEditingController? txtLojaCompl = TextEditingController();
@@ -22,14 +20,10 @@ class StoreController extends GetxController {
   final TextEditingController txtLojaSlogan = TextEditingController();
   final TextEditingController txtLojaCNPJ = TextEditingController();
   final TextEditingController txtLojaRazao = TextEditingController();
-  String? lojaGuid;
-  // final int     txtEnderecoAtual;
-  // final String? txtEnderecoUltData;
-  // final String? txtEnderecoDesde;
 
+  String? lojaGuid;
   List<Lojas> lojas = [];
   Lojas? loja;
-  // late sqlEndereco enderecoSingle;
 
   Future<void> carregaLojas() async {
     try {
@@ -49,17 +43,7 @@ class StoreController extends GetxController {
     update();
   }
 
-  // @override
-  // void onInit() async {
-  //   print('store controller onInit');
-  //   this.lojaGuid = Get.arguments[0]['lojaGuid'];
-  //   print('lojaGuid on Init: ' + this.lojaGuid.toString());
-  //   super.onInit();
-  // }
-
   Future<void> carregaLoja(String? guid) async {
-    print('carregaLoja');
-
     try {
       changeLoading(true);
       if (guid != "") loja = await storeRepo.getStore(guid!);
@@ -80,22 +64,18 @@ class StoreController extends GetxController {
   }
 
   void bindLoja() async {
-    print('bindLoja');
-
-    txtLojaCEP.text = loja!.LojaCEP.toString();
-    txtLojaCNPJ.text = loja!.LojaCNPJ.toString();
-    txtLojaNome.text = loja!.LojaNome.toString();
-    txtLojaRazao.text = loja!.LojaRazao.toString();
-    txtLojaSlogan.text = loja!.LojaSlogan.toString();
-    txtLojaLogra.text = loja!.LojaLogra.toString();
-    txtLojaNumero.text = loja!.LojaNumero.toString();
-    txtLojaCompl?.text = loja!.LojaCompl.toString();
+    txtLojaCEP.text = loja!.LojaCEP == null ? "" : loja!.LojaCEP.toString();
+    txtLojaCNPJ.text = loja!.LojaCNPJ == null ? "" : loja!.LojaCNPJ.toString();
+    txtLojaNome.text = loja!.LojaNome == null ? "" : loja!.LojaNome.toString();
+    txtLojaRazao.text = loja!.LojaRazao == null ? "" : loja!.LojaRazao.toString();
+    txtLojaSlogan.text = loja!.LojaSlogan == null ? "" : loja!.LojaSlogan.toString();
+    txtLojaLogra.text = loja!.LojaLogra == null ? "" : loja!.LojaLogra.toString();
+    txtLojaNumero.text = loja!.LojaNumero == null ? "" : loja!.LojaNumero.toString();
+    txtLojaCompl?.text = loja!.LojaCompl == null ? "" : loja!.LojaCompl.toString();
   }
 
   void emptyLoja() {
-    print('emptyLoja()');
     loja = null;
-
     txtLojaCEP.text = "";
     txtLojaCNPJ.text = "";
     txtLojaNome.text = "";
@@ -107,30 +87,34 @@ class StoreController extends GetxController {
     this.refresh();
   }
 
-  Future<String?> saveLoja(Lojas loja) async {
-    String? resp;
-    if (loja.LojaGUID == '') {
-      resp = await storeRepo.postStore(loja);
+  Future<String> saveLoja() async {
+    Lojas? persistLoja;
+    if(loja != null)
+      persistLoja = new Lojas(loja!.LojaAtivaDesde!, loja!.LojaTemplateChave, txtLojaNome.text.trimRight(),
+        txtLojaCEP.text.trimRight(), txtLojaSlogan.text.trimRight(), loja!.LojaGUID, _login.usuGuid, txtLojaCNPJ.text.trimRight(),
+        txtLojaRazao.text.trimRight(), loja!.Categorias, loja!.LojaConfigs, txtLojaLogra.text.trimRight(),
+        txtLojaNumero.text.trimRight(), txtLojaCompl!.text.trimRight());
+    else
+      persistLoja = new Lojas(null, null, txtLojaNome.text.trimRight(),
+          txtLojaCEP.text.trimRight(), txtLojaSlogan.text.trimRight(), null, _login.usuGuid, txtLojaCNPJ.text.trimRight(),
+          txtLojaRazao.text.trimRight(), null, null, txtLojaLogra.text.trimRight(),
+          txtLojaNumero.text.trimRight(), txtLojaCompl!.text.trimRight());
+
+    String resp;
+    if (persistLoja.LojaGUID == null) {
+      resp = await storeRepo.postStore(persistLoja);
+
+      var jsonResp = jsonDecode(resp);
+      var strGuid = jsonResp['insert_Lojas_one']['LojaGUID'];
+
+      resp = strGuid;
     } else {
-      resp = await storeRepo.putStore(loja);
+      await storeRepo.putStore(persistLoja);
+      resp = loja!.LojaGUID.toString();
     }
 
+    await carregaLojas();
     return resp;
   }
-
-  // Future<void> atualizaLoja(sqlEndereco endereco) async {
-  //   await sqlPorakiAddressService().updateEndereco(endereco);
-  //   // await carregaUsuario();
-  // }
-  //
-  // Future<void> adicionaLoja(sqlEndereco endereco) async {
-  //   await sqlPorakiAddressService().insertEndereco(endereco);
-  //   // await carregaUsuario();
-  // }
-  //
-  // Future<void> apagaLoja(String enderecoGuid) async {
-  //   await sqlPorakiAddressService().deleteEndereco(enderecoGuid);
-  //   // await carregaUsuario();
-  // }
 
 }

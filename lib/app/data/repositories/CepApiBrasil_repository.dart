@@ -12,8 +12,9 @@ class CepApiBrasilRepository extends GetConnect {
     // String url = 'https://brasilapi.com.br/api/cep/v2/' + cep;
     // var response = await http.get(Uri.parse(url));
 
-    var response = await get('${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'cepservice').first.coreValor.toString()}', headers: Constants.headers);
+    print('url cepbr: ' + '${_loginController.listCore.where((coreItem) => coreItem.coreChave == 'cepservice').first.coreValor.toString()}' + cep);
+    var response = await get('${_loginController.listCore.where((coreItem) => coreItem.coreChave == 'cepservice').first.coreValor.toString()}' + cep, headers: Constants.headers);
 
-    return CepApiBrasil.fromJson(json.decode(response.body));
+    return CepApiBrasil.fromJson(json.decode(response.bodyString.toString()));
   }
 }

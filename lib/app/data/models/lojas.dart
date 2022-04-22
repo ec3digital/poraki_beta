@@ -54,20 +54,27 @@ class Lojas {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['LojaAtivaDesde'] = this.LojaAtivaDesde;
-    data['LojaTemplateChave'] = this.LojaTemplateChave;
+
+    //data['LojaAtivaDesde'] = this.LojaAtivaDesde;
+    //data['LojaTemplateChave'] = this.LojaTemplateChave;
     data['LojaNome'] = this.LojaNome;
     data['LojaCEP'] = this.LojaCEP;
     data['LojaSlogan'] = this.LojaSlogan;
-    data['LojaGUID'] = this.LojaGUID;
-    data['VendedorID'] = this.VendedorID;
+
     data['LojaCNPJ'] = this.LojaCNPJ;
     data['LojaRazao'] = this.LojaRazao;
-    data['Categorias'] = this.Categorias;
-    data['LojaConfigs'] = this.LojaConfigs;
+    //data['Categorias'] = this.Categorias;
+    //data['LojaConfigs'] = this.LojaConfigs;
     data['LojaLogra'] = this.LojaLogra;
     data['LojaNumero'] = this.LojaNumero;
     data['LojaCompl'] = this.LojaCompl;
+
+    if(this.LojaGUID != null) {
+      data['LojaGUID'] = this.LojaGUID;
+    } else {
+      data['VendedorID'] = this.VendedorID;
+    }
+
     return data;
   }
 

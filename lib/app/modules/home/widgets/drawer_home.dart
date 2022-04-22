@@ -128,7 +128,7 @@ class DrawerHome extends StatelessWidget {
                     text: 'Minhas Compras',
                     isSelected: index == 2,
                     icon: Icons.shopping_bag_outlined,
-                    onTap: () => Get.toNamed(AppRoutes.orders),
+                    onTap: () => Get.offAndToNamed(AppRoutes.orders, arguments: {"tipo": "Compras"}),
                   ),
                   RowCategoriesDrawerHome(
                     text: 'Minhas Lojas',
@@ -172,13 +172,13 @@ class DrawerHome extends StatelessWidget {
                     text: 'Vendas',
                     isSelected: index == 7,
                     icon: Icons.monetization_on_outlined,
-                    onTap: () => Get.toNamed(AppRoutes.orders),
+                    onTap: () => Get.offAndToNamed(AppRoutes.orders, arguments: {"tipo": "Vendas"}),
                   ),
                   RowCategoriesDrawerHome(
                     text: 'Entregas',
                     isSelected: index == 8,
                     icon: Icons.shopping_cart_outlined,
-                    onTap: () {},
+                    onTap: () => Get.offAndToNamed(AppRoutes.orders, arguments: {"tipo": "Entregas"}),
                   ),
                   // Divider(color: lightBack),
                   RowCategoriesDrawerHome(
