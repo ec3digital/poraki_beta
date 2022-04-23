@@ -72,7 +72,7 @@ class AppPages {
     ),
     GetPage(
       name: AppRoutes.address,
-      page: () => AddressPage(enderecoGuid: null),
+      page: () => AddressPage(enderecoGuid: ''),
     ),
     GetPage(
       name: AppRoutes.checkout,

@@ -226,6 +226,7 @@ class RowCategoriesDrawerHome extends StatelessWidget {
     LoginController _loginController = Get.find();
 
     return ListTile(
+
       onTap: onTap,
       tileColor: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'backLight').first.coreValor.toString()),
       minLeadingWidth: (Get.width * 0.8) * 0.02,

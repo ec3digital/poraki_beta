@@ -5,6 +5,7 @@ import 'package:poraki/app/data/models/sql/sqlCore.dart';
 import 'package:poraki/app/data/repositories/address_repository.dart';
 import 'package:poraki/app/modules/addresses/address_controller.dart';
 import 'package:poraki/app/services/fbporaki_service.dart';
+import 'package:poraki/app/services/sqlite/sqlporaki_address_service.dart';
 import 'package:poraki/app/services/sqlite/sqlporaki_core_service.dart';
 import 'package:poraki/app/services/sqlite/sqlporaki_login_service.dart';
 import '../../../data/repositories/login_repository.dart';
@@ -15,6 +16,7 @@ class LoginController extends GetxController {
   final TextEditingController passwordInputController = TextEditingController();
   final formKey = GlobalKey<FormState>();
   final LoginRepository loginRepository = LoginRepository();
+  //final AddressController addressController = Get.find();
 
   get obscurePassword => _obscurePassword;
 
@@ -40,7 +42,14 @@ class LoginController extends GetxController {
     print('loadUserData');
     usuGuid = 'eyCv21RfaURoMn0SUndCg6LPyJP2';
 
+    //pega o cep local
     await _getCep();
+
+    //apaga todos os ceps da tabela local e baixa tudo de novo da nuvem
+    await sqlPorakiAddressService().deleteEnderecos();
+    await sqlPorakiAddressService().buscaEnderecos(false);
+
+    //pega o nome do usuario
     List<Map<String, dynamic>>? listUser;
     var sqlSvc = new sqlPorakiLoginService();
     listUser = await sqlSvc.buscaUsuDados();

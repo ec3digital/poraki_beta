@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:poraki/app/modules/auth/login/login_controller.dart';
 import '../../shared/constants/constants.dart';
 import '../models/enderecos.dart';
+import 'package:http/http.dart' as http;
 
 class AddressRepository extends GetConnect {
   LoginController _loginController = Get.find();
@@ -45,43 +46,39 @@ class AddressRepository extends GetConnect {
   }
 
   Future<String> postAddress(Enderecos endereco) async {
-    var response = await post(
-        '${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiEndereco').first.coreValor.toString()}',
-        endereco.toJson(),
-        headers: Constants.headers);
-    if (response.hasError)
-      throw 'Ocorreu um erro em OrdersRepository().putOrderPayment()';
-    return response.bodyString.toString();
+    var response = await http.post(
+        Uri.parse('${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiEndereco').first.coreValor.toString()}'),
+        headers: Constants.headers,
+        body: endereco.toJson());
+    // if (response.er)
+    //   throw 'Ocorreu um erro em OrdersRepository().postAddress()';
+    return response.body.toString();
   }
 
   Future<String> putAddress(Enderecos endereco) async {
-    var response = await put(
-        '${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiEndereco').first.coreValor.toString()}',
-        endereco.toJson(),
-        headers: Constants.headers);
-    if (response.hasError)
-      throw 'Ocorreu um erro em OrdersRepository().putOrderPayment()';
-    return response.bodyString.toString();
+    var response = await http.put(
+        Uri.parse('${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiEndereco').first.coreValor.toString()}'),
+        headers: Constants.headers,
+        body: endereco.toJson());
+    return response.body.toString();
   }
 
   Future<String> putCurrentAddress(String enderecoGuid) async {
-    var response = await put(
-        '${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiEnderecoAtual').first.coreValor.toString()}/' + enderecoGuid,
-        '',
-        headers: Constants.headers);
-    if (response.hasError)
-      throw 'Ocorreu um erro em OrdersRepository().putCurrentAddress()';
-    return response.bodyString.toString();
+    print('putCurrentAddress');
+    var response = await http.put(
+        Uri.parse('${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiEnderecoAtual').first.coreValor.toString()}/' + enderecoGuid),
+        headers: Constants.headers,
+        body: '');
+    return response.body.toString();
   }
 
   Future<String> putCurrentNAddress(String enderecoGuid) async {
-    var response = await put(
-        '${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiEnderecoNAtual').first.coreValor.toString()}/' + enderecoGuid,
-        '',
-        headers: Constants.headers);
-    if (response.hasError)
-      throw 'Ocorreu um erro em OrdersRepository().putCurrentNAddress()';
-    return response.bodyString.toString();
+    print('putCurrentNAddress');
+    var response = await http.put(
+        Uri.parse('${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiEnderecoNAtual').first.coreValor.toString()}/' + enderecoGuid),
+        headers: Constants.headers,
+        body: '');
+    return response.body.toString();
   }
 
 }

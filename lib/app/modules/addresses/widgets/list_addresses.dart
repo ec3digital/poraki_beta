@@ -13,15 +13,17 @@ class ListAddresses extends StatelessWidget {
 
   ListAddresses({Key? key}) : super(key: key);
 
-  Icon retIcon(String enderecoTipo) {
+  Icon retIcon(String enderecoTipo, bool atual) {
+    late Icon retIcon;
     if (enderecoTipo == "Casa") {
-      return Icon(Icons.home);
-    }
-    if (enderecoTipo == "Trabalho") {
-      return Icon(Icons.work);
+      retIcon = Icon(Icons.home);
+    } else if (enderecoTipo == "Trabalho") {
+      retIcon = Icon(Icons.work);
     } else {
-      return Icon(Icons.map);
+      retIcon = Icon(Icons.map);
     }
+
+    return retIcon;
   }
 
   @override
@@ -29,22 +31,31 @@ class ListAddresses extends StatelessWidget {
     LoginController _loginController = Get.find();
 
     Widget _buildRow(sqlEndereco endereco) {
-      return Column(children: [ListTile(
-        leading: retIcon(endereco.enderecoTipo),
-        onTap: () {
-          controller.enderecoSingle = endereco;
-          Get.toNamed(AppRoutes.address, arguments: [{'enderecoGuid': endereco.enderecoGuid}]);
-        },
-        title: Text(
-          endereco.enderecoCEP,
-          // style: _biggerFont,
+      print(endereco.enderecoCEP + ' atual: ' + endereco.enderecoAtual.toString());
+      return Column(children: [
+        ListTile(
+          leading: retIcon(endereco.enderecoTipo, endereco.enderecoAtual),
+          onTap: () {
+            controller.enderecoSingle = endereco;
+            Get.toNamed(AppRoutes.address, arguments: [
+              {'enderecoGuid': endereco.enderecoGuid}
+            ]);
+          },
+          title: Text(
+            endereco.enderecoCEP,
+            // style: _biggerFont,
+          ),
+          subtitle: Text(endereco.enderecoLogra + ', ' + endereco.enderecoNumero),
+          trailing: Column(children: [Text(endereco.enderecoTipo),
+          if(endereco.enderecoAtual)
+            Icon(Icons.star, color: Colors.amber,)
+          ],
+          ) ,
+          //trailing: Icon(IconData(int.parse(iconcode), fontFamily: 'MaterialIcons'))
         ),
-        subtitle: Text(endereco.enderecoLogra),
-        //trailing: Icon(IconData(int.parse(iconcode), fontFamily: 'MaterialIcons'))
-      ),
-      const SizedBox(height: 5),
-      const Divider(),
-      const SizedBox(height: 5),
+        const SizedBox(height: 5),
+        const Divider(),
+        const SizedBox(height: 5),
       ]);
     }
 

@@ -9,7 +9,7 @@ class Enderecos {
   String? EnderecoNumero;
   String? EnderecoCompl;
   String? EnderecoTipo;
-  int?    EnderecoAtual;
+  bool    EnderecoAtual = false;
   String? EnderecoUltData;
   String? EnderecoDesde;
   String? EnderecoLat;
@@ -26,11 +26,11 @@ class Enderecos {
     EnderecoNumero = json['EnderecoNumero'].toString();
     EnderecoCompl = json['EnderecoCompl'].toString();
     EnderecoTipo = json['EnderecoTipo'].toString();
-    // EnderecoAtual = int.parse(json['EnderecoAtual'].toString());
+    EnderecoAtual = json['EnderecoAtual'].toString().toLowerCase() == 'true';
     EnderecoUltData = json['EnderecoUltData'].toString();
     EnderecoDesde = json['EnderecoDesde'].toString();
-    // EnderecoLat = json['EnderecoLat'].toString();
-    // EnderecoLong = json['EnderecoLong'].toString();
+    EnderecoLat = json['EnderecoLat'].toString();
+    EnderecoLong = json['EnderecoLong'].toString();
   }
 
   Map<String, dynamic> toJson() {
@@ -43,9 +43,9 @@ class Enderecos {
     data['EnderecoNumero'] = this.EnderecoNumero;
     data['EnderecoCompl'] = this.EnderecoCompl;
     data['EnderecoTipo'] = this.EnderecoTipo;
-    // data['EnderecoAtual'] = this.EnderecoAtual;
-    data['EnderecoUltData'] = this.EnderecoUltData;
-    data['EnderecoDesde'] = this.EnderecoDesde;
+    data['EnderecoAtual'] = this.EnderecoAtual.toString();
+    // data['EnderecoUltData'] = this.EnderecoUltData;
+    // data['EnderecoDesde'] = this.EnderecoDesde;
     data['EnderecoLat'] = this.EnderecoLat;
     data['EnderecoLong'] = this.EnderecoLong;
     return data;

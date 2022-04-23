@@ -11,34 +11,49 @@ import 'package:poraki/app/modules/home/widgets/gradient_header_home.dart';
 import 'package:poraki/app/modules/offers/widgets/button_offer.dart';
 import 'package:poraki/app/routes/app_routes.dart';
 
+enum TiposEnd { Casa, Trabalho, Estudo, Outros }
+
 class AddressBody extends StatefulWidget {
+  String enderecoGuid = '';
   AddressBody({
-    Key? key,
-    // required this.controller,
+    Key? key, required this.enderecoGuid
   }) : super(key: key);
 
-  AddressController _controller = Get.find(); // Get.put(AddressController());
+  final AddressController _controller = Get.find(); // Get.put(AddressController());
+  final LoginController _loginController = Get.find();
+
+  var _endGuid = '';
+  bool load = true;
 
   @override
   _AddressBodyState createState() => _AddressBodyState();
 }
 
 class _AddressBodyState extends State<AddressBody> {
-  FocusNode txtEnderecoNroFocus = new FocusNode();
-  var tipos = ["Casa", "Trabalho", "Estudo", "Outros"];
+  final FocusNode txtEnderecoNroFocus = new FocusNode();
+  final _formAddressState = GlobalKey<FormState>();
+  TiposEnd tiposEnd = TiposEnd.Casa;
+
+
+
   var tipoSel = "Casa";
 
-  void _dropDownItemSelected(String novoItem) {
-    setState(() {
-      this.tipoSel = novoItem;
-    });
-  }
+  // void _dropDownItemSelected(String novoItem) {
+  //   setState(() {
+  //     this.tipoSel = novoItem;
+  //   });
+  // }
 
   Future<void> tornarEndAtual(String enderecoGuid) async {
-    widget._controller.tornarEnderecoAtual(enderecoGuid);
+    await salvar(enderecoGuid);
+    await widget._controller.tornarEnderecoAtual(enderecoGuid);
+    //await widget._controller.carregaEnderecos();
+
+    //await widget._controller.update();
+    //Get.offAndToNamed(AppRoutes.addresses);
   }
 
-  Future<void> salvar() async {
+  Future<void> salvar(String enderecoGuid) async {
     var end = new Enderecos(
         widget._controller.enderecoSingle.enderecoGuid,
         widget._controller.enderecoSingle.usuEmail,
@@ -55,7 +70,12 @@ class _AddressBodyState extends State<AddressBody> {
         widget._controller.enderecoSingle.enderecoLong);
 
     //DateTime.now().toString());
-    await widget._controller.adicionaEndereco(end);
+    if(enderecoGuid == '')
+      await widget._controller.adicionaEndereco(end);
+    else
+      await widget._controller.atualizaEndereco(end);
+
+    Get.offAndToNamed(AppRoutes.addresses);
   }
 
   Future<void> buscaCep() async {
@@ -69,17 +89,49 @@ class _AddressBodyState extends State<AddressBody> {
     //widget._controller.txtEnderecoTipo.text.trimLeft().trimRight(),
   }
 
+
+  Color textDark = Colors.black;
+  List<DropdownMenuItem<String>> dropDownMenuItems = [];
+  var tipos = ["Casa", "Trabalho", "Estudo", "Outros"];
+
+
+  Future<void> bind() async {
+    if(widget.load) {
+      print('bind()');
+
+      dropDownMenuItems = tipos
+          .map(
+            (String value) => DropdownMenuItem<String>(
+          value: value,
+          child: Text(value),
+        ),
+      )
+          .toList();
+
+      textDark = widget._loginController.colorFromHex(widget._loginController.listCore
+          .where((coreItem) => coreItem.coreChave == 'textDark')
+          .first
+          .coreValor
+          .toString());
+
+      try {
+        var args =
+        ModalRoute.of(context)?.settings.arguments as List<Map<String, String>>;
+        widget._endGuid = args[0].values.first.toString(); // .first.values.first.toString();
+        print('_endGuid: ' + widget._endGuid);
+      } catch (e) {}
+
+      await widget._controller.bindEndereco(widget._endGuid);
+      tipoSel = widget._endGuid == '' ? 'Casa' : widget._controller.enderecoSingle.enderecoTipo;
+      widget.load = false;
+    }
+
+  }
+
   @override
   Widget build(BuildContext context) {
-    LoginController _loginController = Get.find();
-    Color textDark = _loginController.colorFromHex(_loginController.listCore
-        .where((coreItem) => coreItem.coreChave == 'textDark')
-        .first
-        .coreValor
-        .toString());
-
     return FutureBuilder(
-        future: widget._controller.bindEndereco(),
+        future: widget.load ? bind() : null,
         builder: (context, futuro) {
           if (futuro.connectionState == ConnectionState.waiting) {
             return Center(
@@ -103,8 +155,9 @@ class _AddressBodyState extends State<AddressBody> {
                         //   ),
                         // ),
                         Form(
+                          key: _formAddressState,
                           // key: controller.formKey,
-                          child: Column(children: [
+                          child: Column(children: <Widget> [
                             TextFormField(
                               // validator: (value) {
                               //   if (value!.length < 4) {
@@ -113,7 +166,7 @@ class _AddressBodyState extends State<AddressBody> {
                               //   return null;
                               // },
                               controller: widget._controller.txtCEP,
-                              autofocus: true,
+                              //autofocus: true,
                               style: TextStyle(color: textDark),
                               decoration: InputDecoration(
                                 labelText: "CEP",
@@ -143,7 +196,7 @@ class _AddressBodyState extends State<AddressBody> {
                               // },
                               controller: widget._controller.txtEnderecoLogra,
                               keyboardType: TextInputType.streetAddress,
-                              autofocus: true,
+                              // autofocus: true,
                               style: TextStyle(color: textDark),
                               decoration: InputDecoration(
                                 labelText: "Endereço SEM o número",
@@ -169,8 +222,8 @@ class _AddressBodyState extends State<AddressBody> {
                               // },
                               controller: widget._controller.txtEnderecoNumero,
                               keyboardType: TextInputType.number,
-                              autofocus: true,
-                              focusNode: txtEnderecoNroFocus,
+                              // autofocus: true,
+                              // focusNode: txtEnderecoNroFocus,
                               style: TextStyle(color: textDark),
                               decoration: InputDecoration(
                                 labelText: "Número",
@@ -195,7 +248,7 @@ class _AddressBodyState extends State<AddressBody> {
                               //   return null;
                               // },
                               controller: widget._controller.txtEnderecoCompl,
-                              autofocus: true,
+                              // autofocus: true,
                               style: TextStyle(color: textDark),
                               decoration: InputDecoration(
                                 labelText: "Complemento (apto, bloco, etc...)",
@@ -212,31 +265,47 @@ class _AddressBodyState extends State<AddressBody> {
                                 ),
                               ),
                             ),
-                            Text('Tipo'),
-                            DropdownButton<String>(
-                              items: tipos.map((String value) {
-                                return DropdownMenuItem<String>(
-                                  value: value,
-                                  child: Text(value),
-                                );
-                              }).toList(),
-                              value: tipoSel,
-                              onChanged: (String? newValue) {
-                                setState(() {
-                                  tipoSel = newValue!;
-                                });
-                              },
+                            //Text('Tipo'),
+
+                            ListTile(
+                              title: const Text('Tipo:'),
+                              trailing: DropdownButton<String>(
+                                // Must be one of items.value.
+                                value: tipoSel,
+                                onChanged: (String? newValue) {
+                                  if (newValue != null) {
+                                    setState(() => tipoSel = newValue);
+                                  }
+                                },
+                                items: dropDownMenuItems,
+                              ),
                             ),
+
+                            // DropdownButton<String>(
+                            //   items: tipos.map((String value) {
+                            //     return DropdownMenuItem<String>(
+                            //       value: value,
+                            //       child: Text(value),
+                            //     );
+                            //   }).toList(),
+                            //   value: tipoSel,
+                            //   onChanged: (String? newValue) {
+                            //     setState(() {
+                            //       tipoSel = newValue!;
+                            //     });
+                            //   },
+                            // ),
+
                           ]),
                         ),
                         SizedBox(height: 20),
                         ButtonOffer(
                           onPressed: () {
-                            salvar();
+                            salvar(widget._endGuid);
 
                             final snackBar = SnackBar(
-                                backgroundColor: _loginController.colorFromHex(
-                                    _loginController.listCore
+                                backgroundColor: widget._loginController.colorFromHex(
+                                    widget._loginController.listCore
                                         .where((coreItem) =>
                                             coreItem.coreChave == 'textDark')
                                         .first
@@ -250,16 +319,16 @@ class _AddressBodyState extends State<AddressBody> {
                             ScaffoldMessenger.of(context)
                                 .showSnackBar(snackBar);
                           },
-                          colorText: _loginController.colorFromHex(
-                              _loginController.listCore
+                          colorText: widget._loginController.colorFromHex(
+                              widget._loginController.listCore
                                   .where((coreItem) =>
                                       coreItem.coreChave == 'textLight')
                                   .first
                                   .coreValor
                                   .toString()),
                           text: 'Salvar',
-                          colorButton: _loginController.colorFromHex(
-                              _loginController.listCore
+                          colorButton: widget._loginController.colorFromHex(
+                              widget._loginController.listCore
                                   .where((coreItem) =>
                                       coreItem.coreChave == 'iconColor')
                                   .first
@@ -269,11 +338,12 @@ class _AddressBodyState extends State<AddressBody> {
                         ButtonOffer(
                           onPressed: () {
                             // salva e define como endereço atual
-                            salvar();
+                            //salvar(widget._endGuid);
+                            tornarEndAtual(widget._endGuid).then((value) => Get.offAndToNamed(AppRoutes.addresses));
 
                             final snackBar = SnackBar(
-                                backgroundColor: _loginController.colorFromHex(
-                                    _loginController.listCore
+                                backgroundColor: widget._loginController.colorFromHex(
+                                    widget._loginController.listCore
                                         .where((coreItem) =>
                                             coreItem.coreChave == 'textDark')
                                         .first
@@ -287,18 +357,19 @@ class _AddressBodyState extends State<AddressBody> {
                             ScaffoldMessenger.of(context)
                                 .showSnackBar(snackBar);
 
-                            Get.toNamed(AppRoutes.addresses);
+                            //Get.toNamed(AppRoutes.addresses);
                           },
                           colorText: textDark,
                           text: 'Definir como endereço atual',
-                          colorButton: _loginController.colorFromHex(
-                              _loginController.listCore
+                          colorButton: widget._loginController.colorFromHex(
+                              widget._loginController.listCore
                                   .where((coreItem) =>
                                       coreItem.coreChave == 'backLight')
                                   .first
                                   .coreValor
                                   .toString()),
                         ),
+                      SizedBox(height: 150),
                         // )
                       ])
                       // ],

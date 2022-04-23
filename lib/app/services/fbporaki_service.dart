@@ -39,6 +39,7 @@ class fbPorakiService {
     }
   }
 
+
   Future<String> getValueFromFirebase(String col, String doc, String subKey) async {
     await _iniFirebase();
     CollectionReference coll = _fbInstance!.collection(col);

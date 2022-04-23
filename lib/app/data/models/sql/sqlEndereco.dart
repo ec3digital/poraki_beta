@@ -1,5 +1,5 @@
 class sqlEndereco {
-  final String  enderecoGuid;
+  late final String  enderecoGuid;
   final String  usuEmail;
   final String  usuGuid;
   final String  enderecoCEP;
@@ -7,7 +7,7 @@ class sqlEndereco {
   final String  enderecoNumero;
   final String? enderecoCompl;
   final String  enderecoTipo;
-  final int     enderecoAtual;
+  final bool     enderecoAtual;
   final String? enderecoUltData;
   //final String? enderecoDesde;
   final String? enderecoLat;
@@ -17,18 +17,18 @@ class sqlEndereco {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic> {
-      "enderecoGuid": enderecoGuid,
-      "usuEmail": usuEmail,
-      "usuGuid": usuGuid,
-      "enderecoCEP": enderecoCEP,
-      "enderecoLogra": enderecoLogra,
-      "enderecoNumero": enderecoNumero,
-      "enderecoCompl": enderecoCompl,
-      "enderecoTipo": enderecoTipo,
-      "enderecoAtual": enderecoAtual,
-      "enderecoUltData": enderecoUltData,
-      "enderecoLatitude": enderecoLat,
-      "enderecoLongitude": enderecoLong,
+      "enderecoGuid": enderecoGuid.toString(),
+      "usuEmail": usuEmail.toString(),
+      "usuGuid": usuGuid.toString(),
+      "enderecoCEP": enderecoCEP.toString(),
+      "enderecoLogra": enderecoLogra.toString(),
+      "enderecoNumero": enderecoNumero.toString(),
+      "enderecoCompl": enderecoCompl.toString(),
+      "enderecoTipo": enderecoTipo.toString(),
+      "enderecoAtual": true, //enderecoAtual.toString(),
+      "enderecoUltData": '',
+      "enderecoLatitude": enderecoLat.toString(),
+      "enderecoLongitude": enderecoLong.toString(),
     };
   }
 }

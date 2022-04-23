@@ -3,140 +3,132 @@ import 'package:poraki/app/data/models/sql/sqlEndereco.dart';
 import 'package:sqflite/sqflite.dart';
 
 class sqlPorakiAddressService {
+
+  late Database db;
+
   Future<List<sqlEndereco>> buscaEnderecos(bool atual) async {
-    String path = join(await getDatabasesPath(), 'poraki');
-    Database db = await openDatabase(
-      path,
-      version: 1,
-    );
+    List<sqlEndereco> enderecos = [];
 
-    await verificaTabela();
-    late List<sqlEndereco> enderecos = [];
-
-    if (atual) {
+    if (!atual) {
+      print('buscaEnderecos todos');
+      await initDB();
       List<Map<String, dynamic>> list = await db.query('enderecos');
-      print('query qtd: ' + list.length.toString());
       list.forEach((item) {
         enderecos.add(new sqlEndereco(
+            item['enderecoGuid'].toString(),
+            item['usuEmail'].toString(),
+            item['usuGuid'].toString(),
+            item['enderecoCEP'].toString(),
+            item['enderecoLogra'].toString(),
+            item['enderecoNumero'].toString(),
+            item['enderecoCompl'].toString(),
+            item['enderecoTipo'].toString(),
+            item['enderecoAtual'].toLowerCase() == 'true',
             '',
-            '',
-            '',
-            item['enderecoCEP'],
-            item['enderecoLogra'],
-            item['enderecoNumero'],
-            item['enderecoCompl'],
-            item['enderecoTipo'],
-            item['enderecoAtual'],
-            item['enderecoUltData'],
-            item['enderecoLatitude'],
-            item['enderecoLongitude']));
+            item['enderecoLatitude'].toString(),
+            item['enderecoLongitude'].toString()));
       });
     } else {
+      print('buscaEnderecos só atual');
+      await initDB();
       List<Map<String, dynamic>> list = await db
           .query('enderecos', where: "enderecoAtual = ?", whereArgs: [1]);
-      print('query qtd: ' + list.length.toString());
       list.forEach((item) {
         enderecos.add(new sqlEndereco(
+            item['enderecoGuid'].toString(),
+            item['usuEmail'].toString(),
+            item['usuGuid'].toString(),
+            item['enderecoCEP'].toString(),
+            item['enderecoLogra'].toString(),
+            item['enderecoNumero'].toString(),
+            item['enderecoCompl'].toString(),
+            item['enderecoTipo'].toString(),
+            true,
             '',
-            '',
-            '',
-            item['enderecoCEP'],
-            item['enderecoLogra'],
-            item['enderecoNumero'],
-            item['enderecoCompl'],
-            item['enderecoTipo'],
-            item['enderecoAtual'],
-            item['enderecoUltData'],
-            item['enderecoLatitude'],
-            item['enderecoLongitude']));
+            item['enderecoLatitude'].toString(),
+            item['enderecoLongitude'].toString()));
       });
     }
     return enderecos;
   }
 
   Future<List<sqlEndereco>> buscaEnderecoSingle(String enderecoGuid) async {
-    String path = join(await getDatabasesPath(), 'poraki');
-    Database db = await openDatabase(
-      path,
-      version: 1,
-    );
-
-    await verificaTabela();
-
+    await initDB();
     return await db.query('enderecos',
         where: "enderecoGuid = ?",
         whereArgs: [enderecoGuid]) as List<sqlEndereco>;
   }
 
   Future<void> deleteEndereco(String enderecoGuid) async {
-    String dbPath = join(await getDatabasesPath(), 'poraki');
-    var db = await openDatabase(dbPath, version: 1);
+    await initDB();
     await db.delete('enderecos',
         where: "enderecoGuid = ?", whereArgs: [enderecoGuid]);
+  }
 
-    await db.close();
+  Future<void> deleteEnderecos() async {
+    await initDB();
+    await db.delete('enderecos');
   }
 
   Future<void> insertEndereco(sqlEndereco endereco) async {
-    print('insertEndereco');
-    String dbPath = join(await getDatabasesPath(), 'poraki');
-    var db = await openDatabase(dbPath, version: 1);
-    await verificaTabela();
-
+    await initDB();
     var ret = await db.insert('enderecos', endereco.toMap());
     print('ret: ' + ret.toString());
-    await db.close();
   }
 
   Future<void> updateEndereco(sqlEndereco endereco) async {
-    String dbPath = join(await getDatabasesPath(), 'poraki');
-    var db = await openDatabase(dbPath, version: 1);
-
+    await initDB();
     await db.update('enderecos', endereco.toMap(),
         where: "enderecoGuid = ?", whereArgs: [endereco.enderecoGuid]);
-
-    await db.close();
   }
 
   Future<void> updateEnderecoAtual(String enderecoGuid) async {
-    String dbPath = join(await getDatabasesPath(), 'poraki');
-    var db = await openDatabase(dbPath, version: 1);
-
-    await db.rawUpdate("UPDATE enderecos SET enderecoAtual=0");
+    print('updateEnderecoAtualLOCAL');
+    await initDB();
+    await db.rawUpdate("UPDATE enderecos SET enderecoAtual='false'");
+    // db = await openDatabase(dbPath, version: 1);
+    //await initDB();
     await db.rawUpdate(
-        "UPDATE enderecos SET enderecoAtual=1 WHERE enderecoGuid = '" +
+        "UPDATE enderecos SET enderecoAtual='true' WHERE enderecoGuid = '" +
             enderecoGuid +
             "'");
-
-    await db.close();
   }
 
   Future<void> verificaTabela() async {
-    String dbPath = join(await getDatabasesPath(), 'poraki');
-    var db = await openDatabase(dbPath, version: 1);
-
+    await initDB();
     var existe = await db.rawQuery(_verificaTabelaEnderecos);
     if (existe.isEmpty) {
+      print('tabela endereços nao existente');
+      await initDB();
       await db.execute(_createTableEnderecos);
       print('tabela endereços construída');
-    }
+    } else { print('tabela endereços existente'); }
   }
 
   Future<void> redefineTabela() async {
-    String path = join(await getDatabasesPath(), 'poraki');
-    Database db = await openDatabase(
-    path,
-    version: 1,
-    );
-
+    await initDB();
     await db.execute("DROP TABLE IF EXISTS enderecos");
     print('tabela enderecos destruída');
     await verificaTabela();
   }
 
+  Future<void> initDB() async {
+    String dbPath = join(await getDatabasesPath(), 'poraki');
+    //if (!db.isOpen)
+      db = await openDatabase(dbPath, version: 1);
+
+    print('initDB');
+  }
+
+  Future<void> closeDB() async {
+    if (db.isOpen)
+      db.close();
+    print('closeDB');
+  }
+
   // pra ver se a tabela de enderecos existe
   final String _verificaTabelaEnderecos = '''
-  SELECT * FROM sqlite_master WHERE name ='enderecos' and type='table'; 
+  SELECT name FROM sqlite_master WHERE name ='enderecos' and type='table'; 
   ''';
 
   // Tipos de Endereços: Home / Work / School / Others
@@ -150,11 +142,12 @@ class sqlPorakiAddressService {
     enderecoNumero TEXT,
     enderecoCompl TEXT,
     enderecoTipo TEXT,
-    enderecoAtual INT,
+    enderecoAtual TEXT,
     enderecoUltData TEXT
     enderecoDesde TEXT,
     enderecoLatitude TEXT,
     enderecoLongitude TEXT
     );
   ''';
+
 }
