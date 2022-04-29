@@ -1,8 +1,10 @@
 import 'package:extended_masked_text/extended_masked_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:poraki/app/data/models/lojas.dart';
 import 'package:poraki/app/data/models/oferta.dart';
 import 'package:poraki/app/data/repositories/offer_repository.dart';
+import 'package:poraki/app/data/repositories/store_repository.dart';
 import '../../data/models/categorias.dart';
 import '../../data/repositories/categories_repository.dart';
 
@@ -68,6 +70,7 @@ class MofferController extends GetxController {
   }
 
   Future<void> getMoffers(String sellerGuid) async {
+    print('getMoffers / sellerGuid = ' + sellerGuid);
     try {
       changeLoading(true);
       moffers = await offerRepository.getOfferBySellerGuid(sellerGuid);
@@ -78,6 +81,20 @@ class MofferController extends GetxController {
     } finally {
       changeLoading(false);
     }
+  }
+
+  Future<List<Lojas>> getStores(String sellerGuid) async {
+    List<Lojas> retLojas = [];
+    try {
+      changeLoading(true);
+      retLojas = await StoreRepository().getAllStores(sellerGuid);
+    } catch (e) {
+      print('Erro no carregaLojas() controller ${e.toString()}');
+    } finally {
+      changeLoading(false);
+    }
+
+    return retLojas;
   }
 
   // Future<void> getMoffer() async {

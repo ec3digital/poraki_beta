@@ -55,7 +55,6 @@ class _LoginPageState extends State<LoginPage> {
             // }
           // }
 
-          print('email: ' + _mailInputController.text.isEmpty.toString());
           return Scaffold(
             body: Container(
               height: MediaQuery.of(context).size.height,

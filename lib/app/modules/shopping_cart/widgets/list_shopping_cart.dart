@@ -81,7 +81,7 @@ class _ListShoppingCartState extends State<ListShoppingCart> {
                                  children: [
                                   const SizedBox(width: 05),
                                   Text(
-                                    'R\$ ${widget.controller.listShoppingCart[index].value?.toStringAsFixed(2) ?? ''}', style: TextStyle(fontSize: 18, color: darkText)
+                                    'R\$ ${widget.controller.listShoppingCart[index].value?.toStringAsFixed(2).replaceAll(',', '').replaceAll('.', ',') ?? ''}', style: TextStyle(fontSize: 18, color: darkText)
                                   ),
                                 ],
                               ),
@@ -122,7 +122,6 @@ class _ListShoppingCartState extends State<ListShoppingCart> {
                                   GestureDetector(
                                     onTap: () => Get.toNamed(AppRoutes.offers,
                                         arguments: [
-                                          {'cep': '05735030'},
                                           {'category': null},
                                           {'title': null}
                                         ]), //TODO: falta fazer fkid

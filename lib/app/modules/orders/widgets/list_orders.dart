@@ -63,7 +63,7 @@ class _ListOrdersState extends State<ListOrders> {
                   _formatDate(_ped.PedidoEm) +
                   ' no valor de R\$ ' +
                   double.parse(_ped.PedidoValorTotal)
-                      .toStringAsFixed(2)
+                      .toStringAsFixed(2).replaceAll(',', '').replaceAll('.', ',')
                       .replaceAll('.', ',')
               // style: _biggerFont,
               ),

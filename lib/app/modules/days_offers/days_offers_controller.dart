@@ -16,7 +16,7 @@ class DaysOffersController extends GetxController {
 
   @override
   void onInit() async {
-    await getOffers();
+    await getOffers(4);
     super.onInit();
   }
 
@@ -34,10 +34,10 @@ class DaysOffersController extends GetxController {
     "Produtos De Beleza",
   ];
 
-  Future<void> getOffers() async {
+  Future<void> getOffers(int limit) async {
     try {
       changeLoading(true);
-      offers = await offerRepository.getOffersAll();
+      offers = await offerRepository.getOffersAll(limit);
     } catch (e) {
       print('Erro no getOffers() controller ${e.toString()}');
     } finally {

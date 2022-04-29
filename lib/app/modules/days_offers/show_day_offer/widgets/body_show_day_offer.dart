@@ -54,7 +54,7 @@ class BodyShowDayOffer extends StatelessWidget {
                         detailProduct: _product.ofertaDetalhe.toString()),
                     SizedBox(height: 10),
                     TextPriceProductDayOffer(
-                        textPrice: 'R\$ ${_product.ofertaPreco!.toStringAsFixed(2)}',
+                        textPrice: 'R\$ ${_product.ofertaPreco!.toStringAsFixed(2).replaceAll(',', '').replaceAll('.', ',')}',
                     ),
                     const SizedBox(height: 10),
                     ContainerAmountProductDayOffer(),

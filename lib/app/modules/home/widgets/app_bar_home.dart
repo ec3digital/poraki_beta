@@ -32,7 +32,7 @@ class AppBarHome extends StatelessWidget {
                 child: TextFormField(
                   onFieldSubmitted: (String value) {
                     Get.toNamed(AppRoutes.offers, arguments: [
-                      {'cep': _loginController.usuCep}, {'category': null }, {'title': txtBuscaCtrl.text}] );
+                      {'listName': null}, {'limit': 24}, {'category': null }, {'title': txtBuscaCtrl.text.trimRight()}, {'ofertaGuid': null}] );
                   } ,
                   controller: txtBuscaCtrl,
                   decoration: InputDecoration(

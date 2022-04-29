@@ -80,7 +80,7 @@ class BottomOrder extends StatelessWidget {
                   Text(
                     'R\$ ' +
                         double.parse(pedidoSingle.PedidoValorTotal.toString())
-                            .toStringAsFixed(2)
+                            .toStringAsFixed(2).replaceAll(',', '').replaceAll('.', ',')
                             .replaceAll('.', ','),
                     style: TextStyle(color: colorText, fontSize: 20),
                   )
@@ -211,7 +211,7 @@ class BottomOrder extends StatelessWidget {
   // }
 
   String getFormattedCurrency(double amount) {
-    return "R\$ " + amount.toStringAsFixed(2);
+    return "R\$ " + amount.toStringAsFixed(2).replaceAll(',', '').replaceAll('.', ',');
     // FlutterMoneyFormatter fmf = new FlutterMoneyFormatter(amount: amount);
     // fmf.symbol = "₹";
     // fmf.thousandSeparator = ",";

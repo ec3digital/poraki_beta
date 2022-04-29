@@ -69,7 +69,7 @@ class BottomNavigationShoppingCart extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text('Total', style: TextStyle(color: darkText, fontSize: 16),),
-                          Text('R\$ ' + total.toStringAsFixed(2), style: TextStyle(color: darkText, fontSize: 16),),
+                          Text('R\$ ' + total.toStringAsFixed(2).replaceAll(',', '').replaceAll('.', ','), style: TextStyle(color: darkText, fontSize: 16),),
                         ],
                       ),
                     ),

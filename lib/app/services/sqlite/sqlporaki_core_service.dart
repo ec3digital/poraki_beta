@@ -232,6 +232,9 @@ class sqlPorakiCoreService {
     batch.insert('appcore', {'coreChave': 'textCard1', 'coreValor': 'Ofertas do dia'});
     batch.insert('appcore', {'coreChave': 'textCard2', 'coreValor': 'Melhores ofertas'});
     batch.insert('appcore', {'coreChave': 'textCard3', 'coreValor': 'Mais vendidos'});
+    batch.insert('appcore', {'coreChave': 'textCard4', 'coreValor': 'Mais fresquinhos'});
+    batch.insert('appcore', {'coreChave': 'textCard5', 'coreValor': 'Outras ofertas 1'});
+    batch.insert('appcore', {'coreChave': 'textCard6', 'coreValor': 'Outras ofertas 2'});
     batch.insert('appcore', {'coreChave': 'imgpath', 'coreValor': 'https://firebasestorage.googleapis.com/v0/b/ec3digrepo.appspot.com/o/ofertas%2F'});
     batch.insert('appcore', {'coreChave': 'imgpathsuffix', 'coreValor': '.jpg?alt=media'});
     batch.insert('appcore', {'coreChave': 'lastreload', 'coreValor': '20220401'});

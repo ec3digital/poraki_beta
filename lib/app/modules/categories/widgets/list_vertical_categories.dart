@@ -17,7 +17,7 @@ class ListVerticalCategories extends StatelessWidget {
       return ListTile(
         leading: Icon(IconData(0xf184,fontFamily: 'MaterialIcons')), //Icon(IconData(int.parse(iconcode), fontFamily: 'MaterialIcons')),
         onTap: () => Get.toNamed(AppRoutes.offers, arguments: [
-          {'cep': '05735030'}, {'category': chave.toString() }, {'title': null}] ),
+          {'listName': null}, {'limit': 24}, {'category': chave.toString() }, {'title': null}, {'ofertaGuid': null}] ),
         title: Text(
           categoryName,
           // style: _biggerFont,

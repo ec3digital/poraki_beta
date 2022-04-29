@@ -1,30 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:marquee/marquee.dart';
 import 'package:poraki/app/modules/auth/login/login_controller.dart';
 import 'package:poraki/app/services/fbporaki_service.dart';
 
 class CardBannerAloneHome extends StatelessWidget {
   CardBannerAloneHome({Key? key}) : super(key: key);
 
-  String? avisoApp = '';
-  String? avisoCep = '';
+  String avisoApp = '';
+  String avisoCep = '';
+  final LoginController loginController = Get.find();
 
   Future<void> carregaAvisos() async {
-    LoginController loginController = Get.find();
+
     var tempAvisosApp =
         await fbPorakiService().getListFromFirebase("akiavisos", "avisos");
     tempAvisosApp.forEach((key, value) {
-      avisoApp = value + ' (' + key + ')';
+      avisoApp = value; // + ' (' + key + ')';
     });
-    print('avisoApp: ' + avisoApp.toString());
+    // print('avisoApp: ' + avisoApp.toString());
 
     var tempAvisosCep = await fbPorakiService().getListFromFirebase(
         "akiavisos", loginController.usuCep!.substring(0, 3));
     tempAvisosCep.forEach((key, value) {
-      avisoCep = value + ' (' + key + ')';
+      avisoCep = value; // + ' (' + key + ')';
     });
 
-    print('avisoCep: ' + avisoCep.toString());
+    // print('avisoCep: ' + avisoCep.toString());
   }
 
   @override
@@ -45,9 +47,12 @@ class CardBannerAloneHome extends StatelessWidget {
                     middleText: 'Será implementado na próxima versão!',
                   );
                 },
-                child: Container(
-                  margin: EdgeInsets.all(10),
-                  child: Text('aviso app: ' + avisoApp! + ' / avisocep: ' + avisoCep!),
+                child: Container(height: 30, width: Get.width * 0.92, decoration: BoxDecoration(
+                    // border: Border.all(color: Colors.black),
+                    color: Colors.white
+                ),
+                  //margin: EdgeInsets.all(10),
+                  child: Marquee(text: avisoApp + ' / ' + ' ', startAfter: Duration(seconds: 1), style: TextStyle(color: loginController.colorFromHex(loginController.listCore.where((coreItem) => coreItem.coreChave == 'textDark').first.coreValor.toString()),),),
                   // child: ClipRRect(
                   //   borderRadius: BorderRadius.circular(15),
                   //   // child: Image.network(

@@ -323,7 +323,7 @@ class _StoreBodyState extends State<StoreBody> {
                     SizedBox(height: 20),
                     ButtonOffer(
                       onPressed: () {
-                        salvar();
+                        salvar().then((value) => Get.offAndToNamed(AppRoutes.stores));
 
                         final snackBar = SnackBar(
                             backgroundColor: _loginController.colorFromHex(
@@ -367,10 +367,8 @@ class _StoreBodyState extends State<StoreBody> {
     var storeGuidTemp = await storeController.saveLoja();
     storeGuid = storeGuidTemp.toString();
 
-    uploadFoto(
+    await uploadFoto(
         image == null ? null : image);
-
-    Get.offAndToNamed(AppRoutes.stores);
   }
 
   Future<void> buscaCep() async {

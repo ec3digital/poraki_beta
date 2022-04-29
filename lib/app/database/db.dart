@@ -20,7 +20,7 @@ class DB {
   }
 
   _onCreate(db, versao) async {
-    await db.execute(_categorias);
+    //await db.execute(_categorias);
     // // await db.execute(_setup); - HIVE
     // await db.execute(_compras);
     // await db.execute(_vendas); - SÓ VENDAS FECHADAS

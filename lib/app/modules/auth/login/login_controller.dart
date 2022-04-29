@@ -131,10 +131,11 @@ class LoginController extends GetxController {
 
       //faz o iteracao da tabela local contra a nuvem pra nao causar erro caso haja mais chaves na nuvem
       coreSql.forEach((coreItem) {
-        print('coreItem: ' + coreItem.coreChave);
+        // print('coreItem: ' + coreItem.coreChave);
         var coreFBtemp = coreFB.entries.where((element) => element.key == coreItem.coreChave).first;
         if(coreItem.coreValor != coreFBtemp.value) {
           coreItem.coreValor = coreFBtemp.value;
+          print('coreItem atualizado: ' + coreItem.coreChave);
 
           sqlPorakiCoreService().atualizaCore(coreItem);
         }
@@ -154,7 +155,7 @@ class LoginController extends GetxController {
   _getCep() async {
     if (usuCep == null) {
       var _addressController = new AddressController();
-      usuCep = await _addressController.getCepAtualCloud();
+      usuCep = '05735-030'; // await _addressController.getCepAtualLocal();
     }
     print('usuCep atual: ' + usuCep.toString());
   }

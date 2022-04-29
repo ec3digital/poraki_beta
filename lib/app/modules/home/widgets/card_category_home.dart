@@ -32,7 +32,7 @@ class CardCategories extends StatelessWidget {
               width: Get.width * 0.14,
               child: IconButton(icon: Icon(iconData), color: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'textLight').first.coreValor.toString()),
                 onPressed: () => Get.toNamed(AppRoutes.offers, arguments: [
-                  {'cep': '05735030'}, {'category': chave.toString() }, {'title': null}] )
+                  {'listName': null}, {'limit': 24}, {'category': chave.toString() }, {'title': null}, {'ofertaGuid': null}] )
                 ),
             ),
           ),

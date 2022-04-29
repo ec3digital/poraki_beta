@@ -34,7 +34,7 @@ class BodyOffer extends StatelessWidget {
           ProdutoOferta _product = offersController.offers
               .where((p) => p.ofertaID == this.offerId)
               .first;
-          print('body_offer - ' + offersController.offers.length.toString());
+          //print('body_offer - ' + offersController.offers.length.toString());
           List<String> offersImages = [];
           offersImages.add(
               'https://firebasestorage.googleapis.com/v0/b/ec3digrepo.appspot.com/o/ofertas%2F' +
@@ -61,7 +61,7 @@ class BodyOffer extends StatelessWidget {
                   DetailOffer(detailProduct: _product.ofertaDetalhe),
                   SizedBox(height: 10),
                   Text(
-                    'R\$ ${_product.ofertaPreco?.toStringAsFixed(2) ?? ''}',
+                    'R\$ ${_product.ofertaPreco?.toStringAsFixed(2).replaceAll(',', '').replaceAll('.', ',') ?? ''}',
                     style: TextStyle(
                       fontSize: 25, color: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'backDark').first.coreValor.toString())
                     ),

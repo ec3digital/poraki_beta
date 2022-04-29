@@ -1,18 +1,23 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:poraki/app/data/models/lojas.dart';
 import 'package:poraki/app/data/models/oferta.dart';
 import 'package:poraki/app/modules/auth/login/login_controller.dart';
 import 'package:poraki/app/modules/home/widgets/gradient_header_home.dart';
 import 'package:poraki/app/modules/moffers/moffer_controller.dart';
 import 'package:poraki/app/modules/offers/widgets/button_offer.dart';
-import 'package:poraki/app/modules/stores/store_controller.dart';
 import 'package:poraki/app/routes/app_routes.dart';
 
 class ListMoffers extends StatefulWidget {
   ListMoffers({
     Key? key,
   }) : super(key: key);
+
+  List<Lojas> listStores = [];
+  Lojas? selStore;
+  bool load = true;
+
 
   @override
   State<ListMoffers> createState() => _ListMoffersState();
@@ -24,19 +29,25 @@ class _ListMoffersState extends State<ListMoffers> {
   @override
   Widget build(BuildContext context) {
     final MofferController mofferController = Get.put(MofferController());
-    final StoreController storeController = Get.put(StoreController());
     LoginController _loginController = Get.find();
 
-    var listStores = ['Nenhuma', 'Loja 1'];
-    var selStore = 'Nenhuma';
+    // var listStores = ['Nenhuma'];
+    //var selStore = 'Nenhuma';
 
-    Future<void> loadObjs() async {
-      await storeController.carregaLojas();
-      await mofferController.getMoffers(_loginController.usuGuid.toString());
+    Future<void> loadStores() async {
+      widget.listStores = await mofferController.getStores(_loginController.usuGuid.toString());
+      widget.listStores.add(new Lojas(null, null, 'Nenhuma', null, null, null, null, null, null, null, null, null, null, null));
+    }
+
+    Future<void> loadObjs(bool load) async {
+      if (load) {
+        await loadStores();
+        await mofferController.getMoffers(_loginController.usuGuid.toString());
+      }
     }
 
     return FutureBuilder(
-        future: loadObjs(),
+        future: loadObjs(widget.load),
         builder: (context, futuro) {
           if (futuro.connectionState == ConnectionState.waiting) {
             return Center(
@@ -79,42 +90,23 @@ class _ListMoffersState extends State<ListMoffers> {
                         ),
                         SizedBox(height: 20),
                         ListTile(
-                          leading: Text('Lojas'),
-                          trailing: DropdownButton<String>(
-                            items: listStores.map((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(value),
+                          leading: Text('Somente da loja: '),
+                          trailing: DropdownButton<Lojas>(
+                            items: widget.listStores.map((Lojas loja) {
+                              return DropdownMenuItem<Lojas>(
+                                value: loja,
+                                child: Text(loja.LojaNome.toString()),
                               );
                             }).toList(),
-                            value: selStore,
-                            onChanged: (String? newValue) {
+                            value: widget.selStore,
+                            onChanged: (Lojas? newValue) {
                               setState(() {
-                                selStore = newValue!;
+                                widget.load = false;
+                                widget.selStore = newValue!;
                               });
                             },
                           ),
                         ),
-                        // SizedBox(height: 20),
-                        // ButtonOffer(
-                        //   onPressed: () {
-                        //     Future.delayed(Duration.zero, () async {
-                        //       storeController.emptyLoja();
-                        //     });
-                        //
-                        //     Get.toNamed(AppRoutes.store);
-                        //     // Get.toNamed(AppRoutes.store,arguments: [{
-                        //     //   "lojaObj": null
-                        //     // }]);
-                        //   },
-                        //   colorText: AppColors.primaryBackground,
-                        //   text: 'Criar Loja',
-                        //   colorButton: AppColors.secondaryColorButton,
-                        // ),
-                        // SizedBox(height: 20),
-                        // IconButton(
-                        //     icon: Icon(Icons.store),
-                        //     onPressed: () => Get.toNamed(AppRoutes.stores)),
                         SizedBox(height: 20),
                         GridView.builder(
                           shrinkWrap: true,
@@ -185,31 +177,6 @@ class _ListMoffersState extends State<ListMoffers> {
                                           ),
                                         ),
                                       ),
-                                      // Container(
-                                      //   margin: EdgeInsets.only(top: 2),
-                                      //   child: Text(
-                                      //     "CEP: ${_oferta.OfertaCEP}",
-                                      //     textAlign: TextAlign.left,
-                                      //     style: TextStyle(
-                                      //       fontWeight: FontWeight.w700,
-                                      //       fontSize: 10,
-                                      //       color: Colors.blue,
-                                      //     ),
-                                      //   ),
-                                      // ),
-                                      // Container(
-                                      //   width: 150,
-                                      //   margin: EdgeInsets.only(top: 3),
-                                      //   child: Text(
-                                      //     "Vendedor",
-                                      //     textAlign: TextAlign.left,
-                                      //     style: TextStyle(
-                                      //       fontWeight: FontWeight.w400,
-                                      //       fontSize: 10,
-                                      //       color: Colors.grey[800],
-                                      //     ),
-                                      //   ),
-                                      // ),
                                     ],
                                   ),
                                 ),

@@ -11,12 +11,11 @@ class HomeController extends GetxController {
   OfferRepository offerRepository = OfferRepository();
   CategoriesRepository categoriesRepository = CategoriesRepository();
   // PeopleRepository peopleRepository = PeopleRepository();
-  //String strCep = "05735030";
 
-  ProdutoOferta? offerToday;
-  ProdutoOferta? bestoffer;
-  ProdutoOferta? mostfresheroffer;
-  ProdutoOferta? bestselleroffer;
+  List<ProdutoOferta>? offersToday = [];
+  List<ProdutoOferta>? bestoffers = [];
+  List<ProdutoOferta>? mostfresheroffers = [];
+  List<ProdutoOferta>? bestselleroffers = [];
   List<Categorias>? categorias;
   // List<Pessoas>? pessoas;
 
@@ -24,12 +23,14 @@ class HomeController extends GetxController {
 
   @override
   void onInit() async {
-    await getOffers();
     await getCategories();
-    await getBestOffers();
-    await getMostFreshOffers();
-    await getBestSellersOffers();
+    // mostra as 4 ofertas de cada seção; esses valores sao passados para a API, evitando trazer dados desnecessários
+    await getOffers(4);
+    await getBestOffers(4);
+    await getMostFreshOffers(4);
+    await getBestSellersOffers(4);
     // await getPeople();
+    await getListBannersFromFBCloud();
     super.onInit();
   }
 
@@ -43,21 +44,19 @@ class HomeController extends GetxController {
 
     var tempBannersApp = await fbPorakiService().getListFromFirebase("akibanners", "core");
     tempBannersApp.forEach((key, value) {
+      print('banner: ' + value);
       listBanners.add(value);
     });
-
     var tempBannersCep = await fbPorakiService().getListFromFirebase("akibanners", loginController.usuCep!.substring(0, 3));
     tempBannersCep.forEach((key, value) {
       listBanners.add(value);
     });
   }
 
-  Future<void> getOffers() async {
+  Future<void> getOffers(int limit) async {
     try {
       changeLoading(true);
-      List<ProdutoOferta> ofertas = await offerRepository.getDayOfferByCEP();
-      offerToday = ofertas.first;
-      
+      offersToday = await offerRepository.getDayOfferByCEP(limit);
     } catch (e) {
       print('Erro no getOffers() controller ${e.toString()}');
     } finally {
@@ -65,12 +64,10 @@ class HomeController extends GetxController {
     }
   }
 
-  Future<void> getBestOffers() async {
+  Future<void> getBestOffers(int limit) async {
     try {
       changeLoading(true);
-      List<ProdutoOferta> ofertas = await offerRepository.getBestOffers();
-      bestoffer = ofertas.first;
-
+      bestoffers = await offerRepository.getBestOffers(limit);
     } catch (e) {
       print('Erro no getBestOffers() controller ${e.toString()}');
     } finally {
@@ -78,12 +75,10 @@ class HomeController extends GetxController {
     }
   }
 
-  Future<void> getMostFreshOffers() async {
+  Future<void> getMostFreshOffers(int limit) async {
     try {
       changeLoading(true);
-      List<ProdutoOferta> ofertas = await offerRepository.getMostFreshOffers();
-      mostfresheroffer = ofertas.first;
-
+      mostfresheroffers = await offerRepository.getMostFreshOffers(limit);
     } catch (e) {
       print('Erro no getMostFreshOffers() controller ${e.toString()}');
     } finally {
@@ -91,12 +86,10 @@ class HomeController extends GetxController {
     }
   }
 
-  Future<void> getBestSellersOffers() async {
+  Future<void> getBestSellersOffers(int limit) async {
     try {
       changeLoading(true);
-      List<ProdutoOferta> ofertas = await offerRepository.getBestSellersOffers();
-      bestselleroffer = ofertas.first;
-
+      bestselleroffers = await offerRepository.getBestSellersOffers(limit);
     } catch (e) {
       print('Erro no getBestSellersOffers() controller ${e.toString()}');
     } finally {
@@ -108,7 +101,7 @@ class HomeController extends GetxController {
     try {
       changeLoading(true);
       categorias = await categoriesRepository.getCategoriesBarra();
-      categorias?.forEach((element) { print(element);});
+      // categorias?.forEach((element) { print(element);});
     } catch (e) {
       print('Erro no getCategories() controller ${e.toString()}');
     } finally {

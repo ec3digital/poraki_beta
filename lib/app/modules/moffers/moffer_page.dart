@@ -15,6 +15,7 @@ import 'package:poraki/app/modules/home/widgets/gradient_header_home.dart';
 import 'package:poraki/app/modules/moffers/moffer_controller.dart';
 import 'package:poraki/app/modules/offers/widgets/button_offer.dart';
 import 'package:poraki/app/shared/constants/constants.dart';
+import 'package:poraki/app/routes/app_routes.dart';
 
 class MOfferPage extends StatefulWidget {
   //final String? offerGuid;
@@ -63,7 +64,7 @@ class _MOfferPage extends State<MOfferPage> {
   ]; // pegar da API
   var listaFormaEntrega = ['selecione', 'vendedor', 'comprador', 'parceiro'];
   var listaFormaEntrega2 = ['selecione', 'vendedor', 'comprador'];
-  var listaParceiros = ['selecione']; // pegar da API
+  var listaParceiros = ['selecione']; //TODO: pegar da API
   var valueSel = 'selecione';
   late String categSel = 'selecione';
   var tempoEntregaTipoSel = 'selecione';
@@ -978,9 +979,9 @@ class _MOfferPage extends State<MOfferPage> {
                                             .first
                                             .coreValor
                                             .toString()),
-                                    onPressed: () => uploadFoto(
+                                    onPressed: () { uploadFoto(
                                         image == null ? null : image,
-                                        _loginController.usuGuid.toString())),
+                                        _loginController.usuGuid.toString()).then((value) => Get.offAndToNamed(AppRoutes.mOffers));}),
                               ])
                           ],
                         ),
@@ -1007,7 +1008,7 @@ class _MOfferPage extends State<MOfferPage> {
     }
   }
 
-  uploadFoto(File? foto, String usuGuid) async {
+  Future<void> uploadFoto(File? foto, String usuGuid) async {
     await _saveForm(usuGuid);
 
     if (widget.imgEdited && foto != null) {

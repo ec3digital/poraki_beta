@@ -320,7 +320,7 @@ class _BodyCheckOut extends State<BodyCheckOut> {
           Text(
             "R\$ " +
                 widget.controller.listShoppingCart[index].value
-                    .toStringAsFixed(2),
+                    .toStringAsFixed(2).replaceAll(',', '').replaceAll('.', ','),
             style: TextStyle(
                 fontSize: 16, color: textColor, fontWeight: FontWeight.w900),
           ),
@@ -414,7 +414,7 @@ class _BodyCheckOut extends State<BodyCheckOut> {
   }
 
   String getFormattedCurrency(double amount) {
-    return "R\$ " + amount.toStringAsFixed(2);
+    return "R\$ " + amount.toStringAsFixed(2).replaceAll(',', '').replaceAll('.', ',');
     // FlutterMoneyFormatter fmf = new FlutterMoneyFormatter(amount: amount);
     // fmf.symbol = "₹";
     // fmf.thousandSeparator = ",";

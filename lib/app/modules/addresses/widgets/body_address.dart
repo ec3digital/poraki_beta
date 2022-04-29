@@ -38,19 +38,9 @@ class _AddressBodyState extends State<AddressBody> {
 
   var tipoSel = "Casa";
 
-  // void _dropDownItemSelected(String novoItem) {
-  //   setState(() {
-  //     this.tipoSel = novoItem;
-  //   });
-  // }
-
   Future<void> tornarEndAtual(String enderecoGuid) async {
     await salvar(enderecoGuid);
     await widget._controller.tornarEnderecoAtual(enderecoGuid);
-    //await widget._controller.carregaEnderecos();
-
-    //await widget._controller.update();
-    //Get.offAndToNamed(AppRoutes.addresses);
   }
 
   Future<void> salvar(String enderecoGuid) async {
@@ -75,7 +65,7 @@ class _AddressBodyState extends State<AddressBody> {
     else
       await widget._controller.atualizaEndereco(end);
 
-    Get.offAndToNamed(AppRoutes.addresses);
+    
   }
 
   Future<void> buscaCep() async {
@@ -301,7 +291,7 @@ class _AddressBodyState extends State<AddressBody> {
                         SizedBox(height: 20),
                         ButtonOffer(
                           onPressed: () {
-                            salvar(widget._endGuid);
+                            salvar(widget._endGuid).then((value) => Get.offAndToNamed(AppRoutes.addresses));
 
                             final snackBar = SnackBar(
                                 backgroundColor: widget._loginController.colorFromHex(

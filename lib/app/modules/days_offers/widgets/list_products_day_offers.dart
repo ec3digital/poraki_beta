@@ -77,7 +77,7 @@ class ListProductsDayOffers extends StatelessWidget {
                           const SizedBox(height: 15),
                           Container(
                             child: Text(
-                              'R\$ ${_product.ofertaPreco?.toStringAsFixed(2) ?? ''}',
+                              'R\$ ${_product.ofertaPreco?.toStringAsFixed(2).replaceAll(',', '').replaceAll('.', ',') ?? ''}',
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontWeight: FontWeight.w700,
@@ -94,7 +94,7 @@ class ListProductsDayOffers extends StatelessWidget {
                               style: TextStyle(
                                 fontWeight: FontWeight.w700,
                                 fontSize: 12,
-                                color: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'iconColor').first.coreValor.toString()),
+                                color: Colors.black, // _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'iconColor').first.coreValor.toString()),
                               ),
                             ),
                           ),

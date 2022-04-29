@@ -6,7 +6,6 @@ import 'package:poraki/app/modules/home/widgets/gradient_header_home.dart';
 import 'package:poraki/app/modules/offers/widgets/button_offer.dart';
 import 'package:poraki/app/modules/stores/store_controller.dart';
 import 'package:poraki/app/routes/app_routes.dart';
-import 'package:poraki/app/theme/app_theme.dart';
 
 class ListStores extends StatelessWidget {
   ListStores({Key? key}) : super(key: key);

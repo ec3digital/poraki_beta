@@ -56,7 +56,7 @@ class BodyMoffer extends StatelessWidget {
                   DetailOffer(detailProduct: _moffer.OfertaDetalhe),
                   SizedBox(height: 10),
                   Text(
-                    'R\$ ${_moffer.OfertaPreco?.toStringAsFixed(2) ?? ''}',
+                    'R\$ ${_moffer.OfertaPreco?.toStringAsFixed(2).replaceAll(',', '').replaceAll('.', ',') ?? ''}',
                     style: Get.textTheme.bodyText1!.copyWith(
                       fontSize: 25,
                     ),

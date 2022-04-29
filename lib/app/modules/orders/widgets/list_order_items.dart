@@ -128,7 +128,7 @@ class ListOrderItems extends StatelessWidget {
                 color: colorText,
                 fontWeight: FontWeight.w900),
           ),
-          Text("R\$ " + orderController.listaPedidoItems[index].OfertaPreco.toStringAsFixed(2),
+          Text("R\$ " + orderController.listaPedidoItems[index].OfertaPreco.toStringAsFixed(2).replaceAll(',', '').replaceAll('.', ','),
             style: TextStyle(
                 fontSize: 16,
                 color: colorText,
