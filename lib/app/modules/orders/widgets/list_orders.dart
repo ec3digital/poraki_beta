@@ -63,7 +63,9 @@ class _ListOrdersState extends State<ListOrders> {
                   _formatDate(_ped.PedidoEm) +
                   ' no valor de R\$ ' +
                   double.parse(_ped.PedidoValorTotal)
-                      .toStringAsFixed(2).replaceAll(',', '').replaceAll('.', ',')
+                      .toStringAsFixed(2)
+                      .replaceAll(',', '')
+                      .replaceAll('.', ',')
                       .replaceAll('.', ',')
               // style: _biggerFont,
               ),
@@ -192,7 +194,9 @@ class _ListOrdersState extends State<ListOrders> {
                   const SizedBox(height: 15),
                   Center(
                       child: Text(
-                    this.widget.tipo == 'Entregas' ? 'Entregas à realizar': this.widget.tipo,
+                    this.widget.tipo == 'Entregas'
+                        ? 'Entregas à realizar'
+                        : this.widget.tipo,
                     style: TextStyle(fontSize: 24),
                   )),
                   const SizedBox(height: 5),
@@ -214,18 +218,23 @@ class _ListOrdersState extends State<ListOrders> {
                     ),
                     SizedBox(width: 20),
                   ]),
-                  Container(
-                    height: MediaQuery.of(context).size.height + 70,
-                    child: ListView.builder(
-                      scrollDirection: Axis.vertical,
-                      shrinkWrap: true,
-                      padding: const EdgeInsets.all(16.0),
-                      itemCount: orderController.listaPedidos.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return _buildRow(orderController.listaPedidos[index]);
-                      },
-                    ),
-                  )
+                  if (orderController.listaPedidos.length == 0)
+                    Container(
+                        child: Center(
+                            child: Text("Ops, nada poraki ainda... ;-)")))
+                  else
+                    Container(
+                      height: MediaQuery.of(context).size.height + 70,
+                      child: ListView.builder(
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        padding: const EdgeInsets.all(16.0),
+                        itemCount: orderController.listaPedidos.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return _buildRow(orderController.listaPedidos[index]);
+                        },
+                      ),
+                    )
                 ])));
           }
         });

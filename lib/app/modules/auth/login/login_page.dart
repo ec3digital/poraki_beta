@@ -277,6 +277,7 @@ class _LoginPageState extends State<LoginPage> {
 
       await _loginController.runCore();
       await _loginController.loadUserData();
+      await _loginController.loadStoresData();
       //TODO: tratar a resposta do login
 
       // // salva usuario no hive, cria instancia do hive e abre a box

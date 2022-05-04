@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:poraki/app/data/models/enderecos.dart';
+import 'package:poraki/app/data/models/lojas.dart';
 import 'package:poraki/app/data/models/sql/sqlCore.dart';
 import 'package:poraki/app/data/repositories/address_repository.dart';
+import 'package:poraki/app/data/repositories/store_repository.dart';
 import 'package:poraki/app/modules/addresses/address_controller.dart';
 import 'package:poraki/app/services/fbporaki_service.dart';
 import 'package:poraki/app/services/sqlite/sqlporaki_address_service.dart';
@@ -23,6 +25,7 @@ class LoginController extends GetxController {
   List<sqlCore> listCore = [];
   List<sqlCore> listCoreCep = [];
   List<Enderecos> listEnderecos = [];
+  List<Lojas> listLojas = [];
   bool _obscurePassword = false;
   String? usuCep;
   String? usuNome;
@@ -59,11 +62,22 @@ class LoginController extends GetxController {
       });
   }
 
-  // carrega dados do usuario
+  // carrega endereços do usuario
   Future<void> loadAddressData() async {
     print('loadAddressData');
     var addressSvc = new AddressRepository();
     listEnderecos = await addressSvc.getAllAddresses();
+    // for (var u in listUser) //{
+    //   listUser.forEach((element) {
+    //     usuNome = element["usuNome"].toString();
+    //   });
+  }
+
+  // carrega lojas do usuario
+  Future<void> loadStoresData() async {
+    print('loadStoresData');
+    var storeSvc = new StoreRepository();
+    listLojas = await storeSvc.getAllStores(this.usuGuid.toString());
     // for (var u in listUser) //{
     //   listUser.forEach((element) {
     //     usuNome = element["usuNome"].toString();
@@ -177,6 +191,7 @@ class LoginController extends GetxController {
 
     await loadUserData();
     await runCore();
+    await loadStoresData();
 
     // redireciona para a home de ofertas
     Get.toNamed(AppRoutes.offer);

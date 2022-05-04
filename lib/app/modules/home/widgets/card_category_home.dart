@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:poraki/app/modules/auth/login/login_controller.dart';
+import 'package:poraki/app/modules/offers/offers_controller.dart';
 import 'package:poraki/app/routes/app_routes.dart';
 
 class CardCategories extends StatelessWidget {
@@ -14,8 +15,6 @@ class CardCategories extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //final args = ModalRoute.of(context)!.settings.arguments as OffersArgs;
-    //print('chave: ' + chave);
 
     LoginController _loginController = Get.find();
     return Container(
@@ -31,8 +30,18 @@ class CardCategories extends StatelessWidget {
               height: Get.height * 0.07,
               width: Get.width * 0.14,
               child: IconButton(icon: Icon(iconData), color: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'textLight').first.coreValor.toString()),
-                onPressed: () => Get.toNamed(AppRoutes.offers, arguments: [
-                  {'listName': null}, {'limit': 24}, {'category': chave.toString() }, {'title': null}, {'ofertaGuid': null}] )
+                onPressed: () {
+                  OffersController offersController = Get.find();
+                  Future.wait([offersController.getOfferByCEPCategory(chave.toString())]);
+
+                  Get.toNamed(AppRoutes.offers, arguments: [
+                    {'listName': null},
+                    {'limit': 24},
+                    {'category': chave.toString()},
+                    {'title': null},
+                    {'ofertaGuid': null}
+                  ]);
+                }
                 ),
             ),
           ),

@@ -196,6 +196,7 @@ class sqlPorakiCoreService {
     batch.insert('appcore', {'coreChave': 'apiMelhoresOfertas', 'coreValor': 'melhoresofertas'});
     batch.insert('appcore', {'coreChave': 'apiMoffer', 'coreValor': 'moffer'});
     batch.insert('appcore', {'coreChave': 'apiMoffers', 'coreValor': 'moffers'});
+    batch.insert('appcore', {'coreChave': 'apiMoffersStore', 'coreValor': 'moffersstore'});
     batch.insert('appcore', {'coreChave': 'apiOferta', 'coreValor': 'oferta'});
     batch.insert('appcore', {'coreChave': 'apiOfertas', 'coreValor': 'ofertasdodia'});
     batch.insert('appcore', {'coreChave': 'apiOfertasCategoria', 'coreValor': 'ofertasporcepcategoria'});

@@ -6,7 +6,6 @@ import 'package:poraki/app/modules/auth/login/login_controller.dart';
 import 'package:poraki/app/modules/home/widgets/gradient_header_home.dart';
 import 'package:poraki/app/modules/offers/widgets/button_offer.dart';
 import 'package:poraki/app/routes/app_routes.dart';
-import 'package:poraki/app/theme/app_theme.dart';
 
 class ListAddresses extends StatelessWidget {
   final AddressController controller = Get.put(AddressController());
@@ -31,7 +30,9 @@ class ListAddresses extends StatelessWidget {
     LoginController _loginController = Get.find();
 
     Widget _buildRow(sqlEndereco endereco) {
-      print(endereco.enderecoCEP + ' atual: ' + endereco.enderecoAtual.toString());
+      print(endereco.enderecoCEP +
+          ' atual: ' +
+          endereco.enderecoAtual.toString());
       return Column(children: [
         ListTile(
           leading: retIcon(endereco.enderecoTipo, endereco.enderecoAtual),
@@ -45,12 +46,18 @@ class ListAddresses extends StatelessWidget {
             endereco.enderecoCEP,
             // style: _biggerFont,
           ),
-          subtitle: Text(endereco.enderecoLogra + ', ' + endereco.enderecoNumero),
-          trailing: Column(children: [Text(endereco.enderecoTipo),
-          if(endereco.enderecoAtual)
-            Icon(Icons.star, color: Colors.amber,)
-          ],
-          ) ,
+          subtitle:
+              Text(endereco.enderecoLogra + ', ' + endereco.enderecoNumero),
+          trailing: Column(
+            children: [
+              Text(endereco.enderecoTipo),
+              if (endereco.enderecoAtual)
+                Icon(
+                  Icons.star,
+                  color: Colors.amber,
+                )
+            ],
+          ),
           //trailing: Icon(IconData(int.parse(iconcode), fontFamily: 'MaterialIcons'))
         ),
         const SizedBox(height: 5),
@@ -68,7 +75,7 @@ class ListAddresses extends StatelessWidget {
             // } else if (futuro.hasError) {
             //   return Center(child: Text(futuro.error.toString()));
           } else {
-            print('qt ends: ' + controller.enderecos.length.toString());
+            // print('qt ends: ' + controller.enderecos.length.toString());
             return SingleChildScrollView(
                 child: GradientHeaderHome(
                     child: Column(
@@ -99,21 +106,26 @@ class ListAddresses extends StatelessWidget {
                         .coreValor
                         .toString()),
                   ),
-                  Scrollbar(
-                    child: ListView.builder(
-                      scrollDirection: Axis.vertical,
-                      shrinkWrap: true,
-                      //scrollDirection: Axis.vertical,
-                      // padding: const EdgeInsets.all(16.0),
-                      itemCount: controller.enderecos.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        //if (index.isOdd) return const Divider();
-                        //index = index ~/ 2 + 1;
-                        sqlEndereco endereco = controller.enderecos[index];
-                        return _buildRow(endereco);
-                      },
-                    ),
-                  )
+                  if (controller.enderecos.length == 0)
+                    Container(
+                        child: Center(
+                            child: Text("Ops, nada poraki ainda... ;-)")))
+                  else
+                    Scrollbar(
+                      child: ListView.builder(
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        //scrollDirection: Axis.vertical,
+                        // padding: const EdgeInsets.all(16.0),
+                        itemCount: controller.enderecos.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          //if (index.isOdd) return const Divider();
+                          //index = index ~/ 2 + 1;
+                          sqlEndereco endereco = controller.enderecos[index];
+                          return _buildRow(endereco);
+                        },
+                      ),
+                    )
                 ])));
           }
         });

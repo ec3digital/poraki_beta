@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:poraki/app/modules/offers/offers_controller.dart';
 import 'package:poraki/app/routes/app_routes.dart';
 import '../../../data/models/categorias.dart';
 import '../categories_controller.dart';
@@ -16,8 +17,13 @@ class ListVerticalCategories extends StatelessWidget {
     Widget _buildRow(int idx, String categoryName, String chave, String iconcode) {
       return ListTile(
         leading: Icon(IconData(0xf184,fontFamily: 'MaterialIcons')), //Icon(IconData(int.parse(iconcode), fontFamily: 'MaterialIcons')),
-        onTap: () => Get.toNamed(AppRoutes.offers, arguments: [
-          {'listName': null}, {'limit': 24}, {'category': chave.toString() }, {'title': null}, {'ofertaGuid': null}] ),
+        onTap: () {
+          OffersController offersController = Get.find();
+          Future.wait([offersController.getOfferByCEPCategory(chave.toString())]);
+
+        Get.toNamed(AppRoutes.offers, arguments: [
+          {'listName': null}, {'limit': 24}, {'category': chave.toString() }, {'title': null}, {'ofertaGuid': null}] );
+        },
         title: Text(
           categoryName,
           // style: _biggerFont,

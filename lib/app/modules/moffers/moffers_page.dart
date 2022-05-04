@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:poraki/app/modules/home/home_controller.dart';
 import 'package:poraki/app/modules/home/widgets/app_bar_home.dart';
 import 'package:poraki/app/modules/home/widgets/drawer_home.dart';
+import 'package:poraki/app/modules/home/widgets/gradient_header_home.dart';
 import 'package:poraki/app/modules/moffers/widgets/list_moffers.dart';
 
 class MoffersPage extends StatelessWidget {
@@ -18,7 +19,8 @@ class MoffersPage extends StatelessWidget {
         preferredSize: Size(double.maxFinite, 55),
         child: AppBarHome(controller: controller),
       ),
-      body: ListMoffers(),
+      body:  SingleChildScrollView(
+        child: GradientHeaderHome(child: ListMoffers()),) ,
       drawer: DrawerHome(0),
     );
   }
