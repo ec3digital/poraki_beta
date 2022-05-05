@@ -29,7 +29,8 @@ class sqlPorakiCartService {
             item['ofertaQtd'].toString(),
             item['ofertaImgPath'].toString(),
             item['categoriaChave'].toString(),
-            item['ofertaEntregaPrevEm'].toString()
+            item['ofertaEntregaPrevEm'].toString(),
+            '', //item['ofertaEntregaPrevEm'].toString(),
         ));
       });
 
@@ -64,7 +65,7 @@ class sqlPorakiCartService {
     bool exist = await existeItemCarrinho(int.parse(item.ofertaId));
     if(exist) {
       print('caiu no existe');
-      await increaseQtyItemCarrinho(int.parse(item.ofertaId), 1);
+      await increaseQtyItemCarrinho(int.parse(item.ofertaId));
     }
     else {
       print('caiu no NAO existe');
@@ -85,12 +86,33 @@ class sqlPorakiCartService {
     await db.close();
   }
 
-  Future<void> increaseQtyItemCarrinho(int id, int qtd) async {
+  Future<void> increaseQtyItemCarrinho(int itemId) async {
     String dbPath = join(await getDatabasesPath(), 'poraki');
     var db = await openDatabase(dbPath, version: 1);
 
-    print('ofertaId carrinho -> ' + id.toString());
-    await db.rawUpdate('UPDATE carrinho set ofertaQtd = ofertaQtd + 1 where ofertaId = ?', [id]);
+    print('ofertaId carrinho -> ' + itemId.toString());
+    await db.rawUpdate('UPDATE carrinho set ofertaQtd = ofertaQtd + 1 where ofertaId = ?', [itemId]);
+
+    await db.close();
+  }
+
+  Future<void> decreaseQtyItemCarrinho(int itemId) async {
+    String dbPath = join(await getDatabasesPath(), 'poraki');
+    var db = await openDatabase(dbPath, version: 1);
+
+    print('ofertaId carrinho -> ' + itemId.toString());
+    await db.rawUpdate('UPDATE carrinho set ofertaQtd = ofertaQtd - 1 where ofertaId = ?', [itemId]);
+
+    await db.close();
+  }
+
+  Future<void> changeQtyItemCarrinho(int itemId, int qtd) async {
+    print('changeQtyItemCarrinho');
+    String dbPath = join(await getDatabasesPath(), 'poraki');
+    var db = await openDatabase(dbPath, version: 1);
+
+    print('ofertaId carrinho -> ' + itemId.toString());
+    await db.rawUpdate('UPDATE carrinho set ofertaQtd = ' + qtd.toString() + ' where ofertaId = ?', [itemId.toString()]);
 
     await db.close();
   }

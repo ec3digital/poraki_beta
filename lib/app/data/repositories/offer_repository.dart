@@ -92,6 +92,17 @@ class OfferRepository extends GetConnect {
         .toList();
   }
 
+  Future<List<ProdutoOferta>> getOffersBySeller(String SellerGuid) async {
+    print('getOffersBySeller ' + SellerGuid);
+    String url = '${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiMoffer').first.coreValor.toString()}/' + SellerGuid;
+    var response = await get(url, headers: Constants.headers);
+    //print(response.body.toString());
+    if (response.hasError) throw 'Ocorreu um erro em getOfferBySellerGuid()';
+    return (response.body['Ofertas'] as List)
+        .map((oferta) => ProdutoOferta.fromJson(oferta))
+        .toList();
+  }
+
   Future<List<Oferta>> getOfferBySellerGuid(String SellerGuid) async {
     print('getOfferBySellerGuid ' + SellerGuid);
     String url = '${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiMoffer').first.coreValor.toString()}/' + SellerGuid;

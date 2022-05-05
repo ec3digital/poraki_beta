@@ -1,40 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:poraki/app/data/models/sql/sqlEndereco.dart';
-import 'package:poraki/app/modules/addresses/address_controller.dart';
 import 'package:poraki/app/modules/auth/login/login_controller.dart';
 import 'package:poraki/app/modules/offers/widgets/button_offer.dart';
 import 'package:poraki/app/routes/app_routes.dart';
-import '../../../theme/app_theme.dart';
 import '../shopping_cart_controller.dart';
 
-class BottomNavigationShoppingCart extends StatelessWidget {
+class BottomNavigationShoppingCart extends StatefulWidget {
   BottomNavigationShoppingCart({
     Key? key,
   }) : super(key: key);
 
+  @override
+  State<BottomNavigationShoppingCart> createState() => _BottomNavigationShoppingCartState();
+}
+
+class _BottomNavigationShoppingCartState extends State<BottomNavigationShoppingCart> {
   late String cepAtual;
 
-  Future<void> getEnderecoAtual() async {
-    cepAtual = await AddressController().getCepAtualCloud().toString();
-  }
-
+  // Future<void> getEnderecoAtual() async {
   @override
   Widget build(BuildContext context) {
     LoginController _loginController = Get.find();
     Color darkText = _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'textDark').first.coreValor.toString());
-    double total = 200.00;
+    ShoppingCartController controller = Get.find();
+    //double total = controller.cartTotal;
 
-    return FutureBuilder(
-        future: getEnderecoAtual(),
-        builder: (context, futuro) {
-          if (futuro.connectionState == ConnectionState.waiting) {
-            return Center(
-                child: CircularProgressIndicator()); //Text('carrinho vazio'));
-            // } else if (futuro.hasError) {
-            //   return Center(child: Text(futuro.error.toString()));
-          }
-          else {
+    // return FutureBuilder(
+    //     future: _loginController.usuCep,
+    //     builder: (context, futuro) {
+    //       if (futuro.connectionState == ConnectionState.waiting) {
+    //         return Center(
+    //             child: CircularProgressIndicator()); //Text('carrinho vazio'));
+    //         // } else if (futuro.hasError) {
+    //         //   return Center(child: Text(futuro.error.toString()));
+    //       }
+    //       else {
             return Card(
               margin: const EdgeInsets.all(0),
               elevation: 4,
@@ -52,7 +52,7 @@ class BottomNavigationShoppingCart extends StatelessWidget {
                             style: TextStyle(color: darkText, fontSize: 15),
                           ),
                           Text(
-                            cepAtual,
+                            _loginController.usuCep.toString(),
                             // 'Rua tal com tal coisa 85, São Paulo',
                             style: TextStyle(color: darkText, fontSize: 15),
                           ),
@@ -69,7 +69,7 @@ class BottomNavigationShoppingCart extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text('Total', style: TextStyle(color: darkText, fontSize: 16),),
-                          Text('R\$ ' + total.toStringAsFixed(2).replaceAll(',', '').replaceAll('.', ','), style: TextStyle(color: darkText, fontSize: 16),),
+                      Obx (() => Text('R\$ ' + controller.cartTotalItems.value.toStringAsFixed(2).replaceAll(',', '').replaceAll('.', ','), style: TextStyle(color: darkText, fontSize: 16),)),
                         ],
                       ),
                     ),
@@ -107,7 +107,4 @@ class BottomNavigationShoppingCart extends StatelessWidget {
               ),
             );
           }
-        }
-    );
-  }
 }

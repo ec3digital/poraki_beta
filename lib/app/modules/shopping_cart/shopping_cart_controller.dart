@@ -13,13 +13,13 @@ class ShoppingCartController extends GetxController {
   //int tabBarLenght = 0;
   String ctrlMsg = '';
   bool change = false;
-  var listShoppingCart = [];
+  List<ShoppingCartModel> listShoppingCart = [];
   String moreQuantity = '';
   int qty = 0;
   double cartTotal = 0;
   double cartDiscount = 0;
   double cartTaxes = 0;
-  double cartTotalItems = 0;
+  RxDouble cartTotalItems = 0.00.obs;
   double cartDelivery = 0;
 
   final TextEditingController txtQty = new TextEditingController();
@@ -33,6 +33,23 @@ class ShoppingCartController extends GetxController {
   void onInit() async {
     //await carregaCarrinho();
     super.onInit();
+  }
+
+  Future<void> increaseQty(int id) async {
+    await sqlPorakiCartService().increaseQtyItemCarrinho(id);
+    update();
+  }
+
+  Future<void> decreaseQty(int id) async {
+    await sqlPorakiCartService().increaseQtyItemCarrinho(id);
+    update();
+  }
+
+  Future<void> changeQty(int id, int qty) async {
+    print('changeQty');
+    await sqlPorakiCartService().changeQtyItemCarrinho(id, qty);
+    await calcTotalItems();
+    update();
   }
 
   Future<void> carregaCarrinho() async {
@@ -51,7 +68,10 @@ class ShoppingCartController extends GetxController {
         double.parse(element.ofertaPreco),
           element.ofertaId.toString(),
         int.parse(element.ofertaQtd),
-        element.categoriaChave
+        element.categoriaChave,
+        element.ofertaVendedorGUID.toString(),
+        element.ofertaLojaGUID.toString(),
+          double.parse(element.ofertaPreco) * int.parse(element.ofertaQtd)
       ));
     });
 
@@ -62,22 +82,24 @@ class ShoppingCartController extends GetxController {
   Future<void> esvaziaCarrinho() async {
     await sqlPorakiCartService().deleteCarrinho();
     await carregaCarrinho();
+    update();
   }
 
   Future<void> deleteItemFromCarrinho(String id) async {
     await sqlPorakiCartService().deleteItemCarrinho(int.parse(id));
     await carregaCarrinho();
+    update();
   }
 
-  Future<void> atualizaQtdItemCarrinho(int id, int qtd) async {
-    await sqlPorakiCartService().updateItemCarrinho(id, qtd);
-    await carregaCarrinho();
-  }
+  // Future<void> atualizaQtdItemCarrinho(int id, int qtd) async {
+  //   await sqlPorakiCartService().updateItemCarrinho(id, qtd);
+  //   await carregaCarrinho();
+  // }
 
   Future<void> calcTotal() async {
     cartTotal = 0;
     await calcTotalItems(); await calcTaxes(); await calcDelivery(); await calcDiscount();
-    cartTotal = ((cartTotalItems + cartDelivery) + cartTaxes) - cartDiscount;
+    cartTotal = ((double.parse(cartTotalItems.value.toString()) + cartDelivery) + cartTaxes) - cartDiscount;
   }
 
   Future<void> calcDiscount() async {
@@ -89,10 +111,15 @@ class ShoppingCartController extends GetxController {
   }
 
   Future<void> calcTotalItems() async {
-    cartTotalItems = 0;
+    //cartTotalItems = 0.00.obs;
+    var tmpCalc = 0.00;
     listShoppingCart.forEach((element) {
-      cartTotalItems += element.value;
+      tmpCalc += (element.value * element.qty);
     });
+
+    cartTotalItems.value = tmpCalc;
+    update();
+    refresh();
   }
 
   Future<void> calcDelivery() async {
@@ -153,7 +180,7 @@ class ShoppingCartController extends GetxController {
           '05735-030', // ofertaCEP,
           '0', //ofertaVendedorId,
           element.value, // ofertaPreco,
-          element.qty, // ofertaQtd,
+          double.parse(element.qty.toString()), // ofertaQtd,
           0, //double.parse(element.value) * double.parse(element.qty), // ofertaTotal,
           element.picture, // ofertaImgPath,
           element.categChave, //categoriaChave,

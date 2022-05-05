@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:poraki/app/modules/auth/login/login_controller.dart';
 
 class NumericStepButton extends StatefulWidget {
   final int minValue;
@@ -18,6 +20,7 @@ class NumericStepButton extends StatefulWidget {
 }
 
 class _NumericStepButtonState extends State<NumericStepButton> {
+  LoginController _loginController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -28,11 +31,11 @@ class _NumericStepButtonState extends State<NumericStepButton> {
           IconButton(
             icon: Icon(
               Icons.remove,
-              color: Theme.of(context).accentColor,
+              color: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'backDark').first.coreValor.toString()),
             ),
             padding: EdgeInsets.symmetric(vertical: 4.0, horizontal: 18.0),
             iconSize: 32.0,
-            color: Theme.of(context).primaryColor,
+            color: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'backDark').first.coreValor.toString()),
             onPressed: () {
               setState(() {
                 if (widget.num > widget.minValue) {
@@ -46,7 +49,7 @@ class _NumericStepButtonState extends State<NumericStepButton> {
             '${widget.num}',
             textAlign: TextAlign.center,
             style: TextStyle(
-              color: Colors.black87,
+              color: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'backDark').first.coreValor.toString()),
               fontSize: 18.0,
               fontWeight: FontWeight.w500,
             ),
@@ -54,11 +57,11 @@ class _NumericStepButtonState extends State<NumericStepButton> {
           IconButton(
             icon: Icon(
               Icons.add,
-              color: Theme.of(context).accentColor,
+              color: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'backDark').first.coreValor.toString()),
             ),
             padding: EdgeInsets.symmetric(vertical: 4.0, horizontal: 18.0),
             iconSize: 32.0,
-            color: Theme.of(context).primaryColor,
+            color: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'backDark').first.coreValor.toString()),
             onPressed: () {
               setState(() {
                 if (widget.num < widget.maxValue) {

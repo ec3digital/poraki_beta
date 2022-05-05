@@ -225,6 +225,18 @@ class OffersController extends GetxController {
   //   }
   // }
 
+  Future<void> getOffersBySeller(String sellerId) async {
+    try {
+      changeLoading(true);
+      print('entrou no getOfferById');
+      offers = await offerRepository.getOffersBySeller(sellerId);
+      this.refresh();
+    } catch (e) {
+      print('Erro no getOfferById() controller ${e.toString()}');
+    } finally {
+      changeLoading(false);
+    }
+  }
 
   Future<void> getOfferById(int ofertaId) async {
     try {

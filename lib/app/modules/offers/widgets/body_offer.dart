@@ -81,7 +81,8 @@ class BodyOffer extends StatelessWidget {
                           '1', //ofertaQtd,
                           _product.ofertaImgPath.toString(),
                           _product.categoriaChave.toString(),
-                          DateTime.now().add(new Duration(hours: 1)).toString() // adiciona 1h
+                          DateTime.now().add(new Duration(hours: 1)).toString(),
+                        ''// adiciona 1h
                       ));
 
                       Get.toNamed(AppRoutes.shoppingCart);
@@ -102,7 +103,8 @@ class BodyOffer extends StatelessWidget {
                           '1', //ofertaQtd,
                           _product.ofertaImgPath.toString(),
                           _product.categoriaChave.toString(),
-                          DateTime.now().add(new Duration(hours: 1)).toString() // adiciona 1h
+                          DateTime.now().add(new Duration(hours: 1)).toString(),
+                        ''// adiciona 1h
                       ));
 
                       Get.toNamed(

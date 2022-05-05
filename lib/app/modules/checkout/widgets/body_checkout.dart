@@ -370,7 +370,7 @@ class _BodyCheckOut extends State<BodyCheckOut> {
                 height: 8,
               ),
               createPriceItem("Total Produtos",
-                  getFormattedCurrency(widget.controller.cartTotalItems)),
+                  getFormattedCurrency(widget.controller.cartTotalItems.value)),
               createPriceItem("Descontos",
                   getFormattedCurrency(widget.controller.cartDiscount)),
               createPriceItem(
@@ -413,7 +413,7 @@ class _BodyCheckOut extends State<BodyCheckOut> {
     );
   }
 
-  String getFormattedCurrency(double amount) {
+  String getFormattedCurrency(dynamic amount) {
     return "R\$ " + amount.toStringAsFixed(2).replaceAll(',', '').replaceAll('.', ',');
     // FlutterMoneyFormatter fmf = new FlutterMoneyFormatter(amount: amount);
     // fmf.symbol = "₹";
