@@ -91,8 +91,8 @@ class OrdersRepository extends GetConnect {
   }
 
   Future<String> postOrder(Pedido pedido) async {
-    var response = await post('${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiPedidoPagto').first.coreValor.toString()}', pedido.toJson(), headers: Constants.headers);
-    if (response.hasError) throw 'Ocorreu um erro em OrdersRepository().postOrder()';
+    var response = await post('${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiPedido').first.coreValor.toString()}', pedido.toJson(), headers: Constants.headers);
+    if (response.hasError) throw 'Ocorreu um erro em OrdersRepository().postOrder() - ' + response.bodyString.toString();
     return response.bodyString.toString();
   }
 
@@ -105,7 +105,7 @@ class OrdersRepository extends GetConnect {
 
   Future<String> postOrderItem(PedidoItem pedidoItem) async {
     var response = await post('${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiPedidoItens').first.coreValor.toString()}', pedidoItem.toJson(), headers: Constants.headers);
-    if (response.hasError) throw 'Ocorreu um erro em OrdersRepository().postOrderItem()';
+    if (response.hasError) throw 'Ocorreu um erro em OrdersRepository().postOrderItem()' + response.bodyString.toString();
     return response.bodyString.toString();
   }
 

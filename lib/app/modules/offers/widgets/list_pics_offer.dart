@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:poraki/app/theme/app_theme.dart';
 
 class ListPicsOffer extends StatelessWidget {
   List<String> imagesList = [];
@@ -48,7 +47,7 @@ class ListPicsOffer extends StatelessWidget {
             bottom: 0,
             child: FloatingActionButton(
               elevation: 0,
-              backgroundColor: AppColors.containerLightColor,
+              backgroundColor: Colors.white, //AppColors.containerLightColor,
               mini: true,
               onPressed: () {},
               child: Icon(Icons.share_outlined, color: Colors.black,),

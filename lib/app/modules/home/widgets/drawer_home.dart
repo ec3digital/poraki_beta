@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:poraki/app/modules/auth/login/login_controller.dart';
 import 'package:poraki/app/routes/app_routes.dart';
+import 'package:poraki/app/services/sqlite/sqlporaki_address_service.dart';
+import 'package:poraki/app/services/sqlite/sqlporaki_pedido_service.dart';
 import 'package:poraki/app/shared/porakiprefs.dart';
 
 class DrawerHome extends StatelessWidget {
@@ -22,7 +24,16 @@ class DrawerHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     LoginController _loginController = Get.find();
-    // Color lightBack = _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'backDark').first.coreValor.toString());
+    Color lightBack = _loginController.colorFromHex(_loginController.listCore
+        .where((coreItem) => coreItem.coreChave == 'backLight')
+        .first
+        .coreValor
+        .toString());
+    Color darkBack = _loginController.colorFromHex(_loginController.listCore
+        .where((coreItem) => coreItem.coreChave == 'backDark')
+        .first
+        .coreValor
+        .toString());
 
     return FutureBuilder(
         future: _loadLogin(),
@@ -30,170 +41,115 @@ class DrawerHome extends StatelessWidget {
           if (futuro.connectionState == ConnectionState.waiting) {
             return Scaffold();
           } else {
-            return Drawer(
-              backgroundColor: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'backLight').first.coreValor.toString()),
-              child: Column(
-                children: [
-                  Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 2),
-                      color: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'backDark').first.coreValor.toString()),
-                      height: Get.height * 0.13,
-                      //margin: EdgeInsets.only(top: 10, left: 1, right: 1),
-                      child: Column(children: [
-                        Center(child: Text('')),
-                        Center(child: Text('')),
-                        Center(child: Text(_login.usuNome.toString())),
-                        Center(child: Text(_login.usuCep.toString())),
-                        // FutureBuilder(
-                        //     future: hivePorakiUserService().GetUserName(),
-                        //     initialData: "...",
-                        //     builder: (context, snapshot) {
-                        //       return Center(
-                        //         child: Text(
-                        //           snapshot.data.toString(),
-                        //           style: TextStyle(fontSize: 22.0),
-                        //         ),
-                        //       );
-                        //     }),
-                        // FutureBuilder(
-                        //     future: hivePorakiUserService().GetUserCep(),
-                        //     initialData: "...",
-                        //     builder: (context, snapshot) {
-                        //       return Center(
-                        //         child: Text(
-                        //           'CEP: ' + snapshot.data.toString(),
-                        //           style: TextStyle(fontSize: 18.0),
-                        //         ),
-                        //       );
-                        //     }),
-                        // FutureBuilder(
-                        //     future: hivePorakiUserService().GetUserEmail(),
-                        //     initialData: "...",
-                        //     builder: (context, snapshot) {
-                        //       return Center(
-                        //         child: Text(
-                        //           snapshot.data.toString(),
-                        //           style: TextStyle(fontSize: 14.0),
-                        //         ),
-                        //       );
-                        //     }),
-                      ])),
+            return Container(
+                padding: EdgeInsets.zero,
+                width: Get.width * 0.7,
+                color: lightBack,
+                child: ListView(
+                  // Important: Remove any padding from the ListView.
+                  padding: EdgeInsets.zero,
+                  children: [
+                    SizedBox(
+                        height: 100.0,
+                        child: DrawerHeader(decoration: BoxDecoration(color: darkBack),
+                            margin: EdgeInsets.all(0.0),
+                            child: Column(children: [
+                              Center(child: Text(_login.usuNome.toString())),
+                              Center(child: Text(_login.usuCep.toString())),
+                            ]))),
 
-                  // child:
-                  // GestureDetector(
-                  //     onTap: () {},
-                  //     child: Row(
-                  //       children: [
-                  //         CircleAvatar(
-                  //           //backgroundImage: AssetImage('assets/images/photodune.png'),
-                  //         ),
-                  //         const SizedBox(width: 15),
-                  //
-                  //         AutoSizeText(
-                  //           hivePorakiUserService().GetUserEmail(),
-                  //           style: Get.textTheme.bodyText1!.copyWith(
-                  //             fontWeight: FontWeight.normal,
-                  //             fontSize: 18,
-                  //           ),
-                  //         ),
-                  //         Spacer(),
-                  //         Icon(
-                  //           Icons.arrow_forward_ios_sharp,
-                  //           size: 15,
-                  //         )
-                  //       ],
-                  //     ),
-                  //   ),
-
-                  RowCategoriesDrawerHome(
-                    text: 'Inicio',
-                    isSelected: index == 0,
-                    icon: Icons.home_outlined,
-                    onTap: () => Get.toNamed(AppRoutes.home),
-                  ),
-                  //Divider(color: lightBack),
-                  RowCategoriesDrawerHome(
-                    text: 'Carrinho',
-                    isSelected: index == 1,
-                    icon: Icons.shopping_bag_outlined,
-                    onTap: () => Get.toNamed(AppRoutes.shoppingCart),
-                  ),
-                  RowCategoriesDrawerHome(
-                    text: 'Categorias',
-                    isSelected: index == 1,
-                    icon: Icons.category,
-                    onTap: () => Get.toNamed(AppRoutes.categories),
-                  ),
-                  RowCategoriesDrawerHome(
-                    text: 'Minhas Compras',
-                    isSelected: index == 2,
-                    icon: Icons.shopping_bag_outlined,
-                    onTap: () => Get.offAndToNamed(AppRoutes.orders, arguments: {"tipo": "Compras"}),
-                  ),
-                  RowCategoriesDrawerHome(
-                    text: 'Minhas Lojas',
-                    isSelected: index == 3,
-                    icon: Icons.store,
-                    onTap: () => Get.toNamed(AppRoutes.stores),
-                  ),
-                  RowCategoriesDrawerHome(
-                    text: 'Minhas ofertas',
-                    isSelected: index == 4,
-                    icon: Icons.local_offer_rounded,
-                    onTap: () => Get.toNamed(AppRoutes.mOffers),
-                  ),
-                  // RowCategoriesDrawerHome(
-                  //   text: 'Ofertas do dia',
-                  //   icon: Icon(
-                  //     Icons.web_rounded,
-                  //   ),
-                  //   onTap: () {},
-                  // ),
-                  RowCategoriesDrawerHome(
-                    text: 'Minha conta',
-                    isSelected: index == 5,
-                    icon: Icons.person_outline,
-                    onTap: () => Get.toNamed(AppRoutes.account),
-                  ),
-                  // RowCategoriesDrawerHome(
-                  //   text: 'Minhas lojas',
-                  //   isSelected: index == 4,
-                  //   icon: Icons.store,
-                  //   onTap: () => Get.toNamed(AppRoutes.account),
-                  // ),
-                  RowCategoriesDrawerHome(
-                    text: 'Endereços',
-                    isSelected: index == 6,
-                    icon: Icons.map,
-                    onTap: () => Get.toNamed(AppRoutes.addresses),
-                  ),
-                  // Divider(color: lightBack),
-                  RowCategoriesDrawerHome(
-                    text: 'Vendas',
-                    isSelected: index == 7,
-                    icon: Icons.monetization_on_outlined,
-                    onTap: () => Get.offAndToNamed(AppRoutes.orders, arguments: {"tipo": "Vendas"}),
-                  ),
-                  RowCategoriesDrawerHome(
-                    text: 'Entregas',
-                    isSelected: index == 8,
-                    icon: Icons.shopping_cart_outlined,
-                    onTap: () => Get.offAndToNamed(AppRoutes.orders, arguments: {"tipo": "Entregas"}),
-                  ),
-                  // Divider(color: lightBack),
-                  RowCategoriesDrawerHome(
-                    text: 'Sair',
-                    isSelected: index == 9,
-                    onTap: () {
-                      Get.deleteAll(force: true);
-                      _runSpecialCmds();
-                      Get.offAllNamed(AppRoutes.signIn);
-                    },
-                    icon: Icons.arrow_back,
-                  )
-                ],
-              ),
-            );
+                    RowCategoriesDrawerHome(
+                      text: 'Inicio',
+                      // isSelected: index == 0,
+                      icon: Icons.home_outlined,
+                      onTap: () => Get.toNamed(AppRoutes.home),
+                    ),
+                    RowCategoriesDrawerHome(
+                        text: 'Mensagens',
+                        // isSelected: index == 8,
+                        icon: Icons.message,
+                        onTap:
+                            () {} // => Get.offAndToNamed(AppRoutes.orders, arguments: {"tipo": "Entregas"}),
+                        ),
+                    //Divider(color: lightBack),
+                    // RowCategoriesDrawerHome(
+                    //   text: 'Carrinho',
+                    //   // isSelected: index == 1,
+                    //   icon: Icons.shopping_bag_outlined,
+                    //   onTap: () => Get.toNamed(AppRoutes.shoppingCart),
+                    // ),
+                    RowCategoriesDrawerHome(
+                      text: 'Notícias da região',
+                      // isSelected: index == 1,
+                      icon: Icons.near_me_outlined,
+                      onTap: () {} // => Get.toNamed(AppRoutes.shoppingCart),
+                    ),
+                    RowCategoriesDrawerHome(
+                      text: 'Categorias',
+                      // isSelected: index == 1,
+                      icon: Icons.category,
+                      onTap: () => Get.toNamed(AppRoutes.categories),
+                    ),
+                    RowCategoriesDrawerHome(
+                      text: 'Meus endereços',
+                      // isSelected: index == 6,
+                      icon: Icons.map,
+                      onTap: () => Get.toNamed(AppRoutes.addresses),
+                    ),
+                    RowCategoriesDrawerHome(
+                      text: 'Minhas compras',
+                      // isSelected: index == 2,
+                      icon: Icons.shopping_bag_outlined,
+                      onTap: () => Get.offAndToNamed(AppRoutes.orders,
+                          arguments: {"tipo": "Compras"}),
+                    ),
+                    RowCategoriesDrawerHome(
+                      text: 'Minhas lojas',
+                      // isSelected: index == 3,
+                      icon: Icons.store,
+                      onTap: () => Get.toNamed(AppRoutes.stores),
+                    ),
+                    RowCategoriesDrawerHome(
+                      text: 'Minhas ofertas',
+                      // isSelected: index == 4,
+                      icon: Icons.local_offer_rounded,
+                      onTap: () => Get.toNamed(AppRoutes.mOffers),
+                    ),
+                    RowCategoriesDrawerHome(
+                      text: 'Vendas',
+                      // isSelected: index == 7,
+                      icon: Icons.monetization_on_outlined,
+                      onTap: () => Get.offAndToNamed(AppRoutes.orders,
+                          arguments: {"tipo": "Vendas"}),
+                    ),
+                    RowCategoriesDrawerHome(
+                      text: 'Entregas',
+                      // isSelected: index == 8,
+                      icon: Icons.shopping_cart_outlined,
+                      onTap: () => Get.offAndToNamed(AppRoutes.orders,
+                          arguments: {"tipo": "Entregas"}),
+                    ),
+                    RowCategoriesDrawerHome(
+                      text: 'Minha conta',
+                      // isSelected: index == 5,
+                      icon: Icons.person_outline,
+                      onTap: () => Get.toNamed(AppRoutes.account),
+                    ),
+                    Divider(
+                      color: darkBack,
+                    ),
+                    RowCategoriesDrawerHome(
+                      text: 'Sair',
+                      // isSelected: index == 9,
+                      onTap: () {
+                        Get.deleteAll(force: true);
+                        _runSpecialCmds();
+                        Get.offAllNamed(AppRoutes.signIn);
+                      },
+                      icon: Icons.arrow_back,
+                    )
+                  ],
+                ));
           }
         });
   }
@@ -204,7 +160,7 @@ class DrawerHome extends StatelessWidget {
 }
 
 void _runSpecialCmds() {
-  //sqlPorakiAddressService().redefineTabela();
+  sqlPorakiPedidoService().redefineTabela();
 }
 
 class RowCategoriesDrawerHome extends StatelessWidget {
@@ -226,20 +182,35 @@ class RowCategoriesDrawerHome extends StatelessWidget {
     LoginController _loginController = Get.find();
 
     return ListTile(
-
+      style: ListTileStyle.list,
       onTap: onTap,
-      tileColor: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'backLight').first.coreValor.toString()),
-      minLeadingWidth: (Get.width * 0.8) * 0.02,
+      tileColor: _loginController.colorFromHex(_loginController.listCore
+          .where((coreItem) => coreItem.coreChave == 'backLight')
+          .first
+          .coreValor
+          .toString()),
+      minLeadingWidth: (Get.width * 0.3) * 0.01,
       title: Text(
         text,
-        style: Get.textTheme.bodyText1!.copyWith(
-          fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-          color: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'textDark').first.coreValor.toString()),
+        style: TextStyle(
+          fontSize: 16, //fontWeight: FontWeight.bold,
+          // height: 0.1,
+          // fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+          color: _loginController.colorFromHex(_loginController.listCore
+              .where((coreItem) => coreItem.coreChave == 'textDark')
+              .first
+              .coreValor
+              .toString()),
         ),
       ),
       leading: Icon(
         icon,
-        color: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'textDark').first.coreValor.toString()),
+        color: _loginController.colorFromHex(_loginController.listCore
+            .where((coreItem) => coreItem.coreChave == 'textDark')
+            .first
+            .coreValor
+            .toString()),
+        size: 20,
       ),
     );
   }

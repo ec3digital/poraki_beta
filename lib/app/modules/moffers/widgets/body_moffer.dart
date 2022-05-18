@@ -2,11 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:poraki/app/data/models/oferta.dart';
 import 'package:poraki/app/modules/moffers/moffer_controller.dart';
-import 'package:poraki/app/modules/moffers/widgets/list_pics_moffer.dart';
-import 'package:poraki/app/modules/offers/widgets/button_offer.dart';
 import 'package:poraki/app/modules/offers/widgets/detail_offer.dart';
-import 'package:poraki/app/routes/app_routes.dart';
-import 'package:poraki/app/theme/app_theme.dart';
 
 // ignore: must_be_immutable
 class BodyMoffer extends StatelessWidget {
@@ -28,7 +24,7 @@ class BodyMoffer extends StatelessWidget {
           Oferta _moffer = moffersController.moffers
               .where((o) => o.OfertaGUID == this.offerGuid)
               .first;
-          print('body_moffer - ' + moffersController.moffers.length.toString());
+          // print('body_moffer - ' + moffersController.moffers.length.toString());
           List<String> offersImages = [];
           // offersImages.add(
           //     'https://firebasestorage.googleapis.com/v0/b/ec3digrepo.appspot.com/o/ofertas%2F' +

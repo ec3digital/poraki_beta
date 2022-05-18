@@ -6,7 +6,6 @@ import 'package:poraki/app/modules/offers/widgets/button_offer.dart';
 import 'package:poraki/app/modules/offers/widgets/detail_offer.dart';
 import 'package:poraki/app/routes/app_routes.dart';
 import 'package:poraki/app/services/sqlite/sqlporaki_cart_service.dart';
-import 'package:poraki/app/theme/app_theme.dart';
 import '../../../data/models/produto_oferta.dart';
 import '../offers_controller.dart';
 import 'list_pics_offer.dart';
@@ -30,11 +29,8 @@ class BodyOffer extends StatelessWidget {
             child: CircularProgressIndicator(),
           );
         } else {
-          //offersController.getOfferById(4);
-          ProdutoOferta _product = offersController.offers
-              .where((p) => p.ofertaID == this.offerId)
-              .first;
-          //print('body_offer - ' + offersController.offers.length.toString());
+
+          ProdutoOferta _product = offersController.offers.where((p) => p.ofertaID == this.offerId).first;
           List<String> offersImages = [];
           offersImages.add(
               'https://firebasestorage.googleapis.com/v0/b/ec3digrepo.appspot.com/o/ofertas%2F' +
@@ -71,19 +67,10 @@ class BodyOffer extends StatelessWidget {
                   SizedBox(height: 10),
                   ButtonOffer(
                     onPressed: () {
-                      sqlPorakiCartService().insertItemCarrinho(new sqlCarrinho(
-                          _product.ofertaID.toString(),
-                          '', //ofertaGUID,
-                          _product.ofertaTitulo.toString(),
-                          _product.ofertaCEP.toString(),
-                          '', //ofertaVendedorGUID,
-                          _product.ofertaPreco.toString(),
-                          '1', //ofertaQtd,
-                          _product.ofertaImgPath.toString(),
-                          _product.categoriaChave.toString(),
-                          DateTime.now().add(new Duration(hours: 1)).toString(),
-                        ''// adiciona 1h
-                      ));
+                      var entregaPrev = DateTime.now().add(new Duration(hours: 1)).toString();
+                      var cart = new sqlCarrinho(_product.ofertaID.toString(), _product.ofertaGUID.toString(), _product.ofertaTitulo.toString(), _product.ofertaCEP.toString(), _product.ofertaFKID.toString(), _product.ofertaPreco.toString(), '1', _product.ofertaImgPath.toString(), _product.categoriaChave.toString(), entregaPrev, _product.lojaID, _product.ofertaDetalhe);
+
+                      sqlPorakiCartService().insertItemCarrinho(cart);
 
                       Get.toNamed(AppRoutes.shoppingCart);
                     },
@@ -93,19 +80,10 @@ class BodyOffer extends StatelessWidget {
                   ),
                   ButtonOffer(
                     onPressed: () {
-                      sqlPorakiCartService().insertItemCarrinho(new sqlCarrinho(
-                          _product.ofertaID.toString(),
-                          '', //ofertaGUID,
-                          _product.ofertaTitulo.toString(),
-                          _product.ofertaCEP.toString(),
-                          '', //ofertaVendedorGUID,
-                          _product.ofertaPreco.toString(),
-                          '1', //ofertaQtd,
-                          _product.ofertaImgPath.toString(),
-                          _product.categoriaChave.toString(),
-                          DateTime.now().add(new Duration(hours: 1)).toString(),
-                        ''// adiciona 1h
-                      ));
+                      var entregaPrev = DateTime.now().add(new Duration(hours: 1)).toString();
+                      var cart = new sqlCarrinho(_product.ofertaID.toString(), _product.ofertaGUID.toString(), _product.ofertaTitulo.toString(), _product.ofertaCEP.toString(), _product.ofertaFKID.toString(), _product.ofertaPreco.toString(), '1', _product.ofertaImgPath.toString(), _product.categoriaChave.toString(), entregaPrev, _product.lojaID, _product.ofertaDetalhe);
+
+                      sqlPorakiCartService().insertItemCarrinho(cart);
 
                       Get.toNamed(
                         AppRoutes.shoppingCart,

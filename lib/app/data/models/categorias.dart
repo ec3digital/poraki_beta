@@ -14,7 +14,7 @@ class Categorias {
     categoriaNome = json['CategoriaNome'];
     categoriaChave = json['CategoriaChave'];
     secao = json['Secao'];
-    iconcode = json['Iconcode'];
+    iconcode = json['iconcode'];
     categoriaNomeLista = json['CategoriaNomeLista'];
     categoriaRevisao = json['CategoriaRevisao'];
     categoriaFormasEntrega = json['CategoriaRevisao'];
@@ -26,7 +26,7 @@ class Categorias {
     data['CategoriaNome'] = this.categoriaNome;
     data['CategoriaChave'] = this.categoriaChave;
     data['Secao'] = this.secao;
-    data['Iconcode'] = this.iconcode;
+    data['iconcode'] = this.iconcode;
     data['CategoriaNomeLista'] = this.categoriaNomeLista;
     data['CategoriaRevisao'] = this.categoriaRevisao;
     data['CategoriaFormasEntrega'] = this.categoriaFormasEntrega;

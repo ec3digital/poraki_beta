@@ -17,20 +17,20 @@ class sqlPorakiCartService {
       print('qt tab cart: ' + list.length.toString());
       late List<sqlCarrinho> itemsCarrinho = [];
 
-      //itemsCarrinho.clear();
       list.forEach((item) {
         itemsCarrinho.add(new sqlCarrinho(
             item['ofertaId'].toString(),
-            '',
+            item['ofertaGUID'].toString(),
             item['ofertaTitulo'].toString(),
             item['ofertaCEP'].toString(),
-            '',
+          item['ofertaVendedorGUID'].toString(),
             item['ofertaPreco'].toString(),
             item['ofertaQtd'].toString(),
             item['ofertaImgPath'].toString(),
             item['categoriaChave'].toString(),
             item['ofertaEntregaPrevEm'].toString(),
-            '', //item['ofertaEntregaPrevEm'].toString(),
+            item['ofertaLojaGUID'].toString(),
+            item['ofertaDetalhe'].toString(),
         ));
       });
 

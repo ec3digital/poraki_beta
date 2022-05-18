@@ -34,6 +34,12 @@ class BodyHome extends StatelessWidget {
             const SizedBox(height: 5),
             ListHorizontalCategoriesHome(controller: _controller),
             CardBannerAloneHome(),
+            const SizedBox(height: 10, ),
+        Padding(
+          padding: const EdgeInsets.all(10.0),
+          child:
+            Text('Mostrando ofertas próximas à ' + _loginController.listEnderecos.where((end) => end.EnderecoAtual).first.EnderecoLogra.toString())),
+            // const SizedBox(height: 5),
             GetBuilder<HomeController>(
               builder: (_) {
                 if (_controller.isLoading ||
@@ -48,15 +54,6 @@ class BodyHome extends StatelessWidget {
                         .coreValor
                         .toString(),
                     nomeLista: 'dayoffers',
-
-                    // title: _controller.offerToday!.ofertaTitulo ?? '',
-                    // price: _controller.offerToday!.ofertaPreco.toString(),
-                    // details: _controller.offerToday!.ofertaDetalhe ?? '',
-                    // cepOffer: _controller.offerToday!.ofertaCEP ?? '',
-                    // imgOffer:_loginController.listCore.where((coreItem) => coreItem.coreChave == 'imgpath').first.coreValor.toString() + _controller.offerToday!.ofertaID.toString() + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'imgpathsuffix').first.coreValor.toString(),
-
-                    //'https://firebasestorage.googleapis.com/v0/b/ec3digrepo.appspot.com/o/ofertas%2F' + _controller.offerToday!.ofertaID.toString() + '.jpg?alt=media',
-                    // 'https://cdn2.iconfinder.com/data/icons/black-friday-shopping-3/252/Asset_1140-256.png',
                   );
                 }
               },
@@ -74,16 +71,7 @@ class BodyHome extends StatelessWidget {
                         .coreValor
                         .toString(),
                     cardListOffers: _controller.bestoffers!,
-
-                    // title: _controller.bestoffer!.ofertaTitulo ?? '',
-                    // price: _controller.bestoffer!.ofertaPreco.toString(),
-                    // details: _controller.bestoffer!.ofertaDetalhe ?? '',
-                    // cepOffer: _controller.bestoffer!.ofertaCEP ?? '',
-                    // imgOffer: _loginController.listCore.where((coreItem) => coreItem.coreChave == 'imgpath').first.coreValor.toString() + _controller.bestoffer!.ofertaID.toString() + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'imgpathsuffix').first.coreValor.toString(),
-
                     nomeLista: 'bestoffers',
-                    //'https://firebasestorage.googleapis.com/v0/b/ec3digrepo.appspot.com/o/ofertas%2F' + _controller.bestoffer!.ofertaID.toString() + '.jpg?alt=media',
-                    // 'https://cdn2.iconfinder.com/data/icons/black-friday-shopping-3/252/Asset_1140-256.png',
                   );
                 }
               },
@@ -101,16 +89,7 @@ class BodyHome extends StatelessWidget {
                         .coreValor
                         .toString(),
                     cardListOffers: _controller.bestselleroffers!,
-
-                    // title: _controller.bestselleroffer!.ofertaTitulo ?? '',
-                    // price: _controller.bestselleroffer!.ofertaPreco.toString(),
-                    // details: _controller.bestselleroffer!.ofertaDetalhe ?? '',
-                    // cepOffer: _controller.bestselleroffer!.ofertaCEP ?? '',
-                    // imgOffer: _loginController.listCore.where((coreItem) => coreItem.coreChave == 'imgpath').first.coreValor.toString() + _controller.bestselleroffer!.ofertaID.toString() + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'imgpathsuffix').first.coreValor.toString(),
-
                     nomeLista: 'bestsellers',
-                    //'https://firebasestorage.googleapis.com/v0/b/ec3digrepo.appspot.com/o/ofertas%2F' + _controller.bestselleroffer!.ofertaID.toString() + '.jpg?alt=media',
-                    // 'https://cdn2.iconfinder.com/data/icons/black-friday-shopping-3/252/Asset_1140-256.png',
                   );
                 }
               },
@@ -128,20 +107,13 @@ class BodyHome extends StatelessWidget {
                         .coreValor
                         .toString(),
                     cardListOffers: _controller.mostfresheroffers!,
-
-                    // title: _controller.bestselleroffer!.ofertaTitulo ?? '',
-                    // price: _controller.bestselleroffer!.ofertaPreco.toString(),
-                    // details: _controller.bestselleroffer!.ofertaDetalhe ?? '',
-                    // cepOffer: _controller.bestselleroffer!.ofertaCEP ?? '',
-                    // imgOffer:_loginController.listCore.where((coreItem) => coreItem.coreChave == 'imgpath').first.coreValor.toString() + _controller.bestselleroffer!.ofertaID.toString() + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'imgpathsuffix').first.coreValor.toString(),
-
                     nomeLista: 'freshoffers',
-                    //'https://firebasestorage.googleapis.com/v0/b/ec3digrepo.appspot.com/o/ofertas%2F' + _controller.bestselleroffer!.ofertaID.toString() + '.jpg?alt=media',
-                    // 'https://cdn2.iconfinder.com/data/icons/black-friday-shopping-3/252/Asset_1140-256.png',
                   );
                 }
               },
             ),
+          //  TODO: to add - achados e perdidos, melhores serviços
+
           ],
         ),
       ),

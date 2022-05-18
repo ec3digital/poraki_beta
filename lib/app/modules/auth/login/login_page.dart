@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-//import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get.dart';
 import 'package:poraki/app/app_widget.dart';
-import 'package:poraki/app/data/models/sql/sqlCore.dart';
-import 'package:poraki/app/services/fbporaki_service.dart';
 import 'package:poraki/app/services/sqlite/sqlporaki_core_service.dart';
 import 'package:poraki/app/theme/app_theme.dart';
 import 'package:poraki/app/modules/auth/sign_up/sign_up_page.dart';
@@ -33,6 +30,7 @@ Future<List<Map<String,dynamic>>> buscaSqlUserData() async {
 class _LoginPageState extends State<LoginPage> {
   TextEditingController _mailInputController = TextEditingController();
   TextEditingController _passwordInputController = TextEditingController();
+  bool isLoading = false;
 
   bool _obscurePassword = true;
 
@@ -199,11 +197,26 @@ class _LoginPageState extends State<LoginPage> {
                         )
                       ],
                     ),
+
                     ElevatedButton(
                       onPressed: () {
-                        _doLogin(context);
+                        if(!isLoading)
+                          _doLogin(context);
+
+                        setState(() {
+                          isLoading = true;
+                        });
+
                       },
-                      child: Text(
+                      child: (isLoading)
+                          ? const SizedBox(
+                          width: 16,
+                          height: 16,
+                          child: CircularProgressIndicator(
+                            color: Colors.white,
+                            strokeWidth: 1.5,
+                          ))
+                          : const Text(
                         "Login",
                         style: TextStyle(
                           color: Colors.white,
@@ -220,6 +233,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                     ),
+
                     Padding(
                       padding: EdgeInsets.symmetric(vertical: 10),
                       child: Divider(
@@ -278,6 +292,7 @@ class _LoginPageState extends State<LoginPage> {
       await _loginController.runCore();
       await _loginController.loadUserData();
       await _loginController.loadStoresData();
+      await _loginController.loadAddressData();
       //TODO: tratar a resposta do login
 
       // // salva usuario no hive, cria instancia do hive e abre a box

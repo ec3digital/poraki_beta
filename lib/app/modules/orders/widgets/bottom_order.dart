@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:poraki/app/data/models/pedido.dart';
 import 'package:poraki/app/modules/auth/login/login_controller.dart';
-import '../../../theme/app_theme.dart';
 
 class BottomOrder extends StatelessWidget {
   final Pedido ped;
@@ -116,18 +115,18 @@ class BottomOrder extends StatelessWidget {
     );
   }
 
-  createAddressText(String strAddress, double topMargin) {
-    return Container(
-        margin: EdgeInsets.only(top: topMargin),
-        child: Text(
-          strAddress,
-          style: Get.textTheme.bodyText1!.copyWith(
-            fontSize: 16,
-            fontWeight: FontWeight.normal,
-            color: AppColors.primaryColor,
-          ),
-        ));
-  }
+  // createAddressText(String strAddress, double topMargin, Color colorText) {
+  //   return Container(
+  //       margin: EdgeInsets.only(top: topMargin),
+  //       child: Text(
+  //         strAddress,
+  //         style: Get.textTheme.bodyText1!.copyWith(
+  //           fontSize: 16,
+  //           fontWeight: FontWeight.normal,
+  //           color: colorText
+  //         ),
+  //       ));
+  // }
 
   //
   // priceSection() {

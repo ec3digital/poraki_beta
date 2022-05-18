@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
+import 'package:poraki/app/data/models/enderecos.dart';
 import 'package:poraki/app/modules/auth/login/login_controller.dart';
 import 'package:poraki/app/modules/offers/widgets/button_offer.dart';
 import 'package:poraki/app/modules/shopping_cart/shopping_cart_controller.dart';
-import 'package:poraki/app/theme/app_theme.dart';
 
 enum FormasPagto { Cartao, PixQR, CarteirasDigitais, Direto }
 
@@ -18,7 +18,21 @@ class BodyCheckOut extends StatefulWidget {
 
 class _BodyCheckOut extends State<BodyCheckOut> {
   FormasPagto formaPagto = FormasPagto.Cartao;
+
   //GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey();
+
+  Icon retIcon(String enderecoTipo) {
+    late Icon retIcon;
+    if (enderecoTipo == "Casa") {
+      retIcon = Icon(Icons.home);
+    } else if (enderecoTipo == "Trabalho") {
+      retIcon = Icon(Icons.work);
+    } else {
+      retIcon = Icon(Icons.map);
+    }
+
+    return retIcon;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +71,7 @@ class _BodyCheckOut extends State<BodyCheckOut> {
                       child: ListView(
                         children: <Widget>[
                           paymentSection(darkText),
-                          selectedAddressSection(darkText),
+                          selectedAddressSection(darkText, _loginController),
                           widgetEntrega(darkText),
                           checkoutItem(darkText),
                           priceSection(darkText)
@@ -72,7 +86,7 @@ class _BodyCheckOut extends State<BodyCheckOut> {
                       margin: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
                       child: ButtonOffer(
                         onPressed: () async {
-                          await widget.controller.saveBuy();
+                          Future.wait([widget.controller.saveBuy()]);
 
                           final snackBar = SnackBar(
                               backgroundColor: darkText,
@@ -103,7 +117,8 @@ class _BodyCheckOut extends State<BodyCheckOut> {
         });
   }
 
-  selectedAddressSection(Color textColor) {
+  selectedAddressSection(Color textColor, LoginController _loginController) {
+    Enderecos endereco = _loginController.listEnderecos.first;
     return Container(
       margin: EdgeInsets.all(4),
       decoration: BoxDecoration(
@@ -127,28 +142,28 @@ class _BodyCheckOut extends State<BodyCheckOut> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Text("Danilo Santos",
+                  Text(_loginController.usuNome.toString(),
                       style: Get.textTheme.bodyText1!.copyWith(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                       )),
                 ],
               ),
-              createAddressText("Rua Carlos Magalhães, 100", 16, textColor),
-              createAddressText("CEP 05735-030", 6, textColor),
-              createAddressText("São Paulo - SP", 6, textColor),
+              //retIcon(endereco.EnderecoTipo.toString()),
+              createAddressText(endereco.EnderecoLogra.toString() + ', ' + endereco.EnderecoNumero.toString(), 16, textColor),
+              createAddressText('CEP ' + endereco.EnderecoCEP.toString(), 6, textColor),
               SizedBox(
                 height: 6,
               ),
               SizedBox(
                 height: 16,
               ),
-              Container(
-                color: textColor,
-                height: 1,
-                width: double.infinity,
-              ),
-              addressAction()
+              // Container(
+              //   color: textColor,
+              //   height: 1,
+              //   width: double.infinity,
+              // ),
+              //addressAction(_loginController)
             ],
           ),
         ),
@@ -169,19 +184,47 @@ class _BodyCheckOut extends State<BodyCheckOut> {
         ));
   }
 
-  addressAction() {
+  addressAction(LoginController _loginController) {
     return Container(
       child: Row(
         children: <Widget>[
           Spacer(
             flex: 2,
           ),
+
           OutlinedButton(
-            onPressed: () {},
-            child: Text(
-              "Mudar Endereço",
-            ),
+            style: ElevatedButton.styleFrom(primary: Colors.yellow),
+            onPressed: () {
+              showDialog<String>(
+                context: context,
+                builder: (BuildContext context) => SimpleDialog(
+                  title: const Text('Escolha o endereço'),
+                  children: <Widget>[
+                ListView.builder(
+                scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  padding: const EdgeInsets.all(16.0),
+                  itemCount: _loginController.listEnderecos.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return buildAddressesOptions(_loginController.listEnderecos[index]);
+                  }),
+                  ],
+                ),
+              ).then((returnVal) {
+                if (returnVal != null) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Voce clicou na opção $returnVal'),
+                      action: SnackBarAction(label: 'OK', onPressed: () {}),
+                    ),
+                  );
+                }
+              });
+            },
+            child: const Text('Mudar Endereço'),
           ),
+
+
           // Spacer(
           //   flex: 3,
           // ),
@@ -375,7 +418,6 @@ class _BodyCheckOut extends State<BodyCheckOut> {
                   getFormattedCurrency(widget.controller.cartDiscount)),
               createPriceItem(
                   "Taxas", getFormattedCurrency(widget.controller.cartTaxes)),
-              // createPriceItem("TOTAL", getFormattedCurrency(widget.controller.cartTotal)),
               createPriceItem("Taxa Entrega",
                   getFormattedCurrency(widget.controller.cartDelivery)),
               SizedBox(
@@ -536,24 +578,6 @@ class _BodyCheckOut extends State<BodyCheckOut> {
                     ]))));
   }
 
-  //
-  //
-  //   return Container(
-  //     padding: EdgeInsets.symmetric(horizontal: 0, vertical: 3),
-  //     child: Row(
-  //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //       children: <Widget>[
-  //         Text(
-  //           key,
-  //         ),
-  //         Text(
-  //           FormaPagto,
-  //         )
-  //       ],
-  //     ),
-  //   );
-  // }
-
   createPriceItem(String key, String value) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 0, vertical: 3),
@@ -571,4 +595,16 @@ class _BodyCheckOut extends State<BodyCheckOut> {
       ),
     );
   }
+
+  Widget buildAddressesOptions(Enderecos endereco) {
+    return Column(children: [
+      ListTile(
+        leading: retIcon(endereco.EnderecoTipo.toString()),
+        title: Text(endereco.EnderecoLogra.toString() + ', ' + endereco.EnderecoNumero.toString()),
+        onTap: () => Navigator.pop(context, endereco.EnderecoCEP.toString()),
+      ),
+
+    ]);
+  }
+
 }

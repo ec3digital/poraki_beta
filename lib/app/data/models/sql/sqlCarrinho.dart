@@ -8,10 +8,11 @@ class sqlCarrinho {
   final String ofertaQtd;
   final String ofertaImgPath;
   final String categoriaChave;
-  final String? ofertaEntregaPrevEm;
+  late String? ofertaEntregaPrevEm;
   final String? ofertaLojaGUID;
+  late String? ofertaDetalhe;
 
-  sqlCarrinho(this.ofertaId, this.ofertaGUID, this.ofertaTitulo, this.ofertaCEP, this.ofertaVendedorGUID, this.ofertaPreco, this.ofertaQtd, this.ofertaImgPath, this.categoriaChave, this.ofertaEntregaPrevEm, this.ofertaLojaGUID);
+  sqlCarrinho(this.ofertaId, this.ofertaGUID, this.ofertaTitulo, this.ofertaCEP, this.ofertaVendedorGUID, this.ofertaPreco, this.ofertaQtd, this.ofertaImgPath, this.categoriaChave, this.ofertaEntregaPrevEm, this.ofertaLojaGUID, this.ofertaDetalhe);
 
   Map<String, dynamic> toMap() {
     return <String, dynamic> {

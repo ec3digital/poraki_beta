@@ -133,7 +133,40 @@ class OrderController extends GetxController {
 
     if(pedCloud != null) {
       // transforma o pedido da nuvem em pedido local
-      var sqlped = new sqlPedido(pedidoGUID, pedCloud.PedidoVendedorGUID, pedCloud.PedidoVendedorEmail, pedCloud.PedidoEm, pedCloud.PedidoValorTotal, pedCloud.PedidoFormaPagto, pedCloud.PedidoCancelada, pedCloud.PedidoPagtoEm, pedCloud.PedidoPessoaNome, pedCloud.PedidoPessoaEmail, pedCloud.PedidoUsuGUID, pedCloud.PedidoAval, pedCloud.PedidoAvalEm, pedCloud.PedidoMoeda, pedCloud.PedidoCEP, pedCloud.PedidoEndereco, pedCloud.PedidoNumero, pedCloud.PedidoCompl, pedCloud.PedidoAutoriza, pedCloud.PedidoInstituicao, pedCloud.PedidoEntregaPrevista, pedCloud.PedidoEntregaRealizadaEm, pedCloud.PedidoEntregaPorUsuEmail, pedCloud.PedidoEntregaPorUsuNome);
+      var sqlped = new sqlPedido(
+          pedidoGUID,
+          pedCloud.PedidoVendedorGUID,
+          pedCloud.PedidoVendedorEmail,
+          pedCloud.PedidoEm,
+          pedCloud.PedidoValorTotal,
+          pedCloud.PedidoFormaPagto,
+          pedCloud.PedidoCancelada,
+          pedCloud.PedidoPagtoEm,
+          pedCloud.PedidoPessoaNome,
+          pedCloud.PedidoPessoaEmail,
+          pedCloud.PedidoUsuGUID,
+          pedCloud.PedidoAval,
+          pedCloud.PedidoAvalEm,
+          pedCloud.PedidoMoeda,
+          pedCloud.PedidoCEP,
+          pedCloud.PedidoEndereco,
+          pedCloud.PedidoNumero,
+          pedCloud.PedidoCompl,
+          pedCloud.PedidoAutoriza,
+          pedCloud.PedidoInstituicao,
+          pedCloud.PedidoEntregaPrevista,
+          pedCloud.PedidoEntregaRealizadaEm,
+          pedCloud.PedidoEntregaPorUsuEmail,
+          pedCloud.PedidoEntregaPorUsuNome,
+          pedCloud.PedidoDetalhe,
+          pedCloud.PedidoEntregaDetalhe,
+          // pedCloud.PedidoEntregaEm,
+          // pedCloud.PedidoEntregaPorEmail,
+          // pedCloud.PedidoEntregaPorNome,
+          pedCloud.RecebidoPor,
+          pedCloud.PedidoLojaID,
+        pedCloud.PedidoEntregaCodigo
+      );
 
       await sqlPorakiPedidoService().deleteOrder(pedidoGUID);
       await sqlPorakiPedidoService().insertOrder(sqlped);

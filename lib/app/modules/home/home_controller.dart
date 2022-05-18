@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import 'package:poraki/app/data/models/enderecos.dart';
+import 'package:poraki/app/data/repositories/address_repository.dart';
 import 'package:poraki/app/modules/auth/login/login_controller.dart';
 import 'package:poraki/app/services/fbporaki_service.dart';
 import '../../data/models/categorias.dart';
@@ -17,6 +19,7 @@ class HomeController extends GetxController {
   List<ProdutoOferta>? mostfresheroffers = [];
   List<ProdutoOferta>? bestselleroffers = [];
   List<Categorias>? categorias;
+
   // List<Pessoas>? pessoas;
 
   bool isLoading = false;
@@ -108,6 +111,19 @@ class HomeController extends GetxController {
       changeLoading(false);
     }
   }
+
+  // Future<void> getAddresses() async {
+  //   try {
+  //     changeLoading(true);
+  //     enderecos = await AddressRepository().getAllAddresses();
+  //     // categorias?.forEach((element) { print(element);});
+  //   } catch (e) {
+  //     print('Erro no getCategories() controller ${e.toString()}');
+  //   } finally {
+  //     changeLoading(false);
+  //   }
+  // }
+
 
   // Future<void> getPeople() async {
   //   try {

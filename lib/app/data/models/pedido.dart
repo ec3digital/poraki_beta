@@ -23,8 +23,48 @@ class Pedido {
   late final String? PedidoEntregaRealizadaEm;
   late final String? PedidoEntregaPorUsuEmail;
   late final String? PedidoEntregaPorUsuNome;
+  late final String? PedidoDetalhe;
+  late final String? PedidoEntregaDetalhe;
+  // late final String? PedidoEntregaEm;
+  // late final String? PedidoEntregaPorEmail;
+  // late final String? PedidoEntregaPorNome;
+  late final String? RecebidoPor;
+  late final String? PedidoLojaID;
+  late final String? PedidoEntregaCodigo;
 
-  Pedido(this.PedidoGUID, this.PedidoVendedorGUID, this.PedidoVendedorEmail, this.PedidoEm, this.PedidoValorTotal, this.PedidoFormaPagto, this.PedidoCancelada, this.PedidoPagtoEm, this.PedidoPessoaNome, this.PedidoPessoaEmail, this.PedidoUsuGUID, this.PedidoAval, this.PedidoAvalEm, this.PedidoMoeda, this.PedidoCEP, this.PedidoEndereco, this.PedidoNumero, this.PedidoCompl, this.PedidoAutoriza, this.PedidoInstituicao, this.PedidoEntregaPrevista, this.PedidoEntregaRealizadaEm, this.PedidoEntregaPorUsuEmail, this.PedidoEntregaPorUsuNome);
+  Pedido(
+      this.PedidoGUID,
+      this.PedidoVendedorGUID,
+      this.PedidoVendedorEmail,
+      this.PedidoEm,
+      this.PedidoValorTotal,
+      this.PedidoFormaPagto,
+      this.PedidoCancelada,
+      this.PedidoPagtoEm,
+      this.PedidoPessoaNome,
+      this.PedidoPessoaEmail,
+      this.PedidoUsuGUID,
+      this.PedidoAval,
+      this.PedidoAvalEm,
+      this.PedidoMoeda,
+      this.PedidoCEP,
+      this.PedidoEndereco,
+      this.PedidoNumero,
+      this.PedidoCompl,
+      this.PedidoAutoriza,
+      this.PedidoInstituicao,
+      this.PedidoEntregaPrevista,
+      this.PedidoEntregaRealizadaEm,
+      this.PedidoEntregaPorUsuEmail,
+      this.PedidoEntregaPorUsuNome,
+      this.PedidoDetalhe,
+      this.PedidoEntregaDetalhe,
+      // this.PedidoEntregaEm,
+      // this.PedidoEntregaPorEmail,
+      // this.PedidoEntregaPorNome,
+      this.RecebidoPor,
+      this.PedidoLojaID,
+      this.PedidoEntregaCodigo);
 
   Pedido.fromJson(Map<String, dynamic> json) {
     PedidoGUID = json['PedidoGUID'].toString();
@@ -51,6 +91,15 @@ class Pedido {
     PedidoEntregaRealizadaEm = json['PedidoEntregaRealizadaEm'].toString();
     PedidoEntregaPorUsuEmail = json['PedidoEntregaPorUsuEmail'].toString();
     PedidoEntregaPorUsuNome = json['PedidoEntregaPorUsuNome'].toString();
+    PedidoLojaID = json['PedidoLojaID'].toString();
+    PedidoDetalhe = json['PedidoDetalhe'].toString();
+    PedidoEntregaDetalhe = json['PedidoEntregaDetalhe'].toString();
+    // PedidoEntregaEm = json['PedidoEntregaEm'].toString();
+    // PedidoEntregaPorEmail = json['PedidoEntregaPorEmail'].toString();
+    // PedidoEntregaPorNome = json['PedidoEntregaPorNome'].toString();
+    RecebidoPor = json['RecebidoPor'].toString();
+    PedidoLojaID = json['PedidoLojaID'].toString();
+    PedidoEntregaCodigo = json['PedidoEntregaCodigo'].toString();
   }
 
   Map<String, String> toMap() {
@@ -79,37 +128,54 @@ class Pedido {
       "PedidoEntregaPrevista": PedidoEntregaPrevista.toString(),
       "PedidoEntregaRealizadaEm": PedidoEntregaRealizadaEm.toString(),
       "PedidoEntregaPorUsuEmail": PedidoEntregaPorUsuEmail.toString(),
-      "PedidoEntregaPorUsuNome": PedidoEntregaPorUsuNome.toString()
+      "PedidoEntregaPorUsuNome": PedidoEntregaPorUsuNome.toString(),
+      "PedidoLojaID": PedidoLojaID.toString(),
+      "PedidoDetalhe": PedidoDetalhe.toString(),
+      "PedidoEntregaDetalhe": PedidoEntregaDetalhe.toString(),
+      // "PedidoEntregaEm": PedidoEntregaEm.toString(),
+      // "PedidoEntregaPorEmail": PedidoEntregaPorEmail.toString(),
+      // "PedidoEntregaPorNome": PedidoEntregaPorNome.toString(),
+      "RecebidoPor": RecebidoPor.toString(),
+      "PedidoLojaID": PedidoLojaID.toString(),
+      "PedidoEntregaCodigo": PedidoEntregaCodigo.toString()
     };
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['PedidoGUID'] = PedidoGUID.toString();
+    // data['PedidoGUID'] = PedidoGUID.toString();
     data["PedidoVendedorGUID"] = PedidoVendedorGUID.toString();
     data["PedidoVendedorEmail"] = PedidoVendedorEmail;
-    data["PedidoEm"] = PedidoEm;
+    //data["PedidoEm"] = PedidoEm;
     data["PedidoValorTotal"] = PedidoValorTotal.toString();
     data["PedidoFormaPagto"] = PedidoFormaPagto.toString();
     data["PedidoCancelada"] = PedidoCancelada.toString();
-    data["PedidoPagtoEm"] = PedidoPagtoEm;
+    // data["PedidoPagtoEm"] = PedidoPagtoEm;
     data["PedidoPessoaNome"] = PedidoPessoaNome;
     data["PedidoPessoaEmail"] = PedidoPessoaEmail;
     data["PedidoUsuGUID"] = PedidoUsuGUID.toString();
-    data["PedidoAval"] = PedidoAval.toString();
-    data["PedidoAvalEm"] = PedidoAvalEm.toString();
+    // data["PedidoAval"] = PedidoAval.toString();
+    // data["PedidoAvalEm"] = PedidoAvalEm.toString();
     data["PedidoMoeda"] = PedidoMoeda.toString();
     data["PedidoCEP"] = PedidoCEP;
     data["PedidoEndereco"] = PedidoEndereco.toString();
     data["PedidoNumero"] = PedidoNumero.toString();
     data["PedidoCompl"] = PedidoCompl.toString();
-    data["PedidoAutoriza"] = PedidoAutoriza.toString();
-    data["PedidoInstituicao"] = PedidoInstituicao.toString();
+    // data["PedidoAutoriza"] = PedidoAutoriza.toString();
+    // data["PedidoInstituicao"] = PedidoInstituicao.toString();
     data["PedidoEntregaPrevista"] = PedidoEntregaPrevista.toString();
-    data["PedidoEntregaRealizadaEm"] = PedidoEntregaRealizadaEm.toString();
-    data["PedidoEntregaPorUsuEmail"] = PedidoEntregaPorUsuEmail.toString();
-    data["PedidoEntregaPorUsuNome"] = PedidoEntregaPorUsuNome.toString();
+    // data["PedidoEntregaRealizadaEm"] = PedidoEntregaRealizadaEm.toString();
+    data["PedidoEntregaPorUsuEmail"] = '';// PedidoEntregaPorUsuEmail.toString();
+    data["PedidoEntregaPorUsuNome"] = ''; // PedidoEntregaPorUsuNome.toString();
+    data["PedidoLojaID"] = PedidoLojaID.toString();
+    data["PedidoDetalhe"] = PedidoDetalhe.toString();
+    data["PedidoEntregaCodigo"] = PedidoEntregaCodigo.toString();
+    // data["PedidoEntregaDetalhe"] = PedidoEntregaDetalhe.toString();
+    // data["PedidoEntregaEm"] = PedidoEntregaEm.toString();
+    // data["PedidoEntregaPorEmail"] = PedidoEntregaPorEmail.toString();
+    // data["PedidoEntregaPorNome"] = PedidoEntregaPorNome.toString();
+    // data["RecebidoPor"] = RecebidoPor.toString();
+    // data["PedidoLojaID"] = PedidoLojaID.toString();
     return data;
   }
-
 }

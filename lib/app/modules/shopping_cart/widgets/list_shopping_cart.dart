@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:poraki/app/modules/auth/login/login_controller.dart';
 import 'package:poraki/app/modules/offers/offers_controller.dart';
 import 'package:poraki/app/routes/app_routes.dart';
-import '../../../theme/app_theme.dart';
 import '../shopping_cart_controller.dart';
 import 'numeric_button_widget.dart';
 
@@ -114,12 +113,6 @@ class _ListShoppingCartState extends State<ListShoppingCart> {
                                       .totalValue = widget.controller
                                           .listShoppingCart[index].value *
                                       value;
-
-                                  // print('new qt: ' + value.toString());
-                                  // print('new id: ' + widget
-                                  //     .controller
-                                  //     .listShoppingCart[index]
-                                  //     .id.toString());
 
                                   var id = int.parse(widget
                                       .controller.listShoppingCart[index].id

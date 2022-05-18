@@ -37,7 +37,8 @@ class _ListMoffersState extends State<ListMoffers> {
             .getMoffersByStore(widget.selStore!.LojaGUID.toString());
     }
 
-    if (load)
+    if (load && !widget.listStores.contains(new Lojas(null, null, 'Nenhuma', null, null, null,
+        null, null, null, null, null, null, null, null)))
       widget.listStores.add(new Lojas(null, null, 'Nenhuma', null, null, null,
           null, null, null, null, null, null, null, null));
 

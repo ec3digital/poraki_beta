@@ -16,6 +16,7 @@ class sqlPorakiLoginService {
       db.execute(_createTablePedidos);
       db.execute(_createTablePedidoItens);
       db.execute(_createTablePedidoMsgs);
+      db.execute(_createTableEnderecos);
     });
 
     var usu = await buscaUsuDados();
@@ -209,7 +210,11 @@ class sqlPorakiLoginService {
     pedidoEntregaPrevista TEXT,
     pedidoEntregaRealizadaEm TEXT,
     pedidoEntregaPorUsuEmail TEXT,
-    pedidoEntregaPorUsuNome TEXT
+    pedidoEntregaPorUsuNome TEXT,
+    pedidoEntregaDetalhe TEXT,
+    pedidoDetalhe TEXT,
+    pedidoRecebidoPor TEXT,
+    pedidoLojaId TEXT
     );
   ''';
 
@@ -221,14 +226,22 @@ class sqlPorakiLoginService {
     ofertaGUID TEXT,
     ofertaTitulo TEXT,
     ofertaCEP TEXT,
-    ofertaVendedorId INT,
+    ofertaVendedorGuid TEXT,
     ofertaPreco REAL,
     ofertaQtd INT,
     ofertaTotal REAL,
     ofertaImgPath TEXT,
     categoriaChave TEXT,
-    ofertaCancelada INT,
-    ofertaEntregueEm TEXT
+    ofertaDetalhe TEXT,
+    ofertaCanceladaEm TEXT,
+    ofertaCanceladaPorNome TEXT,
+    ofertaCanceladaPorEmail TEXT,
+    ofertaEntregaCodigo TEXT,
+    ofertaEntregueEm TEXT,
+    ofertaEntreguePorNome TEXT,
+    ofertaEntreguePorEmail TEXT,
+    ofertaPrevisaoEntrega TEXT,
+    ofertaLojaID TEXT
     );
   ''';
 
@@ -309,6 +322,26 @@ class sqlPorakiLoginService {
     mofertaCancelada INT,
     mofertaDispoAte TEXT,
     mofertaTempoDeEntrega
+    );
+  ''';
+
+
+  // Tipos de Endereços: Home / Work / School / Others
+  final String _createTableEnderecos = '''
+    CREATE TABLE IF NOT EXISTS enderecos (
+    enderecoGuid TEXT,
+    usuEmail TEXT,
+    usuGuid TEXT,
+    enderecoCEP TEXT,
+    enderecoLogra TEXT,
+    enderecoNumero TEXT,
+    enderecoCompl TEXT,
+    enderecoTipo TEXT,
+    enderecoAtual TEXT,
+    enderecoUltData TEXT
+    enderecoDesde TEXT,
+    enderecoLatitude TEXT,
+    enderecoLongitude TEXT
     );
   ''';
 

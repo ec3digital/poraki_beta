@@ -200,7 +200,7 @@ class _MOfferPage extends State<MOfferPage> {
                         key: _form,
                         child: ListView(
                           children: [
-                            SizedBox(height: 20),
+                            const SizedBox(height: 20),
 
                             ListTile(
                               leading: Text('Categoria'),
@@ -227,7 +227,7 @@ class _MOfferPage extends State<MOfferPage> {
                               ),
                             ),
 
-                            SizedBox(height: 20),
+                            const SizedBox(height: 20),
 
                             if (showCamposBasicos)
                               Column(
@@ -235,8 +235,10 @@ class _MOfferPage extends State<MOfferPage> {
                                   TextFormField(
                                     controller:
                                         widget.mofferController.txtTitulo,
-                                    decoration:
-                                        InputDecoration(labelText: 'Titulo'),
+                                    decoration: InputDecoration(
+                                        labelText: 'Titulo',
+                                        border: OutlineInputBorder(),
+                                        filled: true),
                                     // textInputAction: TextInputAction.next,
                                     // onFieldSubmitted: (_) {
                                     //   FocusScope.of(context)
@@ -251,11 +253,14 @@ class _MOfferPage extends State<MOfferPage> {
                                       return null;
                                     },
                                   ),
+                                  const SizedBox(height: 20),
                                   TextFormField(
                                     controller:
                                         widget.mofferController.txtDescricao,
-                                    decoration:
-                                        InputDecoration(labelText: 'Descrição'),
+                                    decoration: InputDecoration(
+                                      labelText: 'Descrição',
+                                      border: OutlineInputBorder(),
+                                    ),
                                     maxLines: 3,
                                     keyboardType: TextInputType.multiline,
                                   ),
@@ -270,9 +275,9 @@ class _MOfferPage extends State<MOfferPage> {
                                         },
                                         activeColor: Colors.blue,
                                       ),
-                                      SizedBox(width: 20),
+                                      const SizedBox(width: 20),
                                       Text('Preco à combinar'),
-                                      SizedBox(height: 20)
+                                      const SizedBox(height: 20)
                                     ],
                                   ),
                                 ],
@@ -290,18 +295,21 @@ class _MOfferPage extends State<MOfferPage> {
                                               valPrecoInicial = val;
                                             });
                                           }),
-                                      SizedBox(width: 20),
+                                      const SizedBox(width: 20),
                                       Text(valPrecoInicial
                                           ? 'Preco à partir de'
                                           : 'Preço fechado'),
-                                      SizedBox(height: 20),
+                                      const SizedBox(height: 20),
                                     ],
                                   ),
                                   TextFormField(
                                     controller:
                                         widget.mofferController.txtPreco,
-                                    decoration:
-                                        InputDecoration(labelText: 'Preço'),
+                                    decoration: InputDecoration(
+                                      labelText: 'Preço',
+                                      prefix: Text('R\$ '),
+                                      border: OutlineInputBorder(),
+                                    ),
                                     textInputAction: TextInputAction.next,
                                     focusNode: _priceFocusNode,
                                     keyboardType:
@@ -323,7 +331,7 @@ class _MOfferPage extends State<MOfferPage> {
 
                                   if (showTxtValorSinalOrc)
                                     Column(children: <Widget>[
-                                      SizedBox(width: 20),
+                                      const SizedBox(width: 20),
                                       Row(
                                         children: <Widget>[
                                           Switch(
@@ -333,21 +341,23 @@ class _MOfferPage extends State<MOfferPage> {
                                                   valSinalPercentual = val;
                                                 });
                                               }),
-                                          SizedBox(width: 20),
+                                          const SizedBox(width: 20),
                                           Text(valSinalPercentual
                                               ? 'Sinal em Percentual'
                                               : 'Sinal em valor cheio'),
-                                          SizedBox(height: 20)
+                                          const SizedBox(height: 20)
                                         ],
                                       ),
                                       TextFormField(
                                           controller: widget.mofferController
                                               .txtValorSinalOrc,
                                           decoration: InputDecoration(
+                                              prefix: Text('R\$ '),
+                                              border: OutlineInputBorder(),
                                               labelText:
                                                   'Valor Sinal/Orçamento'),
                                           keyboardType: TextInputType.number),
-                                      SizedBox(width: 20),
+                                      const SizedBox(width: 20),
                                     ]),
 
                                   if (showAceitaProposta)
@@ -360,9 +370,9 @@ class _MOfferPage extends State<MOfferPage> {
                                                 valAceitaProposta = val;
                                               });
                                             }),
-                                        SizedBox(width: 20),
+                                        const SizedBox(width: 20),
                                         Text('Aceita contra proposta'),
-                                        SizedBox(height: 20)
+                                        const SizedBox(height: 20)
                                       ],
                                     ),
                                   if (valAceitaProposta)
@@ -392,115 +402,155 @@ class _MOfferPage extends State<MOfferPage> {
                                               valQtd = val;
                                             });
                                           }),
-                                      SizedBox(width: 20),
+                                      const SizedBox(width: 20),
                                       Text(valQtd
                                           ? 'Controla quantidade'
                                           : 'Sem controle de quantidade'),
-                                      SizedBox(height: 20)
+                                      const SizedBox(height: 30)
                                     ],
                                   ),
+                                  const SizedBox(height: 30),
                                   if (valQtd)
                                     TextFormField(
                                       controller:
                                           widget.mofferController.txtQtdDispo,
                                       decoration: InputDecoration(
-                                          labelText: 'Qtd disponível'),
+                                        labelText: 'Qtd disponível',
+                                        border: OutlineInputBorder(),
+                                      ),
                                       keyboardType: TextInputType.number,
                                     ),
-                                  if (valQtd)
-                                    TextFormField(
-                                      controller: widget
-                                          .mofferController.txtQtdMaxPorVenda,
-                                      decoration: InputDecoration(
-                                          labelText: 'Qtd máxima por venda'),
-                                      keyboardType: TextInputType.number,
+                                  const SizedBox(height: 20),
+                                  TextFormField(
+                                    controller: widget
+                                        .mofferController.txtQtdMaxPorVenda,
+                                    decoration: InputDecoration(
+                                      labelText: 'Qtd máxima por venda',
+                                      border: OutlineInputBorder(),
                                     ),
-                                  if (valQtd)
-                                    TextFormField(
-                                      controller:
-                                          widget.mofferController.txtQtdAviso,
-                                      decoration: InputDecoration(
-                                          labelText: 'Qtd aviso acabando'),
-                                      keyboardType: TextInputType.number,
+                                    keyboardType: TextInputType.number,
+                                  ),
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
+                                  TextFormField(
+                                    controller:
+                                        widget.mofferController.txtQtdAviso,
+                                    decoration: InputDecoration(
+                                      labelText: 'Qtd aviso acabando',
+                                      border: OutlineInputBorder(),
                                     ),
+                                    keyboardType: TextInputType.number,
+                                  ),
                                 ],
                               ),
 
+                            const SizedBox(height: 20),
                             if (showTxtPesoPorcao)
                               TextFormField(
                                   controller:
                                       widget.mofferController.txtPesoPorcao,
-                                  decoration:
-                                      InputDecoration(labelText: 'Peso/Porção'),
+                                  decoration: InputDecoration(
+                                    labelText: 'Peso/Porção',
+                                    border: OutlineInputBorder(),
+                                  ),
                                   keyboardType: TextInputType.text),
+
+                            const SizedBox(height: 20),
                             if (showTxtPesoPorcaoUn)
                               TextFormField(
                                   controller:
                                       widget.mofferController.txtPesoPorcaoUn,
                                   decoration: InputDecoration(
-                                      labelText: 'Peso/Porção Unidade'),
+                                    labelText: 'Peso/Porção Unidade',
+                                    border: OutlineInputBorder(),
+                                  ),
                                   keyboardType: TextInputType.text),
                             // if (showTxtSabor)
                             //   TextFormField(
                             //       controller: widget.mofferController.txtSabor,
                             //       decoration: InputDecoration(labelText: 'Sabores divididos por /'),
                             //       keyboardType: TextInputType.multiline),
+
+                            const SizedBox(height: 20),
                             if (showTxtValidade)
                               TextFormField(
                                   controller:
                                       widget.mofferController.txtValidade,
                                   decoration: InputDecoration(
+                                      suffix: Text('dias'),
+                                      border: OutlineInputBorder(),
                                       labelText: '$labelValidade (ex: 5 dias)'),
                                   keyboardType: TextInputType.number),
 
+                            const SizedBox(height: 20),
                             if (showTxtCep)
                               TextFormField(
                                 controller: widget.mofferController.txtCep,
-                                decoration:
-                                    InputDecoration(labelText: 'Cep da oferta'),
+                                decoration: InputDecoration(
+                                  labelText: 'Cep da oferta',
+                                  fillColor: Colors.redAccent.shade100,
+                                  border: OutlineInputBorder(),
+                                ),
                                 keyboardType: TextInputType.number,
                               ),
 
+                            const SizedBox(height: 20),
                             if (showTxtOfertaCepDistancia && showCamposBasicos)
                               TextFormField(
                                 controller:
                                     widget.mofferController.txtCepDistancia,
                                 decoration: InputDecoration(
+                                    suffix: Text('Km '),
+                                    border: OutlineInputBorder(),
                                     labelText:
                                         'Distância de $labelEntrega em Km'),
                                 keyboardType: TextInputType.number,
                               ),
 
+                            const SizedBox(height: 20),
                             if (showTxtMarca)
                               TextFormField(
                                   controller: widget.mofferController.txtMarca,
-                                  decoration:
-                                      InputDecoration(labelText: 'Marca'),
+                                  decoration: InputDecoration(
+                                    labelText: 'Marca',
+                                    border: OutlineInputBorder(),
+                                  ),
                                   keyboardType: TextInputType.text),
+                            const SizedBox(height: 20),
                             if (showTxtCodigoAlt)
                               TextFormField(
                                   controller:
                                       widget.mofferController.txtCodigoAlt,
                                   decoration: InputDecoration(
-                                      labelText: 'Código da revenda'),
+                                    labelText: 'Código da revenda',
+                                    border: OutlineInputBorder(),
+                                  ),
                                   keyboardType: TextInputType.text),
 
-                            SizedBox(height: 20),
+                            const SizedBox(height: 20),
                             if (showTxtCores)
                               TextFormField(
                                   decoration: InputDecoration(
-                                      labelText: 'Cores (separadas por /)'),
+                                    labelText: 'Cores ',
+                                    hintText: '(separadas por /)',
+                                    border: OutlineInputBorder(),
+                                  ),
                                   controller: widget.mofferController.txtCores,
                                   keyboardType: TextInputType.multiline),
-                            SizedBox(height: 20),
+
+                            const SizedBox(height: 20),
                             if (showTxtTamanhos)
                               TextFormField(
                                   decoration: InputDecoration(
-                                      labelText: 'Tamanhos (separados por /)'),
+                                    labelText: 'Tamanhos ',
+                                    hintText: '(separados por /)',
+                                    border: OutlineInputBorder(),
+                                  ),
                                   controller:
                                       widget.mofferController.txtTamanhos,
                                   keyboardType: TextInputType.multiline),
-                            SizedBox(height: 20),
+                            // SizedBox(height: 20),
                             // Text('Nome 1º campo personalizado'),
                             // TextFormField(
                             //   //decoration: InputDecoration(labelText: 'Tempo de entrega após aceite'),
@@ -511,15 +561,22 @@ class _MOfferPage extends State<MOfferPage> {
                             //   //decoration: InputDecoration(labelText: 'Tempo de entrega após aceite'),
                             //     keyboardType: TextInputType.number),
                             // SizedBox(height: 20),
+
+                            const SizedBox(height: 20),
                             if (showCamposBasicos)
                               Column(children: <Widget>[
-                                Text('Informações adicionais'),
                                 TextFormField(
-                                    controller:
-                                        widget.mofferController.txtDetalhes,
-                                    keyboardType: TextInputType.multiline),
+                                  controller:
+                                      widget.mofferController.txtDetalhes,
+                                  decoration: InputDecoration(
+                                      labelText: 'Informações adicionais',
+                                      border: OutlineInputBorder()),
+                                  keyboardType: TextInputType.multiline,
+                                  maxLines: 5,
+                                ),
                               ]),
 
+                            const SizedBox(height: 20),
                             if (showDispoImediata)
                               Row(
                                 children: <Widget>[
@@ -530,16 +587,17 @@ class _MOfferPage extends State<MOfferPage> {
                                           valDispoImediata = val;
                                         });
                                       }),
-                                  SizedBox(width: 20),
+                                  const SizedBox(width: 20),
                                   Expanded(
                                     child: Text(valDispoImediata
                                         ? 'Disponibilidade imediata (o tempo todo)'
                                         : 'Disponibilidade agendada'),
                                   ),
-                                  SizedBox(height: 20)
+                                  const SizedBox(height: 20)
                                 ],
                               ),
 
+                            const SizedBox(height: 20),
                             if (!valDispoImediata)
                               Column(children: <Widget>[
                                 Checkbox(
@@ -552,14 +610,24 @@ class _MOfferPage extends State<MOfferPage> {
                                   activeColor: Colors.blue,
                                 ),
                                 Text('segunda '),
+                                const SizedBox(height: 15),
                                 TextFormField(
                                   controller: widget.mofferController.txtSegDas,
-                                  decoration: InputDecoration(labelText: 'Das'),
+                                  decoration: InputDecoration(
+                                    labelText: 'à partir',
+                                    prefix: Text('Das '),
+                                    border: OutlineInputBorder(),
+                                  ),
                                   keyboardType: TextInputType.number,
                                 ),
+                                const SizedBox(height: 15),
                                 TextFormField(
                                   controller: widget.mofferController.txtSegAs,
-                                  decoration: InputDecoration(labelText: 'às'),
+                                  decoration: InputDecoration(
+                                    labelText: 'até ',
+                                    prefix: Text('às '),
+                                    border: OutlineInputBorder(),
+                                  ),
                                   keyboardType: TextInputType.number,
                                 ),
                                 Checkbox(
@@ -572,14 +640,24 @@ class _MOfferPage extends State<MOfferPage> {
                                   activeColor: Colors.blue,
                                 ),
                                 Text('terça '),
+                                const SizedBox(height: 15),
                                 TextFormField(
                                   controller: widget.mofferController.txtTerDas,
-                                  decoration: InputDecoration(labelText: 'Das'),
+                                  decoration: InputDecoration(
+                                    labelText: 'à partir',
+                                    prefix: Text('Das '),
+                                    border: OutlineInputBorder(),
+                                  ),
                                   keyboardType: TextInputType.number,
                                 ),
+                                const SizedBox(height: 15),
                                 TextFormField(
                                   controller: widget.mofferController.txtTerAs,
-                                  decoration: InputDecoration(labelText: 'às'),
+                                  decoration: InputDecoration(
+                                    labelText: 'até ',
+                                    prefix: Text('às '),
+                                    border: OutlineInputBorder(),
+                                  ),
                                   keyboardType: TextInputType.number,
                                 ),
                                 Checkbox(
@@ -592,14 +670,24 @@ class _MOfferPage extends State<MOfferPage> {
                                   activeColor: Colors.blue,
                                 ),
                                 Text('quarta '),
+                                const SizedBox(height: 15),
                                 TextFormField(
                                   controller: widget.mofferController.txtQuaDas,
-                                  decoration: InputDecoration(labelText: 'Das'),
+                                  decoration: InputDecoration(
+                                    labelText: 'à partir',
+                                    prefix: Text('Das '),
+                                    border: OutlineInputBorder(),
+                                  ),
                                   keyboardType: TextInputType.number,
                                 ),
+                                const SizedBox(height: 15),
                                 TextFormField(
                                   controller: widget.mofferController.txtQuaAs,
-                                  decoration: InputDecoration(labelText: 'às'),
+                                  decoration: InputDecoration(
+                                    labelText: 'até ',
+                                    prefix: Text('às '),
+                                    border: OutlineInputBorder(),
+                                  ),
                                   keyboardType: TextInputType.number,
                                 ),
                                 Checkbox(
@@ -612,14 +700,24 @@ class _MOfferPage extends State<MOfferPage> {
                                   activeColor: Colors.blue,
                                 ),
                                 Text('quinta '),
+                                const SizedBox(height: 15),
                                 TextFormField(
                                   controller: widget.mofferController.txtQuiDas,
-                                  decoration: InputDecoration(labelText: 'Das'),
+                                  decoration: InputDecoration(
+                                    labelText: 'à partir',
+                                    prefix: Text('Das '),
+                                    border: OutlineInputBorder(),
+                                  ),
                                   keyboardType: TextInputType.number,
                                 ),
+                                const SizedBox(height: 15),
                                 TextFormField(
                                   controller: widget.mofferController.txtQuiAs,
-                                  decoration: InputDecoration(labelText: 'às'),
+                                  decoration: InputDecoration(
+                                    labelText: 'até ',
+                                    prefix: Text('às '),
+                                    border: OutlineInputBorder(),
+                                  ),
                                   keyboardType: TextInputType.number,
                                 ),
                                 Checkbox(
@@ -632,14 +730,24 @@ class _MOfferPage extends State<MOfferPage> {
                                   activeColor: Colors.blue,
                                 ),
                                 Text('sexta '),
+                                const SizedBox(height: 15),
                                 TextFormField(
                                   controller: widget.mofferController.txtSexDas,
-                                  decoration: InputDecoration(labelText: 'Das'),
+                                  decoration: InputDecoration(
+                                    labelText: 'à partir',
+                                    prefix: Text('Das '),
+                                    border: OutlineInputBorder(),
+                                  ),
                                   keyboardType: TextInputType.number,
                                 ),
+                                const SizedBox(height: 15),
                                 TextFormField(
                                   controller: widget.mofferController.txtSexAs,
-                                  decoration: InputDecoration(labelText: 'às'),
+                                  decoration: InputDecoration(
+                                    labelText: 'até ',
+                                    prefix: Text('às '),
+                                    border: OutlineInputBorder(),
+                                  ),
                                   keyboardType: TextInputType.number,
                                 ),
                                 Checkbox(
@@ -652,14 +760,24 @@ class _MOfferPage extends State<MOfferPage> {
                                   activeColor: Colors.blue,
                                 ),
                                 Text('sábado '),
+                                const SizedBox(height: 15),
                                 TextFormField(
                                   controller: widget.mofferController.txtSabDas,
-                                  decoration: InputDecoration(labelText: 'Das'),
+                                  decoration: InputDecoration(
+                                    labelText: 'à partir',
+                                    prefix: Text('Das '),
+                                    border: OutlineInputBorder(),
+                                  ),
                                   keyboardType: TextInputType.number,
                                 ),
+                                const SizedBox(height: 15),
                                 TextFormField(
                                   controller: widget.mofferController.txtSabAs,
-                                  decoration: InputDecoration(labelText: 'às'),
+                                  decoration: InputDecoration(
+                                    labelText: 'até ',
+                                    prefix: Text('às '),
+                                    border: OutlineInputBorder(),
+                                  ),
                                   keyboardType: TextInputType.number,
                                 ),
                                 Checkbox(
@@ -672,14 +790,24 @@ class _MOfferPage extends State<MOfferPage> {
                                   activeColor: Colors.blue,
                                 ),
                                 Text('domingo '),
+                                const SizedBox(height: 15),
                                 TextFormField(
                                   controller: widget.mofferController.txtDomDas,
-                                  decoration: InputDecoration(labelText: 'Das'),
+                                  decoration: InputDecoration(
+                                    labelText: 'à partir',
+                                    prefix: Text('Das '),
+                                    border: OutlineInputBorder(),
+                                  ),
                                   keyboardType: TextInputType.number,
                                 ),
+                                const SizedBox(height: 15),
                                 TextFormField(
                                   controller: widget.mofferController.txtDomAs,
-                                  decoration: InputDecoration(labelText: 'às'),
+                                  decoration: InputDecoration(
+                                    labelText: 'até ',
+                                    prefix: Text('às '),
+                                    border: OutlineInputBorder(),
+                                  ),
                                   keyboardType: TextInputType.number,
                                 ),
                               ]),
@@ -694,9 +822,9 @@ class _MOfferPage extends State<MOfferPage> {
                                           valMostraReview = val;
                                         });
                                       }),
-                                  SizedBox(width: 20),
+                                  const SizedBox(width: 20),
                                   Text('Mostrar opiniões'),
-                                  SizedBox(height: 20)
+                                  const SizedBox(height: 20)
                                 ],
                               ),
 
@@ -710,12 +838,12 @@ class _MOfferPage extends State<MOfferPage> {
                                           valAceiteAuto = val;
                                         });
                                       }),
-                                  SizedBox(width: 20),
+                                  const SizedBox(width: 20),
                                   Expanded(
                                     child: Text(
                                         'Aceite automático dentro do horário'),
                                   ),
-                                  SizedBox(height: 20)
+                                  const SizedBox(height: 20)
                                 ],
                               ),
 
@@ -731,13 +859,13 @@ class _MOfferPage extends State<MOfferPage> {
                                               valAceitaEncomenda.toString());
                                         });
                                       }),
-                                  SizedBox(width: 20),
+                                  const SizedBox(width: 20),
                                   Text('Aceita encomenda'),
                                 ],
                               ),
                             if (valAceitaEncomenda)
                               Column(children: <Widget>[
-                                SizedBox(width: 20),
+                                const SizedBox(width: 20),
                                 TextFormField(
                                   controller: widget
                                       .mofferController.txtEncomendasAPartir,
@@ -745,7 +873,7 @@ class _MOfferPage extends State<MOfferPage> {
                                       labelText: 'Encomendas a partir de:'),
                                   keyboardType: TextInputType.number,
                                 ),
-                                SizedBox(height: 20),
+                                const SizedBox(height: 20),
                                 // Switch(
                                 //     value: valSomenteEncomenda,
                                 //     onChanged: (bool val) {
@@ -767,17 +895,19 @@ class _MOfferPage extends State<MOfferPage> {
                                           val24hs = val;
                                         });
                                       }),
-                                  SizedBox(width: 20),
+                                  const SizedBox(width: 20),
                                   Text('24hs'),
-                                  SizedBox(height: 20),
+                                  const SizedBox(height: 20),
                                 ],
                               ),
 
                             if (showCamposBasicos)
                               Column(
                                 children: <Widget>[
-                                  SizedBox(height: 20),
+                                  const Divider(),
+                                  const SizedBox(height: 20),
                                   Text('Forma de Fechamento'),
+                                  const SizedBox(height: 20),
                                   DropdownButton<String>(
                                     items: listaFormaFechamento
                                         .map((String value) {
@@ -796,7 +926,7 @@ class _MOfferPage extends State<MOfferPage> {
                                 ],
                               ),
 
-                            SizedBox(height: 20),
+                            const SizedBox(height: 20),
                             // Row(
                             //   crossAxisAlignment: CrossAxisAlignment.end,
                             //   children: [
@@ -812,7 +942,7 @@ class _MOfferPage extends State<MOfferPage> {
                                     "Disponibilidade de " + labelEntrega,
                                     textAlign: TextAlign.center,
                                   ),
-                                  SizedBox(height: 20),
+                                  const SizedBox(height: 20),
                                   Text('Agente'),
                                   DropdownButton<String>(
                                     items:
@@ -829,42 +959,53 @@ class _MOfferPage extends State<MOfferPage> {
                                       });
                                     },
                                   ),
-                                  SizedBox(height: 20),
+                                  const SizedBox(height: 20),
                                   TextFormField(
                                     controller: widget
                                         .mofferController.txtEntregasAPartir,
                                     decoration: InputDecoration(
-                                        labelText:
-                                            labelEntrega + ' a partir de:'),
+                                      labelText: labelEntrega + ' a partir de:',
+                                      border: OutlineInputBorder(),
+                                    ),
                                     keyboardType: TextInputType.number,
                                   ),
+                                  const SizedBox(height: 20),
                                   Text("Horário de " + labelEntrega),
+                                  const SizedBox(height: 20),
                                   TextFormField(
                                     controller:
                                         widget.mofferController.txtEntregaDas,
-                                    decoration:
-                                        InputDecoration(labelText: 'Das'),
+                                    decoration: InputDecoration(
+                                      labelText: 'Das',
+                                      border: OutlineInputBorder(),
+                                    ),
                                     keyboardType: TextInputType.number,
                                   ),
+                                  const SizedBox(height: 20),
                                   TextFormField(
                                     controller:
                                         widget.mofferController.txtEntregaAs,
-                                    decoration:
-                                        InputDecoration(labelText: 'às'),
+                                    decoration: InputDecoration(
+                                      labelText: 'às',
+                                      border: OutlineInputBorder(),
+                                    ),
                                     keyboardType: TextInputType.number,
                                   ),
                                   if (labelEntrega == 'Entrega')
                                     Column(
                                       children: <Widget>[
-                                        SizedBox(height: 20),
+                                        const SizedBox(height: 20),
                                         Text(
                                           "Taxas de Entrega",
                                           textAlign: TextAlign.left,
                                         ),
+                                        const SizedBox(height: 20),
                                         TextFormField(
                                           controller: widget
                                               .mofferController.txtValorTaxa1km,
                                           decoration: InputDecoration(
+                                              prefix: Text('R\$ '),
+                                              border: OutlineInputBorder(),
                                               labelText: 'Até 1km'),
                                           textInputAction: TextInputAction.next,
                                           //focusNode: _priceFocusNode,
@@ -872,10 +1013,13 @@ class _MOfferPage extends State<MOfferPage> {
                                               TextInputType.numberWithOptions(
                                                   decimal: true),
                                         ),
+                                        const SizedBox(height: 20),
                                         TextFormField(
                                           controller: widget
                                               .mofferController.txtValorTaxa2km,
                                           decoration: InputDecoration(
+                                              prefix: Text('R\$ '),
+                                              border: OutlineInputBorder(),
                                               labelText: 'Entre 1km e 2km'),
                                           textInputAction: TextInputAction.next,
                                           //focusNode: _priceFocusNode,
@@ -883,10 +1027,13 @@ class _MOfferPage extends State<MOfferPage> {
                                               TextInputType.numberWithOptions(
                                                   decimal: true),
                                         ),
+                                        const SizedBox(height: 20),
                                         TextFormField(
                                           controller: widget.mofferController
                                               .txtValorTaxaMaisQue2km,
                                           decoration: InputDecoration(
+                                              prefix: Text('R\$ '),
+                                              border: OutlineInputBorder(),
                                               labelText: 'Acima de 2km'),
                                           textInputAction: TextInputAction.next,
                                           //focusNode: _priceFocusNode,
@@ -894,11 +1041,16 @@ class _MOfferPage extends State<MOfferPage> {
                                               TextInputType.numberWithOptions(
                                                   decimal: true),
                                         ),
-                                        SizedBox(height: 20),
-                                        Text('Tempo de Entrega após aceite'),
+                                        const SizedBox(height: 20),
+                                        // Text('Tempo de Entrega após aceite'),
                                         TextFormField(
-                                            //decoration: InputDecoration(labelText: 'Tempo de entrega após aceite'),
+                                            decoration: InputDecoration(
+                                                border: OutlineInputBorder(),
+                                                labelText:
+                                                    'Tempo de entrega após aceite'),
                                             keyboardType: TextInputType.number),
+                                        const SizedBox(height: 20),
+                                        Text('Unidade de Tempo'),
                                         DropdownButton<String>(
                                           items: listaTempoEntregaTipo
                                               .map((String value) {
@@ -921,7 +1073,9 @@ class _MOfferPage extends State<MOfferPage> {
 
                             if (showCamposBasicos)
                               Column(children: <Widget>[
-                                SizedBox(height: 20),
+                                const SizedBox(height: 10),
+                                const Divider(),
+                                const SizedBox(height: 10),
                                 ElevatedButton(
                                     onPressed: () => pegarImagemGaleria(),
                                     style: ButtonStyle(
@@ -946,7 +1100,7 @@ class _MOfferPage extends State<MOfferPage> {
                                         Text('Adicionar Foto')
                                       ],
                                     )),
-                                SizedBox(height: 20),
+                                const SizedBox(height: 20),
                                 if (widget.imgcloud != '')
                                   FadeInImage.assetNetwork(
                                     placeholder: 'assets/images/pholder.png',
@@ -960,7 +1114,7 @@ class _MOfferPage extends State<MOfferPage> {
                                     image!,
                                     fit: BoxFit.contain,
                                   ),
-                                SizedBox(height: 20),
+                                const SizedBox(height: 20),
                                 ButtonOffer(
                                     text: 'Salvar',
                                     colorText: _loginController.colorFromHex(
@@ -979,9 +1133,14 @@ class _MOfferPage extends State<MOfferPage> {
                                             .first
                                             .coreValor
                                             .toString()),
-                                    onPressed: () { uploadFoto(
-                                        image == null ? null : image,
-                                        _loginController.usuGuid.toString()).then((value) => Get.offAndToNamed(AppRoutes.mOffers));}),
+                                    onPressed: () {
+                                      uploadFoto(
+                                              image == null ? null : image,
+                                              _loginController.usuGuid
+                                                  .toString())
+                                          .then((value) => Get.offAndToNamed(
+                                              AppRoutes.mOffers));
+                                    }),
                               ])
                           ],
                         ),
@@ -1052,7 +1211,6 @@ class _MOfferPage extends State<MOfferPage> {
     return (startWithHttp || startWithHttps) &&
         (endWithPng || endWithJpg || endWithJpeg);
   }
-
 
   Future<void> _saveForm(String usuGuid) async {
     var formaFechto = '';
@@ -1461,7 +1619,7 @@ class _MOfferPage extends State<MOfferPage> {
   Future<void> carregaObjs() async {
     if (ModalRoute.of(context)?.settings.arguments != null) {
       var args = ModalRoute.of(context)?.settings.arguments
-      as List<Map<String, Oferta>>;
+          as List<Map<String, Oferta>>;
 
       Oferta oferta = args.first.values.first;
       widget.editMode = true;
@@ -1487,60 +1645,60 @@ class _MOfferPage extends State<MOfferPage> {
       widget.mofferController.txtEncomendasAPartir.text =
           oferta.OfertaEncomendasAPartirDe.toString();
       widget.mofferController.txtValorTaxa1km.text =
-      oferta.ValorEntregaAte1 == null
-          ? '0'
-          : oferta.ValorEntregaAte1.toString();
+          oferta.ValorEntregaAte1 == null
+              ? '0'
+              : oferta.ValorEntregaAte1.toString();
       widget.mofferController.txtValorTaxaMaisQue2km.text =
-      oferta.ValorEntregaMaisDe2 == null
-          ? '0'
-          : oferta.ValorEntregaMaisDe2.toString();
+          oferta.ValorEntregaMaisDe2 == null
+              ? '0'
+              : oferta.ValorEntregaMaisDe2.toString();
       widget.mofferController.txtValorTaxa2km.text =
-      oferta.ValorEntregaAte2 == null
-          ? '0'
-          : oferta.ValorEntregaAte2.toString();
+          oferta.ValorEntregaAte2 == null
+              ? '0'
+              : oferta.ValorEntregaAte2.toString();
       widget.mofferController.txtEntregasAPartir.text =
           oferta.OfertaEntregasAPartirDe.toString();
       widget.mofferController.txtCodigoAlt.text =
-      oferta.OfertaCodigoAlt! == 'null'
-          ? ''
-          : oferta.OfertaCodigoAlt.toString();
+          oferta.OfertaCodigoAlt! == 'null'
+              ? ''
+              : oferta.OfertaCodigoAlt.toString();
       oferta.OfertaDistanciaKm == null
           ? '0'
           : oferta.OfertaDistanciaKm.toString();
       //widget.mofferController.txtEntregaAs.text = oferta.Ate.toString();
       widget.mofferController.txtValorSinalOrc.text =
-      oferta.OfertaSinal == null ? '0' : oferta.OfertaSinal.toString();
+          oferta.OfertaSinal == null ? '0' : oferta.OfertaSinal.toString();
       widget.mofferController.txtValidade.text =
-      oferta.OfertaDiasValidade == null
-          ? '0'
-          : oferta.OfertaDiasValidade.toString();
+          oferta.OfertaDiasValidade == null
+              ? '0'
+              : oferta.OfertaDiasValidade.toString();
       widget.mofferController.txtPesoPorcao.text =
-      oferta.OfertaPeso == null ? '0' : oferta.OfertaPeso.toString();
+          oferta.OfertaPeso == null ? '0' : oferta.OfertaPeso.toString();
       //widget.mofferController.txtPesoPorcaoUn.text =oferta.OfertaPesoUnidade == 'null' ? '' :  oferta.OfertaPesoUnidade.toString();
       widget.mofferController.txtDescricao.text =
-      oferta.OfertaDetalhe! == 'null'
-          ? ''
-          : oferta.OfertaDetalhe.toString();
+          oferta.OfertaDetalhe! == 'null'
+              ? ''
+              : oferta.OfertaDetalhe.toString();
       widget.mofferController.txtDetalhes.text = oferta.OfertaDetalhe! == 'null'
           ? ''
           : oferta.OfertaDetalhe.toString();
       widget.mofferController.txtTamanhos.text =
-      oferta.OfertaTamanhos! == 'null'
-          ? ''
-          : oferta.OfertaTamanhos.toString();
+          oferta.OfertaTamanhos! == 'null'
+              ? ''
+              : oferta.OfertaTamanhos.toString();
       widget.mofferController.txtCores.text =
-      oferta.OfertaCores! == 'null' ? '' : oferta.OfertaCores.toString();
+          oferta.OfertaCores! == 'null' ? '' : oferta.OfertaCores.toString();
       widget.mofferController.txtValorMin.text = oferta.OfertaPrecoMin == null
           ? '0'
           : oferta.OfertaPrecoMin.toString();
       widget.mofferController.txtMarca.text =
-      oferta.OfertaMarcaRevenda! == 'null'
-          ? ''
-          : oferta.OfertaMarcaRevenda!;
+          oferta.OfertaMarcaRevenda! == 'null'
+              ? ''
+              : oferta.OfertaMarcaRevenda!;
       widget.mofferController.txtQtdMaxPorVenda.text =
-      oferta.OfertaQtdMaxVenda == null
-          ? '0'
-          : oferta.OfertaQtdMaxVenda.toString();
+          oferta.OfertaQtdMaxVenda == null
+              ? '0'
+              : oferta.OfertaQtdMaxVenda.toString();
       widget.mofferController.txtQtdDispo.text = oferta.OfertaQtdDispo == null
           ? '0'
           : oferta.OfertaQtdDispo.toString();
@@ -1548,11 +1706,11 @@ class _MOfferPage extends State<MOfferPage> {
           ? '0'
           : oferta.OfertaQtdAviso.toString();
       widget.mofferController.txtPreco.text =
-      oferta.OfertaPreco == null ? '0.00' : oferta.OfertaPreco.toString();
+          oferta.OfertaPreco == null ? '0.00' : oferta.OfertaPreco.toString();
       widget.mofferController.txtTempoEntrega.text =
-      oferta.OfertaTempoEntrega == null
-          ? '0'
-          : oferta.OfertaTempoEntrega.toString();
+          oferta.OfertaTempoEntrega == null
+              ? '0'
+              : oferta.OfertaTempoEntrega.toString();
 
       widget.offerGuid = widget.mofferController.mofferGuid!;
     } else {
@@ -1593,6 +1751,4 @@ class _MOfferPage extends State<MOfferPage> {
       widget.mofferController.txtQtdAviso.text = '0';
     }
   }
-
-
 }

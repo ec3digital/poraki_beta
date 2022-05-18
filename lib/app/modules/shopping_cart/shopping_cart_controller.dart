@@ -1,16 +1,27 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:poraki/app/data/models/PedidoItem.dart';
+import 'package:poraki/app/data/models/enderecos.dart';
+import 'package:poraki/app/data/models/pedido.dart';
 import 'package:poraki/app/data/models/sql/sqlCarrinho.dart';
 import 'package:poraki/app/data/models/sql/sqlPedido.dart';
 import 'package:poraki/app/data/models/sql/sqlPedidoItem.dart';
+import 'package:poraki/app/data/repositories/order_repository.dart';
+import 'package:poraki/app/modules/auth/login/login_controller.dart';
 import 'package:poraki/app/services/sqlite/sqlporaki_cart_service.dart';
 import 'package:poraki/app/services/sqlite/sqlporaki_pedido_service.dart';
 import '../../data/models/shopping_cart_model.dart';
 import 'widgets/dialog_amount_shopping_cart.dart';
 import 'widgets/dialog_more_unitys_shopping_cart.dart';
 
+class Sellers<T1, T2> {
+  late T1? sellerId;
+  late T2? storeId;
+
+  Sellers(this.sellerId, this.storeId);
+}
+
 class ShoppingCartController extends GetxController {
-  //int tabBarLenght = 0;
   String ctrlMsg = '';
   bool change = false;
   List<ShoppingCartModel> listShoppingCart = [];
@@ -21,8 +32,12 @@ class ShoppingCartController extends GetxController {
   double cartTaxes = 0;
   RxDouble cartTotalItems = 0.00.obs;
   double cartDelivery = 0;
+  String payment = 'Cartao';
+  //late Enderecos endereco;
+  bool running = false;
 
   final TextEditingController txtQty = new TextEditingController();
+  final LoginController _loginController = Get.find();
 
   changeMoreQuantity(String? value) {
     moreQuantity = value!;
@@ -31,7 +46,6 @@ class ShoppingCartController extends GetxController {
 
   @override
   void onInit() async {
-    //await carregaCarrinho();
     super.onInit();
   }
 
@@ -54,25 +68,26 @@ class ShoppingCartController extends GetxController {
 
   Future<void> carregaCarrinho() async {
     print('carregaCarrinho');
-    // txtQty.text = "1";
 
     listShoppingCart.clear();
     List<sqlCarrinho> carrinho = await sqlPorakiCartService().carrinho();
 
     carrinho.forEach((element) {
       listShoppingCart.add(new ShoppingCartModel(
-        element.ofertaTitulo.toString(),
-        'https://firebasestorage.googleapis.com/v0/b/ec3digrepo.appspot.com/o/ofertas%2F' +
-            element.ofertaId.toString() +
-            '.jpg?alt=media',
-        double.parse(element.ofertaPreco),
+          element.ofertaTitulo.toString(),
+          'https://firebasestorage.googleapis.com/v0/b/ec3digrepo.appspot.com/o/ofertas%2F' +
+              element.ofertaId.toString() +
+              '.jpg?alt=media',
+          double.parse(element.ofertaPreco),
           element.ofertaId.toString(),
-        int.parse(element.ofertaQtd),
-        element.categoriaChave,
-        element.ofertaVendedorGUID.toString(),
-        element.ofertaLojaGUID.toString(),
-          double.parse(element.ofertaPreco) * int.parse(element.ofertaQtd)
-      ));
+          int.parse(element.ofertaQtd),
+          element.categoriaChave,
+          element.ofertaVendedorGUID.toString(),
+          element.ofertaLojaGUID.toString(),
+          double.parse(element.ofertaPreco) * int.parse(element.ofertaQtd),
+          element.ofertaEntregaPrevEm,
+          element.ofertaDetalhe,
+          element.ofertaGUID));
     });
 
     calcTotal();
@@ -91,15 +106,16 @@ class ShoppingCartController extends GetxController {
     update();
   }
 
-  // Future<void> atualizaQtdItemCarrinho(int id, int qtd) async {
-  //   await sqlPorakiCartService().updateItemCarrinho(id, qtd);
-  //   await carregaCarrinho();
-  // }
-
   Future<void> calcTotal() async {
     cartTotal = 0;
-    await calcTotalItems(); await calcTaxes(); await calcDelivery(); await calcDiscount();
-    cartTotal = ((double.parse(cartTotalItems.value.toString()) + cartDelivery) + cartTaxes) - cartDiscount;
+    await calcTotalItems();
+    await calcTaxes();
+    await calcDelivery();
+    await calcDiscount();
+    cartTotal =
+        ((double.parse(cartTotalItems.value.toString()) + cartDelivery) +
+                cartTaxes) -
+            cartDiscount;
   }
 
   Future<void> calcDiscount() async {
@@ -111,7 +127,6 @@ class ShoppingCartController extends GetxController {
   }
 
   Future<void> calcTotalItems() async {
-    //cartTotalItems = 0.00.obs;
     var tmpCalc = 0.00;
     listShoppingCart.forEach((element) {
       tmpCalc += (element.value * element.qty);
@@ -129,94 +144,167 @@ class ShoppingCartController extends GetxController {
   Future<void> saveBuy() async {
     ctrlMsg = '';
 
-    var orderService = new sqlPorakiPedidoService();
+    if (!this.running) {
 
-    await _saveOrder(orderService);
-    await _saveOrderItems(orderService);
+      var pedidoService = new OrdersRepository();
+      var orderService = new sqlPorakiPedidoService();
 
-    ctrlMsg = 'Pedido foi realizado, obrigado!';
+      List<Sellers<String, String>> vendedoresGUIDs = [];
+      listShoppingCart.forEach((ped) {
+        if (!vendedoresGUIDs.contains(new Sellers(ped.sellerId, ped.storeId)))
+          vendedoresGUIDs.add(new Sellers(ped.sellerId, ped.storeId));
+      });
+
+      vendedoresGUIDs.forEach((vendedor) async {
+        await _saveOrder(orderService, pedidoService, vendedor);
+      });
+
+      running = true;
+      ctrlMsg = 'Pedido foi enviado, obrigado!';
+    }
   }
 
-  _saveOrder(sqlPorakiPedidoService orderSvc) async {
+  Future<void> _saveOrder(sqlPorakiPedidoService orderSvc,
+      OrdersRepository pedidoSvc, Sellers seller) async {
+    var pedDate = DateTime.now().toString();
+    var endereco = _loginController.listEnderecos.where((end) => end.EnderecoAtual).first;
 
-    orderSvc.insertOrder(new sqlPedido(
-      null, //pedidoGUID,
-      'c09cd10b-5aa2-43c2-bb42-10031c0d4280', //pedidoVendedorGUID,
-      'danilojazz@gmail.com', // pedidoVendedorEmail,
-      DateTime.now().toString(), //pedidoEm,
-      cartTotal.toString(), //pedidoValorTotal,
-      "Cartão", //pedidoFormaPagto,
-      0, //pedidoCancelada,
-      '', // pedidoPagtoEm,
-      'Danilo Santos', // pedidoPessoaNome,
-      'danilojazz@gmail.com', // pedidoPessoaEmail,
-      'c09cd10b-5aa2-43c2-bb42-10031c0d4280', //pedidoUsuGUID,
-      0, //pedidoAval,
-      null, //pedidoAvalEm,
-      'R\$', //pedidoMoeda,
-      '05735-030', // //pedidoCEP,
-      'Rua Carlos Magalhães', // pedidoEndereco,
-      '100', // pedidoNumero,
-      'ap 55 Bloco 2', //pedidoCompl,
-      null, //pedidoAutoriza,
-      null, //pedidoInstituicao,
-      DateTime.now().toString(), //pedidoEntregaPrevista,
-      null, //pedidoEntregaRealizadaEm,
-      null, //pedidoEntregaPorUsuEmail,
-      null, //pedidoEntregaPorUsuNome
-    )
-    );
-  }
+    List<ShoppingCartModel> cartBySeller = [];
 
-  _saveOrderItems(sqlPorakiPedidoService orderSvc) async{
-    print('_saveOrderItems');
-    listShoppingCart.forEach((element) {
-      orderSvc.insertOrderItem(new sqlPedidoItem(
-          '', // pedidoItemGUID,
-          'c09cd10b-5aa2-43c2-bb42-10031c0d4280', //pedidoGUID,
-          // 0, //ofertaId,
-          'c09cd10b-5aa2-43c2-bb42-10031c0d4280', //ofertaGuid,
-          element.name, // ofertaTitulo,
-          '05735-030', // ofertaCEP,
-          '0', //ofertaVendedorId,
-          element.value, // ofertaPreco,
-          double.parse(element.qty.toString()), // ofertaQtd,
-          0, //double.parse(element.value) * double.parse(element.qty), // ofertaTotal,
-          element.picture, // ofertaImgPath,
-          element.categChave, //categoriaChave,
-          0, //ofertaCancelada,
-          '', // ofertaEntregueEm
-      )
-      );
+    listShoppingCart.forEach((ped) {
+      if (ped.sellerId == seller.sellerId) cartBySeller.add(ped);
     });
 
+    var totalBySeller = 0.00;
+    cartBySeller.forEach((pedSeller) {
+      totalBySeller += pedSeller.totalValue;
+    });
+
+    // sort by eta
+    cartBySeller.sort((a, b) => a.deliverIn!.compareTo(b.deliverIn!));
+
+    var pedPost = new Pedido(
+      null,
+      seller.sellerId,
+      '',
+      pedDate,
+      totalBySeller.toString(),
+      payment,
+      0,
+      '',
+      _loginController.usuNome.toString(),
+      _loginController.usuEmail.toString(),
+      _loginController.usuGuid,
+      0,
+      null,
+      'R\$',
+      endereco.EnderecoCEP.toString(),
+      endereco.EnderecoLogra,
+      endereco.EnderecoNumero,
+      endereco.EnderecoCompl,
+      '',
+      '',
+      cartBySeller.first.deliverIn,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+    );
+
+    var pedGuid = await pedidoSvc.postOrder(pedPost);
+
+    print('new pedGuid:  ' + pedGuid);
+    //
+    // if (pedGuid.toString() != '') {
+    //   orderSvc.insertOrder(new sqlPedido(
+    //     pedGuid.toString(),
+    //     pedPost.PedidoVendedorGUID, //pedidoVendedorGUID,
+    //     pedPost.PedidoVendedorEmail, // pedidoVendedorEmail,
+    //     pedDate, //pedidoEm,
+    //     totalBySeller.toString(), //pedidoValorTotal,
+    //     payment, //pedidoFormaPagto,
+    //     0, //pedidoCancelada,
+    //     pedPost.PedidoAvalEm.toString(), // pedidoPagtoEm,
+    //     pedPost.PedidoPessoaNome, // pedidoPessoaNome,
+    //     pedPost.PedidoPessoaEmail, // pedidoPessoaEmail,
+    //     pedPost.PedidoUsuGUID, //pedidoUsuGUID,
+    //     0, //pedidoAval,
+    //     null, //pedidoAvalEm,
+    //     pedPost.PedidoMoeda, //pedidoMoeda,
+    //     pedPost.PedidoCEP, // //pedidoCEP,
+    //     pedPost.PedidoEndereco, // pedidoEndereco,
+    //     pedPost.PedidoNumero, // pedidoNumero,
+    //     pedPost.PedidoCompl, //pedidoCompl,
+    //     null, //pedidoAutoriza,
+    //     null, //pedidoInstituicao,
+    //     pedPost.PedidoEntregaPrevista, //pedidoEntregaPrevista,
+    //     null, //pedidoEntregaRealizadaEm,
+    //     null, //pedidoEntregaPorUsuEmail,
+    //     null, //pedidoEntregaPorUsuNome
+    //     null,
+    //     null,
+    //     null,
+    //     null,
+    //   ));
+    // }
+
+    // salva items na nuvem
+    cartBySeller.forEach((pedItem) async {
+      PedidoItem pedidoItem = new PedidoItem(
+          '',
+          pedGuid,
+          pedItem.offerGuid,
+          pedItem.name,
+          endereco.EnderecoCEP.toString(),
+          pedItem.sellerId.toString(),
+          pedItem.value,
+          pedItem.qty.toDouble(),
+          pedItem.totalValue,
+          pedItem.picture,
+          0,
+          null,
+          pedItem.categChave,
+          pedItem.details,
+          pedItem.deliverIn,
+          null,
+          null,
+          null,
+          null,
+          null,
+          pedItem.storeId);
+      var pedItemGuid = await pedidoSvc.postOrderItem(pedidoItem);
+
+      print('new pedItemGuid:  ' + pedItemGuid);
+
+    //   // salva no sqlite
+    //   orderSvc.insertOrderItem(new sqlPedidoItem(
+    //       pedItemGuid.toString(),
+    //       pedidoItem.PedidoGUID,
+    //       pedidoItem.OfertaGuid,
+    //       pedidoItem.OfertaTitulo,
+    //       pedidoItem.OfertaCEP,
+    //       pedidoItem.OfertaVendedorGuid,
+    //       pedidoItem.OfertaPreco,
+    //       pedidoItem.OfertaQtd,
+    //       pedidoItem.OfertaTotal,
+    //       pedidoItem.OfertaImgPath,
+    //       pedidoItem.CategoriaChave.toString(),
+    //       pedidoItem.OfertaDetalhe,
+    //       pedidoItem.OfertaPrevisaoEntrega,
+    //       null,
+    //       null,
+    //       null,
+    //       null,
+    //       null,
+    //       null,
+    //       null,
+    //       pedidoItem.OfertaLojaID));
+    });
   }
-
-
-  //
-  //   Future<List<sqlCarrinho>> carregaItensCarrinho() async {
-  //     print('carregaCarrinho');
-  //
-  //     List<sqlCarrinho>? carrinho = await sqlPorakiCartService().carrinho();
-  //     // listShoppingCart = [];
-  //
-  //     // for(var c in carrinho) {
-  //     //   print('for');
-  //     carrinho!.forEach((element) {
-  //       print('foreach');
-  //       //print(element.values['ofertaTitulo'].toString());
-  //       listShoppingCart.add(new ShoppingCartModel(
-  //         element.ofertaTitulo.toString(),
-  //         element.ofertaImgPath.toString(),
-  //         element.ofertaPreco as double,
-  //       ));
-  //     }
-  //     );
-  //
-  //     return carrinho;
-  //   // }
-  // }
-
 
   showDialog() {
     Get.dialog(DialogAmountShoppingCart(Get.find()));
@@ -228,13 +316,4 @@ class ShoppingCartController extends GetxController {
   }
 
   cgsfgs() {}
-
-  // = [
-  //   ShoppingCartModel('Xiaomi mi 11 Lite', 'assets/images/poraki_small.png', 1.528),
-  //   ShoppingCartModel('Xiaomi mi 11 Lite', 'assets/images/poraki_small.png', 1.528),
-  //   ShoppingCartModel('Xiaomi mi 11 Lite', 'assets/images/poraki_small.png', 1.528),
-  //   ShoppingCartModel('Xiaomi mi 11 Lite', 'assets/images/poraki_small.png', 1.528),
-  //   ShoppingCartModel('Xiaomi mi 11 Lite', 'assets/images/poraki_small.png', 1.528),
-  // ];
-
 }
