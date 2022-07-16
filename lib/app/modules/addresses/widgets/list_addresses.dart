@@ -8,7 +8,7 @@ import 'package:poraki/app/modules/offers/widgets/button_offer.dart';
 import 'package:poraki/app/routes/app_routes.dart';
 
 class ListAddresses extends StatelessWidget {
-  final AddressController controller = Get.put(AddressController());
+  final AddressController controller = Get.find();// put(AddressController());
 
   ListAddresses({Key? key}) : super(key: key);
 

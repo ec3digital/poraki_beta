@@ -27,6 +27,7 @@ class sqlCarrinho {
       "ofertaImgPath": ofertaImgPath,
       "categoriaChave": categoriaChave,
       "ofertaEntregaPrevEm": ofertaEntregaPrevEm,
+      "ofertaDetalhe": ofertaDetalhe
     };
   }
 

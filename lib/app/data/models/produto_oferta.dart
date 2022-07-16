@@ -93,17 +93,19 @@ class ProdutoOferta {
       this.valorEntregaMaisDe2});
 
   ProdutoOferta.fromJson(Map<String, dynamic> json) {
+    print('ofertaGUID from Json:' + json['OfertaGUID'].toString());
+    ofertaGUID = json['OfertaGUID'].toString();
     categoriaChave = json['CategoriaChave'];
     ofertaCEP = json['OfertaCEP'];
     ofertaDetalhe = json['OfertaDetalhe'];
-    ofertaDispoDesde = json['OfertaDispoDesde'];
+    //ofertaDispoDesde = json['OfertaDispoDesde'];
     ofertaID = int.parse(json['OfertaID'].toString());
-    ofertaImgPath = json['OfertaImgPath'];
+    //ofertaImgPath = json['OfertaImgPath'];
     ofertaPreco = double.parse(json['OfertaPreco'].toString());
     ofertaTitulo = json['OfertaTitulo'];
     ofertaFKID = json['OfertaFKID'];
     lojaID = json['LojaID'];
-    ofertaGUID = json['OfertaGUID'];
+
     // oferta24hs = json['Oferta24hs'];
     // ofertaAceitaAuto = json['OfertaAceitaAuto'];
     // ofertaAceitaEncomenda = json['OfertaAceitaEncomenda'];

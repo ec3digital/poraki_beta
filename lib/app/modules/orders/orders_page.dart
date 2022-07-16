@@ -7,8 +7,8 @@ import 'package:poraki/app/modules/home/widgets/drawer_home.dart';
 import 'package:poraki/app/modules/orders/widgets/list_orders.dart';
 
 class OrdersPage extends StatelessWidget {
-  String tipo = '';
-  OrdersPage({Key? key, required this.tipo}) : super(key: key);
+  //String tipo = '';
+  OrdersPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,7 @@ class OrdersPage extends StatelessWidget {
         preferredSize: Size(double.maxFinite, 55),
         child: AppBarHome(controller: controller),
       ),
-      body: ListOrders(tipo: this.tipo),
+      body: ListOrders(),
       drawer: DrawerHome(0),
       backgroundColor: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'backDark').first.coreValor.toString()),
     );

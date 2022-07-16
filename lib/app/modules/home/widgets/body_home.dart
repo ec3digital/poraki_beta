@@ -112,6 +112,8 @@ class BodyHome extends StatelessWidget {
                 }
               },
             ),
+          const SizedBox(height: 30,),
+          Text('Cloud: ' + _loginController.cloudId.toString(), textAlign: TextAlign.right,)
           //  TODO: to add - achados e perdidos, melhores serviços
 
           ],

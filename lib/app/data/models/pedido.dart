@@ -6,7 +6,7 @@ class Pedido {
   late final String PedidoValorTotal;
   late final String? PedidoFormaPagto;
   late final int? PedidoCancelada;
-  late final String PedidoPagtoEm;
+  late final String? PedidoPagtoEm;
   late final String PedidoPessoaNome;
   late final String PedidoPessoaEmail;
   late final String? PedidoUsuGUID;
@@ -25,9 +25,18 @@ class Pedido {
   late final String? PedidoEntregaPorUsuNome;
   late final String? PedidoDetalhe;
   late final String? PedidoEntregaDetalhe;
-  // late final String? PedidoEntregaEm;
-  // late final String? PedidoEntregaPorEmail;
-  // late final String? PedidoEntregaPorNome;
+  late final String? PedidoCanceladoEm;
+  late final String? PedidoCanceladoPor;
+  late final String? PedidoCanceladoMotivo;
+  late final String? PedidoEntregaPorGuid;
+  late final String? PedidoEntregaLat;
+  late final String? PedidoEntregaLong;
+  late final String? PedidoEntregaToken;
+  late final String? PedidoEntregaParceiro;
+  late final String? PedidoEntregadorID;
+  late final String? PedidoAceitoEm;
+  late final String? PedidoAceitoPor;
+  late final String? PedidoCEPVendedor;
   late final String? RecebidoPor;
   late final String? PedidoLojaID;
   late final String? PedidoEntregaCodigo;
@@ -59,15 +68,25 @@ class Pedido {
       this.PedidoEntregaPorUsuNome,
       this.PedidoDetalhe,
       this.PedidoEntregaDetalhe,
-      // this.PedidoEntregaEm,
-      // this.PedidoEntregaPorEmail,
-      // this.PedidoEntregaPorNome,
       this.RecebidoPor,
       this.PedidoLojaID,
-      this.PedidoEntregaCodigo);
+      this.PedidoEntregaCodigo,
+      this.PedidoAceitoEm,
+      this.PedidoAceitoPor,
+      this.PedidoCanceladoEm,
+      this.PedidoCanceladoMotivo,
+      this.PedidoCanceladoPor,
+      this.PedidoCEPVendedor,
+      this.PedidoEntregadorID,
+      this.PedidoEntregaLat,
+      this.PedidoEntregaLong,
+      this.PedidoEntregaParceiro,
+      this.PedidoEntregaPorGuid,
+      this.PedidoEntregaToken
+      );
 
   Pedido.fromJson(Map<String, dynamic> json) {
-    PedidoGUID = json['PedidoGUID'].toString();
+    PedidoGUID = json['PedidoGuid'].toString();
     PedidoVendedorGUID = json['PedidoVendedorGUID'].toString();
     PedidoVendedorEmail = json['PedidoVendedorEmail'].toString();
     PedidoEm = json['PedidoEm'].toString();
@@ -94,15 +113,26 @@ class Pedido {
     PedidoLojaID = json['PedidoLojaID'].toString();
     PedidoDetalhe = json['PedidoDetalhe'].toString();
     PedidoEntregaDetalhe = json['PedidoEntregaDetalhe'].toString();
-    // PedidoEntregaEm = json['PedidoEntregaEm'].toString();
-    // PedidoEntregaPorEmail = json['PedidoEntregaPorEmail'].toString();
-    // PedidoEntregaPorNome = json['PedidoEntregaPorNome'].toString();
     RecebidoPor = json['RecebidoPor'].toString();
     PedidoLojaID = json['PedidoLojaID'].toString();
     PedidoEntregaCodigo = json['PedidoEntregaCodigo'].toString();
+    PedidoAceitoEm = json['PedidoAceitoEm'].toString();
+    PedidoAceitoPor = json['PedidoAceitoPor'].toString();
+    PedidoCanceladoEm = json['PedidoCanceladoEm'].toString();
+    PedidoCanceladoMotivo = json['PedidoCanceladoMotivo'].toString();
+    PedidoCanceladoPor = json['PedidoCanceladoPor'].toString();
+    PedidoCEPVendedor = json['PedidoCEPVendedor'].toString();
+    PedidoEntregadorID = json['PedidoEntregadorID'].toString();
+    PedidoEntregaLat = json['PedidoEntregaLat'].toString();
+    PedidoEntregaLong = json['PedidoEntregaLong'].toString();
+    PedidoEntregaParceiro = json['PedidoEntregaParceiro'].toString();
+    PedidoEntregaPorGuid = json['PedidoEntregaPorGuid'].toString();
+    PedidoEntregaToken = json['PedidoEntregaToken'].toString();
   }
 
   Map<String, String> toMap() {
+    print('tomap pessoanome: ' + PedidoPessoaNome);
+    print('tomap PedidoVendedorGUID: ' + PedidoVendedorGUID.toString());
     return <String, String>{
       // "PedidoId": PedidoId,
       "PedidoGUID": PedidoGUID.toString(),
@@ -112,7 +142,7 @@ class Pedido {
       "PedidoValorTotal": PedidoValorTotal.toString(),
       "PedidoFormaPagto": PedidoFormaPagto.toString(),
       "PedidoCancelada": PedidoCancelada.toString(),
-      "PedidoPagtoEm": PedidoPagtoEm,
+      "PedidoPagtoEm": PedidoPagtoEm.toString(),
       "PedidoPessoaNome": PedidoPessoaNome,
       "PedidoPessoaEmail": PedidoPessoaEmail,
       "PedidoUsuGUID": PedidoUsuGUID.toString(),
@@ -132,12 +162,21 @@ class Pedido {
       "PedidoLojaID": PedidoLojaID.toString(),
       "PedidoDetalhe": PedidoDetalhe.toString(),
       "PedidoEntregaDetalhe": PedidoEntregaDetalhe.toString(),
-      // "PedidoEntregaEm": PedidoEntregaEm.toString(),
-      // "PedidoEntregaPorEmail": PedidoEntregaPorEmail.toString(),
-      // "PedidoEntregaPorNome": PedidoEntregaPorNome.toString(),
       "RecebidoPor": RecebidoPor.toString(),
       "PedidoLojaID": PedidoLojaID.toString(),
-      "PedidoEntregaCodigo": PedidoEntregaCodigo.toString()
+      "PedidoEntregaCodigo": PedidoEntregaCodigo.toString(),
+      "PedidoAceitoEm": PedidoAceitoEm.toString(),
+      "PedidoAceitoPor": PedidoAceitoPor.toString(),
+      "PedidoCanceladoEm": PedidoCanceladoEm.toString(),
+      "PedidoCanceladoMotivo": PedidoCanceladoMotivo.toString(),
+      "PedidoCanceladoPor": PedidoCanceladoPor.toString(),
+      "PedidoCEPVendedor": PedidoCEPVendedor.toString(),
+      "PedidoEntregadorID": PedidoEntregadorID.toString(),
+      "PedidoEntregaLat": PedidoEntregaLat.toString(),
+      "PedidoEntregaLong": PedidoEntregaLong.toString(),
+      "PedidoEntregaParceiro": PedidoEntregaParceiro.toString(),
+      "PedidoEntregaPorGuid": PedidoEntregaPorGuid.toString(),
+      "PedidoEntregaToken": PedidoEntregaToken.toString()
     };
   }
 

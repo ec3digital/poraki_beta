@@ -16,7 +16,7 @@ class MofferController extends GetxController {
   final TextEditingController   txtQtdDispo             = TextEditingController();
   final TextEditingController   txtQtdMaxPorVenda       = TextEditingController();
   final TextEditingController   txtQtdAviso             = TextEditingController();
-  final TextEditingController   txtCep                  = TextEditingController();
+  final MaskedTextController    txtCEP                  = MaskedTextController(mask: '00000-000');
   final TextEditingController   txtCepDistancia         = TextEditingController();
   final TextEditingController   txtMarca                = TextEditingController();
   final TextEditingController   txtValorMin             = TextEditingController();
@@ -35,24 +35,45 @@ class MofferController extends GetxController {
   final TextEditingController   txtValorSinalOrc        = TextEditingController();
   final TextEditingController   txtCodigoAlt            = TextEditingController();
 
-  final MaskedTextController   txtSegDas            = MaskedTextController(mask: '00:00');
-  final MaskedTextController   txtSegAs             = MaskedTextController(mask: '00:00');
-  final MaskedTextController   txtTerDas            = MaskedTextController(mask: '00:00');
-  final MaskedTextController   txtTerAs             = MaskedTextController(mask: '00:00');
-  final MaskedTextController   txtQuaDas            = MaskedTextController(mask: '00:00');
-  final MaskedTextController   txtQuaAs             = MaskedTextController(mask: '00:00');
-  final MaskedTextController   txtQuiDas            = MaskedTextController(mask: '00:00');
-  final MaskedTextController   txtQuiAs             = MaskedTextController(mask: '00:00');
-  final MaskedTextController   txtSexDas            = MaskedTextController(mask: '00:00');
-  final MaskedTextController   txtSexAs             = MaskedTextController(mask: '00:00');
-  final MaskedTextController   txtSabDas            = MaskedTextController(mask: '00:00');
-  final MaskedTextController   txtSabAs             = MaskedTextController(mask: '00:00');
-  final MaskedTextController   txtDomDas            = MaskedTextController(mask: '00:00');
-  final MaskedTextController   txtDomAs             = MaskedTextController(mask: '00:00');
-  final MaskedTextController   txtEntregaDas        = MaskedTextController(mask: '00:00');
-  final MaskedTextController   txtEntregaAs         = MaskedTextController(mask: '00:00');
-  final MaskedTextController   txtEncomendasAPartir = MaskedTextController(mask: '00/00/0000');
-  final MaskedTextController   txtEntregasAPartir   = MaskedTextController(mask: '00/00/0000');
+  String valSegDas = '08:00';
+  String valSegAs = '18:00';
+  String valTerDas = '08:00';
+  String valTerAs = '18:00';
+  String valQuaDas = '08:00';
+  String valQuaAs = '18:00';
+  String valQuiDas = '08:00';
+  String valQuiAs = '18:00';
+  String valSexDas = '08:00';
+  String valSexAs = '18:00';
+  String valSabDas = '08:00';
+  String valSabAs = '18:00';
+  String valDomDas = '08:00';
+  String valDomAs = '18:00';
+
+  String valEntregaDas = '08:00';
+  String valEntregaAs = '18:00';
+  DateTime valEncomendasAPartir = DateTime.now();
+  DateTime valEntregasAPartir = DateTime.now();
+
+  // final MaskedTextController   txtSegDas            = MaskedTextController(mask: '08:00');
+  // final MaskedTextController   txtSegAs             = MaskedTextController(mask: '18:00');
+  // final MaskedTextController   txtTerDas            = MaskedTextController(mask: '08:00');
+  // final MaskedTextController   txtTerAs             = MaskedTextController(mask: '18:00');
+  // final MaskedTextController   txtQuaDas            = MaskedTextController(mask: '08:00');
+  // final MaskedTextController   txtQuaAs             = MaskedTextController(mask: '18:00');
+  // final MaskedTextController   txtQuiDas            = MaskedTextController(mask: '08:00');
+  // final MaskedTextController   txtQuiAs             = MaskedTextController(mask: '18:00');
+  // final MaskedTextController   txtSexDas            = MaskedTextController(mask: '08:00');
+  // final MaskedTextController   txtSexAs             = MaskedTextController(mask: '18:00');
+  // final MaskedTextController   txtSabDas            = MaskedTextController(mask: '08:00');
+  // final MaskedTextController   txtSabAs             = MaskedTextController(mask: '18:00');
+  // final MaskedTextController   txtDomDas            = MaskedTextController(mask: '08:00');
+  // final MaskedTextController   txtDomAs             = MaskedTextController(mask: '18:00');
+
+  // final MaskedTextController   txtEntregaDas        = MaskedTextController(mask: '08:00');
+  // final MaskedTextController   txtEntregaAs         = MaskedTextController(mask: '18:00');
+  // final MaskedTextController   txtEncomendasAPartir = MaskedTextController(mask: '00/00/0000');
+  // final MaskedTextController   txtEntregasAPartir   = MaskedTextController(mask: '00/00/0000');
 
   late String? mofferGuid = '';
   late Oferta? singleOffer;

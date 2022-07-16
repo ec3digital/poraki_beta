@@ -58,7 +58,7 @@ class sqlPorakiCartService {
     await db.close();
   }
 
-  Future<void> insertItemCarrinho(sqlCarrinho item) async {
+  Future<String> insertItemCarrinho(sqlCarrinho item) async {
     String dbPath = join(await getDatabasesPath(), 'poraki');
     var db = await openDatabase(dbPath, version: 1);
 
@@ -66,10 +66,21 @@ class sqlPorakiCartService {
     if(exist) {
       print('caiu no existe');
       await increaseQtyItemCarrinho(int.parse(item.ofertaId));
+      return "Item adicionado!";
     }
     else {
       print('caiu no NAO existe');
+      List<sqlCarrinho> carrinho = await sqlPorakiCartService().carrinho();
+      if(carrinho.where((prod) => prod.ofertaGUID == item.ofertaGUID).isNotEmpty) {
+        return "Desculpe, por enquanto o Carrinho nao pode ter itens de vendedores/lojas diferentes ;-(";
+      }
+
+      carrinho.forEach((element) {
+        sqlCarrinho elem = element;
+      });
+
       await db.insert('carrinho', item.toMap());
+      return "Item adicionado!";
     }
 
     // print('ret: ' + ret.toString());

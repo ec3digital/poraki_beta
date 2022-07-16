@@ -12,8 +12,8 @@ class ListStores extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final StoreController controller = Get.put(StoreController());
-    LoginController _loginController = Get.find();
+    final StoreController controller = Get.find(); // Get.put(StoreController());
+    final LoginController _loginController = Get.find();
 
     Widget _buildRow(Lojas loja) {
       return Column(children: [ListTile(

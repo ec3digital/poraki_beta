@@ -68,7 +68,7 @@ class BodyShowDayOffer extends StatelessWidget {
                     ButtonsDayOffer(
                       onPressed: () {},
                       colorText: AppColors.primaryColor,
-                      text: 'Adicionar ao carrinho',
+                      text: 'Adicionar ao carrinho1',
                       colorButton: AppColors.primaryColorButton,
                     ),
                   ],

@@ -12,15 +12,15 @@ import 'list_pics_offer.dart';
 
 // ignore: must_be_immutable
 class BodyOffer extends StatelessWidget {
-  final int offerId;
-  BodyOffer({Key? key, required this.offerId}) : super(key: key);
+  final ProdutoOferta produtoOferta;
+  BodyOffer({Key? key, required this.produtoOferta}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext buildContext) {
     //OffersController offersController = Get.put(OffersController());
-    OffersController offersController = Get.find();
-    LoginController _loginController = Get.find();
-    Color darkText = _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'textDark').first.coreValor.toString());
+    final OffersController offersController = Get.find();
+    final LoginController _loginController = Get.find();
+    final Color darkText = _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'textDark').first.coreValor.toString());
 
     return Container(
       child: GetBuilder<OffersController>(builder: (context) {
@@ -30,11 +30,11 @@ class BodyOffer extends StatelessWidget {
           );
         } else {
 
-          ProdutoOferta _product = offersController.offers.where((p) => p.ofertaID == this.offerId).first;
+          //ProdutoOferta _product = offersController.offers.where((p) => p.ofertaID == this.offerId).first;
           List<String> offersImages = [];
           offersImages.add(
               'https://firebasestorage.googleapis.com/v0/b/ec3digrepo.appspot.com/o/ofertas%2F' +
-                  _product.ofertaID.toString() +
+                  produtoOferta.ofertaID.toString() +
                   '.jpg?alt=media');
 
           return SingleChildScrollView(
@@ -46,7 +46,7 @@ class BodyOffer extends StatelessWidget {
                   Align(
                     alignment: Alignment.topLeft,
                     child: Text(
-                      _product.ofertaTitulo.toString(),
+                      produtoOferta.ofertaTitulo.toString(),
                       textAlign: TextAlign.start,
                       style: TextStyle(fontSize: 22, fontWeight: FontWeight.w400, color: darkText),
                     ),
@@ -54,10 +54,10 @@ class BodyOffer extends StatelessWidget {
                   const SizedBox(height: 10),
                   ListPicsOffer(imagesList: offersImages),
                   const SizedBox(height: 15),
-                  DetailOffer(detailProduct: _product.ofertaDetalhe),
+                  DetailOffer(detailProduct: produtoOferta.ofertaDetalhe),
                   SizedBox(height: 10),
                   Text(
-                    'R\$ ${_product.ofertaPreco?.toStringAsFixed(2).replaceAll(',', '').replaceAll('.', ',') ?? ''}',
+                    'R\$ ${produtoOferta.ofertaPreco?.toStringAsFixed(2).replaceAll(',', '').replaceAll('.', ',') ?? ''}',
                     style: TextStyle(
                       fontSize: 25, color: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'backDark').first.coreValor.toString())
                     ),
@@ -66,11 +66,13 @@ class BodyOffer extends StatelessWidget {
                   Text('Quantidade: 1', style: TextStyle(color: darkText),),
                   SizedBox(height: 10),
                   ButtonOffer(
-                    onPressed: () {
+                    onPressed: () async {
                       var entregaPrev = DateTime.now().add(new Duration(hours: 1)).toString();
-                      var cart = new sqlCarrinho(_product.ofertaID.toString(), _product.ofertaGUID.toString(), _product.ofertaTitulo.toString(), _product.ofertaCEP.toString(), _product.ofertaFKID.toString(), _product.ofertaPreco.toString(), '1', _product.ofertaImgPath.toString(), _product.categoriaChave.toString(), entregaPrev, _product.lojaID, _product.ofertaDetalhe);
+                      var cart = new sqlCarrinho(produtoOferta.ofertaID.toString(), produtoOferta.ofertaGUID.toString(), produtoOferta.ofertaTitulo.toString(), produtoOferta.ofertaCEP.toString(), produtoOferta.ofertaFKID.toString(), produtoOferta.ofertaPreco.toString(), '1', produtoOferta.ofertaImgPath.toString(), produtoOferta.categoriaChave.toString(), entregaPrev, produtoOferta.lojaID, produtoOferta.ofertaDetalhe);
 
-                      sqlPorakiCartService().insertItemCarrinho(cart);
+                      var msg = await sqlPorakiCartService().insertItemCarrinho(cart);
+                      showDialog<String>(context: buildContext, builder: (buildContext) =>
+                          AlertDialog(title: const Text("Aviso"), content: Text(msg.removeAllWhitespace),));
 
                       Get.toNamed(AppRoutes.shoppingCart);
                     },
@@ -79,11 +81,14 @@ class BodyOffer extends StatelessWidget {
                     colorButton: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'iconColor').first.coreValor.toString()),
                   ),
                   ButtonOffer(
-                    onPressed: () {
+                    onPressed: () async {
                       var entregaPrev = DateTime.now().add(new Duration(hours: 1)).toString();
-                      var cart = new sqlCarrinho(_product.ofertaID.toString(), _product.ofertaGUID.toString(), _product.ofertaTitulo.toString(), _product.ofertaCEP.toString(), _product.ofertaFKID.toString(), _product.ofertaPreco.toString(), '1', _product.ofertaImgPath.toString(), _product.categoriaChave.toString(), entregaPrev, _product.lojaID, _product.ofertaDetalhe);
+                      print('botao press, offerGuid: ' + produtoOferta.ofertaGUID.toString());
+                      var cart = new sqlCarrinho(produtoOferta.ofertaID.toString(), produtoOferta.ofertaGUID.toString(), produtoOferta.ofertaTitulo.toString(), produtoOferta.ofertaCEP.toString(), produtoOferta.ofertaFKID.toString(), produtoOferta.ofertaPreco.toString(), '1', produtoOferta.ofertaImgPath.toString(), produtoOferta.categoriaChave.toString(), entregaPrev, produtoOferta.lojaID, produtoOferta.ofertaDetalhe);
 
-                      sqlPorakiCartService().insertItemCarrinho(cart);
+                      var msg = await sqlPorakiCartService().insertItemCarrinho(cart);
+                      showDialog<String>(context: buildContext, builder: (buildContext) =>
+                          AlertDialog(title: const Text("Aviso"), content: Text(msg.removeAllWhitespace),));
 
                       Get.toNamed(
                         AppRoutes.shoppingCart,

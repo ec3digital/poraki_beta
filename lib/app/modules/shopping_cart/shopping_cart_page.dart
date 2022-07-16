@@ -10,7 +10,7 @@ class ShoppingCartPage extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  final ShoppingCartController controller = Get.put(ShoppingCartController());
+  final ShoppingCartController controller = Get.find();// Get.put(ShoppingCartController());
 
   @override
   Widget build(BuildContext context) {

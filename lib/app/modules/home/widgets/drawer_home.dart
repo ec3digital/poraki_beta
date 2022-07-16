@@ -2,8 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:poraki/app/modules/auth/login/login_controller.dart';
+import 'package:poraki/app/modules/orders/order_controller.dart';
 import 'package:poraki/app/routes/app_routes.dart';
 import 'package:poraki/app/services/sqlite/sqlporaki_address_service.dart';
+import 'package:poraki/app/services/sqlite/sqlporaki_login_service.dart';
 import 'package:poraki/app/services/sqlite/sqlporaki_pedido_service.dart';
 import 'package:poraki/app/shared/porakiprefs.dart';
 
@@ -14,7 +16,8 @@ class DrawerHome extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  LoginController _login = Get.put(LoginController());
+  final LoginController _login = Get.find(); // Get.put(LoginController());
+  OrderController _orderController = Get.find();
 
   Future<void> _loadLogin() async {
     print('_loadLogin');
@@ -23,13 +26,13 @@ class DrawerHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    LoginController _loginController = Get.find();
-    Color lightBack = _loginController.colorFromHex(_loginController.listCore
+    //LoginController _loginController = Get.find();
+    Color lightBack = _login.colorFromHex(_login.listCore
         .where((coreItem) => coreItem.coreChave == 'backLight')
         .first
         .coreValor
         .toString());
-    Color darkBack = _loginController.colorFromHex(_loginController.listCore
+    Color darkBack = _login.colorFromHex(_login.listCore
         .where((coreItem) => coreItem.coreChave == 'backDark')
         .first
         .coreValor
@@ -51,7 +54,8 @@ class DrawerHome extends StatelessWidget {
                   children: [
                     SizedBox(
                         height: 100.0,
-                        child: DrawerHeader(decoration: BoxDecoration(color: darkBack),
+                        child: DrawerHeader(
+                            decoration: BoxDecoration(color: darkBack),
                             margin: EdgeInsets.all(0.0),
                             child: Column(children: [
                               Center(child: Text(_login.usuNome.toString())),
@@ -79,11 +83,11 @@ class DrawerHome extends StatelessWidget {
                     //   onTap: () => Get.toNamed(AppRoutes.shoppingCart),
                     // ),
                     RowCategoriesDrawerHome(
-                      text: 'Notícias da região',
-                      // isSelected: index == 1,
-                      icon: Icons.near_me_outlined,
-                      onTap: () {} // => Get.toNamed(AppRoutes.shoppingCart),
-                    ),
+                        text: 'Notícias da região',
+                        // isSelected: index == 1,
+                        icon: Icons.near_me_outlined,
+                        onTap: () => Get.toNamed(AppRoutes.news),
+                        ),
                     RowCategoriesDrawerHome(
                       text: 'Categorias',
                       // isSelected: index == 1,
@@ -97,12 +101,10 @@ class DrawerHome extends StatelessWidget {
                       onTap: () => Get.toNamed(AppRoutes.addresses),
                     ),
                     RowCategoriesDrawerHome(
-                      text: 'Minhas compras',
-                      // isSelected: index == 2,
-                      icon: Icons.shopping_bag_outlined,
-                      onTap: () => Get.offAndToNamed(AppRoutes.orders,
-                          arguments: {"tipo": "Compras"}),
-                    ),
+                        text: 'Minhas compras',
+                        // isSelected: index == 2,
+                        icon: Icons.shopping_bag_outlined,
+                        onTap: () => Get.offAndToNamed(AppRoutes.orders, arguments: ["Compras"])),
                     RowCategoriesDrawerHome(
                       text: 'Minhas lojas',
                       // isSelected: index == 3,
@@ -119,16 +121,12 @@ class DrawerHome extends StatelessWidget {
                       text: 'Vendas',
                       // isSelected: index == 7,
                       icon: Icons.monetization_on_outlined,
-                      onTap: () => Get.offAndToNamed(AppRoutes.orders,
-                          arguments: {"tipo": "Vendas"}),
-                    ),
+                        onTap: () => Get.offAndToNamed(AppRoutes.orders, arguments: ["Vendas"])),
                     RowCategoriesDrawerHome(
                       text: 'Entregas',
                       // isSelected: index == 8,
                       icon: Icons.shopping_cart_outlined,
-                      onTap: () => Get.offAndToNamed(AppRoutes.orders,
-                          arguments: {"tipo": "Entregas"}),
-                    ),
+                        onTap: () => Get.offAndToNamed(AppRoutes.orders, arguments: ["Entregas"])),
                     RowCategoriesDrawerHome(
                       text: 'Minha conta',
                       // isSelected: index == 5,
@@ -160,7 +158,9 @@ class DrawerHome extends StatelessWidget {
 }
 
 void _runSpecialCmds() {
-  sqlPorakiPedidoService().redefineTabela();
+  //sqlPorakiPedidoService().redefineTabela();
+  //sqlPorakiPedidoService().atualizaSellers();
+  sqlPorakiLoginService().doSpecial();
 }
 
 class RowCategoriesDrawerHome extends StatelessWidget {

@@ -13,8 +13,8 @@ class ListOffers extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final OffersController offersController = Get.put(OffersController());
-    LoginController _loginController = Get.find();
+    final OffersController offersController = Get.find(); // Get.put(OffersController());
+    final LoginController _loginController = Get.find();
 
     return Expanded(
       child: Container(
@@ -37,7 +37,7 @@ class ListOffers extends StatelessWidget {
                   ProdutoOferta _product = offersController.offers[index];
                   return InkWell(
                     onTap: () => Get.toNamed(AppRoutes.offer,
-                        arguments: _product.ofertaID),
+                        arguments: _product),
                     child: Container(
                       padding: EdgeInsets.only(top: 3, right: 5, left: 5),
                       child: Card(

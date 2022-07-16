@@ -154,7 +154,8 @@ class _ListShoppingCartState extends State<ListShoppingCart> {
                                           Get.find();
                                       Future.wait([
                                         offersController.getOffersBySeller(
-                                            'eyCv21RfaURoMn0SUndCg6LPyJP2')
+                                            widget.controller
+                                                .listShoppingCart[index].sellerId.toString())
                                       ]);
 
                                       Get.toNamed(AppRoutes.offers, arguments: [

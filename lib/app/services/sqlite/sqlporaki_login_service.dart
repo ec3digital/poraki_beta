@@ -45,6 +45,13 @@ class sqlPorakiLoginService {
     return db.query('usuarios');
   }
 
+  Future<void> doSpecial() async {
+    String dbPath = join(await getDatabasesPath(), 'poraki');
+    var db = await openDatabase(dbPath, version: 1);
+    await db.execute("DROP TABLE carrinho");
+    await db.execute(_createTableCarrinho);
+  }
+
   Future<void> deleteUsuario() async {
     String dbPath = join(await getDatabasesPath(), 'poraki');
     var db = await openDatabase(dbPath, version: 1);
@@ -127,15 +134,18 @@ class sqlPorakiLoginService {
   //cria no sucesso do login
   final String _createTableCarrinho = '''
     CREATE TABLE IF NOT EXISTS carrinho (
-    ofertaId INT,
+    ofertaId TEXT,
+    ofertaGUID TEXT,
     ofertaTitulo TEXT,
     ofertaCEP TEXT,
-    ofertaVendedorId INT,
+    ofertaVendedorGUID INT,
     ofertaPreco REAL,
     ofertaQtd INT,
     ofertaImgPath TEXT,
     categoriaChave TEXT,
-    ofertaEntregaPrevEm TEXT
+    ofertaEntregaPrevEm TEXT,
+    ofertaLojaGUID TEXT,
+    ofertaDetalhe
     );
   ''';
 

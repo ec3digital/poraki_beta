@@ -136,6 +136,31 @@ class _MOfferPage extends State<MOfferPage> {
   void initState() {
     _imageURLFocusNode.addListener(_updateImageUrl);
     super.initState();
+
+    widget.mofferController.txtTitulo.text = '';
+    widget.mofferController.txtValorTaxa1km.text = '0.00';
+    widget.mofferController.txtValorTaxaMaisQue2km.text = '0.00';
+    widget.mofferController.txtValorTaxa2km.text = '0.00';
+    widget.mofferController.txtCodigoAlt.text = '';
+    widget.mofferController.txtCepDistancia.text = '0';
+    widget.mofferController.txtValorSinalOrc.text = '0.00';
+    widget.mofferController.txtValidade.text = '0';
+    widget.mofferController.txtPesoPorcao.text = '0.00';
+    widget.mofferController.txtPesoPorcaoUn.text = '';
+    widget.mofferController.txtDescricao.text = '';
+    widget.mofferController.txtDetalhes.text = '';
+    widget.mofferController.txtTamanhos.text = '';
+    widget.mofferController.txtCores.text = '';
+    widget.mofferController.txtPreco.text = '0.00';
+    widget.mofferController.txtValorMin.text = '0.00';
+    widget.mofferController.txtMarca.text = '';
+    widget.mofferController.txtQtdMaxPorVenda.text = '0';
+    widget.mofferController.txtQtdDispo.text = '0';
+    widget.mofferController.txtQtdAviso.text = '0';
+
+    final LoginController loginController = Get.find();
+    widget.mofferController.txtCEP.text = loginController.usuCep.toString();
+
     _manageCampos();
   }
 
@@ -153,6 +178,11 @@ class _MOfferPage extends State<MOfferPage> {
     LoginController _loginController = Get.find();
     Color textColor = _loginController.colorFromHex(_loginController.listCore
         .where((coreItem) => coreItem.coreChave == 'textDark')
+        .first
+        .coreValor
+        .toString());
+    Color iconColor = _loginController.colorFromHex(_loginController.listCore
+        .where((coreItem) => coreItem.coreChave == 'backDark')
         .first
         .coreValor
         .toString());
@@ -372,19 +402,25 @@ class _MOfferPage extends State<MOfferPage> {
                                             }),
                                         const SizedBox(width: 20),
                                         Text('Aceita contra proposta'),
-                                        const SizedBox(height: 20)
                                       ],
                                     ),
+
                                   if (valAceitaProposta)
-                                    TextFormField(
-                                      controller:
-                                          widget.mofferController.txtValorMin,
-                                      decoration: InputDecoration(
-                                          labelText: 'Valor mín'),
-                                      keyboardType:
-                                          TextInputType.numberWithOptions(
-                                              decimal: true),
-                                    ),
+                                    Column(children: <Widget>[
+                                      const SizedBox(height: 10),
+                                      TextFormField(
+                                        controller:
+                                            widget.mofferController.txtValorMin,
+                                        decoration: InputDecoration(
+                                          labelText: 'Valor mín',
+                                          prefix: Text('R\$ '),
+                                          border: OutlineInputBorder(),
+                                        ),
+                                        keyboardType:
+                                            TextInputType.numberWithOptions(
+                                                decimal: true),
+                                      ),
+                                    ]),
 
                                   // if (showTxtValorSinalOrc)
                                 ],
@@ -406,150 +442,175 @@ class _MOfferPage extends State<MOfferPage> {
                                       Text(valQtd
                                           ? 'Controla quantidade'
                                           : 'Sem controle de quantidade'),
-                                      const SizedBox(height: 30)
+                                      const SizedBox(height: 10)
                                     ],
                                   ),
-                                  const SizedBox(height: 30),
                                   if (valQtd)
-                                    TextFormField(
-                                      controller:
-                                          widget.mofferController.txtQtdDispo,
-                                      decoration: InputDecoration(
-                                        labelText: 'Qtd disponível',
-                                        border: OutlineInputBorder(),
+                                    Column(children: <Widget>[
+                                      const SizedBox(height: 10),
+                                      TextFormField(
+                                        controller:
+                                            widget.mofferController.txtQtdDispo,
+                                        decoration: InputDecoration(
+                                          labelText: 'Qtd disponível',
+                                          border: OutlineInputBorder(),
+                                        ),
+                                        keyboardType: TextInputType.number,
                                       ),
-                                      keyboardType: TextInputType.number,
-                                    ),
-                                  const SizedBox(height: 20),
-                                  TextFormField(
-                                    controller: widget
-                                        .mofferController.txtQtdMaxPorVenda,
-                                    decoration: InputDecoration(
-                                      labelText: 'Qtd máxima por venda',
-                                      border: OutlineInputBorder(),
-                                    ),
-                                    keyboardType: TextInputType.number,
-                                  ),
-                                  const SizedBox(
-                                    height: 20,
-                                  ),
-                                  TextFormField(
-                                    controller:
-                                        widget.mofferController.txtQtdAviso,
-                                    decoration: InputDecoration(
-                                      labelText: 'Qtd aviso acabando',
-                                      border: OutlineInputBorder(),
-                                    ),
-                                    keyboardType: TextInputType.number,
-                                  ),
+                                      const SizedBox(height: 20),
+                                      TextFormField(
+                                        controller: widget
+                                            .mofferController.txtQtdMaxPorVenda,
+                                        decoration: InputDecoration(
+                                          labelText: 'Qtd máxima por venda',
+                                          border: OutlineInputBorder(),
+                                        ),
+                                        keyboardType: TextInputType.number,
+                                      ),
+                                      const SizedBox(
+                                        height: 20,
+                                      ),
+                                      TextFormField(
+                                        controller:
+                                            widget.mofferController.txtQtdAviso,
+                                        decoration: InputDecoration(
+                                          labelText: 'Qtd aviso acabando',
+                                          border: OutlineInputBorder(),
+                                        ),
+                                        keyboardType: TextInputType.number,
+                                      ),
+                                    ]),
                                 ],
                               ),
 
-                            const SizedBox(height: 20),
                             if (showTxtPesoPorcao)
-                              TextFormField(
-                                  controller:
-                                      widget.mofferController.txtPesoPorcao,
-                                  decoration: InputDecoration(
-                                    labelText: 'Peso/Porção',
-                                    border: OutlineInputBorder(),
-                                  ),
-                                  keyboardType: TextInputType.text),
-
-                            const SizedBox(height: 20),
-                            if (showTxtPesoPorcaoUn)
-                              TextFormField(
-                                  controller:
-                                      widget.mofferController.txtPesoPorcaoUn,
-                                  decoration: InputDecoration(
-                                    labelText: 'Peso/Porção Unidade',
-                                    border: OutlineInputBorder(),
-                                  ),
-                                  keyboardType: TextInputType.text),
-                            // if (showTxtSabor)
-                            //   TextFormField(
-                            //       controller: widget.mofferController.txtSabor,
-                            //       decoration: InputDecoration(labelText: 'Sabores divididos por /'),
-                            //       keyboardType: TextInputType.multiline),
-
-                            const SizedBox(height: 20),
-                            if (showTxtValidade)
-                              TextFormField(
-                                  controller:
-                                      widget.mofferController.txtValidade,
-                                  decoration: InputDecoration(
-                                      suffix: Text('dias'),
+                              Column(children: <Widget>[
+                                const SizedBox(height: 20),
+                                TextFormField(
+                                    controller:
+                                        widget.mofferController.txtPesoPorcao,
+                                    decoration: InputDecoration(
+                                      labelText: 'Peso/Porção',
                                       border: OutlineInputBorder(),
-                                      labelText: '$labelValidade (ex: 5 dias)'),
-                                  keyboardType: TextInputType.number),
+                                    ),
+                                    keyboardType: TextInputType.text),
+                              ]),
 
-                            const SizedBox(height: 20),
+                            if (showTxtPesoPorcaoUn)
+                              Column(children: <Widget>[
+                                const SizedBox(height: 20),
+                                TextFormField(
+                                    controller:
+                                        widget.mofferController.txtPesoPorcaoUn,
+                                    decoration: InputDecoration(
+                                      labelText: 'Peso/Porção Unidade',
+                                      border: OutlineInputBorder(),
+                                    ),
+                                    keyboardType: TextInputType.text),
+                                // if (showTxtSabor)
+                                //   TextFormField(
+                                //       controller: widget.mofferController.txtSabor,
+                                //       decoration: InputDecoration(labelText: 'Sabores divididos por /'),
+                                //       keyboardType: TextInputType.multiline),
+                              ]),
+
+                            if (showTxtValidade)
+                              Column(children: <Widget>[
+                                const SizedBox(height: 20),
+                                TextFormField(
+                                    controller:
+                                        widget.mofferController.txtValidade,
+                                    decoration: InputDecoration(
+                                        suffix: Text('dias'),
+                                        border: OutlineInputBorder(),
+                                        labelText:
+                                            '$labelValidade (ex: 5 dias)'),
+                                    keyboardType: TextInputType.number),
+                              ]),
+
                             if (showTxtCep)
-                              TextFormField(
-                                controller: widget.mofferController.txtCep,
-                                decoration: InputDecoration(
-                                  labelText: 'Cep da oferta',
-                                  fillColor: Colors.redAccent.shade100,
-                                  border: OutlineInputBorder(),
+                              Column(children: <Widget>[
+                                const SizedBox(height: 20),
+                                TextFormField(
+                                  controller: widget.mofferController.txtCEP,
+                                  decoration: InputDecoration(
+                                    labelText: 'Cep da oferta',
+                                    fillColor: Colors.redAccent.shade100,
+                                    border: OutlineInputBorder(),
+                                  ),
+                                  keyboardType: TextInputType.number,
                                 ),
-                                keyboardType: TextInputType.number,
-                              ),
+                              ]),
 
-                            const SizedBox(height: 20),
                             if (showTxtOfertaCepDistancia && showCamposBasicos)
-                              TextFormField(
-                                controller:
-                                    widget.mofferController.txtCepDistancia,
-                                decoration: InputDecoration(
-                                    suffix: Text('Km '),
-                                    border: OutlineInputBorder(),
-                                    labelText:
-                                        'Distância de $labelEntrega em Km'),
-                                keyboardType: TextInputType.number,
-                              ),
+                              Column(children: <Widget>[
+                                const SizedBox(height: 20),
+                                TextFormField(
+                                  controller:
+                                      widget.mofferController.txtCepDistancia,
+                                  decoration: InputDecoration(
+                                      suffix: Text('Km '),
+                                      border: OutlineInputBorder(),
+                                      labelText:
+                                          'Distância de $labelEntrega em Km'),
+                                  keyboardType: TextInputType.number,
+                                ),
+                              ]),
 
-                            const SizedBox(height: 20),
                             if (showTxtMarca)
-                              TextFormField(
-                                  controller: widget.mofferController.txtMarca,
-                                  decoration: InputDecoration(
-                                    labelText: 'Marca',
-                                    border: OutlineInputBorder(),
-                                  ),
-                                  keyboardType: TextInputType.text),
-                            const SizedBox(height: 20),
+                              Column(children: <Widget>[
+                                const SizedBox(height: 20),
+                                TextFormField(
+                                    controller:
+                                        widget.mofferController.txtMarca,
+                                    decoration: InputDecoration(
+                                      labelText: 'Marca',
+                                      border: OutlineInputBorder(),
+                                    ),
+                                    keyboardType: TextInputType.text),
+                              ]),
+
                             if (showTxtCodigoAlt)
-                              TextFormField(
-                                  controller:
-                                      widget.mofferController.txtCodigoAlt,
-                                  decoration: InputDecoration(
-                                    labelText: 'Código da revenda',
-                                    border: OutlineInputBorder(),
-                                  ),
-                                  keyboardType: TextInputType.text),
+                              Column(children: <Widget>[
+                                const SizedBox(height: 20),
+                                TextFormField(
+                                    controller:
+                                        widget.mofferController.txtCodigoAlt,
+                                    decoration: InputDecoration(
+                                      labelText: 'Código da revenda',
+                                      border: OutlineInputBorder(),
+                                    ),
+                                    keyboardType: TextInputType.text),
+                              ]),
 
-                            const SizedBox(height: 20),
                             if (showTxtCores)
-                              TextFormField(
-                                  decoration: InputDecoration(
-                                    labelText: 'Cores ',
-                                    hintText: '(separadas por /)',
-                                    border: OutlineInputBorder(),
-                                  ),
-                                  controller: widget.mofferController.txtCores,
-                                  keyboardType: TextInputType.multiline),
+                              Column(children: <Widget>[
+                                const SizedBox(height: 20),
+                                TextFormField(
+                                    decoration: InputDecoration(
+                                      labelText: 'Cores ',
+                                      hintText: '(separadas por /)',
+                                      border: OutlineInputBorder(),
+                                    ),
+                                    controller:
+                                        widget.mofferController.txtCores,
+                                    keyboardType: TextInputType.multiline),
+                              ]),
 
-                            const SizedBox(height: 20),
                             if (showTxtTamanhos)
-                              TextFormField(
-                                  decoration: InputDecoration(
-                                    labelText: 'Tamanhos ',
-                                    hintText: '(separados por /)',
-                                    border: OutlineInputBorder(),
-                                  ),
-                                  controller:
-                                      widget.mofferController.txtTamanhos,
-                                  keyboardType: TextInputType.multiline),
+                              Column(children: <Widget>[
+                                const SizedBox(height: 20),
+                                TextFormField(
+                                    decoration: InputDecoration(
+                                      labelText: 'Tamanhos ',
+                                      hintText: '(separados por /)',
+                                      border: OutlineInputBorder(),
+                                    ),
+                                    controller:
+                                        widget.mofferController.txtTamanhos,
+                                    keyboardType: TextInputType.multiline),
+                              ]),
+
                             // SizedBox(height: 20),
                             // Text('Nome 1º campo personalizado'),
                             // TextFormField(
@@ -562,9 +623,9 @@ class _MOfferPage extends State<MOfferPage> {
                             //     keyboardType: TextInputType.number),
                             // SizedBox(height: 20),
 
-                            const SizedBox(height: 20),
                             if (showCamposBasicos)
                               Column(children: <Widget>[
+                                const SizedBox(height: 20),
                                 TextFormField(
                                   controller:
                                       widget.mofferController.txtDetalhes,
@@ -576,10 +637,27 @@ class _MOfferPage extends State<MOfferPage> {
                                 ),
                               ]),
 
-                            const SizedBox(height: 20),
-                            if (showDispoImediata)
+                            if (show24hs)
                               Row(
                                 children: <Widget>[
+                                  const SizedBox(height: 20),
+                                  Switch(
+                                      value: val24hs,
+                                      onChanged: (bool val) {
+                                        setState(() {
+                                          val24hs = val;
+                                        });
+                                      }),
+                                  const SizedBox(width: 20),
+                                  Text('24hs'),
+                                  const SizedBox(height: 20),
+                                ],
+                              ),
+
+                            if (showDispoImediata && !show24hs)
+                              Row(
+                                children: <Widget>[
+                                  const SizedBox(height: 20),
                                   Switch(
                                       value: valDispoImediata,
                                       onChanged: (bool val) {
@@ -597,221 +675,770 @@ class _MOfferPage extends State<MOfferPage> {
                                 ],
                               ),
 
-                            const SizedBox(height: 20),
                             if (!valDispoImediata)
                               Column(children: <Widget>[
-                                Checkbox(
-                                  value: this.valSeg,
-                                  onChanged: (val) {
-                                    setState(() {
-                                      this.valSeg = val!;
-                                    });
-                                  },
-                                  activeColor: Colors.blue,
-                                ),
-                                Text('segunda '),
-                                const SizedBox(height: 15),
-                                TextFormField(
-                                  controller: widget.mofferController.txtSegDas,
-                                  decoration: InputDecoration(
-                                    labelText: 'à partir',
-                                    prefix: Text('Das '),
-                                    border: OutlineInputBorder(),
+                                Row(children: <Widget>[
+                                  const SizedBox(height: 20),
+                                  // SEGUNDA
+                                  Checkbox(
+                                    value: this.valSeg,
+                                    onChanged: (val) {
+                                      setState(() {
+                                        this.valSeg = val!;
+                                      });
+                                    },
+                                    activeColor: Colors.blue,
                                   ),
-                                  keyboardType: TextInputType.number,
-                                ),
-                                const SizedBox(height: 15),
-                                TextFormField(
-                                  controller: widget.mofferController.txtSegAs,
-                                  decoration: InputDecoration(
-                                    labelText: 'até ',
-                                    prefix: Text('às '),
-                                    border: OutlineInputBorder(),
+                                  Text('segunda '),
+                                ]),
+
+                                //const SizedBox(),
+                                if (valSeg)
+                                  Row(
+                                    children: <Widget>[
+                                      const SizedBox(height: 5, width: 5),
+                                      Text('Das '),
+                                      const SizedBox(width: 5),
+                                      ElevatedButton(
+                                          onPressed: () {
+                                            showTimePicker(
+                                                    context: context,
+                                                    initialTime: TimeOfDay(
+                                                        hour: 08, minute: 00))
+                                                .then((value) => setState(() {
+                                                      widget.mofferController
+                                                          .valSegDas = value!
+                                                              .hour
+                                                              .toString()
+                                                              .padLeft(2, '0') +
+                                                          ':' +
+                                                          value.minute
+                                                              .toString()
+                                                              .padLeft(2, '0');
+                                                    }));
+                                          },
+                                          style: ButtonStyle(
+                                              backgroundColor:
+                                                  MaterialStateProperty.all<
+                                                      Color>(
+                                            _loginController.colorFromHex(
+                                                _loginController.listCore
+                                                    .where((coreItem) =>
+                                                        coreItem.coreChave ==
+                                                        'backDark')
+                                                    .first
+                                                    .coreValor
+                                                    .toString()),
+                                          )),
+                                          child: Row(
+                                            children: [
+                                              Icon(Icons.access_time_outlined),
+                                              const SizedBox(
+                                                width: 16,
+                                              ),
+                                              Text(widget
+                                                  .mofferController.valSegDas)
+                                            ],
+                                          )),
+                                      const SizedBox(width: 5),
+                                      Text(' às '),
+                                      const SizedBox(width: 5),
+                                      ElevatedButton(
+                                          onPressed: () {
+                                            showTimePicker(
+                                                    context: context,
+                                                    initialTime: TimeOfDay(
+                                                        hour: 18, minute: 00))
+                                                .then((value) => setState(() {
+                                                      widget.mofferController
+                                                          .valSegAs = value!
+                                                              .hour
+                                                              .toString()
+                                                              .padLeft(2, '0') +
+                                                          ':' +
+                                                          value.minute
+                                                              .toString()
+                                                              .padLeft(2, '0');
+                                                    }));
+                                          },
+                                          style: ButtonStyle(
+                                              backgroundColor:
+                                                  MaterialStateProperty.all<
+                                                      Color>(
+                                            _loginController.colorFromHex(
+                                                _loginController.listCore
+                                                    .where((coreItem) =>
+                                                        coreItem.coreChave ==
+                                                        'backDark')
+                                                    .first
+                                                    .coreValor
+                                                    .toString()),
+                                          )),
+                                          child: Row(
+                                            children: [
+                                              Icon(Icons.access_time_outlined),
+                                              const SizedBox(
+                                                width: 16,
+                                              ),
+                                              Text(widget
+                                                  .mofferController.valSegAs)
+                                            ],
+                                          )),
+                                    ],
                                   ),
-                                  keyboardType: TextInputType.number,
-                                ),
-                                Checkbox(
-                                  value: this.valTer,
-                                  onChanged: (val) {
-                                    setState(() {
-                                      this.valTer = val!;
-                                    });
-                                  },
-                                  activeColor: Colors.blue,
-                                ),
-                                Text('terça '),
-                                const SizedBox(height: 15),
-                                TextFormField(
-                                  controller: widget.mofferController.txtTerDas,
-                                  decoration: InputDecoration(
-                                    labelText: 'à partir',
-                                    prefix: Text('Das '),
-                                    border: OutlineInputBorder(),
+
+                                // TERÇA
+                                Row(children: <Widget>[
+                                  Checkbox(
+                                    value: this.valTer,
+                                    onChanged: (val) {
+                                      setState(() {
+                                        this.valTer = val!;
+                                      });
+                                    },
+                                    activeColor: Colors.blue,
                                   ),
-                                  keyboardType: TextInputType.number,
-                                ),
-                                const SizedBox(height: 15),
-                                TextFormField(
-                                  controller: widget.mofferController.txtTerAs,
-                                  decoration: InputDecoration(
-                                    labelText: 'até ',
-                                    prefix: Text('às '),
-                                    border: OutlineInputBorder(),
+                                  Text('terça ')
+                                ]),
+
+                                //const SizedBox(height: 5),
+                                if (valTer)
+                                  Row(
+                                    children: <Widget>[
+                                      const SizedBox(height: 5, width: 5),
+                                      Text('Das '),
+                                      const SizedBox(width: 5),
+                                      ElevatedButton(
+                                          onPressed: () {
+                                            showTimePicker(
+                                                    context: context,
+                                                    initialTime: TimeOfDay(
+                                                        hour: 08, minute: 00))
+                                                .then((value) => setState(() {
+                                                      widget.mofferController
+                                                          .valTerDas = value!
+                                                              .hour
+                                                              .toString()
+                                                              .padLeft(2, '0') +
+                                                          ':' +
+                                                          value.minute
+                                                              .toString()
+                                                              .padLeft(2, '0');
+                                                    }));
+                                          },
+                                          style: ButtonStyle(
+                                              backgroundColor:
+                                                  MaterialStateProperty.all<
+                                                      Color>(
+                                            _loginController.colorFromHex(
+                                                _loginController.listCore
+                                                    .where((coreItem) =>
+                                                        coreItem.coreChave ==
+                                                        'backDark')
+                                                    .first
+                                                    .coreValor
+                                                    .toString()),
+                                          )),
+                                          child: Row(
+                                            children: [
+                                              Icon(Icons.access_time_outlined),
+                                              const SizedBox(
+                                                width: 16,
+                                              ),
+                                              Text(widget
+                                                  .mofferController.valTerDas)
+                                            ],
+                                          )),
+                                      const SizedBox(width: 5),
+                                      Text(' às '),
+                                      const SizedBox(width: 5),
+                                      ElevatedButton(
+                                          onPressed: () {
+                                            showTimePicker(
+                                                    context: context,
+                                                    initialTime: TimeOfDay(
+                                                        hour: 18, minute: 00))
+                                                .then((value) => setState(() {
+                                                      widget.mofferController
+                                                          .valTerAs = value!
+                                                              .hour
+                                                              .toString()
+                                                              .padLeft(2, '0') +
+                                                          ':' +
+                                                          value.minute
+                                                              .toString()
+                                                              .padLeft(2, '0');
+                                                    }));
+                                          },
+                                          style: ButtonStyle(
+                                              backgroundColor:
+                                                  MaterialStateProperty.all<
+                                                      Color>(
+                                            _loginController.colorFromHex(
+                                                _loginController.listCore
+                                                    .where((coreItem) =>
+                                                        coreItem.coreChave ==
+                                                        'backDark')
+                                                    .first
+                                                    .coreValor
+                                                    .toString()),
+                                          )),
+                                          child: Row(
+                                            children: [
+                                              Icon(Icons.access_time_outlined),
+                                              const SizedBox(
+                                                width: 16,
+                                              ),
+                                              Text(widget
+                                                  .mofferController.valTerAs)
+                                            ],
+                                          )),
+                                    ],
                                   ),
-                                  keyboardType: TextInputType.number,
-                                ),
-                                Checkbox(
-                                  value: this.valQua,
-                                  onChanged: (val) {
-                                    setState(() {
-                                      this.valQua = val!;
-                                    });
-                                  },
-                                  activeColor: Colors.blue,
-                                ),
-                                Text('quarta '),
-                                const SizedBox(height: 15),
-                                TextFormField(
-                                  controller: widget.mofferController.txtQuaDas,
-                                  decoration: InputDecoration(
-                                    labelText: 'à partir',
-                                    prefix: Text('Das '),
-                                    border: OutlineInputBorder(),
+
+                                Row(children: <Widget>[
+                                  Checkbox(
+                                    value: this.valQua,
+                                    onChanged: (val) {
+                                      setState(() {
+                                        this.valQua = val!;
+                                      });
+                                    },
+                                    activeColor: Colors.blue,
                                   ),
-                                  keyboardType: TextInputType.number,
-                                ),
-                                const SizedBox(height: 15),
-                                TextFormField(
-                                  controller: widget.mofferController.txtQuaAs,
-                                  decoration: InputDecoration(
-                                    labelText: 'até ',
-                                    prefix: Text('às '),
-                                    border: OutlineInputBorder(),
+                                  Text('quarta '),
+                                ]),
+
+                                //const SizedBox(height: 5),
+                                if (valQua)
+                                  Row(
+                                    children: <Widget>[
+                                      const SizedBox(height: 5, width: 5),
+                                      Text('Das '),
+                                      const SizedBox(width: 5),
+                                      ElevatedButton(
+                                          onPressed: () {
+                                            showTimePicker(
+                                                    context: context,
+                                                    initialTime: TimeOfDay(
+                                                        hour: 08, minute: 00))
+                                                .then((value) => setState(() {
+                                                      widget.mofferController
+                                                          .valQuaDas = value!
+                                                              .hour
+                                                              .toString()
+                                                              .padLeft(2, '0') +
+                                                          ':' +
+                                                          value.minute
+                                                              .toString()
+                                                              .padLeft(2, '0');
+                                                    }));
+                                          },
+                                          style: ButtonStyle(
+                                              backgroundColor:
+                                                  MaterialStateProperty.all<
+                                                      Color>(
+                                            _loginController.colorFromHex(
+                                                _loginController.listCore
+                                                    .where((coreItem) =>
+                                                        coreItem.coreChave ==
+                                                        'backDark')
+                                                    .first
+                                                    .coreValor
+                                                    .toString()),
+                                          )),
+                                          child: Row(
+                                            children: [
+                                              Icon(Icons.access_time_outlined),
+                                              const SizedBox(
+                                                width: 16,
+                                              ),
+                                              Text(widget
+                                                  .mofferController.valQuaDas)
+                                            ],
+                                          )),
+                                      const SizedBox(width: 5),
+                                      Text(' às '),
+                                      const SizedBox(width: 5),
+                                      ElevatedButton(
+                                          onPressed: () {
+                                            showTimePicker(
+                                                    context: context,
+                                                    initialTime: TimeOfDay(
+                                                        hour: 18, minute: 00))
+                                                .then((value) => setState(() {
+                                                      widget.mofferController
+                                                          .valQuaAs = value!
+                                                              .hour
+                                                              .toString()
+                                                              .padLeft(2, '0') +
+                                                          ':' +
+                                                          value.minute
+                                                              .toString()
+                                                              .padLeft(2, '0');
+                                                    }));
+                                          },
+                                          style: ButtonStyle(
+                                              backgroundColor:
+                                                  MaterialStateProperty.all<
+                                                      Color>(
+                                            _loginController.colorFromHex(
+                                                _loginController.listCore
+                                                    .where((coreItem) =>
+                                                        coreItem.coreChave ==
+                                                        'backDark')
+                                                    .first
+                                                    .coreValor
+                                                    .toString()),
+                                          )),
+                                          child: Row(
+                                            children: [
+                                              Icon(Icons.access_time_outlined),
+                                              const SizedBox(
+                                                width: 16,
+                                              ),
+                                              Text(widget
+                                                  .mofferController.valQuaAs)
+                                            ],
+                                          )),
+                                    ],
                                   ),
-                                  keyboardType: TextInputType.number,
-                                ),
-                                Checkbox(
-                                  value: this.valQui,
-                                  onChanged: (val) {
-                                    setState(() {
-                                      this.valQui = val!;
-                                    });
-                                  },
-                                  activeColor: Colors.blue,
-                                ),
-                                Text('quinta '),
-                                const SizedBox(height: 15),
-                                TextFormField(
-                                  controller: widget.mofferController.txtQuiDas,
-                                  decoration: InputDecoration(
-                                    labelText: 'à partir',
-                                    prefix: Text('Das '),
-                                    border: OutlineInputBorder(),
+
+                                Row(children: <Widget>[
+                                  Checkbox(
+                                    value: this.valQui,
+                                    onChanged: (val) {
+                                      setState(() {
+                                        this.valQui = val!;
+                                      });
+                                    },
+                                    activeColor: Colors.blue,
                                   ),
-                                  keyboardType: TextInputType.number,
-                                ),
-                                const SizedBox(height: 15),
-                                TextFormField(
-                                  controller: widget.mofferController.txtQuiAs,
-                                  decoration: InputDecoration(
-                                    labelText: 'até ',
-                                    prefix: Text('às '),
-                                    border: OutlineInputBorder(),
+                                  Text('quinta '),
+                                ]),
+
+                                //const SizedBox(height: 5),
+                                if (valQui)
+                                  Row(
+                                    children: <Widget>[
+                                      const SizedBox(height: 5, width: 5),
+                                      Text('Das '),
+                                      const SizedBox(width: 5),
+                                      ElevatedButton(
+                                          onPressed: () {
+                                            showTimePicker(
+                                                    context: context,
+                                                    initialTime: TimeOfDay(
+                                                        hour: 08, minute: 00))
+                                                .then((value) => setState(() {
+                                                      widget.mofferController
+                                                          .valQuiDas = value!
+                                                              .hour
+                                                              .toString()
+                                                              .padLeft(2, '0') +
+                                                          ':' +
+                                                          value.minute
+                                                              .toString()
+                                                              .padLeft(2, '0');
+                                                    }));
+                                          },
+                                          style: ButtonStyle(
+                                              backgroundColor:
+                                                  MaterialStateProperty.all<
+                                                      Color>(
+                                            _loginController.colorFromHex(
+                                                _loginController.listCore
+                                                    .where((coreItem) =>
+                                                        coreItem.coreChave ==
+                                                        'backDark')
+                                                    .first
+                                                    .coreValor
+                                                    .toString()),
+                                          )),
+                                          child: Row(
+                                            children: [
+                                              Icon(Icons.access_time_outlined),
+                                              const SizedBox(
+                                                width: 16,
+                                              ),
+                                              Text(widget
+                                                  .mofferController.valQuiDas)
+                                            ],
+                                          )),
+                                      const SizedBox(width: 5),
+                                      Text(' às '),
+                                      const SizedBox(width: 5),
+                                      ElevatedButton(
+                                          onPressed: () {
+                                            showTimePicker(
+                                                    context: context,
+                                                    initialTime: TimeOfDay(
+                                                        hour: 18, minute: 00))
+                                                .then((value) => setState(() {
+                                                      widget.mofferController
+                                                          .valQuiAs = value!
+                                                              .hour
+                                                              .toString()
+                                                              .padLeft(2, '0') +
+                                                          ':' +
+                                                          value.minute
+                                                              .toString()
+                                                              .padLeft(2, '0');
+                                                    }));
+                                          },
+                                          style: ButtonStyle(
+                                              backgroundColor:
+                                                  MaterialStateProperty.all<
+                                                      Color>(
+                                            _loginController.colorFromHex(
+                                                _loginController.listCore
+                                                    .where((coreItem) =>
+                                                        coreItem.coreChave ==
+                                                        'backDark')
+                                                    .first
+                                                    .coreValor
+                                                    .toString()),
+                                          )),
+                                          child: Row(
+                                            children: [
+                                              Icon(Icons.access_time_outlined),
+                                              const SizedBox(
+                                                width: 16,
+                                              ),
+                                              Text(widget
+                                                  .mofferController.valQuiAs)
+                                            ],
+                                          )),
+                                    ],
                                   ),
-                                  keyboardType: TextInputType.number,
-                                ),
-                                Checkbox(
-                                  value: this.valSex,
-                                  onChanged: (val) {
-                                    setState(() {
-                                      this.valSex = val!;
-                                    });
-                                  },
-                                  activeColor: Colors.blue,
-                                ),
-                                Text('sexta '),
-                                const SizedBox(height: 15),
-                                TextFormField(
-                                  controller: widget.mofferController.txtSexDas,
-                                  decoration: InputDecoration(
-                                    labelText: 'à partir',
-                                    prefix: Text('Das '),
-                                    border: OutlineInputBorder(),
+
+                                Row(children: <Widget>[
+                                  Checkbox(
+                                    value: this.valSex,
+                                    onChanged: (val) {
+                                      setState(() {
+                                        this.valSex = val!;
+                                      });
+                                    },
+                                    activeColor: Colors.blue,
                                   ),
-                                  keyboardType: TextInputType.number,
-                                ),
-                                const SizedBox(height: 15),
-                                TextFormField(
-                                  controller: widget.mofferController.txtSexAs,
-                                  decoration: InputDecoration(
-                                    labelText: 'até ',
-                                    prefix: Text('às '),
-                                    border: OutlineInputBorder(),
+                                  Text('sexta '),
+                                ]),
+
+                                //const SizedBox(height: 5),
+                                if (valSex)
+                                  Row(
+                                    children: <Widget>[
+                                      const SizedBox(height: 5, width: 5),
+                                      Text('Das '),
+                                      const SizedBox(width: 5),
+                                      ElevatedButton(
+                                          onPressed: () {
+                                            showTimePicker(
+                                                    context: context,
+                                                    initialTime: TimeOfDay(
+                                                        hour: 08, minute: 00))
+                                                .then((value) => setState(() {
+                                                      widget.mofferController
+                                                          .valSexDas = value!
+                                                              .hour
+                                                              .toString()
+                                                              .padLeft(2, '0') +
+                                                          ':' +
+                                                          value.minute
+                                                              .toString()
+                                                              .padLeft(2, '0');
+                                                    }));
+                                          },
+                                          style: ButtonStyle(
+                                              backgroundColor:
+                                                  MaterialStateProperty.all<
+                                                      Color>(
+                                            _loginController.colorFromHex(
+                                                _loginController.listCore
+                                                    .where((coreItem) =>
+                                                        coreItem.coreChave ==
+                                                        'backDark')
+                                                    .first
+                                                    .coreValor
+                                                    .toString()),
+                                          )),
+                                          child: Row(
+                                            children: [
+                                              Icon(Icons.access_time_outlined),
+                                              const SizedBox(
+                                                width: 16,
+                                              ),
+                                              Text(widget
+                                                  .mofferController.valSexDas)
+                                            ],
+                                          )),
+                                      const SizedBox(width: 5),
+                                      Text(' às '),
+                                      const SizedBox(width: 5),
+                                      ElevatedButton(
+                                          onPressed: () {
+                                            showTimePicker(
+                                                    context: context,
+                                                    initialTime: TimeOfDay(
+                                                        hour: 18, minute: 00))
+                                                .then((value) => setState(() {
+                                                      widget.mofferController
+                                                          .valSexAs = value!
+                                                              .hour
+                                                              .toString()
+                                                              .padLeft(2, '0') +
+                                                          ':' +
+                                                          value.minute
+                                                              .toString()
+                                                              .padLeft(2, '0');
+                                                    }));
+                                          },
+                                          style: ButtonStyle(
+                                              backgroundColor:
+                                                  MaterialStateProperty.all<
+                                                      Color>(
+                                            _loginController.colorFromHex(
+                                                _loginController.listCore
+                                                    .where((coreItem) =>
+                                                        coreItem.coreChave ==
+                                                        'backDark')
+                                                    .first
+                                                    .coreValor
+                                                    .toString()),
+                                          )),
+                                          child: Row(
+                                            children: [
+                                              Icon(Icons.access_time_outlined),
+                                              const SizedBox(
+                                                width: 16,
+                                              ),
+                                              Text(widget
+                                                  .mofferController.valSexAs)
+                                            ],
+                                          )),
+                                    ],
                                   ),
-                                  keyboardType: TextInputType.number,
-                                ),
-                                Checkbox(
-                                  value: this.valSab,
-                                  onChanged: (val) {
-                                    setState(() {
-                                      this.valSab = val!;
-                                    });
-                                  },
-                                  activeColor: Colors.blue,
-                                ),
-                                Text('sábado '),
-                                const SizedBox(height: 15),
-                                TextFormField(
-                                  controller: widget.mofferController.txtSabDas,
-                                  decoration: InputDecoration(
-                                    labelText: 'à partir',
-                                    prefix: Text('Das '),
-                                    border: OutlineInputBorder(),
+
+                                Row(children: <Widget>[
+                                  Checkbox(
+                                    value: this.valSab,
+                                    onChanged: (val) {
+                                      setState(() {
+                                        this.valSab = val!;
+                                      });
+                                    },
+                                    activeColor: Colors.blue,
                                   ),
-                                  keyboardType: TextInputType.number,
-                                ),
-                                const SizedBox(height: 15),
-                                TextFormField(
-                                  controller: widget.mofferController.txtSabAs,
-                                  decoration: InputDecoration(
-                                    labelText: 'até ',
-                                    prefix: Text('às '),
-                                    border: OutlineInputBorder(),
+                                  Text('sábado '),
+                                ]),
+
+                                //const SizedBox(height: 5),
+                                if (valSab)
+                                  Row(
+                                    children: <Widget>[
+                                      const SizedBox(height: 5, width: 5),
+                                      Text('Das '),
+                                      const SizedBox(width: 5),
+                                      ElevatedButton(
+                                          onPressed: () {
+                                            showTimePicker(
+                                                    context: context,
+                                                    initialTime: TimeOfDay(
+                                                        hour: 08, minute: 00))
+                                                .then((value) => setState(() {
+                                                      widget.mofferController
+                                                          .valSabDas = value!
+                                                              .hour
+                                                              .toString()
+                                                              .padLeft(2, '0') +
+                                                          ':' +
+                                                          value.minute
+                                                              .toString()
+                                                              .padLeft(2, '0');
+                                                    }));
+                                          },
+                                          style: ButtonStyle(
+                                              backgroundColor:
+                                                  MaterialStateProperty.all<
+                                                      Color>(
+                                            _loginController.colorFromHex(
+                                                _loginController.listCore
+                                                    .where((coreItem) =>
+                                                        coreItem.coreChave ==
+                                                        'backDark')
+                                                    .first
+                                                    .coreValor
+                                                    .toString()),
+                                          )),
+                                          child: Row(
+                                            children: [
+                                              Icon(Icons.access_time_outlined),
+                                              const SizedBox(
+                                                width: 16,
+                                              ),
+                                              Text(widget
+                                                  .mofferController.valSabDas)
+                                            ],
+                                          )),
+                                      const SizedBox(width: 5),
+                                      Text(' às '),
+                                      const SizedBox(width: 5),
+                                      ElevatedButton(
+                                          onPressed: () {
+                                            showTimePicker(
+                                                    context: context,
+                                                    initialTime: TimeOfDay(
+                                                        hour: 18, minute: 00))
+                                                .then((value) => setState(() {
+                                                      widget.mofferController
+                                                          .valSabAs = value!
+                                                              .hour
+                                                              .toString()
+                                                              .padLeft(2, '0') +
+                                                          ':' +
+                                                          value.minute
+                                                              .toString()
+                                                              .padLeft(2, '0');
+                                                    }));
+                                          },
+                                          style: ButtonStyle(
+                                              backgroundColor:
+                                                  MaterialStateProperty.all<
+                                                      Color>(
+                                            _loginController.colorFromHex(
+                                                _loginController.listCore
+                                                    .where((coreItem) =>
+                                                        coreItem.coreChave ==
+                                                        'backDark')
+                                                    .first
+                                                    .coreValor
+                                                    .toString()),
+                                          )),
+                                          child: Row(
+                                            children: [
+                                              Icon(Icons.access_time_outlined),
+                                              const SizedBox(
+                                                width: 16,
+                                              ),
+                                              Text(widget
+                                                  .mofferController.valSabAs)
+                                            ],
+                                          )),
+                                    ],
                                   ),
-                                  keyboardType: TextInputType.number,
-                                ),
-                                Checkbox(
-                                  value: this.valDom,
-                                  onChanged: (val) {
-                                    setState(() {
-                                      this.valDom = val!;
-                                    });
-                                  },
-                                  activeColor: Colors.blue,
-                                ),
-                                Text('domingo '),
-                                const SizedBox(height: 15),
-                                TextFormField(
-                                  controller: widget.mofferController.txtDomDas,
-                                  decoration: InputDecoration(
-                                    labelText: 'à partir',
-                                    prefix: Text('Das '),
-                                    border: OutlineInputBorder(),
+
+                                Row(children: <Widget>[
+                                  Checkbox(
+                                    value: this.valDom,
+                                    onChanged: (val) {
+                                      setState(() {
+                                        this.valDom = val!;
+                                      });
+                                    },
+                                    activeColor: Colors.blue,
                                   ),
-                                  keyboardType: TextInputType.number,
-                                ),
-                                const SizedBox(height: 15),
-                                TextFormField(
-                                  controller: widget.mofferController.txtDomAs,
-                                  decoration: InputDecoration(
-                                    labelText: 'até ',
-                                    prefix: Text('às '),
-                                    border: OutlineInputBorder(),
+                                  Text('domingo '),
+                                ]),
+
+                                //const SizedBox(height: 5),
+                                if (valDom)
+                                  Row(
+                                    children: <Widget>[
+                                      const SizedBox(height: 5, width: 5),
+                                      Text('Das '),
+                                      const SizedBox(width: 5),
+                                      ElevatedButton(
+                                          onPressed: () {
+                                            showTimePicker(
+                                                    context: context,
+                                                    initialTime: TimeOfDay(
+                                                        hour: 08, minute: 00))
+                                                .then((value) => setState(() {
+                                                      widget.mofferController
+                                                          .valDomDas = value!
+                                                              .hour
+                                                              .toString()
+                                                              .padLeft(2, '0') +
+                                                          ':' +
+                                                          value.minute
+                                                              .toString()
+                                                              .padLeft(2, '0');
+                                                    }));
+                                          },
+                                          style: ButtonStyle(
+                                              backgroundColor:
+                                                  MaterialStateProperty.all<
+                                                      Color>(
+                                            _loginController.colorFromHex(
+                                                _loginController.listCore
+                                                    .where((coreItem) =>
+                                                        coreItem.coreChave ==
+                                                        'backDark')
+                                                    .first
+                                                    .coreValor
+                                                    .toString()),
+                                          )),
+                                          child: Row(
+                                            children: [
+                                              Icon(Icons.access_time_outlined),
+                                              const SizedBox(
+                                                width: 16,
+                                              ),
+                                              Text(widget
+                                                  .mofferController.valDomDas)
+                                            ],
+                                          )),
+                                      const SizedBox(width: 5),
+                                      Text(' às '),
+                                      const SizedBox(width: 5),
+                                      ElevatedButton(
+                                          onPressed: () {
+                                            showTimePicker(
+                                                    context: context,
+                                                    initialTime: TimeOfDay(
+                                                        hour: 18, minute: 00))
+                                                .then((value) => setState(() {
+                                                      widget.mofferController
+                                                          .valDomAs = value!
+                                                              .hour
+                                                              .toString()
+                                                              .padLeft(2, '0') +
+                                                          ':' +
+                                                          value.minute
+                                                              .toString()
+                                                              .padLeft(2, '0');
+                                                    }));
+                                          },
+                                          style: ButtonStyle(
+                                              backgroundColor:
+                                                  MaterialStateProperty.all<
+                                                      Color>(
+                                            _loginController.colorFromHex(
+                                                _loginController.listCore
+                                                    .where((coreItem) =>
+                                                        coreItem.coreChave ==
+                                                        'backDark')
+                                                    .first
+                                                    .coreValor
+                                                    .toString()),
+                                          )),
+                                          child: Row(
+                                            children: [
+                                              Icon(Icons.access_time_outlined),
+                                              const SizedBox(
+                                                width: 16,
+                                              ),
+                                              Text(widget
+                                                  .mofferController.valDomAs)
+                                            ],
+                                          )),
+                                    ],
                                   ),
-                                  keyboardType: TextInputType.number,
-                                ),
                               ]),
 
+                            const SizedBox(height: 10),
+                            const Divider(),
                             if (showMostraReview)
                               Row(
                                 children: <Widget>[
@@ -863,40 +1490,71 @@ class _MOfferPage extends State<MOfferPage> {
                                   Text('Aceita encomenda'),
                                 ],
                               ),
-                            if (valAceitaEncomenda)
-                              Column(children: <Widget>[
-                                const SizedBox(width: 20),
-                                TextFormField(
-                                  controller: widget
-                                      .mofferController.txtEncomendasAPartir,
-                                  decoration: InputDecoration(
-                                      labelText: 'Encomendas a partir de:'),
-                                  keyboardType: TextInputType.number,
-                                ),
-                                const SizedBox(height: 20),
-                                // Switch(
-                                //     value: valSomenteEncomenda,
-                                //     onChanged: (bool val) {
-                                //       setState(() {
-                                //         valSomenteEncomenda = val;
-                                //       });
-                                //     }),
-                                // Text('Somente encomenda'),
-                                // SizedBox(height: 20),
-                              ]),
 
-                            if (show24hs)
+                            if (valAceitaEncomenda)
                               Row(
                                 children: <Widget>[
+                                  const SizedBox(width: 40),
                                   Switch(
-                                      value: val24hs,
+                                      value: valSomenteEncomenda,
                                       onChanged: (bool val) {
                                         setState(() {
-                                          val24hs = val;
+                                          valSomenteEncomenda = val;
+                                          print('valSomenteEncomenda: ' +
+                                              valSomenteEncomenda.toString());
                                         });
                                       }),
-                                  const SizedBox(width: 20),
-                                  Text('24hs'),
+                                  const SizedBox(width: 10),
+                                  Text('Somente encomenda'),
+                                  Row(children: <Widget>[
+                                    const SizedBox(height: 30),
+                                    Text('A partir de: '),
+                                  ]),
+                                  ElevatedButton(
+                                      onPressed: () {
+                                        showDatePicker(
+                                                context: context,
+                                                initialDate: DateTime.now(),
+                                                firstDate: DateTime.now(),
+                                                lastDate: DateTime.now()
+                                                    .add(Duration(days: 1000)))
+                                            .then((value) => setState(() {
+                                                  widget.mofferController
+                                                          .valEncomendasAPartir =
+                                                      value!;
+                                                }));
+                                      },
+                                      style: ButtonStyle(
+                                          backgroundColor:
+                                              MaterialStateProperty.all<Color>(
+                                        _loginController.colorFromHex(
+                                            _loginController.listCore
+                                                .where((coreItem) =>
+                                                    coreItem.coreChave ==
+                                                    'backDark')
+                                                .first
+                                                .coreValor
+                                                .toString()),
+                                      )),
+                                      child: Row(
+                                        children: [
+                                          Icon(Icons.calendar_today_rounded),
+                                          const SizedBox(
+                                            width: 16,
+                                          ),
+                                          Text(widget.mofferController
+                                                  .valEncomendasAPartir.day
+                                                  .toString() +
+                                              '/' +
+                                              widget.mofferController
+                                                  .valEncomendasAPartir.month
+                                                  .toString() +
+                                              '/' +
+                                              widget.mofferController
+                                                  .valEncomendasAPartir.year
+                                                  .toString())
+                                        ],
+                                      )),
                                   const SizedBox(height: 20),
                                 ],
                               ),
@@ -905,9 +1563,9 @@ class _MOfferPage extends State<MOfferPage> {
                               Column(
                                 children: <Widget>[
                                   const Divider(),
-                                  const SizedBox(height: 20),
+                                  const SizedBox(height: 10),
                                   Text('Forma de Fechamento'),
-                                  const SizedBox(height: 20),
+                                  const SizedBox(height: 10),
                                   DropdownButton<String>(
                                     items: listaFormaFechamento
                                         .map((String value) {
@@ -938,12 +1596,7 @@ class _MOfferPage extends State<MOfferPage> {
                             if (showCamposEntrega)
                               Column(
                                 children: <Widget>[
-                                  Text(
-                                    "Disponibilidade de " + labelEntrega,
-                                    textAlign: TextAlign.center,
-                                  ),
-                                  const SizedBox(height: 20),
-                                  Text('Agente'),
+                                  Text('Agente de ' + labelEntrega),
                                   DropdownButton<String>(
                                     items:
                                         listaFormaEntrega.map((String value) {
@@ -960,36 +1613,154 @@ class _MOfferPage extends State<MOfferPage> {
                                     },
                                   ),
                                   const SizedBox(height: 20),
-                                  TextFormField(
-                                    controller: widget
-                                        .mofferController.txtEntregasAPartir,
-                                    decoration: InputDecoration(
-                                      labelText: labelEntrega + ' a partir de:',
-                                      border: OutlineInputBorder(),
-                                    ),
-                                    keyboardType: TextInputType.number,
+                                  Text(
+                                    "Disponibilidade de " +
+                                        labelEntrega +
+                                        ' à partir de: ',
+                                    textAlign: TextAlign.center,
                                   ),
+                                  const SizedBox(height: 10),
+                                  ElevatedButton(
+                                      onPressed: () {
+                                        showDatePicker(
+                                                context: context,
+                                                initialDate: DateTime.now(),
+                                                firstDate: DateTime.now(),
+                                                lastDate: DateTime.now()
+                                                    .add(Duration(days: 1000)))
+                                            .then((value) => setState(() {
+                                                  widget.mofferController
+                                                          .valEntregasAPartir =
+                                                      value!;
+                                                }));
+                                      },
+                                      style: ButtonStyle(
+                                          backgroundColor:
+                                              MaterialStateProperty.all<Color>(
+                                        _loginController.colorFromHex(
+                                            _loginController.listCore
+                                                .where((coreItem) =>
+                                                    coreItem.coreChave ==
+                                                    'backDark')
+                                                .first
+                                                .coreValor
+                                                .toString()),
+                                      )),
+                                      child: Row(
+                                        children: [
+                                          Icon(Icons.calendar_today_rounded),
+                                          const SizedBox(
+                                            width: 16,
+                                          ),
+                                          Text(widget.mofferController
+                                                  .valEntregasAPartir.day
+                                                  .toString() +
+                                              '/' +
+                                              widget.mofferController
+                                                  .valEntregasAPartir.month
+                                                  .toString() +
+                                              '/' +
+                                              widget.mofferController
+                                                  .valEntregasAPartir.year
+                                                  .toString())
+                                        ],
+                                      )),
                                   const SizedBox(height: 20),
                                   Text("Horário de " + labelEntrega),
-                                  const SizedBox(height: 20),
-                                  TextFormField(
-                                    controller:
-                                        widget.mofferController.txtEntregaDas,
-                                    decoration: InputDecoration(
-                                      labelText: 'Das',
-                                      border: OutlineInputBorder(),
-                                    ),
-                                    keyboardType: TextInputType.number,
-                                  ),
-                                  const SizedBox(height: 20),
-                                  TextFormField(
-                                    controller:
-                                        widget.mofferController.txtEntregaAs,
-                                    decoration: InputDecoration(
-                                      labelText: 'às',
-                                      border: OutlineInputBorder(),
-                                    ),
-                                    keyboardType: TextInputType.number,
+                                  const SizedBox(height: 10),
+                                  Row(
+                                    children: <Widget>[
+                                      const SizedBox(width: 5),
+                                      Text('Das '),
+                                      const SizedBox(width: 5),
+                                      ElevatedButton(
+                                          onPressed: () {
+                                            showTimePicker(
+                                                    context: context,
+                                                    initialTime: TimeOfDay(
+                                                        hour: 08, minute: 00))
+                                                .then((value) => setState(() {
+                                                      widget.mofferController
+                                                              .valEntregaDas =
+                                                          value!.hour
+                                                                  .toString()
+                                                                  .padLeft(
+                                                                      2, '0') +
+                                                              ':' +
+                                                              value.minute
+                                                                  .toString()
+                                                                  .padLeft(
+                                                                      2, '0');
+                                                    }));
+                                          },
+                                          style: ButtonStyle(
+                                              backgroundColor:
+                                                  MaterialStateProperty.all<
+                                                      Color>(
+                                            _loginController.colorFromHex(
+                                                _loginController.listCore
+                                                    .where((coreItem) =>
+                                                        coreItem.coreChave ==
+                                                        'backDark')
+                                                    .first
+                                                    .coreValor
+                                                    .toString()),
+                                          )),
+                                          child: Row(
+                                            children: [
+                                              Icon(Icons.access_time_outlined),
+                                              const SizedBox(
+                                                width: 16,
+                                              ),
+                                              Text(widget.mofferController
+                                                  .valEntregaDas)
+                                            ],
+                                          )),
+                                      const SizedBox(width: 5),
+                                      Text(' às '),
+                                      const SizedBox(width: 5),
+                                      ElevatedButton(
+                                          onPressed: () {
+                                            showTimePicker(
+                                                    context: context,
+                                                    initialTime: TimeOfDay(
+                                                        hour: 18, minute: 00))
+                                                .then((value) => setState(() {
+                                                      widget.mofferController
+                                                          .valEntregaAs = value!
+                                                              .hour
+                                                              .toString()
+                                                              .padLeft(2, '0') +
+                                                          ':' +
+                                                          value.minute
+                                                              .toString()
+                                                              .padLeft(2, '0');
+                                                    }));
+                                          },
+                                          style: ButtonStyle(
+                                              backgroundColor:
+                                                  MaterialStateProperty.all<
+                                                      Color>(
+                                            _loginController.colorFromHex(
+                                                _loginController.listCore
+                                                    .where((coreItem) =>
+                                                        coreItem.coreChave ==
+                                                        'backDark')
+                                                    .first
+                                                    .coreValor
+                                                    .toString()),
+                                          )),
+                                          child: Row(
+                                            children: [
+                                              Icon(Icons.access_time_outlined),
+                                              const SizedBox(
+                                                width: 16,
+                                              ),
+                                              Text(widget.mofferController
+                                                  .valEntregaAs)
+                                            ],
+                                          )),
+                                    ],
                                   ),
                                   if (labelEntrega == 'Entrega')
                                     Column(
@@ -1237,7 +2008,7 @@ class _MOfferPage extends State<MOfferPage> {
         null,
         '',
         1,
-        widget.mofferController.txtCep.text.replaceAll('-', ''),
+        widget.mofferController.txtCEP.text.replaceAll('-', ''),
         null,
         null,
         0,
@@ -1273,8 +2044,8 @@ class _MOfferPage extends State<MOfferPage> {
         val24hs,
         int.parse(widget.mofferController.txtCepDistancia.text),
         0.00, // double.parse(widget.mofferController.txtValorSinalOrc.text),
-        widget.mofferController.txtEncomendasAPartir.text,
-        widget.mofferController.txtEntregasAPartir.text,
+        widget.mofferController.valEncomendasAPartir.toString(),
+        widget.mofferController.valEntregasAPartir.toString(),
         widget.mofferController.txtCodigoAlt.text,
         double.parse(widget.mofferController.txtValorTaxa1km.text),
         double.parse(widget.mofferController.txtValorTaxa2km.text),
@@ -1290,20 +2061,20 @@ class _MOfferPage extends State<MOfferPage> {
         valSex,
         valSab,
         valDom,
-        widget.mofferController.txtSegDas.text,
-        widget.mofferController.txtSegAs.text,
-        widget.mofferController.txtTerDas.text,
-        widget.mofferController.txtTerAs.text,
-        widget.mofferController.txtQuaDas.text,
-        widget.mofferController.txtQuaAs.text,
-        widget.mofferController.txtQuiDas.text,
-        widget.mofferController.txtQuiAs.text,
-        widget.mofferController.txtSexDas.text,
-        widget.mofferController.txtSexAs.text,
-        widget.mofferController.txtSabDas.text,
-        widget.mofferController.txtSabAs.text,
-        widget.mofferController.txtDomDas.text,
-        widget.mofferController.txtDomAs.text,
+        widget.mofferController.valSegDas,
+        widget.mofferController.valSegAs,
+        widget.mofferController.valTerDas,
+        widget.mofferController.valTerAs,
+        widget.mofferController.valQuaDas,
+        widget.mofferController.valQuaAs,
+        widget.mofferController.valQuiDas,
+        widget.mofferController.valQuiAs,
+        widget.mofferController.valSexDas,
+        widget.mofferController.valSexAs,
+        widget.mofferController.valSabDas,
+        widget.mofferController.valSabAs,
+        widget.mofferController.valDomDas,
+        widget.mofferController.valDomAs,
         null);
 
     // Uri url = Uri.https("ec3digrepo-default-rtdb.firebaseio.com", "/words.json");
@@ -1642,8 +2413,8 @@ class _MOfferPage extends State<MOfferPage> {
       categoriaSel = widget.categSelecionada.categoriaNome!;
       _manageCampos();
 
-      widget.mofferController.txtEncomendasAPartir.text =
-          oferta.OfertaEncomendasAPartirDe.toString();
+      widget.mofferController.valEncomendasAPartir =
+          DateTime.parse(oferta.OfertaEncomendasAPartirDe.toString());
       widget.mofferController.txtValorTaxa1km.text =
           oferta.ValorEntregaAte1 == null
               ? '0'
@@ -1656,8 +2427,8 @@ class _MOfferPage extends State<MOfferPage> {
           oferta.ValorEntregaAte2 == null
               ? '0'
               : oferta.ValorEntregaAte2.toString();
-      widget.mofferController.txtEntregasAPartir.text =
-          oferta.OfertaEntregasAPartirDe.toString();
+      widget.mofferController.valEntregasAPartir =
+          DateTime.parse(oferta.OfertaEntregasAPartirDe.toString());
       widget.mofferController.txtCodigoAlt.text =
           oferta.OfertaCodigoAlt! == 'null'
               ? ''
@@ -1713,42 +2484,23 @@ class _MOfferPage extends State<MOfferPage> {
               : oferta.OfertaTempoEntrega.toString();
 
       widget.offerGuid = widget.mofferController.mofferGuid!;
+
+      widget.mofferController.valSegDas = oferta.SegDas.toString();
+      widget.mofferController.valSegAs = oferta.SegAs.toString();
+      widget.mofferController.valTerDas = oferta.TerDas.toString();
+      widget.mofferController.valTerAs = oferta.TerAs.toString();
+      widget.mofferController.valQuaDas = oferta.QuaDas.toString();
+      widget.mofferController.valQuaAs = oferta.QuaAs.toString();
+      widget.mofferController.valQuiDas = oferta.QuiDas.toString();
+      widget.mofferController.valQuiAs = oferta.QuiAs.toString();
+      widget.mofferController.valSexDas = oferta.SexDas.toString();
+      widget.mofferController.valSexAs = oferta.SexAs.toString();
+      widget.mofferController.valSabDas = oferta.SabDas.toString();
+      widget.mofferController.valSabAs = oferta.SabAs.toString();
+      widget.mofferController.valDomDas = oferta.DomDas.toString();
+      widget.mofferController.valDomAs = oferta.DomAs.toString();
     } else {
       isEditing = false;
-      var nowFormatted = '01' + '03' + '2022';
-      var dia = DateTime.now().day < 10
-          ? '0' + DateTime.now().day.toString()
-          : DateTime.now().day.toString();
-      var mes = DateTime.now().month < 10
-          ? '0' + DateTime.now().month.toString()
-          : DateTime.now().month.toString();
-      var ano = DateTime.now().year.toString();
-      nowFormatted = dia + mes + ano;
-      print('nowFormatted: ' + nowFormatted);
-      widget.mofferController.txtEntregasAPartir.text = nowFormatted;
-      widget.mofferController.txtEncomendasAPartir.text = nowFormatted;
-
-      widget.mofferController.txtTitulo.text = '';
-      widget.mofferController.txtEncomendasAPartir.text = '';
-      widget.mofferController.txtValorTaxa1km.text = '0.00';
-      widget.mofferController.txtValorTaxaMaisQue2km.text = '0.00';
-      widget.mofferController.txtValorTaxa2km.text = '0.00';
-      widget.mofferController.txtCodigoAlt.text = '';
-      widget.mofferController.txtCepDistancia.text = '0';
-      widget.mofferController.txtValorSinalOrc.text = '0.00';
-      widget.mofferController.txtValidade.text = '0';
-      widget.mofferController.txtPesoPorcao.text = '0.00';
-      widget.mofferController.txtPesoPorcaoUn.text = '';
-      widget.mofferController.txtDescricao.text = '';
-      widget.mofferController.txtDetalhes.text = '';
-      widget.mofferController.txtTamanhos.text = '';
-      widget.mofferController.txtCores.text = '';
-      widget.mofferController.txtPreco.text = '0.00';
-      widget.mofferController.txtValorMin.text = '0.00';
-      widget.mofferController.txtMarca.text = '';
-      widget.mofferController.txtQtdMaxPorVenda.text = '0';
-      widget.mofferController.txtQtdDispo.text = '0';
-      widget.mofferController.txtQtdAviso.text = '0';
     }
   }
 }

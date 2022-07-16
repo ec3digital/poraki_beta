@@ -13,7 +13,7 @@ class HeaderLogin extends StatelessWidget {
           padding: EdgeInsets.only(bottom: 7),
           child: Image.asset(
             "assets/icons/poraki250.png",
-            height: 250,
+            height: 25,
           ),
         ),
         Text(

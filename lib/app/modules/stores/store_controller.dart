@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:extended_masked_text/extended_masked_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -27,25 +26,25 @@ class StoreController extends GetxController {
 
   Future<void> carregaLojas() async {
     try {
-      changeLoading(true);
+      _changeLoading(true);
       var lojasTemp = await storeRepo.getAllStores(_login.usuGuid.toString());
       print('lojasTemp: ' + lojasTemp.length.toString());
       lojas = lojasTemp;
     } catch (e) {
       print('Erro no carregaLojas() controller ${e.toString()}');
     } finally {
-      changeLoading(false);
+      _changeLoading(false);
     }
   }
 
-  void changeLoading(bool newValue) {
+  void _changeLoading(bool newValue) {
     isLoading = newValue;
     update();
   }
 
   Future<void> carregaLoja(String? guid) async {
     try {
-      changeLoading(true);
+      _changeLoading(true);
       if (guid != "") loja = await storeRepo.getStore(guid!);
 
       txtLojaCEP.text = loja!.LojaCEP.toString();
@@ -59,7 +58,7 @@ class StoreController extends GetxController {
     } catch (e) {
       print('Erro no carregaLoja() controller ${e.toString()}');
     } finally {
-      changeLoading(false);
+      _changeLoading(false);
     }
   }
 

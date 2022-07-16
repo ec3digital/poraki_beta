@@ -133,6 +133,7 @@ class OfferRepository extends GetConnect {
   }
 
   Future<List<ProdutoOferta>> getOfferByGuidFromApi(String offerGuid) async {
+    print('getOfferByGuidFromApi');
     String url = '${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiOferta').first.coreValor.toString()}/' + offerGuid;
     var response = await get(url, headers: Constants.headers);
     if (response.hasError) throw 'Ocorreu um erro em getOfferByGuidFromApi()';

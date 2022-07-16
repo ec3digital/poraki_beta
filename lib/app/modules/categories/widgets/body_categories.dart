@@ -6,7 +6,7 @@ import '../categories_controller.dart';
 import 'list_vertical_categories.dart';
 
 class BodyCategories extends StatelessWidget {
-  final CategoriesController _controller = Get.put(CategoriesController());
+  final CategoriesController _controller = Get.find(); // Get.put(CategoriesController());
 
   @override
   Widget build(BuildContext context) {

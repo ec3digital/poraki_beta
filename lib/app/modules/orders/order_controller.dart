@@ -39,7 +39,7 @@ class OrderController extends GetxController {
     listaPedidoItems.clear();
 
     var listaPedidoItemsTemp = await OrdersRepository().getOrderItems(pedidoGUID);
-    print('qtd items cloud: ' + listaPedidoItemsTemp.length.toString());
+    print('qtd items cloud - carregaPedidoCloudItems: ' + listaPedidoItemsTemp.length.toString());
     listaPedidoItemsTemp.forEach((item) {listaPedidoItems.add(item);});
   }
 
@@ -48,21 +48,17 @@ class OrderController extends GetxController {
 
     List<sqlPedido> pedidos = await sqlPorakiPedidoService().listOrders(userGUID);
     print('qtd pedidos: ' + pedidos.length.toString());
-    pedidos.forEach((sqlPed) {
-      listaPedidos.add(sqlPorakiPedidoService().convertSqlpedToPedido(sqlPed)
-      );
-    });
-  }
-
-  Future<Pedido> pegaPedidoCloud(String pedidoGUID) async {
-    return await OrdersRepository().getOrder(pedidoGUID);
+    // pedidos.forEach((sqlPed) {
+    //   listaPedidos.add(sqlPorakiPedidoService().convertSqlpedToPedido(sqlPed)
+    //   );
+    // });
   }
 
   Future<void> carregaPedidosPorClienteOpenCloud(String userGUID) async {
     listaPedidos.clear();
 
     var listaPedidosTemp = await OrdersRepository().getOrdersByCustomerOpen(userGUID);
-    print('qtd pedidos cloud: ' + listaPedidosTemp.length.toString());
+    print('qtd pedidos cloud - carregaPedidosPorClienteOpenCloud: ' + listaPedidosTemp.length.toString());
     listaPedidosTemp.forEach((ped) {listaPedidos.add(ped); });
   }
 
@@ -70,7 +66,7 @@ class OrderController extends GetxController {
     listaPedidos.clear();
 
     var listaPedidosTemp = await OrdersRepository().getOrdersBySellerOpen(userGUID);
-    print('qtd pedidos cloud: ' + listaPedidosTemp.length.toString());
+    print('qtd pedidos cloud - carregaPedidosPorVendedorOpenCloud: ' + listaPedidosTemp.length.toString());
     listaPedidosTemp.forEach((ped) {listaPedidos.add(ped); });
   }
 
@@ -78,16 +74,15 @@ class OrderController extends GetxController {
     listaPedidos.clear();
 
     var listaPedidosTemp = await OrdersRepository().getOrdersBySellerDeliveryOpen(userGUID);
-    print('qtd pedidos cloud: ' + listaPedidosTemp.length.toString());
+    print('qtd pedidos cloud - carregaPedidosPorVendedorOpenDeliveryCloud: ' + listaPedidosTemp.length.toString());
     listaPedidosTemp.forEach((ped) {listaPedidos.add(ped); });
   }
-
 
   Future<void> carregaPedidosPorClienteClosedCloud(String userGUID) async {
     listaPedidos.clear();
 
     var listaPedidosTemp = await OrdersRepository().getOrdersByCustomerClosed(userGUID);
-    print('qtd pedidos cloud: ' + listaPedidosTemp.length.toString());
+    print('qtd pedidos cloud - carregaPedidosPorClienteClosedCloud: ' + listaPedidosTemp.length.toString());
     listaPedidosTemp.forEach((ped) {listaPedidos.add(ped); });
   }
 
@@ -95,7 +90,7 @@ class OrderController extends GetxController {
     listaPedidos.clear();
 
     var listaPedidosTemp = await OrdersRepository().getOrdersBySellerClosed(userGUID);
-    print('qtd pedidos cloud: ' + listaPedidosTemp.length.toString());
+    print('qtd pedidos cloud - carregaPedidosPorVendedorClosedCloud: ' + listaPedidosTemp.length.toString());
     listaPedidosTemp.forEach((ped) {listaPedidos.add(ped); });
   }
 
@@ -103,8 +98,12 @@ class OrderController extends GetxController {
     listaPedidos.clear();
 
     var listaPedidosTemp = await OrdersRepository().getOrdersBySellerDeliveryClosed(userGUID);
-    print('qtd pedidos cloud: ' + listaPedidosTemp.length.toString());
+    print('qtd pedidos cloud - carregaPedidosPorVendedorClosedDeliveryCloud: ' + listaPedidosTemp.length.toString());
     listaPedidosTemp.forEach((ped) {listaPedidos.add(ped); });
+  }
+
+  Future<Pedido> pegaPedidoCloud(String pedidoGUID) async {
+    return await OrdersRepository().getOrder(pedidoGUID);
   }
 
   Future<void> avaliaPedidoCloud(String pedidoGuid, int score) async {
@@ -121,6 +120,14 @@ class OrderController extends GetxController {
 
   Future<void> pagaPedidoCloud(String pedidoGuid, String Autoriza, String Entidade) async {
     await OrdersRepository().putOrderPayment(pedidoGuid, Autoriza, Entidade);
+  }
+
+  Future<void> aceitaPedidoCloud(String pedidoGuid, String usuNome) async {
+    await OrdersRepository().putOrderAcceptedBy(pedidoGuid, usuNome);
+  }
+
+  Future<void> recebePedidoCloud(String pedidoGuid, String usuNome) async {
+    await OrdersRepository().putOrderReceivedBy(pedidoGuid, usuNome);
   }
 
   Future<void> buscaPedidoItemsCloud(String pedidoGUID) async {
@@ -141,7 +148,7 @@ class OrderController extends GetxController {
           pedCloud.PedidoValorTotal,
           pedCloud.PedidoFormaPagto,
           pedCloud.PedidoCancelada,
-          pedCloud.PedidoPagtoEm,
+          pedCloud.PedidoPagtoEm.toString(),
           pedCloud.PedidoPessoaNome,
           pedCloud.PedidoPessoaEmail,
           pedCloud.PedidoUsuGUID,

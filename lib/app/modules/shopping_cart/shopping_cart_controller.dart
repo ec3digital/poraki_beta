@@ -73,6 +73,9 @@ class ShoppingCartController extends GetxController {
     List<sqlCarrinho> carrinho = await sqlPorakiCartService().carrinho();
 
     carrinho.forEach((element) {
+      sqlCarrinho elem = element;
+      print('element tit: ' + elem.ofertaTitulo);
+      print('element ofertaGUID: ' + elem.ofertaGUID.toString());
       listShoppingCart.add(new ShoppingCartModel(
           element.ofertaTitulo.toString(),
           'https://firebasestorage.googleapis.com/v0/b/ec3digrepo.appspot.com/o/ofertas%2F' +
@@ -141,169 +144,91 @@ class ShoppingCartController extends GetxController {
     cartDelivery = 3;
   }
 
-  Future<void> saveBuy() async {
-    ctrlMsg = '';
-
-    if (!this.running) {
-
-      var pedidoService = new OrdersRepository();
-      var orderService = new sqlPorakiPedidoService();
-
-      List<Sellers<String, String>> vendedoresGUIDs = [];
-      listShoppingCart.forEach((ped) {
-        if (!vendedoresGUIDs.contains(new Sellers(ped.sellerId, ped.storeId)))
-          vendedoresGUIDs.add(new Sellers(ped.sellerId, ped.storeId));
-      });
-
-      vendedoresGUIDs.forEach((vendedor) async {
-        await _saveOrder(orderService, pedidoService, vendedor);
-      });
-
-      running = true;
-      ctrlMsg = 'Pedido foi enviado, obrigado!';
-    }
-  }
-
-  Future<void> _saveOrder(sqlPorakiPedidoService orderSvc,
-      OrdersRepository pedidoSvc, Sellers seller) async {
+  Future<String> saveOrder() async {
+    var ret = 'Seu pedido foi enviado, por favor aguarde os próximos passos';
+    var orderSvc = new OrdersRepository();
     var pedDate = DateTime.now().toString();
-    var endereco = _loginController.listEnderecos.where((end) => end.EnderecoAtual).first;
+    var endereco =
+        _loginController.listEnderecos.where((end) => end.EnderecoAtual).first;
 
-    List<ShoppingCartModel> cartBySeller = [];
+    // // sort by eta
+    // cartBySeller.sort((a, b) => a.deliverIn!.compareTo(b.deliverIn!));
 
-    listShoppingCart.forEach((ped) {
-      if (ped.sellerId == seller.sellerId) cartBySeller.add(ped);
-    });
-
-    var totalBySeller = 0.00;
-    cartBySeller.forEach((pedSeller) {
-      totalBySeller += pedSeller.totalValue;
-    });
-
-    // sort by eta
-    cartBySeller.sort((a, b) => a.deliverIn!.compareTo(b.deliverIn!));
-
-    var pedPost = new Pedido(
-      null,
-      seller.sellerId,
-      '',
-      pedDate,
-      totalBySeller.toString(),
-      payment,
-      0,
-      '',
-      _loginController.usuNome.toString(),
-      _loginController.usuEmail.toString(),
-      _loginController.usuGuid,
-      0,
-      null,
-      'R\$',
-      endereco.EnderecoCEP.toString(),
-      endereco.EnderecoLogra,
-      endereco.EnderecoNumero,
-      endereco.EnderecoCompl,
-      '',
-      '',
-      cartBySeller.first.deliverIn,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-    );
-
-    var pedGuid = await pedidoSvc.postOrder(pedPost);
-
-    print('new pedGuid:  ' + pedGuid);
-    //
-    // if (pedGuid.toString() != '') {
-    //   orderSvc.insertOrder(new sqlPedido(
-    //     pedGuid.toString(),
-    //     pedPost.PedidoVendedorGUID, //pedidoVendedorGUID,
-    //     pedPost.PedidoVendedorEmail, // pedidoVendedorEmail,
-    //     pedDate, //pedidoEm,
-    //     totalBySeller.toString(), //pedidoValorTotal,
-    //     payment, //pedidoFormaPagto,
-    //     0, //pedidoCancelada,
-    //     pedPost.PedidoAvalEm.toString(), // pedidoPagtoEm,
-    //     pedPost.PedidoPessoaNome, // pedidoPessoaNome,
-    //     pedPost.PedidoPessoaEmail, // pedidoPessoaEmail,
-    //     pedPost.PedidoUsuGUID, //pedidoUsuGUID,
-    //     0, //pedidoAval,
-    //     null, //pedidoAvalEm,
-    //     pedPost.PedidoMoeda, //pedidoMoeda,
-    //     pedPost.PedidoCEP, // //pedidoCEP,
-    //     pedPost.PedidoEndereco, // pedidoEndereco,
-    //     pedPost.PedidoNumero, // pedidoNumero,
-    //     pedPost.PedidoCompl, //pedidoCompl,
-    //     null, //pedidoAutoriza,
-    //     null, //pedidoInstituicao,
-    //     pedPost.PedidoEntregaPrevista, //pedidoEntregaPrevista,
-    //     null, //pedidoEntregaRealizadaEm,
-    //     null, //pedidoEntregaPorUsuEmail,
-    //     null, //pedidoEntregaPorUsuNome
-    //     null,
-    //     null,
-    //     null,
-    //     null,
-    //   ));
-    // }
-
-    // salva items na nuvem
-    cartBySeller.forEach((pedItem) async {
-      PedidoItem pedidoItem = new PedidoItem(
+    var ped = listShoppingCart.first;
+    await orderSvc
+        .postOrder(new Pedido(
+          null,
+          ped.sellerId,
           '',
-          pedGuid,
-          pedItem.offerGuid,
-          pedItem.name,
-          endereco.EnderecoCEP.toString(),
-          pedItem.sellerId.toString(),
-          pedItem.value,
-          pedItem.qty.toDouble(),
-          pedItem.totalValue,
-          pedItem.picture,
+          pedDate,
+          cartTotalItems.value.toString(),
+          payment,
+          0,
+          '',
+          _loginController.usuNome.toString(),
+          _loginController.usuEmail.toString(),
+          _loginController.usuGuid,
           0,
           null,
-          pedItem.categChave,
-          pedItem.details,
-          pedItem.deliverIn,
+          'R\$',
+          endereco.EnderecoCEP.toString(),
+          endereco.EnderecoLogra,
+          endereco.EnderecoNumero,
+          endereco.EnderecoCompl,
+          '',
+          '',
+          ped.deliverIn,
           null,
           null,
           null,
           null,
           null,
-          pedItem.storeId);
-      var pedItemGuid = await pedidoSvc.postOrderItem(pedidoItem);
+          null,
+          ped.storeId,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+        ))
+        .then((pedGuid) => listShoppingCart.forEach((item) async {
+              // salva os itens do pedido
+              print('entrou no salva itens ');
+              var pedItemGuid = await orderSvc.postOrderItem(new PedidoItem(
+                  '',
+                  pedGuid,
+                  item.offerGuid,
+                  item.name,
+                  endereco.EnderecoCEP.toString(),
+                  item.sellerId.toString(),
+                  item.value,
+                  item.qty.toDouble(),
+                  item.totalValue,
+                  item.picture,
+                  0,
+                  null,
+                  item.categChave,
+                  null,
+                  item.deliverIn,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  item.storeId));
 
-      print('new pedItemGuid:  ' + pedItemGuid);
+              print('new pedItemGuid:  ' + pedItemGuid);
+            }));
 
-    //   // salva no sqlite
-    //   orderSvc.insertOrderItem(new sqlPedidoItem(
-    //       pedItemGuid.toString(),
-    //       pedidoItem.PedidoGUID,
-    //       pedidoItem.OfertaGuid,
-    //       pedidoItem.OfertaTitulo,
-    //       pedidoItem.OfertaCEP,
-    //       pedidoItem.OfertaVendedorGuid,
-    //       pedidoItem.OfertaPreco,
-    //       pedidoItem.OfertaQtd,
-    //       pedidoItem.OfertaTotal,
-    //       pedidoItem.OfertaImgPath,
-    //       pedidoItem.CategoriaChave.toString(),
-    //       pedidoItem.OfertaDetalhe,
-    //       pedidoItem.OfertaPrevisaoEntrega,
-    //       null,
-    //       null,
-    //       null,
-    //       null,
-    //       null,
-    //       null,
-    //       null,
-    //       pedidoItem.OfertaLojaID));
-    });
+    return ret;
   }
 
   showDialog() {

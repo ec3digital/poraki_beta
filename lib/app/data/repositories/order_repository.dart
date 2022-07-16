@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:get/get.dart';
 import 'package:poraki/app/data/models/PedidoItem.dart';
 import 'package:poraki/app/modules/auth/login/login_controller.dart';
@@ -21,7 +23,7 @@ class OrdersRepository extends GetConnect {
     if (response.hasError) throw 'Ocorreu um erro em OrdersRepository().getOrdersBySellerOpen()';
     return (response.body['Pedidos'] as List)
         .map((pedidos) => Pedido.fromJson(pedidos))
-        .toList();
+        .where((peds) => peds.PedidoEntregaRealizadaEm == null).toList();
   }
 
   Future<List<Pedido>> getOrdersBySellerDeliveryOpen(String sellerGuid) async {
@@ -29,17 +31,17 @@ class OrdersRepository extends GetConnect {
     if (response.hasError) throw 'Ocorreu um erro em OrdersRepository().getOrdersBySellerDeliveryOpen()';
     return (response.body['Pedidos'] as List)
         .map((pedidos) => Pedido.fromJson(pedidos))
-        .where((peds) => peds.PedidoEntregaRealizadaEm == null).toList();
+        .where((peds) => peds.PedidoEntregaRealizadaEm == null && peds.PedidoPagtoEm != null).toList();
   }
 
   Future<List<Pedido>> getOrdersByCustomerOpen(String usuGuid) async {
     print('url: ' + '${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiPedidosPorClienteOpen').first.coreValor.toString()}/' + usuGuid);
     var response = await get('${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiPedidosPorClienteOpen').first.coreValor.toString()}/' + usuGuid, headers: Constants.headers);
-    print(response.bodyString);
+    //print(response.bodyString);
     if (response.hasError) throw 'Ocorreu um erro em OrdersRepository().getOrdersByCustomerOpen()';
     return (response.body['Pedidos'] as List)
         .map((pedidos) => Pedido.fromJson(pedidos))
-        .toList();
+        .where((peds) => peds.PedidoEntregaRealizadaEm == null).toList();
   }
 
   Future<List<Pedido>> getOrdersBySellerClosed(String sellerGuid) async {
@@ -47,7 +49,7 @@ class OrdersRepository extends GetConnect {
     if (response.hasError) throw 'Ocorreu um erro em OrdersRepository().getOrdersBySellerClosed()';
     return (response.body['Pedidos'] as List)
         .map((pedidos) => Pedido.fromJson(pedidos))
-        .toList();
+        .where((peds) => peds.PedidoEntregaRealizadaEm != null && peds.PedidoPagtoEm != null).toList();
   }
 
   Future<List<Pedido>> getOrdersBySellerDeliveryClosed(String sellerGuid) async {
@@ -55,15 +57,16 @@ class OrdersRepository extends GetConnect {
     if (response.hasError) throw 'Ocorreu um erro em OrdersRepository().getOrdersBySellerClosed()';
     return (response.body['Pedidos'] as List)
         .map((pedidos) => Pedido.fromJson(pedidos))
-        .where((peds) => peds.PedidoEntregaRealizadaEm == null).toList();
+        .where((peds) => peds.PedidoEntregaRealizadaEm != null && peds.PedidoPagtoEm != null).toList();
   }
 
   Future<List<Pedido>> getOrdersByCustomerClosed(String usuGuid) async {
-    var response = await get('${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiPedidosPorCliente').first.coreValor.toString()}/' + usuGuid, headers: Constants.headers);
+    var url = '${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiPedidosPorCliente').first.coreValor.toString()}/' + usuGuid;
+    var response = await get(url, headers: Constants.headers);
     if (response.hasError) throw 'Ocorreu um erro em OrdersRepository().getOrdersByCustomerClosed()';
     return (response.body['Pedidos'] as List)
         .map((pedidos) => Pedido.fromJson(pedidos))
-        .toList();
+        .where((peds) => peds.PedidoEntregaRealizadaEm != null && peds.PedidoPagtoEm != null).toList();
   }
 
   Future<String> putOrderEval(String orderGuid, int score) async {
@@ -90,13 +93,39 @@ class OrdersRepository extends GetConnect {
     return response.bodyString.toString();
   }
 
-  Future<String> postOrder(Pedido pedido) async {
-    var response = await post('${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiPedido').first.coreValor.toString()}', pedido.toJson(), headers: Constants.headers);
-    if (response.hasError) throw 'Ocorreu um erro em OrdersRepository().postOrder() - ' + response.bodyString.toString();
+  Future<String> putOrderReceivedBy(String orderGuid, String usuName) async {
+    //var response = await put('${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiPedidoPagto').first.coreValor.toString() + '/' + orderGuid + '/' + Auth + '/' + Bank}', '', headers: Constants.headers);
+    var url = '${Constants.baseUrl + 'pedidorecebidopor' + '/' + orderGuid + '/' + usuName}';
+    print(url);
+    var response = await put(url, '', headers: Constants.headers);
+
+    if (response.hasError) throw 'Ocorreu um erro em OrdersRepository().putOrderReceivedBy()';
     return response.bodyString.toString();
   }
 
+  Future<String> putOrderAcceptedBy(String orderGuid, String usuName) async {
+    //var response = await put('${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiPedidoPagto').first.coreValor.toString() + '/' + orderGuid + '/' + Auth + '/' + Bank}', '', headers: Constants.headers);
+    var response = await put('${Constants.baseUrl + 'pedidoaceite' + '/' + orderGuid + '/usuguid/usuemail/' + usuName}', '', headers: Constants.headers);
+    if (response.hasError) throw 'Ocorreu um erro em OrdersRepository().putOrderReceivedBy()';
+    return response.bodyString.toString();
+  }
+
+  Future<String> postOrder(Pedido pedido) async {
+    print('entrou no postOrder');
+    var urlToPost = '${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiPedido').first.coreValor.toString()}';
+    print('url postOrder: ' + urlToPost);
+    var response = await post(urlToPost, pedido.toJson(), headers: Constants.headers);
+    if (response.hasError) throw 'Ocorreu um erro em OrdersRepository().postOrder() - ' + response.bodyString.toString();
+
+    var jsonResp = jsonDecode(response.bodyString.toString());
+    var resp = jsonResp['insert_Pedidos_one']['PedidoGuid'];
+    print('resp: ' + resp);
+    return resp;
+  }
+
   Future<List<PedidoItem>> getOrderItems(String orderGuid) async {
+    var url ='${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiPedidoItens').first.coreValor.toString()}/' + orderGuid;
+    print(url);
     var response = await get('${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiPedidoItens').first.coreValor.toString()}/' + orderGuid, headers: Constants.headers);
     if (response.hasError) throw 'Ocorreu um erro em OrdersRepository().getOrder()';
     return (response.body['PedidoItens'] as List)

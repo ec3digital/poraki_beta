@@ -22,10 +22,10 @@ class CardOffertsDayHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    LoginController _loginController = Get.find();
-    OffersController offersController = Get.put(OffersController());
-    Color textDark = _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'textDark').first.coreValor.toString());
-    Color textLight = _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'backLight').first.coreValor.toString());
+    final LoginController _loginController = Get.find();
+    final OffersController offersController = Get.find(); // Get.put(OffersController());
+    final Color textDark = _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'textDark').first.coreValor.toString());
+    final Color textLight = _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'backLight').first.coreValor.toString());
 
     return GetBuilder<HomeController>(builder: (_controller) {
       if (!_controller.isLoading) {
@@ -60,9 +60,9 @@ class CardOffertsDayHome extends StatelessWidget {
                           child: GestureDetector(
                             onTap: () {
 
-                              Future.wait([offersController.getOfferById(cardListOffers[itemIndex].ofertaID!)]);
+                              //Future.wait([offersController.getOfferById(cardListOffers[itemIndex].ofertaID!)]);
                               Get.toNamed(AppRoutes.offer, arguments:
-                              cardListOffers[itemIndex].ofertaID);
+                              cardListOffers[itemIndex]);
                             },
                             child: Container(padding: const EdgeInsets.all(15.0),
                               child:

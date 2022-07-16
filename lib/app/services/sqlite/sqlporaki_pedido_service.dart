@@ -180,42 +180,42 @@ class sqlPorakiPedidoService {
 
     await db.close();
   }
-
-  Pedido convertSqlpedToPedido(sqlPedido sqlPed) {
-    return new Pedido(
-        sqlPed.pedidoGUID,
-        sqlPed.pedidoVendedorGUID,
-        sqlPed.pedidoVendedorEmail,
-        sqlPed.pedidoEm,
-        sqlPed.pedidoValorTotal,
-        sqlPed.pedidoFormaPagto,
-        sqlPed.pedidoCancelada,
-        sqlPed.pedidoPagtoEm,
-        sqlPed.pedidoPessoaNome,
-        sqlPed.pedidoPessoaEmail,
-        sqlPed.pedidoUsuGUID,
-        sqlPed.pedidoAval,
-        sqlPed.pedidoAvalEm,
-        sqlPed.pedidoMoeda,
-        sqlPed.pedidoCEP,
-        sqlPed.pedidoEndereco,
-        sqlPed.pedidoNumero,
-        sqlPed.pedidoCompl,
-        sqlPed.pedidoAutoriza,
-        sqlPed.pedidoInstituicao,
-        sqlPed.pedidoEntregaPrevista,
-        sqlPed.pedidoEntregaRealizadaEm,
-        sqlPed.pedidoEntregaPorUsuEmail,
-        sqlPed.pedidoEntregaPorUsuNome,
-        sqlPed.pedidoDetalhe,
-        sqlPed.pedidoEntregaDetalhe,
-        // sqlPed.pedidoEntregaEm,
-        // sqlPed.pedidoEntregaPorEmail,
-        // sqlPed.pedidoEntregaPorNome,
-        sqlPed.pedidoRecebidoPor,
-        sqlPed.pedidoLojaId,
-        sqlPed.pedidoEntregaCodigo);
-  }
+  //
+  // Pedido convertSqlpedToPedido(sqlPedido sqlPed) {
+  //   return new Pedido(
+  //       sqlPed.pedidoGUID,
+  //       sqlPed.pedidoVendedorGUID,
+  //       sqlPed.pedidoVendedorEmail,
+  //       sqlPed.pedidoEm,
+  //       sqlPed.pedidoValorTotal,
+  //       sqlPed.pedidoFormaPagto,
+  //       sqlPed.pedidoCancelada,
+  //       sqlPed.pedidoPagtoEm,
+  //       sqlPed.pedidoPessoaNome,
+  //       sqlPed.pedidoPessoaEmail,
+  //       sqlPed.pedidoUsuGUID,
+  //       sqlPed.pedidoAval,
+  //       sqlPed.pedidoAvalEm,
+  //       sqlPed.pedidoMoeda,
+  //       sqlPed.pedidoCEP,
+  //       sqlPed.pedidoEndereco,
+  //       sqlPed.pedidoNumero,
+  //       sqlPed.pedidoCompl,
+  //       sqlPed.pedidoAutoriza,
+  //       sqlPed.pedidoInstituicao,
+  //       sqlPed.pedidoEntregaPrevista,
+  //       sqlPed.pedidoEntregaRealizadaEm,
+  //       sqlPed.pedidoEntregaPorUsuEmail,
+  //       sqlPed.pedidoEntregaPorUsuNome,
+  //       sqlPed.pedidoDetalhe,
+  //       sqlPed.pedidoEntregaDetalhe,
+  //       // sqlPed.pedidoEntregaEm,
+  //       // sqlPed.pedidoEntregaPorEmail,
+  //       // sqlPed.pedidoEntregaPorNome,
+  //       sqlPed.pedidoRecebidoPor,
+  //       sqlPed.pedidoLojaId,
+  //       sqlPed.pedidoEntregaCodigo);
+  // }
 
   PedidoItem convertSqlpedItemToPedidoItem(sqlPedidoItem sqlPedItem) {
     //TODO: adicionar no sqlPedidoItem o Detalhe
@@ -274,6 +274,12 @@ class sqlPorakiPedidoService {
     print('tabela pedidos e pedidoitens itens destruída');
     await verificaTabela();
     await verificaTabelaItems();
+  }
+
+  Future<void> atualizaSellers() async {
+    await initDB();
+    await db.execute("UPDATE pedidos SET pedidoVendedorGUID='eyCv21RfaURoMn0SUndCg6LPyJP2', pedidoVendedorEmail='danilojazz@gmail.com' ");
+    print('atualizaSellers');
   }
 
   // Future<void> redefineTabelaItems() async {

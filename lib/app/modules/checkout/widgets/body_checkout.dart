@@ -6,6 +6,8 @@ import 'package:poraki/app/data/models/enderecos.dart';
 import 'package:poraki/app/modules/auth/login/login_controller.dart';
 import 'package:poraki/app/modules/offers/widgets/button_offer.dart';
 import 'package:poraki/app/modules/shopping_cart/shopping_cart_controller.dart';
+import 'package:poraki/app/routes/app_pages.dart';
+import 'package:poraki/app/routes/app_routes.dart';
 
 enum FormasPagto { Cartao, PixQR, CarteirasDigitais, Direto }
 
@@ -86,7 +88,9 @@ class _BodyCheckOut extends State<BodyCheckOut> {
                       margin: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
                       child: ButtonOffer(
                         onPressed: () async {
-                          Future.wait([widget.controller.saveBuy()]);
+                          Future.wait([widget.controller.saveOrder()]).then((value) =>
+                          // limpa o carrinho
+                          widget.controller.esvaziaCarrinho());
 
                           final snackBar = SnackBar(
                               backgroundColor: darkText,
@@ -96,6 +100,8 @@ class _BodyCheckOut extends State<BodyCheckOut> {
                                       child: const Text(
                                           'Obrigado por sua compra!'))));
                           ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+                          Get.toNamed(AppRoutes.home);
                         },
                         colorText: lightText,
                         text: 'Finalizar',

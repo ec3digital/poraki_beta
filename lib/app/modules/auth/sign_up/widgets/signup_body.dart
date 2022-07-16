@@ -39,11 +39,12 @@ class SignupBody extends StatelessWidget {
               "Cadastro",
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: Colors.white,
+                color: Colors.blueGrey,
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
               ),
             ),
+            const SizedBox(height: 20,),
             Padding(padding: EdgeInsets.only(bottom: 10)),
             FormSignup(controller: controller),
             MaterialButton(

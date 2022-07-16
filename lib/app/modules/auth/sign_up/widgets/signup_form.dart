@@ -29,20 +29,16 @@ class FormSignup extends StatelessWidget {
             autofocus: true,
             style: TextStyle(color: Colors.white),
             decoration: InputDecoration(
+              border: OutlineInputBorder(),
               labelText: "Nome",
               labelStyle: TextStyle(color: Colors.white),
               prefixIcon: Icon(
                 Icons.person,
                 color: Colors.white,
               ),
-              focusedBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.white),
-              ),
-              enabledBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.white),
-              ),
             ),
           ),
+          const SizedBox(height: 20,),
           TextFormField(
             validator: (value) {
               if (value!.length < 10) {
@@ -54,20 +50,16 @@ class FormSignup extends StatelessWidget {
             autofocus: true,
             style: TextStyle(color: Colors.white),
             decoration: InputDecoration(
+              border: OutlineInputBorder(),
               labelText: "Sobrenome",
               labelStyle: TextStyle(color: Colors.white),
               prefixIcon: Icon(
                 Icons.person,
                 color: Colors.white,
               ),
-              focusedBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.white),
-              ),
-              enabledBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.white),
-              ),
             ),
           ),
+          const SizedBox(height: 20,),
           TextFormField(
             validator: (value) {
               if (value!.length != 11) {
@@ -79,20 +71,16 @@ class FormSignup extends StatelessWidget {
             autofocus: true,
             style: TextStyle(color: Colors.white),
             decoration: InputDecoration(
+              border: OutlineInputBorder(),
               labelText: "CPF",
               labelStyle: TextStyle(color: Colors.white),
               prefixIcon: Icon(
                 Icons.assignment_ind,
                 color: Colors.white,
               ),
-              focusedBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.white),
-              ),
-              enabledBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.white),
-              ),
             ),
           ),
+          const SizedBox(height: 20,),
           TextFormField(
             validator: (value) {
               if (value!.length != 11) {
@@ -105,20 +93,16 @@ class FormSignup extends StatelessWidget {
             autofocus: true,
             style: TextStyle(color: Colors.white),
             decoration: InputDecoration(
+              border: OutlineInputBorder(),
               labelText: "Telefone Celular",
               labelStyle: TextStyle(color: Colors.white),
               prefixIcon: Icon(
                 Icons.phone,
                 color: Colors.white,
               ),
-              focusedBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.white),
-              ),
-              enabledBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.white),
-              ),
             ),
           ),
+          const SizedBox(height: 20,),
           TextFormField(
             validator: (value) {
               if (value!.length < 5) {
@@ -132,6 +116,7 @@ class FormSignup extends StatelessWidget {
             autofocus: true,
             style: TextStyle(color: Colors.white),
             decoration: InputDecoration(
+              border: OutlineInputBorder(),
               labelText: "E-mail",
               labelStyle: TextStyle(
                 color: Colors.white,
@@ -140,14 +125,9 @@ class FormSignup extends StatelessWidget {
                 Icons.mail_outline,
                 color: Colors.white,
               ),
-              focusedBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.white),
-              ),
-              enabledBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.white),
-              ),
             ),
           ),
+          const SizedBox(height: 20,),
           TextFormField(
             validator: (value) {
               if (value!.length != 8) {
@@ -159,20 +139,17 @@ class FormSignup extends StatelessWidget {
             autofocus: true,
             style: TextStyle(color: Colors.white),
             decoration: InputDecoration(
+              filled: true,
+              border: OutlineInputBorder(),
               labelText: "CEP",
               labelStyle: TextStyle(color: Colors.white),
               prefixIcon: Icon(
                 Icons.map,
                 color: Colors.white,
               ),
-              focusedBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.white),
-              ),
-              enabledBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.white),
-              ),
             ),
           ),
+          const SizedBox(height: 20,),
           TextFormField(
             validator: (value) {
               if (value!.length != 10) {
@@ -184,17 +161,12 @@ class FormSignup extends StatelessWidget {
             autofocus: true,
             style: TextStyle(color: Colors.white),
             decoration: InputDecoration(
+              border: OutlineInputBorder(),
               labelText: "Data de Nascimento",
               labelStyle: TextStyle(color: Colors.white),
               prefixIcon: Icon(
                 Icons.event,
                 color: Colors.white,
-              ),
-              focusedBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.white),
-              ),
-              enabledBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.white),
               ),
             ),
           ),
@@ -217,6 +189,7 @@ class FormSignup extends StatelessWidget {
                   obscureText: (controller.showPassword == true) ? false : true,
                   style: TextStyle(color: Colors.white),
                   decoration: InputDecoration(
+                    border: OutlineInputBorder(),
                     labelText: "Senha",
                     labelStyle: TextStyle(
                       color: Colors.white,
@@ -225,14 +198,9 @@ class FormSignup extends StatelessWidget {
                       Icons.vpn_key_sharp,
                       color: Colors.white,
                     ),
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white),
-                    ),
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white),
-                    ),
                   ),
                 ),
+                const SizedBox(height: 20,),
                 (controller.showPassword == false)
                     ? TextFormField(
                         validator: (value) {
@@ -246,6 +214,7 @@ class FormSignup extends StatelessWidget {
                         obscureText: true,
                         style: TextStyle(color: Colors.white),
                         decoration: InputDecoration(
+                          border: OutlineInputBorder(),
                           labelText: "Confirme a Senha",
                           labelStyle: TextStyle(
                             color: Colors.white,
@@ -253,16 +222,6 @@ class FormSignup extends StatelessWidget {
                           prefixIcon: Icon(
                             Icons.vpn_key_sharp,
                             color: Colors.white,
-                          ),
-                          focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Colors.white,
-                            ),
-                          ),
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Colors.white,
-                            ),
                           ),
                         ),
                       )

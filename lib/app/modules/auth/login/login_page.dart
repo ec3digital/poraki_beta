@@ -74,7 +74,7 @@ class _LoginPageState extends State<LoginPage> {
                   children: [
                     Padding(
                         padding: EdgeInsets.only(
-                          bottom: 7,
+                          bottom: 1,
                         ),
                         child: new Container(
                             child: FadeInImage.assetNetwork(
@@ -87,7 +87,7 @@ class _LoginPageState extends State<LoginPage> {
                       "Entrar",
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        color: Colors.white,
+                        color: Colors.blueGrey,
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
                       ),
@@ -287,12 +287,8 @@ class _LoginPageState extends State<LoginPage> {
       //
       // LoginService().login(_mailInputController.text, _passwordInputController.text);
 
-      LoginController _loginController = Get.put(LoginController());
 
-      await _loginController.runCore();
-      await _loginController.loadUserData();
-      await _loginController.loadStoresData();
-      await _loginController.loadAddressData();
+
       //TODO: tratar a resposta do login
 
       // // salva usuario no hive, cria instancia do hive e abre a box

@@ -60,7 +60,7 @@ class OffersController extends GetxController {
 
         if (this.category != null && this.title == null &&
             this.listName == null) {
-          await getOfferByCEPCategory(this.category!);
+          //await getOfferByCEPCategory(this.category!);
         }
 
         if (this.category == null && this.title == null &&

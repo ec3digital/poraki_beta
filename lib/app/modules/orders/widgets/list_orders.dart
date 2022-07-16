@@ -8,8 +8,8 @@ import 'package:poraki/app/modules/orders/order_controller.dart';
 import 'package:poraki/app/routes/app_routes.dart';
 
 class ListOrders extends StatefulWidget {
-  String tipo = ''; //compra, venda, entrega
-  ListOrders({Key? key, required this.tipo}) : super(key: key);
+  //String tipo = ''; //compra, venda, entrega
+  ListOrders({Key? key}) : super(key: key);
 
   @override
   State<ListOrders> createState() => _ListOrdersState();
@@ -17,26 +17,42 @@ class ListOrders extends StatefulWidget {
 
 class _ListOrdersState extends State<ListOrders> {
   bool closed = false;
-  final OrderController orderController = Get.put(OrderController());
+  var pagTipo = '';
+  final OrderController orderController = Get.find();
+  final LoginController _loginController = Get.find();
+
+  @override
+  void initState() {
+    super.initState();
+
+    //var args =
+    //ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
+    pagTipo = Get.arguments[0].toString();
+
+    orderController.listaPedidoItems.clear();
+    orderController.listaPedidos.clear();
+  }
 
   //TODO: implementar acoes nos pedidos
-  Future<void> orderAction(String acao, Pedido ped) async {
+  Future<void> orderAction(String acao, Pedido ped, LoginController loginController, String? info) async {
     print(acao);
-    // paga pedido
-    if (acao == 'pagar') {} //recebe pedido
-    if (acao == 'receber') {} // aceita pedido
-    if (acao == 'aceitar') {}
-    if (acao == 'declinar') {}
-    if (acao == 'cancelar') {}
+    // // paga pedido
+    // if (acao == 'pagar') {
+    //   await orderController.pagaPedidoCloud(ped.PedidoGUID.toString(), loginController.usuNome.toString());
+    // } // paga pedido
+    if (acao == 'receber') {
+      await orderController.recebePedidoCloud(ped.PedidoGUID.toString(), loginController.usuNome.toString());
+    } // marca como recebido
+    if (acao == 'aceitar') {
+      await orderController.aceitaPedidoCloud(ped.PedidoGUID.toString(), loginController.usuNome.toString());
+    } // aceita pedido
+    if (acao == 'declinar' || acao == 'cancelar') {
+      await orderController.cancelaPedidoCloud(ped.PedidoGUID.toString(), loginController.usuGuid.toString(), info.toString());
+    } // cancela / declina pedido
   }
 
   @override
   Widget build(BuildContext context) {
-    final LoginController _loginController = Get.find();
-
-    var args =
-        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
-    widget.tipo = args['tipo'].toString();
 
     String _formatDate(String strData) {
       return strData.substring(8, 10) +
@@ -49,7 +65,8 @@ class _ListOrdersState extends State<ListOrders> {
     }
 
     Widget _buildRow(Pedido _ped) {
-      return Column(children: [
+      return Column(
+          children: [
         ListTile(
           leading: closed
               ? Icon(Icons.monetization_on)
@@ -74,19 +91,19 @@ class _ListOrdersState extends State<ListOrders> {
             children: [
               Text('Em aberto'),
               SizedBox(width: 5),
-              if (widget.tipo == 'Compras' && _ped.PedidoPagtoEm.isEmpty)
+              if (pagTipo == 'Compras' && _ped.PedidoEntregaRealizadaEm == null)
                 Column(
                   children: [
-                    ButtonOffer(
-                        text: 'pagar',
-                        colorText: _loginController.colorFromHex(
-                            _loginController.listCore
-                                .where((coreItem) =>
-                                    coreItem.coreChave == 'textDark')
-                                .first
-                                .coreValor
-                                .toString()),
-                        onPressed: () => orderAction('pagar', _ped)),
+                    // ButtonOffer(
+                    //     text: 'pagar',
+                    //     colorText: _loginController.colorFromHex(
+                    //         _loginController.listCore
+                    //             .where((coreItem) =>
+                    //                 coreItem.coreChave == 'textDark')
+                    //             .first
+                    //             .coreValor
+                    //             .toString()),
+                    //     onPressed: () => orderAction('pagar', _ped)),
                     ButtonOffer(
                         text: 'cancelar',
                         colorText: _loginController.colorFromHex(
@@ -96,10 +113,10 @@ class _ListOrdersState extends State<ListOrders> {
                                 .first
                                 .coreValor
                                 .toString()),
-                        onPressed: () => orderAction('cancelar', _ped)),
+                        onPressed: () async { await orderAction('cancelar', _ped, _loginController, '');}),
                   ],
                 ),
-              if (widget.tipo == 'Compras' && _ped.PedidoPagtoEm.isNotEmpty)
+              if (pagTipo == 'Compras' && _ped.PedidoPagtoEm == null)
                 ButtonOffer(
                     text: 'receber',
                     colorText: _loginController.colorFromHex(_loginController
@@ -108,8 +125,8 @@ class _ListOrdersState extends State<ListOrders> {
                         .first
                         .coreValor
                         .toString()),
-                    onPressed: () => orderAction('receber', _ped)),
-              if (widget.tipo == 'Vendas' && _ped.PedidoPagtoEm.isEmpty)
+                    onPressed: () async { await orderAction('receber', _ped, _loginController, '');}),
+              if (pagTipo == 'Vendas' && _ped.PedidoAceitoEm == null)
                 Column(
                   children: [
                     ButtonOffer(
@@ -121,7 +138,7 @@ class _ListOrdersState extends State<ListOrders> {
                                 .first
                                 .coreValor
                                 .toString()),
-                        onPressed: () => orderAction('aceitar', _ped)),
+                        onPressed: () async { await orderAction('aceitar', _ped, _loginController, '');}),
                     ButtonOffer(
                         text: 'declinar',
                         colorText: _loginController.colorFromHex(
@@ -131,7 +148,7 @@ class _ListOrdersState extends State<ListOrders> {
                                 .first
                                 .coreValor
                                 .toString()),
-                        onPressed: () => orderAction('declinar', _ped)),
+                        onPressed: () async { await orderAction('declinar', _ped, _loginController, ''); }),
                   ],
                 ),
             ],
@@ -145,28 +162,32 @@ class _ListOrdersState extends State<ListOrders> {
 
     Future<void> loadOrderData() async {
       // tipo = compra, venda, entrega
+      orderController.listaPedidos.clear();
+      orderController.listaPedidoItems.clear();
 
-      if (widget.tipo == 'Vendas') {
+      print('widget tipo: ' + pagTipo);
+
+      if (pagTipo == 'Vendas') {
         if (!closed) {
-          await orderController.carregaPedidosPorClienteOpenCloud(
+          await orderController.carregaPedidosPorVendedorOpenCloud(
               _loginController.usuGuid.toString());
         } else {
           await orderController
-              .carregaPedidosFechadosLocal(_loginController.usuGuid.toString());
+              .carregaPedidosPorVendedorClosedCloud(_loginController.usuGuid.toString());
         }
       }
 
-      if (widget.tipo == 'Compras') {
+      if (pagTipo == 'Compras') {
         if (!closed) {
-          await orderController.carregaPedidosPorClienteClosedCloud(
-              _loginController.usuGuid.toString());
-        } else {
           await orderController.carregaPedidosPorClienteOpenCloud(
               _loginController.usuGuid.toString());
+        } else {
+          await orderController.carregaPedidosPorClienteClosedCloud(
+              _loginController.usuGuid.toString());
         }
       }
 
-      if (widget.tipo == 'Entregas') {
+      if (pagTipo == 'Entregas') {
         if (!closed) {
           await orderController.carregaPedidosPorVendedorOpenDeliveryCloud(
               _loginController.usuGuid.toString());
@@ -185,7 +206,7 @@ class _ListOrdersState extends State<ListOrders> {
                 child: CircularProgressIndicator()); //Text('carrinho vazio'));
             // } else if (futuro.hasError) {
             //   return Center(child: Text(futuro.error.toString()));
-          } else {
+          } if (futuro.connectionState == ConnectionState.done) {
             return SingleChildScrollView(
                 child: GradientHeaderHome(
                     child: Column(
@@ -194,9 +215,9 @@ class _ListOrdersState extends State<ListOrders> {
                   const SizedBox(height: 15),
                   Center(
                       child: Text(
-                    this.widget.tipo == 'Entregas'
-                        ? 'Entregas à realizar'
-                        : this.widget.tipo,
+                    this.pagTipo == 'Entregas'
+                        ? 'Entregas'
+                        : this.pagTipo,
                     style: TextStyle(fontSize: 24),
                   )),
                   const SizedBox(height: 5),
@@ -206,10 +227,11 @@ class _ListOrdersState extends State<ListOrders> {
                       children: <Widget>[
                         Switch(
                             value: closed,
-                            onChanged: (bool val) {
+                            onChanged: (bool val) async {
                               setState(() {
                                 closed = val;
                               });
+                              //await loadOrderData();
                             }),
                         SizedBox(width: 20),
                         Text(closed ? 'Finalizados' : 'Em aberto'),
@@ -236,7 +258,7 @@ class _ListOrdersState extends State<ListOrders> {
                       ),
                     )
                 ])));
-          }
+          } else { return Container(); }
         });
   }
 }

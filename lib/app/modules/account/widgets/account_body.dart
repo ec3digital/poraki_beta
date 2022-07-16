@@ -12,17 +12,23 @@ class AccountBody extends StatefulWidget {
     // required this.controller,
   }) : super(key: key);
 
-  AccountController _controller = Get.put(AccountController());
+  final AccountController _controller = Get.put(AccountController());
 
   @override
   _AccountBodyState createState() => _AccountBodyState();
 }
 
 class _AccountBodyState extends State<AccountBody> {
+  final _form = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     LoginController _loginController = Get.find();
-    Color textDark = _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'textDark').first.coreValor.toString());
+    Color textDark = _loginController.colorFromHex(_loginController.listCore
+        .where((coreItem) => coreItem.coreChave == 'textDark')
+        .first
+        .coreValor
+        .toString());
 
     return FutureBuilder(
         future: widget._controller.carregaUsuario(),
@@ -33,22 +39,36 @@ class _AccountBodyState extends State<AccountBody> {
             // } else if (futuro.hasError) {
             //   return Center(child: Text(futuro.error.toString()));
           } else {
-            return SingleChildScrollView(
-              child: GradientHeaderHome(
-                  child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                    SizedBox(height: 20),
-                    Center(
-                      child: Text(
-                        "Minha conta",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 22),
-                      ),
+            return Scaffold(
+                appBar: PreferredSize(
+                  preferredSize: Size(double.maxFinite, 55),
+                  child: AppBar(
+                    // elevation: 0,
+                    centerTitle: false,
+                    backgroundColor: _loginController.colorFromHex(
+                        _loginController
+                            .listCore
+                            .where(
+                                (coreItem) => coreItem.coreChave == 'backLight')
+                            .first
+                            .coreValor
+                            .toString()),
+                    title: Text(
+                      'Minha conta',
+                      style: TextStyle(fontSize: 25, color: textDark),
                     ),
-                    Form(
+                  ),
+                ),
+                body:
+                    // SingleChildScrollView(
+                    //     child:
+                    GradientHeaderHome(
+                        child: Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: Form(
+                      key: _form,
                       // key: controller.formKey,
-                      child: Column(children: [
+                      child: ListView(children: [
                         TextFormField(
                           // validator: (value) {
                           //   if (value!.length < 4) {
@@ -60,20 +80,16 @@ class _AccountBodyState extends State<AccountBody> {
                           autofocus: true,
                           style: TextStyle(color: textDark),
                           decoration: InputDecoration(
+                            border: OutlineInputBorder(),
                             labelText: "Nome",
                             labelStyle: TextStyle(color: textDark),
                             prefixIcon: Icon(
                               Icons.person,
                               color: textDark,
                             ),
-                            focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: textDark),
-                            ),
-                            enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: textDark),
-                            ),
                           ),
                         ),
+                        const SizedBox(height: 20,),
                         TextFormField(
                           // validator: (value) {
                           //   if (value!.length < 10) {
@@ -85,20 +101,16 @@ class _AccountBodyState extends State<AccountBody> {
                           autofocus: true,
                           style: TextStyle(color: textDark),
                           decoration: InputDecoration(
+                            border: OutlineInputBorder(),
                             labelText: "Sobrenome",
                             labelStyle: TextStyle(color: textDark),
                             prefixIcon: Icon(
                               Icons.person,
                               color: textDark,
                             ),
-                            focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: textDark),
-                            ),
-                            enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: textDark),
-                            ),
                           ),
                         ),
+                        const SizedBox(height: 20,),
                         TextFormField(
                           // validator: (value) {
                           //   if (value!.length != 11) {
@@ -111,20 +123,16 @@ class _AccountBodyState extends State<AccountBody> {
                           autofocus: true,
                           style: TextStyle(color: textDark),
                           decoration: InputDecoration(
+                            border: OutlineInputBorder(),
                             labelText: "CPF",
                             labelStyle: TextStyle(color: textDark),
                             prefixIcon: Icon(
                               Icons.assignment_ind,
                               color: textDark,
                             ),
-                            focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: textDark),
-                            ),
-                            enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: textDark),
-                            ),
                           ),
                         ),
+                        const SizedBox(height: 20,),
                         TextFormField(
                           // validator: (value) {
                           //   if (value!.length != 11) {
@@ -137,20 +145,16 @@ class _AccountBodyState extends State<AccountBody> {
                           autofocus: true,
                           style: TextStyle(color: textDark),
                           decoration: InputDecoration(
+                            border: OutlineInputBorder(),
                             labelText: "Telefone Celular",
                             labelStyle: TextStyle(color: textDark),
                             prefixIcon: Icon(
                               Icons.phone,
                               color: textDark,
                             ),
-                            focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: textDark),
-                            ),
-                            enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: textDark),
-                            ),
                           ),
                         ),
+                        const SizedBox(height: 20,),
                         TextFormField(
                           // validator: (value) {
                           //   if (value!.length < 5) {
@@ -165,6 +169,7 @@ class _AccountBodyState extends State<AccountBody> {
                           autofocus: true,
                           style: TextStyle(color: textDark),
                           decoration: InputDecoration(
+                            border: OutlineInputBorder(),
                             labelText: "E-mail",
                             labelStyle: TextStyle(
                               color: textDark,
@@ -173,14 +178,9 @@ class _AccountBodyState extends State<AccountBody> {
                               Icons.mail_outline,
                               color: textDark,
                             ),
-                            focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: textDark),
-                            ),
-                            enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: textDark),
-                            ),
                           ),
                         ),
+                        const SizedBox(height: 20,),
                         TextFormField(
                           // validator: (value) {
                           //   if (value!.length != 8) {
@@ -193,20 +193,16 @@ class _AccountBodyState extends State<AccountBody> {
                           autofocus: true,
                           style: TextStyle(color: textDark),
                           decoration: InputDecoration(
+                            border: OutlineInputBorder(),
                             labelText: "CEP",
                             labelStyle: TextStyle(color: textDark),
                             prefixIcon: Icon(
                               Icons.map,
                               color: Colors.brown,
                             ),
-                            focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: textDark),
-                            ),
-                            enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: textDark),
-                            ),
                           ),
                         ),
+                        const SizedBox(height: 20,),
                         TextFormField(
                           // validator: (value) {
                           //   if (value!.length != 10) {
@@ -219,17 +215,12 @@ class _AccountBodyState extends State<AccountBody> {
                           autofocus: true,
                           style: TextStyle(color: textDark),
                           decoration: InputDecoration(
+                            border: OutlineInputBorder(),
                             labelText: "Data de Nascimento",
                             labelStyle: TextStyle(color: textDark),
                             prefixIcon: Icon(
                               Icons.event,
                               color: textDark,
-                            ),
-                            focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: textDark),
-                            ),
-                            enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: textDark),
                             ),
                           ),
                         ),
@@ -305,80 +296,109 @@ class _AccountBodyState extends State<AccountBody> {
                         // ],
                         // );
                         // }
-                      ]),
-                      // Row(
-                      //   children: [
-                      //     GetBuilder<SignUpController>(
-                      //       builder: (_) {
-                      //         return Checkbox(
-                      //           value: true, // controller.showPassword,
-                      //           // onChanged: (newValue) {
-                      //           //   controller.changeShowPassword(newValue!);
-                      //           // },
-                      //           activeColor: Colors.blue,
-                      //           onChanged: (bool? value) {  },
-                      //         );
-                      //       },
-                      //     ),
-                      //     Text(
-                      //       "Mostrar senha",
-                      //       style: TextStyle(
-                      //         color: Colors.brown,
-                      //       ),
-                      //     )
-                      //   ],
-                      // ),
-                      // ],
-                    ),
-                    ButtonOffer(
-                      onPressed: () {
-                        // salva os dados do usuário
-                        widget._controller.atualizaUsuario(new sqlUsuarios(
-                            widget
-                                ._controller.txtEmail.text.removeAllWhitespace,
-                            widget._controller.txtNome.text.trimRight(),
-                            widget._controller.txtSobreNome.text.trimRight(),
-                            widget._controller.txtCPF.text.removeAllWhitespace,
-                            widget._controller.txtTelefone.text
-                                .removeAllWhitespace,
-                            widget._controller.txtCEP.text.removeAllWhitespace,
-                            widget._controller.txtEndereco.text
-                                .trimRight()
-                                .trimLeft(),
-                            widget._controller.txtNumero.text
-                              ..trimRight().trimLeft(),
-                            widget._controller.txtCompl.text
-                                .trimRight()
-                                .trimLeft(),
-                            null,
-                            null,
-                            null));
 
-                        final snackBar = SnackBar(
-                            backgroundColor: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'textDark').first.coreValor.toString()),
-                            content: Container(
-                                height: 40,
-                                child: Center(
-                                    child: const Text('Informações salvas!'))));
-                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                      },
-                      colorText: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'textLight').first.coreValor.toString()),
-                      text: 'Salvar',
-                      colorButton: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'iconColor').first.coreValor.toString()),
-                    ),
-                    ButtonOffer(
-                      onPressed: () {
-                        // redireciona pra tela de alterar senha
-                      },
-                      colorText: textDark,
-                      text: 'Mudar senha',
-                      colorButton: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'backLight').first.coreValor.toString()),
-                    ),
-                    // )
-                  ])
-                  // ],
-                  ),
-            );
+                        // Row(
+                        //   children: [
+                        //     GetBuilder<SignUpController>(
+                        //       builder: (_) {
+                        //         return Checkbox(
+                        //           value: true, // controller.showPassword,
+                        //           // onChanged: (newValue) {
+                        //           //   controller.changeShowPassword(newValue!);
+                        //           // },
+                        //           activeColor: Colors.blue,
+                        //           onChanged: (bool? value) {  },
+                        //         );
+                        //       },
+                        //     ),
+                        //     Text(
+                        //       "Mostrar senha",
+                        //       style: TextStyle(
+                        //         color: Colors.brown,
+                        //       ),
+                        //     )
+                        //   ],
+                        // ),
+                        // ],
+
+                        ButtonOffer(
+                          onPressed: () {
+                            // salva os dados do usuário
+                            widget._controller.atualizaUsuario(new sqlUsuarios(
+                                widget._controller.txtEmail.text
+                                    .removeAllWhitespace,
+                                widget._controller.txtNome.text.trimRight(),
+                                widget._controller.txtSobreNome.text
+                                    .trimRight(),
+                                widget._controller.txtCPF.text
+                                    .removeAllWhitespace,
+                                widget._controller.txtTelefone.text
+                                    .removeAllWhitespace,
+                                widget._controller.txtCEP.text
+                                    .removeAllWhitespace,
+                                widget._controller.txtEndereco.text
+                                    .trimRight()
+                                    .trimLeft(),
+                                widget._controller.txtNumero.text
+                                  ..trimRight().trimLeft(),
+                                widget._controller.txtCompl.text
+                                    .trimRight()
+                                    .trimLeft(),
+                                null,
+                                null,
+                                null));
+
+                            final snackBar = SnackBar(
+                                backgroundColor: _loginController.colorFromHex(
+                                    _loginController.listCore
+                                        .where((coreItem) =>
+                                            coreItem.coreChave == 'textDark')
+                                        .first
+                                        .coreValor
+                                        .toString()),
+                                content: Container(
+                                    height: 40,
+                                    child: Center(
+                                        child: const Text(
+                                            'Informações salvas!'))));
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(snackBar);
+                          },
+                          colorText: _loginController.colorFromHex(
+                              _loginController.listCore
+                                  .where((coreItem) =>
+                                      coreItem.coreChave == 'textLight')
+                                  .first
+                                  .coreValor
+                                  .toString()),
+                          text: 'Salvar',
+                          colorButton: _loginController.colorFromHex(
+                              _loginController.listCore
+                                  .where((coreItem) =>
+                                      coreItem.coreChave == 'iconColor')
+                                  .first
+                                  .coreValor
+                                  .toString()),
+                        ),
+                        ButtonOffer(
+                          onPressed: () {
+                            // redireciona pra tela de alterar senha
+                          },
+                          colorText: textDark,
+                          text: 'Mudar senha',
+                          colorButton: _loginController.colorFromHex(
+                              _loginController.listCore
+                                  .where((coreItem) =>
+                                      coreItem.coreChave == 'backLight')
+                                  .first
+                                  .coreValor
+                                  .toString()),
+                        ),
+                        // )
+                      ])
+                      // ],
+                      ),
+                )));
             // );
           }
         });

@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:infinite_carousel/infinite_carousel.dart';
+import 'package:poraki/app/modules/auth/login/login_controller.dart';
 
 import '../home_controller.dart';
 
@@ -14,11 +15,13 @@ class ListHorizontalBannersHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final LoginController _loginController = Get.find();
+
     return SizedBox(
       height: 140,
         child:
         CarouselSlider(options: CarouselOptions(height: 140.0, autoPlay: true,),
-          items: controller.listBanners.map((item) => Container(
+          items: _loginController.listBanners.map((item) => Container(
             child: Container(
                   margin: EdgeInsets.only(left: 4, right: 4),
                   width: Get.width * 0.98,

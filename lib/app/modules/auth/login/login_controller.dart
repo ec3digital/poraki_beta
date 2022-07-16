@@ -22,6 +22,11 @@ class LoginController extends GetxController {
 
   get obscurePassword => _obscurePassword;
 
+
+  //TODO: pegar os banners do firebase
+  List<String> listBanners = [
+    'http://poraki-assets.ec3.digital/wp-content/uploads/2021/11/PORAKI-Banner-sm_default1.jpg',
+  ];
   List<sqlCore> listCore = [];
   List<sqlCore> listCoreCep = [];
   List<Enderecos> listEnderecos = [];
@@ -31,6 +36,7 @@ class LoginController extends GetxController {
   String? usuNome;
   String? usuEmail;
   String? usuGuid;
+  String? cloudId;
   // TODO: implementar baseUrl + headers por CEP
   // String? baseUrl;
   // Map<String, String>? headers;
@@ -40,10 +46,16 @@ class LoginController extends GetxController {
     update();
   }
 
+  // atribui a variavel da nuvem
+  Future<void> getCloudId() async {
+    cloudId = '057';
+  }
+
   // carrega dados do usuario
   Future<void> loadUserData() async {
     print('loadUserData');
     usuGuid = 'eyCv21RfaURoMn0SUndCg6LPyJP2';
+    usuEmail = 'danilojazz@gmail.com';
 
     //pega o cep local
     await _getCep();
@@ -92,7 +104,7 @@ class LoginController extends GetxController {
     listCoreTemp = await sqlPorakiCoreService().buscaTodosValores();
 
     var coreFBcep =
-        await fbPorakiService().getListFromFirebase("akicore", "057");
+        await fbPorakiService().getListFromFirebase("akicore", cloudId.toString());
     listCoreCep = await sqlPorakiCoreService().buscaTodosValoresCep();
     if (coreFBcep.isNotEmpty) {
       // reseta tabela core local cep
@@ -172,6 +184,21 @@ class LoginController extends GetxController {
       usuCep = '05735-030'; // await _addressController.getCepAtualLocal();
     }
     print('usuCep atual: ' + usuCep.toString());
+  }
+
+
+  Future<void> getListBannersFromFBCloud() async {
+    LoginController loginController = Get.find();
+
+    var tempBannersApp = await fbPorakiService().getListFromFirebase("akibanners", "core");
+    tempBannersApp.forEach((key, value) {
+      print('banner: ' + value);
+      loginController.listBanners.add(value);
+    });
+    var tempBannersCep = await fbPorakiService().getListFromFirebase("akibanners", loginController.usuCep!.substring(0, 3));
+    tempBannersCep.forEach((key, value) {
+      listBanners.add(value);
+    });
   }
 
   // valida o login

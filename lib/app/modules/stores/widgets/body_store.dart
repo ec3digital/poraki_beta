@@ -10,7 +10,6 @@ import 'package:poraki/app/data/repositories/CepApiBrasil_repository.dart';
 import 'package:poraki/app/modules/auth/login/login_controller.dart';
 import 'package:poraki/app/modules/home/widgets/gradient_header_home.dart';
 import 'package:poraki/app/modules/offers/widgets/button_offer.dart';
-import 'package:poraki/app/modules/stores/widgets/app_bar_store.dart';
 import 'package:poraki/app/routes/app_routes.dart';
 import '../store_controller.dart';
 
@@ -30,6 +29,7 @@ class _StoreBodyState extends State<StoreBody> {
   FocusNode txtLojaNroFocus = new FocusNode();
   StoreController storeController = Get.find();
   LoginController _loginController = Get.find();
+  final _form = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -55,235 +55,213 @@ class _StoreBodyState extends State<StoreBody> {
                   '.jpg?alt=media';
         }
         return Scaffold(
-            appBar: appBarStore(),
-            body: SingleChildScrollView(
-              child: GradientHeaderHome(
-                  child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                    // SizedBox(height: 20),
-                    // Center(
-                    //   child: Text(
-                    //     "Loja",
-                    //     textAlign: TextAlign.center,
-                    //     style: TextStyle(fontSize: 22),
-                    //   ),
-                    // ),
-                    Form(
-                      // key: controller.formKey,
-                      child: Column(children: [
-                        TextFormField(
-                          // validator: (value) {
-                          //   if (value!.length < 10) {
-                          //     return "Digite um nome maior";
-                          //   }
-                          //   return null;
-                          // },
-                          controller: storeController.txtLojaNome,
-                          // keyboardType: TextInputType.streetAddress,
-                          autofocus: true,
-                          style: TextStyle(color: textColor),
-                          decoration: InputDecoration(
-                            labelText: "Nome da Loja",
-                            labelStyle: TextStyle(color: textColor),
-                            prefixIcon: Icon(
-                              Icons.storefront_rounded,
-                              color: textColor,
-                            ),
-                            focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: textColor),
-                            ),
-                            enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: textColor),
-                            ),
-                          ),
-                        ),
-                        TextFormField(
-                          // validator: (value) {
-                          //   if (value!.length != 11) {
-                          //     return "CPF inválido";
-                          //   }
-                          //   return null;
-                          // },
-                          controller: storeController.txtLojaSlogan,
-                          // keyboardType: TextInputType.number,
-                          autofocus: true,
-                          // focusNode: txtEnderecoNroFocus,
-                          style: TextStyle(color: textColor),
-                          decoration: InputDecoration(
-                            labelText: "Slogan",
-                            labelStyle: TextStyle(color: textColor),
-                            prefixIcon: Icon(
-                              Icons.local_offer_outlined,
-                              color: textColor,
-                            ),
-                            focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: textColor),
-                            ),
-                            enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: textColor),
-                            ),
-                          ),
-                        ),
-                        TextFormField(
-                          // validator: (value) {
-                          //   if (value!.length != 11) {
-                          //     return "Por favor digite um telefone válido";
-                          //   }
-                          //   return null;
-                          // },
-                          controller: storeController.txtLojaCNPJ,
-                          autofocus: true,
-                          style: TextStyle(color: textColor),
-                          decoration: InputDecoration(
-                            labelText: "CNPJ",
-                            labelStyle: TextStyle(color: textColor),
-                            prefixIcon: Icon(
-                              Icons.work_outline,
-                              color: textColor,
-                            ),
-                            focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: textColor),
-                            ),
-                            enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: textColor),
-                            ),
-                          ),
-                        ),
-                        TextFormField(
-                          // validator: (value) {
-                          //   if (value!.length != 11) {
-                          //     return "Por favor digite um telefone válido";
-                          //   }
-                          //   return null;
-                          // },
-                          controller: storeController.txtLojaRazao,
-                          autofocus: true,
-                          style: TextStyle(color: textColor),
-                          decoration: InputDecoration(
-                            labelText: "Razão Social",
-                            labelStyle: TextStyle(color: textColor),
-                            prefixIcon: Icon(
-                              Icons.location_city_outlined,
-                              color: textColor,
-                            ),
-                            focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: textColor),
-                            ),
-                            enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: textColor),
-                            ),
-                          ),
-                        ),
-                        TextFormField(
-                          // validator: (value) {
-                          //   if (value!.length < 4) {
-                          //     return "Digite um nome maior";
-                          //   }
-                          //   return null;
-                          // },
-                          controller: storeController.txtLojaCEP,
-                          autofocus: true,
-                          style: TextStyle(color: textColor),
-                          decoration: InputDecoration(
-                            labelText: "CEP",
-                            labelStyle: TextStyle(color: textColor),
-                            prefixIcon: Icon(
-                              Icons.location_on_outlined,
-                              color: textColor,
-                            ),
-                            focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: textColor),
-                            ),
-                            enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: textColor),
-                            ),
-                          ),
-                          onEditingComplete: () {
-                            buscaCep();
-                          },
-                        ),
-                        TextFormField(
-                          // validator: (value) {
-                          //   if (value!.length < 10) {
-                          //     return "Digite um nome maior";
-                          //   }
-                          //   return null;
-                          // },
-                          controller: storeController.txtLojaLogra,
-                          keyboardType: TextInputType.streetAddress,
-                          autofocus: true,
-                          style: TextStyle(color: textColor),
-                          decoration: InputDecoration(
-                            labelText: "Endereço SEM o número",
-                            labelStyle: TextStyle(color: textColor),
-                            prefixIcon: Icon(
-                              Icons.location_on_outlined,
-                              color: textColor,
-                            ),
-                            focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: textColor),
-                            ),
-                            enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: textColor),
-                            ),
-                          ),
-                        ),
-                        TextFormField(
-                          // validator: (value) {
-                          //   if (value!.length != 11) {
-                          //     return "CPF inválido";
-                          //   }
-                          //   return null;
-                          // },
-                          controller: storeController.txtLojaNumero,
-                          keyboardType: TextInputType.number,
-                          autofocus: true,
-                          focusNode: txtLojaNroFocus,
-                          style: TextStyle(color: textColor),
-                          decoration: InputDecoration(
-                            labelText: "Número",
-                            labelStyle: TextStyle(color: textColor),
-                            prefixIcon: Icon(
-                              Icons.format_list_numbered,
-                              color: textColor,
-                            ),
-                            focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: textColor),
-                            ),
-                            enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: textColor),
-                            ),
-                          ),
-                        ),
-                        TextFormField(
-                          // validator: (value) {
-                          //   if (value!.length != 11) {
-                          //     return "Por favor digite um telefone válido";
-                          //   }
-                          //   return null;
-                          // },
-                          controller: storeController.txtLojaCompl,
-                          autofocus: true,
-                          style: TextStyle(color: textColor),
-                          decoration: InputDecoration(
-                            labelText: "Complemento (apto, bloco, etc...)",
-                            labelStyle: TextStyle(color: textColor),
-                            prefixIcon: Icon(
-                              Icons.location_city_outlined,
-                              color: textColor,
-                            ),
-                            focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: textColor),
-                            ),
-                            enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: textColor),
-                            ),
-                          ),
-                        ),
-                      ]),
+            appBar: PreferredSize(
+              preferredSize: Size(double.maxFinite, 55),
+              child: AppBar(
+                // elevation: 0,
+                centerTitle: false,
+                backgroundColor: _loginController.colorFromHex(_loginController
+                    .listCore
+                    .where((coreItem) => coreItem.coreChave == 'backLight')
+                    .first
+                    .coreValor
+                    .toString()),
+                title: Text(
+                  'Loja',
+                  style: TextStyle(fontSize: 25, color: textColor),
+                ),
+              ),
+            ),
+            body:
+                // SingleChildScrollView(
+                //     child:
+                GradientHeaderHome(
+                    child: Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Form(
+                  key: _form,
+                  // key: controller.formKey,
+                  child: ListView(children: [
+                    const SizedBox(
+                      height: 20,
                     ),
-                    SizedBox(height: 20),
+                    TextFormField(
+                      // validator: (value) {
+                      //   if (value!.length < 10) {
+                      //     return "Digite um nome maior";
+                      //   }
+                      //   return null;
+                      // },
+                      controller: storeController.txtLojaNome,
+                      // keyboardType: TextInputType.streetAddress,
+                      autofocus: true,
+                      style: TextStyle(color: textColor),
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: "Nome da Loja",
+                        labelStyle: TextStyle(color: textColor),
+                        prefixIcon: Icon(
+                          Icons.storefront_rounded,
+                          color: textColor,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 20,),
+                    TextFormField(
+                      // validator: (value) {
+                      //   if (value!.length != 11) {
+                      //     return "CPF inválido";
+                      //   }
+                      //   return null;
+                      // },
+                      controller: storeController.txtLojaSlogan,
+                      // keyboardType: TextInputType.number,
+                      autofocus: true,
+                      // focusNode: txtEnderecoNroFocus,
+                      style: TextStyle(color: textColor),
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: "Slogan",
+                        labelStyle: TextStyle(color: textColor),
+                        prefixIcon: Icon(
+                          Icons.local_offer_outlined,
+                          color: textColor,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 20,),
+                    TextFormField(
+                      // validator: (value) {
+                      //   if (value!.length != 11) {
+                      //     return "Por favor digite um telefone válido";
+                      //   }
+                      //   return null;
+                      // },
+                      controller: storeController.txtLojaCNPJ,
+                      autofocus: true,
+                      style: TextStyle(color: textColor),
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: "CNPJ",
+                        labelStyle: TextStyle(color: textColor),
+                        prefixIcon: Icon(
+                          Icons.work_outline,
+                          color: textColor,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 20,),
+                    TextFormField(
+                      // validator: (value) {
+                      //   if (value!.length != 11) {
+                      //     return "Por favor digite um telefone válido";
+                      //   }
+                      //   return null;
+                      // },
+                      controller: storeController.txtLojaRazao,
+                      autofocus: true,
+                      style: TextStyle(color: textColor),
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: "Razão Social",
+                        labelStyle: TextStyle(color: textColor),
+                        prefixIcon: Icon(
+                          Icons.location_city_outlined,
+                          color: textColor,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 20,),
+                    TextFormField(
+                      // validator: (value) {
+                      //   if (value!.length < 4) {
+                      //     return "Digite um nome maior";
+                      //   }
+                      //   return null;
+                      // },
+                      controller: storeController.txtLojaCEP,
+                      autofocus: true,
+                      style: TextStyle(color: textColor),
+                      decoration: InputDecoration(
+                        filled: true,
+                        border: OutlineInputBorder(),
+                        labelText: "CEP",
+                        labelStyle: TextStyle(color: textColor),
+                        prefixIcon: Icon(
+                          Icons.location_on_outlined,
+                          color: textColor,
+                        ),
+                      ),
+                      onEditingComplete: () {
+                        buscaCep();
+                      },
+                    ),
+                    const SizedBox(height: 20,),
+                    TextFormField(
+                      // validator: (value) {
+                      //   if (value!.length < 10) {
+                      //     return "Digite um nome maior";
+                      //   }
+                      //   return null;
+                      // },
+                      controller: storeController.txtLojaLogra,
+                      keyboardType: TextInputType.streetAddress,
+                      autofocus: true,
+                      style: TextStyle(color: textColor),
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: "Endereço SEM o número",
+                        labelStyle: TextStyle(color: textColor),
+                        prefixIcon: Icon(
+                          Icons.location_on_outlined,
+                          color: textColor,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 20,),
+                    TextFormField(
+                      // validator: (value) {
+                      //   if (value!.length != 11) {
+                      //     return "CPF inválido";
+                      //   }
+                      //   return null;
+                      // },
+                      controller: storeController.txtLojaNumero,
+                      keyboardType: TextInputType.number,
+                      autofocus: true,
+                      focusNode: txtLojaNroFocus,
+                      style: TextStyle(color: textColor),
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: "Número",
+                        labelStyle: TextStyle(color: textColor),
+                        prefixIcon: Icon(
+                          Icons.format_list_numbered,
+                          color: textColor,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 20,),
+                    TextFormField(
+                      // validator: (value) {
+                      //   if (value!.length != 11) {
+                      //     return "Por favor digite um telefone válido";
+                      //   }
+                      //   return null;
+                      // },
+                      controller: storeController.txtLojaCompl,
+                      autofocus: true,
+                      style: TextStyle(color: textColor),
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: "Complemento (apto, bloco, etc...)",
+                        labelStyle: TextStyle(color: textColor),
+                        prefixIcon: Icon(
+                          Icons.location_city_outlined,
+                          color: textColor,
+                        ),
+                      ),
+                    ),
                     SizedBox(height: 20),
                     ElevatedButton(
                         onPressed: () => pegarImagemGaleria(),
@@ -323,7 +301,8 @@ class _StoreBodyState extends State<StoreBody> {
                     SizedBox(height: 20),
                     ButtonOffer(
                       onPressed: () {
-                        salvar().then((value) => Get.offAndToNamed(AppRoutes.stores));
+                        salvar().then(
+                            (value) => Get.offAndToNamed(AppRoutes.stores));
 
                         final snackBar = SnackBar(
                             backgroundColor: _loginController.colorFromHex(
@@ -357,8 +336,9 @@ class _StoreBodyState extends State<StoreBody> {
                               .toString()),
                     ),
                   ])
+                  // ],
                   ),
-            ));
+            )));
       }
     }));
   }
@@ -367,8 +347,7 @@ class _StoreBodyState extends State<StoreBody> {
     var storeGuidTemp = await storeController.saveLoja();
     storeGuid = storeGuidTemp.toString();
 
-    await uploadFoto(
-        image == null ? null : image);
+    await uploadFoto(image == null ? null : image);
   }
 
   Future<void> buscaCep() async {

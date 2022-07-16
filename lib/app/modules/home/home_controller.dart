@@ -33,28 +33,11 @@ class HomeController extends GetxController {
     await getMostFreshOffers(4);
     await getBestSellersOffers(4);
     // await getPeople();
-    await getListBannersFromFBCloud();
+
     super.onInit();
   }
 
-  //TODO: pegar os banners do firebase
-  List<String> listBanners = [
-    'http://poraki-assets.ec3.digital/wp-content/uploads/2021/11/PORAKI-Banner-sm_default1.jpg',
-  ];
 
-  Future<void> getListBannersFromFBCloud() async {
-    LoginController loginController = Get.find();
-
-    var tempBannersApp = await fbPorakiService().getListFromFirebase("akibanners", "core");
-    tempBannersApp.forEach((key, value) {
-      print('banner: ' + value);
-      listBanners.add(value);
-    });
-    var tempBannersCep = await fbPorakiService().getListFromFirebase("akibanners", loginController.usuCep!.substring(0, 3));
-    tempBannersCep.forEach((key, value) {
-      listBanners.add(value);
-    });
-  }
 
   Future<void> getOffers(int limit) async {
     try {
