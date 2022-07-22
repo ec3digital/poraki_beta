@@ -14,10 +14,16 @@ class AccountController extends GetxController {
   final TextEditingController txtEmail = TextEditingController();
   // final TextEditingController txtSenha = TextEditingController();
   // final TextEditingController txtConfSenha = TextEditingController();
-  final MaskedTextController txtCPF = MaskedTextController(mask: '000.000.000-00');
-  final MaskedTextController txtDtNasc = MaskedTextController(mask: '00/00/0000');
-  final MaskedTextController txtCEP = MaskedTextController(mask: '00000-000');
-  final MaskedTextController txtTelefone = MaskedTextController(mask: '(00)00000-0000)');
+
+  // final MaskedTextController txtCPF = MaskedTextController(mask: '000.000.000-00');
+  // final MaskedTextController txtDtNasc = MaskedTextController(mask: '00/00/0000');
+  // final MaskedTextController txtCEP = MaskedTextController(mask: '00000-000');
+  // final MaskedTextController txtTelefone = MaskedTextController(mask: '(00)00000-0000)');
+
+  TextEditingController txtCPF = TextEditingController();
+  TextEditingController txtDtNasc = TextEditingController();
+  TextEditingController txtCEP = TextEditingController();
+  TextEditingController txtTelefone = TextEditingController();
 
   // final LoginRepository loginRepository = LoginRepository();
   bool showPassword = false;

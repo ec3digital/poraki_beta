@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -29,11 +30,18 @@ class ListPictureProduct extends StatelessWidget {
                   child: Container(
                     height: Get.height * 0.37,
 
-                    child: FadeInImage.assetNetwork(
-                      placeholder: 'assets/images/pholder.png',
-                      image: controller.listPictures[index],
-                      imageErrorBuilder: (context, url, error) => new Icon(Icons.local_offer_outlined),
+                    child: CachedNetworkImage(
+                      imageUrl: controller.listPictures[index],
+                      progressIndicatorBuilder: (context, url, downloadProgress) =>
+                          CircularProgressIndicator(value: downloadProgress.progress),
+                      errorWidget: (context, url, error) => Icon(Icons.local_offer_outlined),
                     ),
+
+                    // child: FadeInImage.assetNetwork(
+                    //   placeholder: 'assets/images/pholder.png',
+                    //   image: controller.listPictures[index],
+                    //   imageErrorBuilder: (context, url, error) => new Icon(Icons.local_offer_outlined),
+                    // ),
 
                     // child: Image.network(
                     //   controller.listPictures[index],

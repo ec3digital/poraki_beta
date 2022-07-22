@@ -1,4 +1,6 @@
+import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 import '../sign_up_controller.dart';
@@ -61,14 +63,16 @@ class FormSignup extends StatelessWidget {
           ),
           const SizedBox(height: 20,),
           TextFormField(
-            validator: (value) {
-              if (value!.length != 11) {
-                return "CPF inválido";
-              }
-              return null;
-            },
+            // validator: (value) {
+            //   if (value!.length != 11) {
+            //     return "CPF inválido";
+            //   }
+            //   return null;
+            // },
+            inputFormatters: [FilteringTextInputFormatter.digitsOnly,CpfInputFormatter(), ],
             controller: controller.cpfInputController,
             autofocus: true,
+            onChanged: (cpf) { if (!CNPJValidator.isValid(cpf)) { Get.defaultDialog(title: "CPF Inválido", middleText: "Por favor informe um CPF válido" ); }  {} } ,
             style: TextStyle(color: Colors.white),
             decoration: InputDecoration(
               border: OutlineInputBorder(),
@@ -82,12 +86,14 @@ class FormSignup extends StatelessWidget {
           ),
           const SizedBox(height: 20,),
           TextFormField(
-            validator: (value) {
-              if (value!.length != 11) {
-                return "Por favor digite um telefone válido";
-              }
-              return null;
-            },
+            // validator: (value) {
+            //   if (value!.length != 11) {
+            //     return "Por favor digite um telefone válido";
+            //   }
+            //   return null;
+            // },
+
+            inputFormatters: [FilteringTextInputFormatter.digitsOnly,TelefoneInputFormatter(), ],
             controller: controller.phoneInputController,
             keyboardType: TextInputType.phone,
             autofocus: true,
@@ -135,6 +141,7 @@ class FormSignup extends StatelessWidget {
               }
               return null;
             },
+            inputFormatters: [FilteringTextInputFormatter.digitsOnly,CepInputFormatter(), ],
             controller: controller.cepInputController,
             autofocus: true,
             style: TextStyle(color: Colors.white),
@@ -157,6 +164,9 @@ class FormSignup extends StatelessWidget {
               }
               return null;
             },
+
+            inputFormatters: [FilteringTextInputFormatter.digitsOnly,DataInputFormatter(), ],
+            //onChanged: (data) { if (!Validat.isValid(cnpj)) { Get.defaultDialog(title: "CNPJ Inválido", middleText: "Por favor informe um CNPJ válido" ); }  {} } ,
             controller: controller.dtNascInputController,
             autofocus: true,
             style: TextStyle(color: Colors.white),

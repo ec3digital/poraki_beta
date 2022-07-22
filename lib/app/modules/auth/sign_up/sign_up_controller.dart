@@ -22,10 +22,15 @@ class SignUpController extends GetxController {
   //TextEditingController dtNascInputController = TextEditingController();
   //TextEditingController cpfInputController = TextEditingController();
 
-  MaskedTextController cpfInputController = MaskedTextController(mask: '000.000.000-00');
-  MaskedTextController dtNascInputController = MaskedTextController(mask: '00/00/0000');
-  MaskedTextController cepInputController = MaskedTextController(mask: '00000-000');
-  MaskedTextController phoneInputController = MaskedTextController(mask: '(00)00000-0000)');
+  TextEditingController cpfInputController = TextEditingController();
+  TextEditingController dtNascInputController = TextEditingController();
+  TextEditingController cepInputController = TextEditingController();
+  TextEditingController phoneInputController = TextEditingController();
+
+  // MaskedTextController cpfInputController = MaskedTextController(mask: '000.000.000-00');
+  // MaskedTextController dtNascInputController = MaskedTextController(mask: '00/00/0000');
+  // MaskedTextController cepInputController = MaskedTextController(mask: '00000-000');
+  // MaskedTextController phoneInputController = MaskedTextController(mask: '(00)00000-0000)');
 
       bool showPassword = false;
   final formKey = GlobalKey<FormState>();

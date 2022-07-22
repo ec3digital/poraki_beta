@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:poraki/app/data/models/pedido.dart';
@@ -96,12 +97,21 @@ class ListOrderItems extends StatelessWidget {
       child: Row(
         children: <Widget>[
           Container(
-            child: FadeInImage.assetNetwork(
-              placeholder: 'assets/images/pholder.png',
-              image: orderController.listaPedidoItems[index].OfertaImgPath.toString(),
-              imageErrorBuilder: (context, url, error) => new Icon(Icons.local_offer_outlined),
+            child: CachedNetworkImage(
+              imageUrl: orderController.listaPedidoItems[index].OfertaImgPath.toString(),
+              progressIndicatorBuilder: (context, url, downloadProgress) =>
+                  CircularProgressIndicator(value: downloadProgress.progress),
+              errorWidget: (context, url, error) => Icon(Icons.local_offer_outlined),
               height: 30, fit: BoxFit.fitHeight,
             ),
+
+            // child: FadeInImage.assetNetwork(
+            //   placeholder: 'assets/images/pholder.png',
+            //   image: orderController.listaPedidoItems[index].OfertaImgPath.toString(),
+            //   imageErrorBuilder: (context, url, error) => new Icon(Icons.local_offer_outlined),
+            //   height: 30, fit: BoxFit.fitHeight,
+            // ),
+
             decoration:
                 BoxDecoration(border: Border.all(color: colorText, width: 1)),
           ),

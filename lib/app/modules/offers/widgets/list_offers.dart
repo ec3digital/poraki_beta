@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:poraki/app/modules/auth/login/login_controller.dart';
@@ -49,16 +50,26 @@ class ListOffers extends StatelessWidget {
                               height: 80,
                               margin: EdgeInsets.only(top: 4),
 
-                              child: FadeInImage.assetNetwork(
-                                placeholder: 'assets/images/pholder.png',
-                                image:
-                                    'https://firebasestorage.googleapis.com/v0/b/ec3digrepo.appspot.com/o/ofertas%2F' +
-                                        _product.ofertaID.toString() +
-                                        '.jpg?alt=media',
-                                imageErrorBuilder: (context, url, error) =>
-                                    new Icon(Icons.local_offer_outlined),
+                              child: CachedNetworkImage(
+                                imageUrl: 'https://firebasestorage.googleapis.com/v0/b/ec3digrepo.appspot.com/o/ofertas%2F' +
+                                    _product.ofertaID.toString() +
+                                    '.jpg?alt=media',
+                                progressIndicatorBuilder: (context, url, downloadProgress) =>
+                                    CircularProgressIndicator(value: downloadProgress.progress),
+                                errorWidget: (context, url, error) => Icon(Icons.local_offer_outlined),
                                 height: 50,
                               ),
+
+                              // child: FadeInImage.assetNetwork(
+                              //   placeholder: 'assets/images/pholder.png',
+                              //   image:
+                              //       'https://firebasestorage.googleapis.com/v0/b/ec3digrepo.appspot.com/o/ofertas%2F' +
+                              //           _product.ofertaID.toString() +
+                              //           '.jpg?alt=media',
+                              //   imageErrorBuilder: (context, url, error) =>
+                              //       new Icon(Icons.local_offer_outlined),
+                              //   height: 50,
+                              // ),
 
                               // child: Image.network(
                               //   'https://firebasestorage.googleapis.com/v0/b/ec3digrepo.appspot.com/o/ofertas%2F' +
@@ -104,20 +115,21 @@ class ListOffers extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            const SizedBox(height: 3),
-                            Container(
-                              margin: EdgeInsets.only(top: 2, left: 70),
-                              child: Text(
-                                "CEP: ${_product.ofertaCEP}",
-                                textAlign: TextAlign.left,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 10,
-                                  color: Colors
-                                      .white, // _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'iconColor').first.coreValor.toString()),
-                                ),
-                              ),
-                            ),
+                            // const SizedBox(height: 3),
+                            // Container(
+                            //   margin: EdgeInsets.only(top: 2, left: 70),
+                            //   child: Text(
+                            //     "CEP: ${_product.oferta}",
+                            //     textAlign: TextAlign.left,
+                            //     style: TextStyle(
+                            //       fontWeight: FontWeight.w700,
+                            //       fontSize: 10,
+                            //       color: Colors
+                            //           .white, // _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'iconColor').first.coreValor.toString()),
+                            //     ),
+                            //   ),
+                            // ),
+
                             // Container(
                             //   width: 150,
                             //   margin: EdgeInsets.only(top: 3),

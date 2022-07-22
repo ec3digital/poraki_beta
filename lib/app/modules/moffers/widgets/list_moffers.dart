@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:poraki/app/data/models/lojas.dart';
@@ -152,20 +153,31 @@ class _ListMoffersState extends State<ListMoffers> {
                                         Container(
                                           height: 80,
                                           margin: EdgeInsets.only(top: 4),
-                                          child: FadeInImage.assetNetwork(
-                                            placeholder:
-                                                'assets/images/pholder.png',
-                                            image:
-                                                'https://firebasestorage.googleapis.com/v0/b/ec3digrepo.appspot.com/o/ofertas%2F' +
-                                                    _oferta.OfertaGUID
-                                                        .toString() +
-                                                    '.jpg?alt=media',
-                                            imageErrorBuilder: (context, url,
-                                                    error) =>
-                                                new Icon(
-                                                    Icons.local_offer_outlined),
+                                          child: CachedNetworkImage(
+                                            imageUrl: 'https://firebasestorage.googleapis.com/v0/b/ec3digrepo.appspot.com/o/ofertas%2F' +
+                                                          _oferta.OfertaGUID
+                                                              .toString() +
+                                                          '.jpg?alt=media',
+                                            progressIndicatorBuilder: (context, url, downloadProgress) =>
+                                                CircularProgressIndicator(value: downloadProgress.progress),
+                                            errorWidget: (context, url, error) => Icon(Icons.local_offer_outlined),
                                             height: 50,
                                           ),
+
+                                          // child: FadeInImage.assetNetwork(
+                                          //   placeholder:
+                                          //       'assets/images/pholder.png',
+                                          //   image:
+                                          //       'https://firebasestorage.googleapis.com/v0/b/ec3digrepo.appspot.com/o/ofertas%2F' +
+                                          //           _oferta.OfertaGUID
+                                          //               .toString() +
+                                          //           '.jpg?alt=media',
+                                          //   imageErrorBuilder: (context, url,
+                                          //           error) =>
+                                          //       new Icon(
+                                          //           Icons.local_offer_outlined),
+                                          //   height: 50,
+                                          // ),
                                         ),
                                         Container(
                                           margin: EdgeInsets.only(top: 4),

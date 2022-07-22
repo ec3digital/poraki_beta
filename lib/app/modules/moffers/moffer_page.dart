@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:brasil_fields/brasil_fields.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -31,47 +33,29 @@ class MOfferPage extends StatefulWidget {
   late bool imgEdited = false;
   late bool editMode = false;
 
-  //Get.put(MofferController());
-
-  // Function? addProduct;
-  MOfferPage({Key? key, required this.offer}) : super(key: key);
-
-  @override
-  State<StatefulWidget> createState() {
-    // TODO: implement createState
-    return _MOfferPage();
-  }
-}
-
-class _MOfferPage extends State<MOfferPage> {
-  File? image;
   bool isEditing = false;
 
-  final _priceFocusNode = FocusNode();
-  final _descriptionFocusNode = FocusNode();
-  final _imageURLFocusNode = FocusNode();
-  final _imageURLController = TextEditingController();
-  final _form = GlobalKey<FormState>();
+  var _priceFocusNode = FocusNode();
+  var _descriptionFocusNode = FocusNode();
+  var _imageURLFocusNode = FocusNode();
+  var _imageURLController = TextEditingController();
+  var _form = GlobalKey<FormState>();
 
   bool _isLoading = false;
-  var listaCategs = ['selecione']; // pegar da API
+  //Categorias? catogoria;
+  // var listaCategs = ['selecione']; // pegar da API
   var listaTempoEntregaTipo = ['selecione', 'minutos', 'horas', 'dias'];
-  var listaFormaFechamento = [
-    'selecione',
-    'mensagem no aplicativo (seguro)',
-    'whatsapp',
-    'pagamento no aplicativo (seguro)'
-  ]; // pegar da API
+  var listaFormaFechamento = ['selecione'];
   var listaFormaEntrega = ['selecione', 'vendedor', 'comprador', 'parceiro'];
-  var listaFormaEntrega2 = ['selecione', 'vendedor', 'comprador'];
+  // var listaFormaEntrega2 = ['selecione', 'vendedor', 'comprador'];
   var listaParceiros = ['selecione']; //TODO: pegar da API
   var valueSel = 'selecione';
-  late String categSel = 'selecione';
+  //late String categSel = 'selecione';
   var tempoEntregaTipoSel = 'selecione';
   var agenteEntregaSel = 'selecione';
   var formaFechSel = 'selecione';
-  var materialSel = 'selecione';
-  var voltagemSel = 'selecione';
+  // var materialSel = 'selecione';
+  // var voltagemSel = 'selecione';
   var categoriaSel = 'selecione';
   var labelEntrega = 'Entrega';
   var labelValidade = 'Validade';
@@ -90,7 +74,7 @@ class _MOfferPage extends State<MOfferPage> {
   bool valSex = false;
   bool valSab = false;
   bool valDom = false;
-  bool valQtd = true;
+  bool valQtd = false;
   bool valSinalPercentual = false;
   bool valPrecoCombinar = false;
   bool valPrecoInicial = false;
@@ -108,6 +92,7 @@ class _MOfferPage extends State<MOfferPage> {
   // bool showListaFormaEntrega = false;
   // bool showListaFormaEntrega2 = false;
   // bool showListaParceiros = false;
+  bool showQtd = false;
   bool showTxtQtdDispo = false;
   bool showTxtQtdMaxPorVenda = false;
   bool showTxtQtdAviso = false;
@@ -131,28 +116,69 @@ class _MOfferPage extends State<MOfferPage> {
   bool showCamposBasicos = false;
   bool showCamposEntrega = false;
   bool showCamposPrecos = false;
+  final LoginController _loginController = Get.find();
+  late Color? textColor;
+  late Color? iconColor;
+
+  //Get.put(MofferController());
+
+  // Function? addProduct;
+  MOfferPage({Key? key, required this.offer}) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() {
+    // TODO: implement createState
+    return _MOfferPage();
+  }
+}
+
+class _MOfferPage extends State<MOfferPage> {
+  File? image;
+
+
+  // // formatters
+  // late TextFormField txtfValorSinalOrc;
+  // late TextFormField txtfValorMin;
+  // late TextFormField txtfValorTaxa1km;
+  // late TextFormField txtfValorTaxa2km;
+  // late TextFormField txtfValorTaxaMaisQue2km;
+  // late TextFormField txtfPesoPorcao;
+  // late TextFormField txtfCEP;
+  // late TextFormField txtfPreco;
+  //
 
   @override
   void initState() {
-    _imageURLFocusNode.addListener(_updateImageUrl);
+    widget._imageURLFocusNode.addListener(_updateImageUrl);
     super.initState();
 
+    widget.textColor = widget._loginController.colorFromHex(widget._loginController.listCore
+        .where((coreItem) => coreItem.coreChave == 'textDark')
+        .first
+        .coreValor
+        .toString());
+    widget.iconColor = widget._loginController.colorFromHex(widget._loginController.listCore
+        .where((coreItem) => coreItem.coreChave == 'backDark')
+        .first
+        .coreValor
+        .toString());
+
     widget.mofferController.txtTitulo.text = '';
-    widget.mofferController.txtValorTaxa1km.text = '0.00';
-    widget.mofferController.txtValorTaxaMaisQue2km.text = '0.00';
-    widget.mofferController.txtValorTaxa2km.text = '0.00';
+    // widget.mofferController.txtValorTaxa1km.text = '0.00';
+    // widget.mofferController.txtValorTaxaMaisQue2km.text = '0.00';
+    // widget.mofferController.txtValorTaxa2km.text = '0.00';
     widget.mofferController.txtCodigoAlt.text = '';
     widget.mofferController.txtCepDistancia.text = '0';
-    widget.mofferController.txtValorSinalOrc.text = '0.00';
+    // widget.mofferController.txtValorSinalOrc.text = '0.00';
     widget.mofferController.txtValidade.text = '0';
-    widget.mofferController.txtPesoPorcao.text = '0.00';
+    // widget.mofferController.txtPesoPorcao.text = '0.00';
     widget.mofferController.txtPesoPorcaoUn.text = '';
     widget.mofferController.txtDescricao.text = '';
     widget.mofferController.txtDetalhes.text = '';
     widget.mofferController.txtTamanhos.text = '';
     widget.mofferController.txtCores.text = '';
-    widget.mofferController.txtPreco.text = '0.00';
-    widget.mofferController.txtValorMin.text = '0.00';
+    // widget.mofferController.txtPreco.text = '0.00';
+    // widget.mofferController.txtValorMin.text = '0.00';
     widget.mofferController.txtMarca.text = '';
     widget.mofferController.txtQtdMaxPorVenda.text = '0';
     widget.mofferController.txtQtdDispo.text = '0';
@@ -167,32 +193,22 @@ class _MOfferPage extends State<MOfferPage> {
   @override
   void dispose() {
     super.dispose();
-    _priceFocusNode.dispose();
-    _descriptionFocusNode.dispose();
-    _imageURLFocusNode.removeListener(_updateImageUrl);
-    _imageURLFocusNode.dispose();
+    widget._priceFocusNode.dispose();
+    widget._descriptionFocusNode.dispose();
+    widget._imageURLFocusNode.removeListener(_updateImageUrl);
+    widget._imageURLFocusNode.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    LoginController _loginController = Get.find();
-    Color textColor = _loginController.colorFromHex(_loginController.listCore
-        .where((coreItem) => coreItem.coreChave == 'textDark')
-        .first
-        .coreValor
-        .toString());
-    Color iconColor = _loginController.colorFromHex(_loginController.listCore
-        .where((coreItem) => coreItem.coreChave == 'backDark')
-        .first
-        .coreValor
-        .toString());
+    print('build');
+    //if (ModalRoute.of(context)?.settings.arguments != null) {}
 
     return FutureBuilder(
         future:
-            carregaObjs(), // widget.categoriesController.getCategoriesNames(),
+        ModalRoute.of(context)?.settings.arguments != null ? carregaObjs() : null, // widget.categoriesController.getCategoriesNames(),
         builder: (context, futuro) {
-          if (futuro.connectionState == ConnectionState.waiting &&
-              widget.categoriesController.listaCategorias == null) {
+          if (futuro.connectionState == ConnectionState.waiting) {
             return Center(
                 child: CircularProgressIndicator()); //Text('carrinho vazio'));
             // } else if (futuro.hasError) {
@@ -204,8 +220,8 @@ class _MOfferPage extends State<MOfferPage> {
                 child: AppBar(
                   elevation: 0,
                   centerTitle: false,
-                  backgroundColor: _loginController.colorFromHex(
-                      _loginController
+                  backgroundColor: widget._loginController.colorFromHex(
+                      widget._loginController
                           .listCore
                           .where(
                               (coreItem) => coreItem.coreChave == 'backLight')
@@ -214,12 +230,12 @@ class _MOfferPage extends State<MOfferPage> {
                           .toString()),
                   title: Text(
                     'Minha oferta',
-                    style: TextStyle(fontSize: 25, color: textColor),
+                    style: TextStyle(fontSize: 25, color: widget.textColor),
                   ),
                 ),
               ),
               //drawer: DrawerHome(0),
-              body: _isLoading
+              body: widget._isLoading
                   ? Center(
                       child: CircularProgressIndicator(),
                     )
@@ -227,14 +243,15 @@ class _MOfferPage extends State<MOfferPage> {
                       child: Padding(
                       padding: const EdgeInsets.all(15.0),
                       child: Form(
-                        key: _form,
+                        key: widget._form,
                         child: ListView(
                           children: [
                             const SizedBox(height: 20),
 
                             ListTile(
                               leading: Text('Categoria'),
-                              trailing: DropdownButton<String>(
+                              trailing: ModalRoute.of(context)?.settings.arguments == null ?
+                              DropdownButton<String>(
                                 items: widget
                                     .categoriesController.listaCategorias
                                     ?.map((String value) {
@@ -243,23 +260,24 @@ class _MOfferPage extends State<MOfferPage> {
                                     child: Text(value),
                                   );
                                 }).toList(),
-                                value: categoriaSel,
+                                value: widget.categoriaSel,
                                 onChanged: (String? newValue) {
                                   setState(() {
-                                    categoriaSel = newValue!;
+                                    widget.categoriaSel = newValue!;
                                     widget.categSelecionada = widget
                                         .categoriesController
                                         .selecionaCategoriaPorNome(
-                                            categoriaSel)!;
+                                        widget.categoriaSel)!;
+
                                     _manageCampos();
                                   });
                                 },
-                              ),
+                              ) : Text(widget.categoriaSel),
                             ),
 
                             const SizedBox(height: 20),
 
-                            if (showCamposBasicos)
+                            if (widget.showCamposBasicos)
                               Column(
                                 children: <Widget>[
                                   TextFormField(
@@ -297,10 +315,10 @@ class _MOfferPage extends State<MOfferPage> {
                                   Row(
                                     children: <Widget>[
                                       Checkbox(
-                                        value: this.valPrecoCombinar,
+                                        value: this.widget.valPrecoCombinar,
                                         onChanged: (val) {
                                           setState(() {
-                                            this.valPrecoCombinar = val!;
+                                            this.widget.valPrecoCombinar = val!;
                                           });
                                         },
                                         activeColor: Colors.blue,
@@ -313,41 +331,44 @@ class _MOfferPage extends State<MOfferPage> {
                                 ],
                               ),
 
-                            if (showPreco && !valPrecoCombinar)
+                            if (widget.showPreco && !widget.valPrecoCombinar)
                               Column(
                                 children: <Widget>[
                                   Row(
                                     children: <Widget>[
                                       Switch(
-                                          value: valPrecoInicial,
+                                          value: widget.valPrecoInicial,
                                           onChanged: (bool val) {
                                             setState(() {
-                                              valPrecoInicial = val;
+                                              widget.valPrecoInicial = val;
                                             });
                                           }),
                                       const SizedBox(width: 20),
-                                      Text(valPrecoInicial
+                                      Text(widget.valPrecoInicial
                                           ? 'Preco à partir de'
                                           : 'Preço fechado'),
                                       const SizedBox(height: 20),
                                     ],
                                   ),
                                   TextFormField(
+                                    inputFormatters: [FilteringTextInputFormatter.digitsOnly,CentavosInputFormatter(), ],
                                     controller:
-                                        widget.mofferController.txtPreco,
+                                    widget.mofferController.txtPreco,
+                                    // initialValue: '0',
+
                                     decoration: InputDecoration(
                                       labelText: 'Preço',
                                       prefix: Text('R\$ '),
                                       border: OutlineInputBorder(),
                                     ),
                                     textInputAction: TextInputAction.next,
-                                    focusNode: _priceFocusNode,
+                                    focusNode: widget._priceFocusNode,
                                     keyboardType:
                                         TextInputType.numberWithOptions(
                                             decimal: true),
                                     onFieldSubmitted: (_) {
                                       FocusScope.of(context)
-                                          .requestFocus(_descriptionFocusNode);
+                                          .requestFocus(widget._descriptionFocusNode);
                                     },
                                     // validator: (value) {
                                     //   bool emptydUrl = value.trim().isEmpty;
@@ -359,30 +380,32 @@ class _MOfferPage extends State<MOfferPage> {
                                     // },
                                   ),
 
-                                  if (showTxtValorSinalOrc)
+                                  if (widget.showTxtValorSinalOrc)
                                     Column(children: <Widget>[
                                       const SizedBox(width: 20),
                                       Row(
                                         children: <Widget>[
                                           Switch(
-                                              value: valSinalPercentual,
+                                              value: widget.valSinalPercentual,
                                               onChanged: (bool val) {
                                                 setState(() {
-                                                  valSinalPercentual = val;
+                                                  widget.valSinalPercentual = val;
                                                 });
                                               }),
                                           const SizedBox(width: 20),
-                                          Text(valSinalPercentual
-                                              ? 'Sinal em Percentual'
-                                              : 'Sinal em valor cheio'),
+                                          Text(widget.valSinalPercentual
+                                              ? 'Sinal em Percentual (opcional)'
+                                              : 'Sinal em valor cheio (opcional)'),
                                           const SizedBox(height: 20)
                                         ],
                                       ),
                                       TextFormField(
+                                          inputFormatters: [FilteringTextInputFormatter.digitsOnly,CentavosInputFormatter(), ],
+                                          // initialValue: '0',
                                           controller: widget.mofferController
                                               .txtValorSinalOrc,
                                           decoration: InputDecoration(
-                                              prefix: Text('R\$ '),
+                                              prefix: Text(widget.valSinalPercentual ? '%' : 'R\$ '),
                                               border: OutlineInputBorder(),
                                               labelText:
                                                   'Valor Sinal/Orçamento'),
@@ -390,14 +413,14 @@ class _MOfferPage extends State<MOfferPage> {
                                       const SizedBox(width: 20),
                                     ]),
 
-                                  if (showAceitaProposta)
+                                  if (widget.showAceitaProposta)
                                     Row(
                                       children: <Widget>[
                                         Switch(
-                                            value: valAceitaProposta,
+                                            value: widget.valAceitaProposta,
                                             onChanged: (bool val) {
                                               setState(() {
-                                                valAceitaProposta = val;
+                                                widget.valAceitaProposta = val;
                                               });
                                             }),
                                         const SizedBox(width: 20),
@@ -405,10 +428,12 @@ class _MOfferPage extends State<MOfferPage> {
                                       ],
                                     ),
 
-                                  if (valAceitaProposta)
+                                  if (widget.valAceitaProposta)
                                     Column(children: <Widget>[
                                       const SizedBox(height: 10),
                                       TextFormField(
+                                        inputFormatters: [FilteringTextInputFormatter.digitsOnly,CentavosInputFormatter(), ],
+                                        // initialValue: '0',
                                         controller:
                                             widget.mofferController.txtValorMin,
                                         decoration: InputDecoration(
@@ -426,26 +451,26 @@ class _MOfferPage extends State<MOfferPage> {
                                 ],
                               ),
 
-                            if (showCamposBasicos)
+                            if (widget.showQtd && widget.showCamposBasicos)
                               Column(
                                 children: <Widget>[
                                   Row(
                                     children: <Widget>[
                                       Switch(
-                                          value: valQtd,
+                                          value: widget.valQtd,
                                           onChanged: (bool val) {
                                             setState(() {
-                                              valQtd = val;
+                                              widget.valQtd = val;
                                             });
                                           }),
                                       const SizedBox(width: 20),
-                                      Text(valQtd
+                                      Text(widget.valQtd
                                           ? 'Controla quantidade'
                                           : 'Sem controle de quantidade'),
                                       const SizedBox(height: 10)
                                     ],
                                   ),
-                                  if (valQtd)
+                                  if (widget.valQtd)
                                     Column(children: <Widget>[
                                       const SizedBox(height: 10),
                                       TextFormField(
@@ -483,10 +508,11 @@ class _MOfferPage extends State<MOfferPage> {
                                 ],
                               ),
 
-                            if (showTxtPesoPorcao)
+                            if (widget.showTxtPesoPorcao)
                               Column(children: <Widget>[
                                 const SizedBox(height: 20),
                                 TextFormField(
+                                    inputFormatters: [FilteringTextInputFormatter.digitsOnly,PesoInputFormatter(), ],
                                     controller:
                                         widget.mofferController.txtPesoPorcao,
                                     decoration: InputDecoration(
@@ -496,7 +522,7 @@ class _MOfferPage extends State<MOfferPage> {
                                     keyboardType: TextInputType.text),
                               ]),
 
-                            if (showTxtPesoPorcaoUn)
+                            if (widget.showTxtPesoPorcaoUn)
                               Column(children: <Widget>[
                                 const SizedBox(height: 20),
                                 TextFormField(
@@ -514,7 +540,7 @@ class _MOfferPage extends State<MOfferPage> {
                                 //       keyboardType: TextInputType.multiline),
                               ]),
 
-                            if (showTxtValidade)
+                            if (widget.showTxtValidade)
                               Column(children: <Widget>[
                                 const SizedBox(height: 20),
                                 TextFormField(
@@ -524,14 +550,15 @@ class _MOfferPage extends State<MOfferPage> {
                                         suffix: Text('dias'),
                                         border: OutlineInputBorder(),
                                         labelText:
-                                            '$labelValidade (ex: 5 dias)'),
+                                        widget.labelValidade + ' (ex: 5 dias)'),
                                     keyboardType: TextInputType.number),
                               ]),
 
-                            if (showTxtCep)
+                            if (widget.showTxtCep)
                               Column(children: <Widget>[
                                 const SizedBox(height: 20),
                                 TextFormField(
+                                  inputFormatters: [FilteringTextInputFormatter.digitsOnly,CepInputFormatter(), ],
                                   controller: widget.mofferController.txtCEP,
                                   decoration: InputDecoration(
                                     labelText: 'Cep da oferta',
@@ -542,7 +569,7 @@ class _MOfferPage extends State<MOfferPage> {
                                 ),
                               ]),
 
-                            if (showTxtOfertaCepDistancia && showCamposBasicos)
+                            if (widget.showTxtOfertaCepDistancia && widget.showCamposBasicos)
                               Column(children: <Widget>[
                                 const SizedBox(height: 20),
                                 TextFormField(
@@ -552,12 +579,12 @@ class _MOfferPage extends State<MOfferPage> {
                                       suffix: Text('Km '),
                                       border: OutlineInputBorder(),
                                       labelText:
-                                          'Distância de $labelEntrega em Km'),
+                                          'Distância de ' + widget.labelEntrega + ' em Km'),
                                   keyboardType: TextInputType.number,
                                 ),
                               ]),
 
-                            if (showTxtMarca)
+                            if (widget.showTxtMarca)
                               Column(children: <Widget>[
                                 const SizedBox(height: 20),
                                 TextFormField(
@@ -570,7 +597,7 @@ class _MOfferPage extends State<MOfferPage> {
                                     keyboardType: TextInputType.text),
                               ]),
 
-                            if (showTxtCodigoAlt)
+                            if (widget.showTxtCodigoAlt)
                               Column(children: <Widget>[
                                 const SizedBox(height: 20),
                                 TextFormField(
@@ -583,7 +610,7 @@ class _MOfferPage extends State<MOfferPage> {
                                     keyboardType: TextInputType.text),
                               ]),
 
-                            if (showTxtCores)
+                            if (widget.showTxtCores)
                               Column(children: <Widget>[
                                 const SizedBox(height: 20),
                                 TextFormField(
@@ -597,7 +624,7 @@ class _MOfferPage extends State<MOfferPage> {
                                     keyboardType: TextInputType.multiline),
                               ]),
 
-                            if (showTxtTamanhos)
+                            if (widget.showTxtTamanhos)
                               Column(children: <Widget>[
                                 const SizedBox(height: 20),
                                 TextFormField(
@@ -623,7 +650,7 @@ class _MOfferPage extends State<MOfferPage> {
                             //     keyboardType: TextInputType.number),
                             // SizedBox(height: 20),
 
-                            if (showCamposBasicos)
+                            if (widget.showCamposBasicos)
                               Column(children: <Widget>[
                                 const SizedBox(height: 20),
                                 TextFormField(
@@ -637,15 +664,15 @@ class _MOfferPage extends State<MOfferPage> {
                                 ),
                               ]),
 
-                            if (show24hs)
+                            if (widget.show24hs)
                               Row(
                                 children: <Widget>[
                                   const SizedBox(height: 20),
                                   Switch(
-                                      value: val24hs,
+                                      value: widget.val24hs,
                                       onChanged: (bool val) {
                                         setState(() {
-                                          val24hs = val;
+                                          widget.val24hs = val;
                                         });
                                       }),
                                   const SizedBox(width: 20),
@@ -654,20 +681,20 @@ class _MOfferPage extends State<MOfferPage> {
                                 ],
                               ),
 
-                            if (showDispoImediata && !show24hs)
+                            if (widget.showDispoImediata && !widget.show24hs)
                               Row(
                                 children: <Widget>[
                                   const SizedBox(height: 20),
                                   Switch(
-                                      value: valDispoImediata,
+                                      value: widget.valDispoImediata,
                                       onChanged: (bool val) {
                                         setState(() {
-                                          valDispoImediata = val;
+                                          widget.valDispoImediata = val;
                                         });
                                       }),
                                   const SizedBox(width: 20),
                                   Expanded(
-                                    child: Text(valDispoImediata
+                                    child: Text(widget.valDispoImediata
                                         ? 'Disponibilidade imediata (o tempo todo)'
                                         : 'Disponibilidade agendada'),
                                   ),
@@ -675,16 +702,16 @@ class _MOfferPage extends State<MOfferPage> {
                                 ],
                               ),
 
-                            if (!valDispoImediata)
+                            if (!widget.valDispoImediata)
                               Column(children: <Widget>[
                                 Row(children: <Widget>[
                                   const SizedBox(height: 20),
                                   // SEGUNDA
                                   Checkbox(
-                                    value: this.valSeg,
+                                    value: this.widget.valSeg,
                                     onChanged: (val) {
                                       setState(() {
-                                        this.valSeg = val!;
+                                        this.widget.valSeg = val!;
                                       });
                                     },
                                     activeColor: Colors.blue,
@@ -693,7 +720,7 @@ class _MOfferPage extends State<MOfferPage> {
                                 ]),
 
                                 //const SizedBox(),
-                                if (valSeg)
+                                if (widget.valSeg)
                                   Row(
                                     children: <Widget>[
                                       const SizedBox(height: 5, width: 5),
@@ -721,8 +748,8 @@ class _MOfferPage extends State<MOfferPage> {
                                               backgroundColor:
                                                   MaterialStateProperty.all<
                                                       Color>(
-                                            _loginController.colorFromHex(
-                                                _loginController.listCore
+                                            widget._loginController.colorFromHex(
+                                                widget._loginController.listCore
                                                     .where((coreItem) =>
                                                         coreItem.coreChave ==
                                                         'backDark')
@@ -765,8 +792,8 @@ class _MOfferPage extends State<MOfferPage> {
                                               backgroundColor:
                                                   MaterialStateProperty.all<
                                                       Color>(
-                                            _loginController.colorFromHex(
-                                                _loginController.listCore
+                                                    widget._loginController.colorFromHex(
+                                                        widget._loginController.listCore
                                                     .where((coreItem) =>
                                                         coreItem.coreChave ==
                                                         'backDark')
@@ -790,10 +817,10 @@ class _MOfferPage extends State<MOfferPage> {
                                 // TERÇA
                                 Row(children: <Widget>[
                                   Checkbox(
-                                    value: this.valTer,
+                                    value: this.widget.valTer,
                                     onChanged: (val) {
                                       setState(() {
-                                        this.valTer = val!;
+                                        this.widget.valTer = val!;
                                       });
                                     },
                                     activeColor: Colors.blue,
@@ -802,7 +829,7 @@ class _MOfferPage extends State<MOfferPage> {
                                 ]),
 
                                 //const SizedBox(height: 5),
-                                if (valTer)
+                                if (widget.valTer)
                                   Row(
                                     children: <Widget>[
                                       const SizedBox(height: 5, width: 5),
@@ -830,8 +857,8 @@ class _MOfferPage extends State<MOfferPage> {
                                               backgroundColor:
                                                   MaterialStateProperty.all<
                                                       Color>(
-                                            _loginController.colorFromHex(
-                                                _loginController.listCore
+                                                    widget._loginController.colorFromHex(
+                                                        widget._loginController.listCore
                                                     .where((coreItem) =>
                                                         coreItem.coreChave ==
                                                         'backDark')
@@ -874,8 +901,8 @@ class _MOfferPage extends State<MOfferPage> {
                                               backgroundColor:
                                                   MaterialStateProperty.all<
                                                       Color>(
-                                            _loginController.colorFromHex(
-                                                _loginController.listCore
+                                                    widget._loginController.colorFromHex(
+                                                widget._loginController.listCore
                                                     .where((coreItem) =>
                                                         coreItem.coreChave ==
                                                         'backDark')
@@ -898,10 +925,10 @@ class _MOfferPage extends State<MOfferPage> {
 
                                 Row(children: <Widget>[
                                   Checkbox(
-                                    value: this.valQua,
+                                    value: this.widget.valQua,
                                     onChanged: (val) {
                                       setState(() {
-                                        this.valQua = val!;
+                                        this.widget.valQua = val!;
                                       });
                                     },
                                     activeColor: Colors.blue,
@@ -910,7 +937,7 @@ class _MOfferPage extends State<MOfferPage> {
                                 ]),
 
                                 //const SizedBox(height: 5),
-                                if (valQua)
+                                if (widget.valQua)
                                   Row(
                                     children: <Widget>[
                                       const SizedBox(height: 5, width: 5),
@@ -938,8 +965,8 @@ class _MOfferPage extends State<MOfferPage> {
                                               backgroundColor:
                                                   MaterialStateProperty.all<
                                                       Color>(
-                                            _loginController.colorFromHex(
-                                                _loginController.listCore
+                                                    widget._loginController.colorFromHex(
+                                                widget._loginController.listCore
                                                     .where((coreItem) =>
                                                         coreItem.coreChave ==
                                                         'backDark')
@@ -982,8 +1009,8 @@ class _MOfferPage extends State<MOfferPage> {
                                               backgroundColor:
                                                   MaterialStateProperty.all<
                                                       Color>(
-                                            _loginController.colorFromHex(
-                                                _loginController.listCore
+                                                    widget._loginController.colorFromHex(
+                                                widget._loginController.listCore
                                                     .where((coreItem) =>
                                                         coreItem.coreChave ==
                                                         'backDark')
@@ -1006,10 +1033,10 @@ class _MOfferPage extends State<MOfferPage> {
 
                                 Row(children: <Widget>[
                                   Checkbox(
-                                    value: this.valQui,
+                                    value: this.widget.valQui,
                                     onChanged: (val) {
                                       setState(() {
-                                        this.valQui = val!;
+                                        this.widget.valQui = val!;
                                       });
                                     },
                                     activeColor: Colors.blue,
@@ -1018,7 +1045,7 @@ class _MOfferPage extends State<MOfferPage> {
                                 ]),
 
                                 //const SizedBox(height: 5),
-                                if (valQui)
+                                if (widget.valQui)
                                   Row(
                                     children: <Widget>[
                                       const SizedBox(height: 5, width: 5),
@@ -1046,8 +1073,8 @@ class _MOfferPage extends State<MOfferPage> {
                                               backgroundColor:
                                                   MaterialStateProperty.all<
                                                       Color>(
-                                            _loginController.colorFromHex(
-                                                _loginController.listCore
+                                                    widget._loginController.colorFromHex(
+                                                widget._loginController.listCore
                                                     .where((coreItem) =>
                                                         coreItem.coreChave ==
                                                         'backDark')
@@ -1090,8 +1117,8 @@ class _MOfferPage extends State<MOfferPage> {
                                               backgroundColor:
                                                   MaterialStateProperty.all<
                                                       Color>(
-                                            _loginController.colorFromHex(
-                                                _loginController.listCore
+                                                    widget._loginController.colorFromHex(
+                                                widget._loginController.listCore
                                                     .where((coreItem) =>
                                                         coreItem.coreChave ==
                                                         'backDark')
@@ -1114,10 +1141,10 @@ class _MOfferPage extends State<MOfferPage> {
 
                                 Row(children: <Widget>[
                                   Checkbox(
-                                    value: this.valSex,
+                                    value: this.widget.valSex,
                                     onChanged: (val) {
                                       setState(() {
-                                        this.valSex = val!;
+                                        this.widget.valSex = val!;
                                       });
                                     },
                                     activeColor: Colors.blue,
@@ -1126,7 +1153,7 @@ class _MOfferPage extends State<MOfferPage> {
                                 ]),
 
                                 //const SizedBox(height: 5),
-                                if (valSex)
+                                if (widget.valSex)
                                   Row(
                                     children: <Widget>[
                                       const SizedBox(height: 5, width: 5),
@@ -1154,8 +1181,8 @@ class _MOfferPage extends State<MOfferPage> {
                                               backgroundColor:
                                                   MaterialStateProperty.all<
                                                       Color>(
-                                            _loginController.colorFromHex(
-                                                _loginController.listCore
+                                                    widget._loginController.colorFromHex(
+                                                widget._loginController.listCore
                                                     .where((coreItem) =>
                                                         coreItem.coreChave ==
                                                         'backDark')
@@ -1198,8 +1225,8 @@ class _MOfferPage extends State<MOfferPage> {
                                               backgroundColor:
                                                   MaterialStateProperty.all<
                                                       Color>(
-                                            _loginController.colorFromHex(
-                                                _loginController.listCore
+                                                    widget._loginController.colorFromHex(
+                                                widget._loginController.listCore
                                                     .where((coreItem) =>
                                                         coreItem.coreChave ==
                                                         'backDark')
@@ -1222,10 +1249,10 @@ class _MOfferPage extends State<MOfferPage> {
 
                                 Row(children: <Widget>[
                                   Checkbox(
-                                    value: this.valSab,
+                                    value: this.widget.valSab,
                                     onChanged: (val) {
                                       setState(() {
-                                        this.valSab = val!;
+                                        this.widget.valSab = val!;
                                       });
                                     },
                                     activeColor: Colors.blue,
@@ -1234,7 +1261,7 @@ class _MOfferPage extends State<MOfferPage> {
                                 ]),
 
                                 //const SizedBox(height: 5),
-                                if (valSab)
+                                if (widget.valSab)
                                   Row(
                                     children: <Widget>[
                                       const SizedBox(height: 5, width: 5),
@@ -1262,8 +1289,8 @@ class _MOfferPage extends State<MOfferPage> {
                                               backgroundColor:
                                                   MaterialStateProperty.all<
                                                       Color>(
-                                            _loginController.colorFromHex(
-                                                _loginController.listCore
+                                                    widget._loginController.colorFromHex(
+                                                widget._loginController.listCore
                                                     .where((coreItem) =>
                                                         coreItem.coreChave ==
                                                         'backDark')
@@ -1306,8 +1333,8 @@ class _MOfferPage extends State<MOfferPage> {
                                               backgroundColor:
                                                   MaterialStateProperty.all<
                                                       Color>(
-                                            _loginController.colorFromHex(
-                                                _loginController.listCore
+                                                    widget._loginController.colorFromHex(
+                                                widget._loginController.listCore
                                                     .where((coreItem) =>
                                                         coreItem.coreChave ==
                                                         'backDark')
@@ -1330,10 +1357,10 @@ class _MOfferPage extends State<MOfferPage> {
 
                                 Row(children: <Widget>[
                                   Checkbox(
-                                    value: this.valDom,
+                                    value: this.widget.valDom,
                                     onChanged: (val) {
                                       setState(() {
-                                        this.valDom = val!;
+                                        this.widget.valDom = val!;
                                       });
                                     },
                                     activeColor: Colors.blue,
@@ -1342,7 +1369,7 @@ class _MOfferPage extends State<MOfferPage> {
                                 ]),
 
                                 //const SizedBox(height: 5),
-                                if (valDom)
+                                if (widget.valDom)
                                   Row(
                                     children: <Widget>[
                                       const SizedBox(height: 5, width: 5),
@@ -1370,8 +1397,8 @@ class _MOfferPage extends State<MOfferPage> {
                                               backgroundColor:
                                                   MaterialStateProperty.all<
                                                       Color>(
-                                            _loginController.colorFromHex(
-                                                _loginController.listCore
+                                                    widget._loginController.colorFromHex(
+                                                widget._loginController.listCore
                                                     .where((coreItem) =>
                                                         coreItem.coreChave ==
                                                         'backDark')
@@ -1414,8 +1441,8 @@ class _MOfferPage extends State<MOfferPage> {
                                               backgroundColor:
                                                   MaterialStateProperty.all<
                                                       Color>(
-                                            _loginController.colorFromHex(
-                                                _loginController.listCore
+                                                    widget._loginController.colorFromHex(
+                                                widget._loginController.listCore
                                                     .where((coreItem) =>
                                                         coreItem.coreChave ==
                                                         'backDark')
@@ -1439,14 +1466,14 @@ class _MOfferPage extends State<MOfferPage> {
 
                             const SizedBox(height: 10),
                             const Divider(),
-                            if (showMostraReview)
+                            if (widget.showMostraReview)
                               Row(
                                 children: <Widget>[
                                   Switch(
-                                      value: valMostraReview,
+                                      value: widget.valMostraReview,
                                       onChanged: (bool val) {
                                         setState(() {
-                                          valMostraReview = val;
+                                          widget.valMostraReview = val;
                                         });
                                       }),
                                   const SizedBox(width: 20),
@@ -1455,14 +1482,14 @@ class _MOfferPage extends State<MOfferPage> {
                                 ],
                               ),
 
-                            if (showAceiteAuto)
+                            if (widget.showAceiteAuto)
                               Row(
                                 children: <Widget>[
                                   Switch(
-                                      value: valAceiteAuto,
+                                      value: widget.valAceiteAuto,
                                       onChanged: (bool val) {
                                         setState(() {
-                                          valAceiteAuto = val;
+                                          widget.valAceiteAuto = val;
                                         });
                                       }),
                                   const SizedBox(width: 20),
@@ -1474,16 +1501,16 @@ class _MOfferPage extends State<MOfferPage> {
                                 ],
                               ),
 
-                            if (showAceitaEncomenda)
+                            if (widget.showAceitaEncomenda)
                               Row(
                                 children: <Widget>[
                                   Switch(
-                                      value: valAceitaEncomenda,
+                                      value: widget.valAceitaEncomenda,
                                       onChanged: (bool val) {
                                         setState(() {
-                                          valAceitaEncomenda = val;
+                                          widget.valAceitaEncomenda = val;
                                           print('valAceitaEncomenda: ' +
-                                              valAceitaEncomenda.toString());
+                                              widget.valAceitaEncomenda.toString());
                                         });
                                       }),
                                   const SizedBox(width: 20),
@@ -1491,17 +1518,17 @@ class _MOfferPage extends State<MOfferPage> {
                                 ],
                               ),
 
-                            if (valAceitaEncomenda)
+                            if (widget.valAceitaEncomenda)
                               Row(
                                 children: <Widget>[
                                   const SizedBox(width: 40),
                                   Switch(
-                                      value: valSomenteEncomenda,
+                                      value: widget.valSomenteEncomenda,
                                       onChanged: (bool val) {
                                         setState(() {
-                                          valSomenteEncomenda = val;
+                                          widget.valSomenteEncomenda = val;
                                           print('valSomenteEncomenda: ' +
-                                              valSomenteEncomenda.toString());
+                                              widget.valSomenteEncomenda.toString());
                                         });
                                       }),
                                   const SizedBox(width: 10),
@@ -1527,8 +1554,8 @@ class _MOfferPage extends State<MOfferPage> {
                                       style: ButtonStyle(
                                           backgroundColor:
                                               MaterialStateProperty.all<Color>(
-                                        _loginController.colorFromHex(
-                                            _loginController.listCore
+                                                widget._loginController.colorFromHex(
+                                            widget._loginController.listCore
                                                 .where((coreItem) =>
                                                     coreItem.coreChave ==
                                                     'backDark')
@@ -1559,7 +1586,7 @@ class _MOfferPage extends State<MOfferPage> {
                                 ],
                               ),
 
-                            if (showCamposBasicos)
+                            if (widget.showCamposBasicos)
                               Column(
                                 children: <Widget>[
                                   const Divider(),
@@ -1567,17 +1594,17 @@ class _MOfferPage extends State<MOfferPage> {
                                   Text('Forma de Fechamento'),
                                   const SizedBox(height: 10),
                                   DropdownButton<String>(
-                                    items: listaFormaFechamento
+                                    items: widget.listaFormaFechamento
                                         .map((String value) {
                                       return DropdownMenuItem<String>(
                                         value: value,
                                         child: Text(value),
                                       );
                                     }).toList(),
-                                    value: formaFechSel,
+                                    value: widget.formaFechSel,
                                     onChanged: (String? newValue) {
                                       setState(() {
-                                        formaFechSel = newValue!;
+                                        widget.formaFechSel = newValue!;
                                       });
                                     },
                                   ),
@@ -1593,29 +1620,29 @@ class _MOfferPage extends State<MOfferPage> {
                             //   ],
                             // ),
 
-                            if (showCamposEntrega)
+                            if (widget.showCamposEntrega) // && widget.categSelecionada.categoriaFormasEntrega!.contains('other'))
                               Column(
                                 children: <Widget>[
-                                  Text('Agente de ' + labelEntrega),
+                                  Text('Agente de ' + widget.labelEntrega),
                                   DropdownButton<String>(
                                     items:
-                                        listaFormaEntrega.map((String value) {
+                                    widget.listaFormaEntrega.map((String value) {
                                       return DropdownMenuItem<String>(
                                         value: value,
                                         child: Text(value),
                                       );
                                     }).toList(),
-                                    value: agenteEntregaSel,
+                                    value: widget.agenteEntregaSel,
                                     onChanged: (String? newValue) {
                                       setState(() {
-                                        agenteEntregaSel = newValue!;
+                                        widget.agenteEntregaSel = newValue!;
                                       });
                                     },
                                   ),
                                   const SizedBox(height: 20),
                                   Text(
                                     "Disponibilidade de " +
-                                        labelEntrega +
+                                        widget.labelEntrega +
                                         ' à partir de: ',
                                     textAlign: TextAlign.center,
                                   ),
@@ -1637,8 +1664,8 @@ class _MOfferPage extends State<MOfferPage> {
                                       style: ButtonStyle(
                                           backgroundColor:
                                               MaterialStateProperty.all<Color>(
-                                        _loginController.colorFromHex(
-                                            _loginController.listCore
+                                                widget._loginController.colorFromHex(
+                                            widget._loginController.listCore
                                                 .where((coreItem) =>
                                                     coreItem.coreChave ==
                                                     'backDark')
@@ -1666,7 +1693,7 @@ class _MOfferPage extends State<MOfferPage> {
                                         ],
                                       )),
                                   const SizedBox(height: 20),
-                                  Text("Horário de " + labelEntrega),
+                                  Text("Horário de " + widget.labelEntrega),
                                   const SizedBox(height: 10),
                                   Row(
                                     children: <Widget>[
@@ -1697,8 +1724,8 @@ class _MOfferPage extends State<MOfferPage> {
                                               backgroundColor:
                                                   MaterialStateProperty.all<
                                                       Color>(
-                                            _loginController.colorFromHex(
-                                                _loginController.listCore
+                                                    widget._loginController.colorFromHex(
+                                                widget._loginController.listCore
                                                     .where((coreItem) =>
                                                         coreItem.coreChave ==
                                                         'backDark')
@@ -1741,8 +1768,8 @@ class _MOfferPage extends State<MOfferPage> {
                                               backgroundColor:
                                                   MaterialStateProperty.all<
                                                       Color>(
-                                            _loginController.colorFromHex(
-                                                _loginController.listCore
+                                                    widget._loginController.colorFromHex(
+                                                widget._loginController.listCore
                                                     .where((coreItem) =>
                                                         coreItem.coreChave ==
                                                         'backDark')
@@ -1762,7 +1789,7 @@ class _MOfferPage extends State<MOfferPage> {
                                           )),
                                     ],
                                   ),
-                                  if (labelEntrega == 'Entrega')
+                                  if (widget.labelEntrega == 'Entrega')
                                     Column(
                                       children: <Widget>[
                                         const SizedBox(height: 20),
@@ -1772,6 +1799,8 @@ class _MOfferPage extends State<MOfferPage> {
                                         ),
                                         const SizedBox(height: 20),
                                         TextFormField(
+                                          inputFormatters: [FilteringTextInputFormatter.digitsOnly,CentavosInputFormatter(), ],
+                                          // initialValue: '0',
                                           controller: widget
                                               .mofferController.txtValorTaxa1km,
                                           decoration: InputDecoration(
@@ -1786,6 +1815,8 @@ class _MOfferPage extends State<MOfferPage> {
                                         ),
                                         const SizedBox(height: 20),
                                         TextFormField(
+                                          inputFormatters: [FilteringTextInputFormatter.digitsOnly,CentavosInputFormatter(), ],
+                                          // initialValue: '0',
                                           controller: widget
                                               .mofferController.txtValorTaxa2km,
                                           decoration: InputDecoration(
@@ -1800,6 +1831,8 @@ class _MOfferPage extends State<MOfferPage> {
                                         ),
                                         const SizedBox(height: 20),
                                         TextFormField(
+                                          inputFormatters: [FilteringTextInputFormatter.digitsOnly,CentavosInputFormatter(), ],
+                                          // initialValue: '0',
                                           controller: widget.mofferController
                                               .txtValorTaxaMaisQue2km,
                                           decoration: InputDecoration(
@@ -1823,17 +1856,17 @@ class _MOfferPage extends State<MOfferPage> {
                                         const SizedBox(height: 20),
                                         Text('Unidade de Tempo'),
                                         DropdownButton<String>(
-                                          items: listaTempoEntregaTipo
+                                          items: widget.listaTempoEntregaTipo
                                               .map((String value) {
                                             return DropdownMenuItem<String>(
                                               value: value,
                                               child: Text(value),
                                             );
                                           }).toList(),
-                                          value: tempoEntregaTipoSel,
+                                          value: widget.tempoEntregaTipoSel,
                                           onChanged: (String? newValue) {
                                             setState(() {
-                                              tempoEntregaTipoSel = newValue!;
+                                              widget.tempoEntregaTipoSel = newValue!;
                                             });
                                           },
                                         ),
@@ -1842,7 +1875,7 @@ class _MOfferPage extends State<MOfferPage> {
                                 ],
                               ),
 
-                            if (showCamposBasicos)
+                            if (widget.showCamposBasicos)
                               Column(children: <Widget>[
                                 const SizedBox(height: 10),
                                 const Divider(),
@@ -1852,8 +1885,8 @@ class _MOfferPage extends State<MOfferPage> {
                                     style: ButtonStyle(
                                         backgroundColor:
                                             MaterialStateProperty.all<Color>(
-                                      _loginController.colorFromHex(
-                                          _loginController
+                                              widget._loginController.colorFromHex(
+                                          widget._loginController
                                               .listCore
                                               .where((coreItem) =>
                                                   coreItem.coreChave ==
@@ -1873,13 +1906,22 @@ class _MOfferPage extends State<MOfferPage> {
                                     )),
                                 const SizedBox(height: 20),
                                 if (widget.imgcloud != '')
-                                  FadeInImage.assetNetwork(
-                                    placeholder: 'assets/images/pholder.png',
-                                    image: widget.imgcloud,
-                                    imageErrorBuilder: (context, url, error) =>
-                                        new Icon(Icons.local_offer_outlined),
+                                  CachedNetworkImage(
+                                    imageUrl: widget.imgcloud,
+                                    progressIndicatorBuilder: (context, url, downloadProgress) =>
+                                        CircularProgressIndicator(value: downloadProgress.progress),
+                                    errorWidget: (context, url, error) => Icon(Icons.local_offer_outlined),
                                     height: 250,
                                   ),
+
+                                  // FadeInImage.assetNetwork(
+                                  //   placeholder: 'assets/images/pholder.png',
+                                  //   image: widget.imgcloud,
+                                  //   imageErrorBuilder: (context, url, error) =>
+                                  //       new Icon(Icons.local_offer_outlined),
+                                  //   height: 250,
+                                  // ),
+
                                 if (image != null)
                                   Image.file(
                                     image!,
@@ -1888,16 +1930,16 @@ class _MOfferPage extends State<MOfferPage> {
                                 const SizedBox(height: 20),
                                 ButtonOffer(
                                     text: 'Salvar',
-                                    colorText: _loginController.colorFromHex(
-                                        _loginController.listCore
+                                    colorText: widget._loginController.colorFromHex(
+                                        widget._loginController.listCore
                                             .where((coreItem) =>
                                                 coreItem.coreChave ==
                                                 'textLight')
                                             .first
                                             .coreValor
                                             .toString()),
-                                    colorButton: _loginController.colorFromHex(
-                                        _loginController.listCore
+                                    colorButton: widget._loginController.colorFromHex(
+                                        widget._loginController.listCore
                                             .where((coreItem) =>
                                                 coreItem.coreChave ==
                                                 'iconColor')
@@ -1907,7 +1949,7 @@ class _MOfferPage extends State<MOfferPage> {
                                     onPressed: () {
                                       uploadFoto(
                                               image == null ? null : image,
-                                              _loginController.usuGuid
+                                          widget._loginController.usuGuid
                                                   .toString())
                                           .then((value) => Get.offAndToNamed(
                                               AppRoutes.mOffers));
@@ -1953,7 +1995,9 @@ class _MOfferPage extends State<MOfferPage> {
       await ref.putFile(image!);
       //var downloadURL = await ref.getDownloadURL();
     }
-    showSnackBar("Oferta salva! - " + widget.offerGuid, Duration(seconds: 3));
+    //showSnackBar("Oferta salva! - " + widget.offerGuid, Duration(seconds: 3));
+
+    Get.defaultDialog(title: "Aviso", middleText: "Informações atualizadas com sucesso!");
   }
 
   //snackbar for  showing error
@@ -1963,7 +2007,7 @@ class _MOfferPage extends State<MOfferPage> {
   }
 
   void _updateImageUrl() {
-    if (isValidImageUrl(_imageURLController.text)) {
+    if (isValidImageUrl(widget._imageURLController.text)) {
       setState(() {});
     }
   }
@@ -1985,7 +2029,7 @@ class _MOfferPage extends State<MOfferPage> {
 
   Future<void> _saveForm(String usuGuid) async {
     var formaFechto = '';
-    switch (formaFechSel) {
+    switch (widget.formaFechSel) {
       case 'mensagem no aplicativo (seguro)':
         formaFechto = 'chatapp';
         break;
@@ -1993,7 +2037,7 @@ class _MOfferPage extends State<MOfferPage> {
         formaFechto = 'gatewayapi';
         break;
       default:
-        formaFechto = formaFechSel;
+        formaFechto = widget.formaFechSel;
     }
 
     var offerToSend = new Oferta(
@@ -2026,22 +2070,22 @@ class _MOfferPage extends State<MOfferPage> {
         widget.mofferController.txtPesoPorcaoUn.text,
         int.parse(widget.mofferController.txtValidade.text),
         double.parse(widget.mofferController.txtValorMin.text),
-        valMostraReview,
-        valAceiteAuto,
-        valAceitaEncomenda,
-        valSomenteEncomenda,
-        valAceitaProposta,
+        widget.valMostraReview,
+        widget.valAceiteAuto,
+        widget.valAceitaEncomenda,
+        widget.valSomenteEncomenda,
+        widget.valAceitaProposta,
         int.parse(widget.mofferController.txtTempoEntrega
             .text), //int.parse(widget.mofferController.txtTempoEntrega.text),
-        tempoEntregaTipoSel,
+        widget.tempoEntregaTipoSel,
         formaFechto,
-        agenteEntregaSel,
+        widget.agenteEntregaSel,
         '',
         '',
         widget.mofferController.txtMarca.text,
         widget.mofferController.txtCores.text,
         widget.mofferController.txtTamanhos.text,
-        val24hs,
+        widget.val24hs,
         int.parse(widget.mofferController.txtCepDistancia.text),
         0.00, // double.parse(widget.mofferController.txtValorSinalOrc.text),
         widget.mofferController.valEncomendasAPartir.toString(),
@@ -2050,17 +2094,17 @@ class _MOfferPage extends State<MOfferPage> {
         double.parse(widget.mofferController.txtValorTaxa1km.text),
         double.parse(widget.mofferController.txtValorTaxa2km.text),
         double.parse(widget.mofferController.txtValorTaxaMaisQue2km.text),
-        valQtd,
-        valSinalPercentual ? "P" : "V",
-        valPrecoInicial,
-        valPrecoCombinar,
-        valSeg,
-        valTer,
-        valQua,
-        valQui,
-        valSex,
-        valSab,
-        valDom,
+        widget.valQtd,
+        widget.valSinalPercentual ? "P" : "V",
+        widget.valPrecoInicial,
+        widget.valPrecoCombinar,
+        widget.valSeg,
+        widget.valTer,
+        widget.valQua,
+        widget.valQui,
+        widget.valSex,
+        widget.valSab,
+        widget.valDom,
         widget.mofferController.valSegDas,
         widget.mofferController.valSegAs,
         widget.mofferController.valTerDas,
@@ -2112,283 +2156,331 @@ class _MOfferPage extends State<MOfferPage> {
 
   // somente para testes - em producao virá a partir do Firebase
   void _manageCampos() {
-    //print('manageCampos: ' + widget.categSelecionada.secao.toString());
+    print('manageCampos: ' + widget.categSelecionada.secao.toString());
     if (widget.categSelecionada.secao == null) {
-      labelEntrega = 'Entrega';
-      showCamposBasicos = false;
-      showCamposEntrega = false;
-      showPreco = false;
-      showTxtQtdDispo = false;
-      showTxtValorMin = false;
-      showTxtMarca = false;
-      showTxtCep = false;
+      widget.labelEntrega = 'Entrega';
+      widget.showQtd = false;
+      widget.showCamposBasicos = false;
+      widget.showCamposEntrega = false;
+      widget.showPreco = false;
+      widget.showTxtQtdDispo = false;
+      widget.showTxtValorMin = false;
+      widget.showTxtMarca = false;
+      widget.showTxtCep = false;
       //showTxtQtdMaxPorVenda = false;
       //showTxtQtdAviso = false;
-      show24hs = false;
-      showAceitaProposta = false;
-      showSomenteEncomenda = false;
-      showAceitaEncomenda = false;
-      showAceiteAuto = false;
-      showMostraAval = false;
-      showMostraReview = false;
-      showDispoImediata = false;
+      widget.show24hs = false;
+      widget.showAceitaProposta = false;
+      widget.showSomenteEncomenda = false;
+      widget.showAceitaEncomenda = false;
+      widget.showAceiteAuto = false;
+      widget.showMostraAval = false;
+      widget.showMostraReview = false;
+      widget.showDispoImediata = false;
       // showListaFormaEntrega = false;
       // showListaFormaEntrega2 = false;
       // showListaParceiros = false;
       // showListaTempoEntregaTipo = false;
       // showTxtTempoEntrega = false;
-      showTxtCores = false;
-      showTxtTamanhos = false;
-      showTxtPesoPorcao = false;
-      showTxtPesoPorcaoUn = false;
-      showTxtValidade = false;
-      showTxtValorSinalOrc = false;
+      widget.showTxtCores = false;
+      widget.showTxtTamanhos = false;
+      widget.showTxtPesoPorcao = false;
+      widget.showTxtPesoPorcaoUn = false;
+      widget.showTxtValidade = false;
+      widget.showTxtValorSinalOrc = false;
       // showTxtEntregaTaxas = false;
-      showTxtCodigoAlt = false;
+      widget.showTxtCodigoAlt = false;
     }
     if (widget.categSelecionada.secao == 'SEC-SERV-CASA' ||
         widget.categSelecionada.secao == 'SEC-SERV-FRETE' ||
         widget.categSelecionada.secao == 'SEC-SERV-VOCE' ||
         widget.categSelecionada.secao == 'SEC-SERV-CARRO' ||
         widget.categSelecionada.secao == 'SEC-SERV-PET') {
-      labelEntrega = 'Atendimento';
-      labelValidade = 'Garantia';
-      showCamposBasicos = true;
-      showPreco = true;
-      showTxtQtdDispo = false;
-      showTxtValorMin = false;
-      showTxtMarca = false;
-      showTxtCep = true;
-      valQtd = false;
+      widget.labelEntrega = 'Atendimento';
+      widget.labelValidade = 'Garantia';
+      widget.showQtd = false;
+      widget.showCamposBasicos = true;
+      widget.showPreco = true;
+      widget.showTxtQtdDispo = false;
+      widget.showTxtValorMin = false;
+      widget.showTxtMarca = false;
+      widget.showTxtCep = true;
+      widget.valQtd = false;
       // showTxtQtdMaxPorVenda = false;
       // showTxtQtdAviso = false;
-      show24hs = true;
-      showAceitaProposta = true;
-      showSomenteEncomenda = false;
-      showAceitaEncomenda = false;
-      showAceiteAuto = false;
-      showMostraAval = true;
-      showMostraReview = true;
-      showDispoImediata = true;
-      showCamposEntrega = false;
+      widget.show24hs = true;
+      widget.showAceitaProposta = true;
+      widget.showSomenteEncomenda = false;
+      widget.showAceitaEncomenda = false;
+      widget.showAceiteAuto = false;
+      widget.showMostraAval = true;
+      widget.showMostraReview = true;
+      widget.showDispoImediata = true;
+      widget.showCamposEntrega = false;
       // showListaFormaEntrega = false;
       // showListaFormaEntrega2 = false;
       // showListaParceiros = false;
       //showListaTempoEntregaTipo = false;
       // showTxtTempoEntrega = false;
-      showTxtCores = false;
-      showTxtTamanhos = false;
-      showTxtPesoPorcao = false;
-      showTxtPesoPorcaoUn = false;
-      showTxtValidade = true;
-      showTxtValorSinalOrc = true;
+      widget.showTxtCores = false;
+      widget.showTxtTamanhos = false;
+      widget.showTxtPesoPorcao = false;
+      widget.showTxtPesoPorcaoUn = false;
+      widget.showTxtValidade = true;
+      widget.showTxtValorSinalOrc = true;
       // showTxtEntregaTaxas = false;
-      showTxtCodigoAlt = false;
+      widget.showTxtCodigoAlt = false;
     }
     if (widget.categSelecionada.secao == 'SEC-PROD-DESAPEGO') {
-      labelEntrega = 'Entrega';
-      showCamposBasicos = true;
-      showCamposEntrega = true;
-      showPreco = true;
-      showTxtQtdDispo = true;
-      showTxtValorMin = false;
-      showTxtMarca = true;
-      showTxtCep = true;
+      widget.labelEntrega = 'Entrega';
+      widget.showQtd = false;
+      widget.showCamposBasicos = true;
+      widget.showCamposEntrega = true;
+      widget.showPreco = true;
+      widget.showTxtQtdDispo = true;
+      widget.showTxtValorMin = false;
+      widget.showTxtMarca = true;
+      widget.showTxtCep = true;
       // showTxtQtdMaxPorVenda = true;
       // showTxtQtdAviso = false;
-      show24hs = false;
-      showAceitaProposta = true;
-      showSomenteEncomenda = false;
-      showAceitaEncomenda = false;
-      showAceiteAuto = true;
-      showMostraAval = false;
-      showMostraReview = false;
-      showDispoImediata = true;
+      widget.show24hs = false;
+      widget.showAceitaProposta = true;
+      widget.showSomenteEncomenda = false;
+      widget.showAceitaEncomenda = false;
+      widget.showAceiteAuto = true;
+      widget.showMostraAval = false;
+      widget.showMostraReview = false;
+      widget.showDispoImediata = true;
       // showListaFormaEntrega = false;
       // showListaFormaEntrega2 = false;
       // showListaParceiros = true;
       // showListaTempoEntregaTipo = true;
       // showTxtTempoEntrega = true;
-      showTxtCores = true;
-      showTxtTamanhos = true;
-      showTxtPesoPorcao = false;
-      showTxtPesoPorcaoUn = false;
-      showTxtValidade = false;
-      showTxtValorSinalOrc = false;
+      widget.showTxtCores = true;
+      widget.showTxtTamanhos = true;
+      widget.showTxtPesoPorcao = false;
+      widget.showTxtPesoPorcaoUn = false;
+      widget.showTxtValidade = false;
+      widget.showTxtValorSinalOrc = false;
       // showTxtEntregaTaxas = true;
-      showTxtCodigoAlt = false;
+      widget.showTxtCodigoAlt = false;
     }
     if (widget.categSelecionada.secao == 'SEC-PROD-ACHADOPERDIDO') {
-      labelEntrega = 'Entrega';
-      showCamposBasicos = true;
-      showPreco = false;
-      showTxtQtdDispo = true;
-      showTxtValorMin = false;
-      showTxtMarca = true;
-      showTxtCep = true;
+      widget.labelEntrega = 'Entrega';
+      widget.showQtd = false;
+      widget.showCamposBasicos = true;
+      widget.showPreco = false;
+      widget.showTxtQtdDispo = true;
+      widget.showTxtValorMin = false;
+      widget.showTxtMarca = true;
+      widget.showTxtCep = true;
       // showTxtQtdMaxPorVenda = true;
       // showTxtQtdAviso = false;
-      show24hs = false;
-      showAceitaProposta = true;
-      showSomenteEncomenda = false;
-      showAceitaEncomenda = false;
-      showAceiteAuto = true;
-      showMostraAval = false;
-      showMostraReview = false;
-      showDispoImediata = true;
-      showCamposEntrega = false;
+      widget.show24hs = false;
+      widget.showAceitaProposta = true;
+      widget.showSomenteEncomenda = false;
+      widget.showAceitaEncomenda = false;
+      widget.showAceiteAuto = true;
+      widget.showMostraAval = false;
+      widget.showMostraReview = false;
+      widget.showDispoImediata = true;
+      widget.showCamposEntrega = false;
       // showListaFormaEntrega = false;
       // showListaFormaEntrega2 = false;
       // showListaParceiros = true;
       // showListaTempoEntregaTipo = true;
       // showTxtTempoEntrega = true;
-      showTxtCores = true;
-      showTxtTamanhos = true;
-      showTxtPesoPorcao = false;
-      showTxtPesoPorcaoUn = false;
-      showTxtValidade = false;
-      showTxtValorSinalOrc = false;
+      widget.showTxtCores = true;
+      widget.showTxtTamanhos = true;
+      widget.showTxtPesoPorcao = false;
+      widget.showTxtPesoPorcaoUn = false;
+      widget.showTxtValidade = false;
+      widget.showTxtValorSinalOrc = false;
       // showTxtEntregaTaxas = false;
-      showTxtCodigoAlt = false;
+      widget.showTxtCodigoAlt = false;
     }
     if (widget.categSelecionada.secao == 'SEC-PROD-BELEZA') {
-      labelEntrega = 'Entrega';
-      showCamposBasicos = true;
-      showPreco = true;
-      showTxtQtdDispo = true;
-      showTxtValorMin = true;
-      showTxtMarca = true;
-      showTxtCep = true;
+      widget.labelEntrega = 'Entrega';
+      widget.showQtd = true;
+      widget.showCamposBasicos = true;
+      widget.showPreco = true;
+      widget.showTxtQtdDispo = true;
+      widget.showTxtValorMin = true;
+      widget.showTxtMarca = true;
+      widget.showTxtCep = true;
       // showTxtQtdMaxPorVenda = true;
       // showTxtQtdAviso = true;
-      show24hs = false;
-      showAceitaProposta = true;
-      showSomenteEncomenda = true;
-      showAceitaEncomenda = true;
-      showAceiteAuto = true;
-      showMostraAval = true;
-      showMostraReview = true;
-      showDispoImediata = true;
-      showCamposEntrega = true;
+      widget.show24hs = false;
+      widget.showAceitaProposta = true;
+      widget.showSomenteEncomenda = true;
+      widget.showAceitaEncomenda = true;
+      widget.showAceiteAuto = true;
+      widget.showMostraAval = true;
+      widget.showMostraReview = true;
+      widget.showDispoImediata = true;
+      widget.showCamposEntrega = true;
       // showListaFormaEntrega = true;
       // showListaFormaEntrega2 = true;
       // showListaParceiros = true;
       // showListaTempoEntregaTipo = true;
       // showTxtTempoEntrega = true;
-      showTxtCores = true;
-      showTxtTamanhos = true;
-      showTxtPesoPorcao = true;
-      showTxtPesoPorcaoUn = true;
-      showTxtValidade = false;
-      showTxtValorSinalOrc = false;
+      widget.showTxtCores = true;
+      widget.showTxtTamanhos = true;
+      widget.showTxtPesoPorcao = true;
+      widget.showTxtPesoPorcaoUn = true;
+      widget.showTxtValidade = false;
+      widget.showTxtValorSinalOrc = false;
       // showTxtEntregaTaxas = true;
-      showTxtCodigoAlt = true;
+      widget.showTxtCodigoAlt = true;
     }
     if (widget.categSelecionada.secao == 'SEC-PROD-COMIDA') {
-      labelEntrega = 'Entrega';
-      labelValidade = 'Validade';
-      showCamposBasicos = true;
-      showPreco = true;
-      showTxtQtdDispo = true;
-      showTxtValorMin = true;
-      showTxtMarca = false;
-      showTxtCep = true;
+      widget.labelEntrega = 'Entrega';
+      widget.labelValidade = 'Validade';
+      widget.showQtd = true;
+      widget.showCamposBasicos = true;
+      widget.showPreco = true;
+      widget.showTxtQtdDispo = true;
+      widget.showTxtValorMin = true;
+      widget.showTxtMarca = false;
+      widget.showTxtCep = true;
       // showTxtQtdMaxPorVenda = true;
       // showTxtQtdAviso = true;
-      show24hs = false;
-      showAceitaProposta = true;
-      showSomenteEncomenda = true;
-      showAceitaEncomenda = true;
-      showAceiteAuto = true;
-      showMostraAval = true;
-      showMostraReview = true;
-      showDispoImediata = true;
-      showCamposEntrega = true;
+      widget.show24hs = false;
+      widget.showAceitaProposta = true;
+      widget.showSomenteEncomenda = true;
+      widget.showAceitaEncomenda = true;
+      widget.showAceiteAuto = true;
+      widget.showMostraAval = true;
+      widget.showMostraReview = true;
+      widget.showDispoImediata = true;
+      widget.showCamposEntrega = true;
       // showListaFormaEntrega = true;
       // showListaFormaEntrega2 = true;
       // showListaParceiros = true;
       // showListaTempoEntregaTipo = true;
       // showTxtTempoEntrega = true;
-      showTxtCores = false;
-      showTxtTamanhos = false;
-      showTxtPesoPorcao = true;
-      showTxtPesoPorcaoUn = true;
-      showTxtValidade = true;
-      showTxtValorSinalOrc = false;
+      widget.showTxtCores = false;
+      widget.showTxtTamanhos = false;
+      widget.showTxtPesoPorcao = true;
+      widget.showTxtPesoPorcaoUn = true;
+      widget.showTxtValidade = true;
+      widget.showTxtValorSinalOrc = false;
       // showTxtEntregaTaxas = true;
-      showTxtCodigoAlt = false;
+      widget.showTxtCodigoAlt = false;
     }
     if (widget.categSelecionada.secao == 'SEC-PROD-OBJETO') {
-      labelEntrega = 'Entrega';
-      labelValidade = 'Validade';
-      showCamposBasicos = true;
-      showPreco = true;
-      showTxtQtdDispo = true;
-      showTxtValorMin = true;
-      showTxtMarca = true;
-      showTxtCep = true;
+      widget.labelEntrega = 'Entrega';
+      widget.labelValidade = 'Validade';
+      widget.showQtd = true;
+      widget.showCamposBasicos = true;
+      widget.showPreco = true;
+      widget.showTxtQtdDispo = true;
+      widget.showTxtValorMin = true;
+      widget.showTxtMarca = true;
+      widget.showTxtCep = true;
       // showTxtQtdMaxPorVenda = true;
       // showTxtQtdAviso = true;
-      show24hs = false;
-      showAceitaProposta = true;
-      showSomenteEncomenda = true;
-      showAceitaEncomenda = true;
-      showAceiteAuto = true;
-      showMostraAval = true;
-      showMostraReview = true;
-      showDispoImediata = true;
-      showCamposEntrega = true;
+      widget.show24hs = false;
+      widget.showAceitaProposta = true;
+      widget.showSomenteEncomenda = true;
+      widget.showAceitaEncomenda = true;
+      widget.showAceiteAuto = true;
+      widget.showMostraAval = true;
+      widget.showMostraReview = true;
+      widget.showDispoImediata = true;
+      widget.showCamposEntrega = true;
       // showListaFormaEntrega = true;
       // showListaFormaEntrega2 = true;
       // showListaParceiros = true;
       // showListaTempoEntregaTipo = true;
       // showTxtTempoEntrega = true;
-      showTxtCores = true;
-      showTxtTamanhos = true;
-      showTxtPesoPorcao = true;
-      showTxtPesoPorcaoUn = true;
-      showTxtValidade = false;
-      showTxtValorSinalOrc = false;
+      widget.showTxtCores = true;
+      widget.showTxtTamanhos = true;
+      widget.showTxtPesoPorcao = true;
+      widget.showTxtPesoPorcaoUn = true;
+      widget.showTxtValidade = false;
+      widget.showTxtValorSinalOrc = false;
       // showTxtEntregaTaxas = true;
-      showTxtCodigoAlt = false;
+      widget.showTxtCodigoAlt = false;
     }
     if (widget.categSelecionada.secao == 'SEC-PROD-VEST') {
-      labelEntrega = 'Entrega';
-      showCamposBasicos = true;
-      showPreco = true;
+      widget.labelEntrega = 'Entrega';
+      widget.showQtd = true;
+      widget.showCamposBasicos = true;
+      widget.showPreco = true;
       // showTxtQtdDispo = true;
       // showTxtQtdAviso = true;
-      showTxtValorMin = true;
-      showTxtMarca = true;
-      showTxtCep = true;
-      showTxtQtdMaxPorVenda = true;
-      show24hs = false;
-      showAceitaProposta = true;
-      showSomenteEncomenda = true;
-      showAceitaEncomenda = true;
-      showAceiteAuto = true;
-      showMostraAval = true;
-      showMostraReview = true;
-      showDispoImediata = true;
-      showCamposEntrega = true;
+      widget.showTxtValorMin = true;
+      widget.showTxtMarca = true;
+      widget.showTxtCep = true;
+      widget.showTxtQtdMaxPorVenda = true;
+      widget.show24hs = false;
+      widget.showAceitaProposta = true;
+      widget.showSomenteEncomenda = true;
+      widget.showAceitaEncomenda = true;
+      widget.showAceiteAuto = true;
+      widget.showMostraAval = true;
+      widget.showMostraReview = true;
+      widget.showDispoImediata = true;
+      widget.showCamposEntrega = true;
       // showListaFormaEntrega = true;
       // showListaFormaEntrega2 = true;
       // showListaParceiros = true;
       // showListaTempoEntregaTipo = true;
       // showTxtTempoEntrega = true;
-      showTxtCores = true;
-      showTxtTamanhos = true;
-      showTxtPesoPorcao = false;
-      showTxtPesoPorcaoUn = false;
-      showTxtValidade = false;
-      showTxtValorSinalOrc = false;
+      widget.showTxtCores = true;
+      widget.showTxtTamanhos = true;
+      widget.showTxtPesoPorcao = false;
+      widget.showTxtPesoPorcaoUn = false;
+      widget.showTxtValidade = false;
+      widget.showTxtValorSinalOrc = false;
       // showTxtEntregaTaxas = true;
-      showTxtCodigoAlt = false;
+      widget.showTxtCodigoAlt = false;
     }
+
+    print(widget.categSelecionada.categoriaFormasEntrega.toString());
+    print(widget.categSelecionada.categoriaFormasFechto.toString());
+
+    // configura forma de entrega por categoria
+    widget.listaFormaEntrega.clear();
+    widget.listaFormaEntrega.add('selecione');
+
+    if(widget.categSelecionada.categoriaFormasEntrega.toString().contains('/'))
+      widget.categSelecionada.categoriaFormasEntrega?.split('/').forEach((fe) { print(fe.toString()); widget.listaFormaEntrega.add(fe.toString()); });
+    else
+      widget.listaFormaEntrega.add(widget.categSelecionada.categoriaFormasEntrega.toString());
+
+    // configura forma de fechamento por categoria
+    widget.listaFormaFechamento.clear();
+    widget.listaFormaFechamento.add('selecione');
+
+    if(widget.categSelecionada.categoriaFormasFechto.toString().contains('/'))
+      {
+        widget.categSelecionada.categoriaFormasFechto?.split('/').forEach((ff) {
+          print(ff.toString());
+          if(ff.contains('chatapp'))
+            widget.listaFormaFechamento.add('mensagem no aplicativo (seguro)');
+          if(ff.contains('whatsapp'))
+            widget.listaFormaFechamento.add('whatsapp');
+          if(ff.contains('gatewayapi'))
+            widget.listaFormaFechamento.add('pagamento no aplicativo (seguro)');
+        });
+      } else {
+      if(widget.categSelecionada.categoriaFormasFechto.toString() == 'chatapp')
+        widget.listaFormaFechamento.add('mensagem no aplicativo (seguro)');
+      if(widget.categSelecionada.categoriaFormasFechto.toString() == 'whatsapp')
+        widget.listaFormaFechamento.add('whatsapp');
+      if(widget.categSelecionada.categoriaFormasFechto.toString() == 'gatewayapi')
+        widget.listaFormaFechamento.add('pagamento no aplicativo (seguro)');
+
+    }
+
+
   }
 
   Future<void> carregaObjs() async {
     if (ModalRoute.of(context)?.settings.arguments != null) {
+      print('carregaObjs');
       var args = ModalRoute.of(context)?.settings.arguments
           as List<Map<String, Oferta>>;
 
@@ -2410,7 +2502,7 @@ class _MOfferPage extends State<MOfferPage> {
 
       widget.categSelecionada = widget.categoriesController
           .selecionaCategoriaPorChave(oferta.CategoriaChave.toString())!;
-      categoriaSel = widget.categSelecionada.categoriaNome!;
+      widget.categoriaSel = widget.categSelecionada.categoriaNome!;
       _manageCampos();
 
       widget.mofferController.valEncomendasAPartir =
@@ -2500,7 +2592,7 @@ class _MOfferPage extends State<MOfferPage> {
       widget.mofferController.valDomDas = oferta.DomDas.toString();
       widget.mofferController.valDomAs = oferta.DomAs.toString();
     } else {
-      isEditing = false;
+      widget.isEditing = false;
     }
   }
 }

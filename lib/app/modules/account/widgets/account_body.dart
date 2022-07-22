@@ -1,4 +1,6 @@
+import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:poraki/app/data/models/sql/sqlUsuario.dart';
 import 'package:poraki/app/modules/account/account_controller.dart';
@@ -118,9 +120,12 @@ class _AccountBodyState extends State<AccountBody> {
                           //   }
                           //   return null;
                           // },
+
+                          inputFormatters: [FilteringTextInputFormatter.digitsOnly,CpfInputFormatter(), ],
                           controller: widget._controller.txtCPF,
                           keyboardType: TextInputType.number,
                           autofocus: true,
+                          onChanged: (cpf) { if (!CNPJValidator.isValid(cpf)) { Get.defaultDialog(title: "CPF Inválido", middleText: "Por favor informe um CPF válido" ); }  {} } ,
                           style: TextStyle(color: textDark),
                           decoration: InputDecoration(
                             border: OutlineInputBorder(),
@@ -140,6 +145,8 @@ class _AccountBodyState extends State<AccountBody> {
                           //   }
                           //   return null;
                           // },
+
+                          inputFormatters: [FilteringTextInputFormatter.digitsOnly,TelefoneInputFormatter(), ],
                           controller: widget._controller.txtTelefone,
                           keyboardType: TextInputType.phone,
                           autofocus: true,
@@ -182,12 +189,13 @@ class _AccountBodyState extends State<AccountBody> {
                         ),
                         const SizedBox(height: 20,),
                         TextFormField(
-                          // validator: (value) {
-                          //   if (value!.length != 8) {
-                          //     return "Digite um CEP válido";
-                          //   }
-                          //   return null;
-                          // },
+                          validator: (value) {
+                            if (value!.length != 8) {
+                              return "Digite um CEP válido";
+                            }
+                            return null;
+                          },
+                          inputFormatters: [FilteringTextInputFormatter.digitsOnly,CepInputFormatter(), ],
                           controller: widget._controller.txtCEP,
                           keyboardType: TextInputType.number,
                           autofocus: true,
@@ -204,12 +212,14 @@ class _AccountBodyState extends State<AccountBody> {
                         ),
                         const SizedBox(height: 20,),
                         TextFormField(
-                          // validator: (value) {
-                          //   if (value!.length != 10) {
-                          //     return "Digite uma data de nascimento válida";
-                          //   }
-                          //   return null;
-                          // },
+                          validator: (value) {
+                            if (value!.length != 10) {
+                              return "Digite uma data de nascimento válida";
+                            }
+                            return null;
+                          },
+
+                          inputFormatters: [FilteringTextInputFormatter.digitsOnly,DataInputFormatter(), ],
                           controller: widget._controller.txtDtNasc,
                           keyboardType: TextInputType.datetime,
                           autofocus: true,
@@ -348,21 +358,23 @@ class _AccountBodyState extends State<AccountBody> {
                                 null,
                                 null));
 
-                            final snackBar = SnackBar(
-                                backgroundColor: _loginController.colorFromHex(
-                                    _loginController.listCore
-                                        .where((coreItem) =>
-                                            coreItem.coreChave == 'textDark')
-                                        .first
-                                        .coreValor
-                                        .toString()),
-                                content: Container(
-                                    height: 40,
-                                    child: Center(
-                                        child: const Text(
-                                            'Informações salvas!'))));
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(snackBar);
+                            Get.defaultDialog(title: "Aviso", middleText: "Informações atualizadas com sucesso!");
+
+                            // final snackBar = SnackBar(
+                            //     backgroundColor: _loginController.colorFromHex(
+                            //         _loginController.listCore
+                            //             .where((coreItem) =>
+                            //                 coreItem.coreChave == 'textDark')
+                            //             .first
+                            //             .coreValor
+                            //             .toString()),
+                            //     content: Container(
+                            //         height: 40,
+                            //         child: Center(
+                            //             child: const Text(
+                            //                 'Informações salvas!'))));
+                            // ScaffoldMessenger.of(context)
+                            //     .showSnackBar(snackBar);
                           },
                           colorText: _loginController.colorFromHex(
                               _loginController.listCore

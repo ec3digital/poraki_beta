@@ -19,7 +19,7 @@ class BodyDaysOffers extends StatelessWidget {
         const SizedBox(height: 20),
         //ListProductsDayOffers(),
         ListOffers(),
-        Text("teste"),
+        // Text("teste"),
       ],
     )));
   }

@@ -1,27 +1,42 @@
+import 'package:badges/badges.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:poraki/app/modules/auth/login/login_controller.dart';
-import 'package:poraki/app/modules/orders/order_controller.dart';
 import 'package:poraki/app/routes/app_routes.dart';
-import 'package:poraki/app/services/sqlite/sqlporaki_address_service.dart';
 import 'package:poraki/app/services/sqlite/sqlporaki_login_service.dart';
-import 'package:poraki/app/services/sqlite/sqlporaki_pedido_service.dart';
 import 'package:poraki/app/shared/porakiprefs.dart';
 
-class DrawerHome extends StatelessWidget {
+class DrawerHome extends StatefulWidget {
   final int index;
   DrawerHome(
     this.index, {
     Key? key,
   }) : super(key: key);
 
-  final LoginController _login = Get.find(); // Get.put(LoginController());
-  OrderController _orderController = Get.find();
+  @override
+  State<DrawerHome> createState() => _DrawerHomeState();
+}
+
+class _DrawerHomeState extends State<DrawerHome> {
+  final LoginController _login = Get.find();
+  // Get.put(LoginController());
+  //final OrderController _orderController = Get.find();
+  bool load = true;
+
+  @override
+  void initState() {
+    // _loadLogin();
+
+    super.initState();
+  }
 
   Future<void> _loadLogin() async {
-    print('_loadLogin');
-    await _login.loadUserData();
+    if (load) {
+      load = false;
+      print('_loadLogin');
+      //await _login.loadUserData();
+    }
   }
 
   @override
@@ -38,6 +53,7 @@ class DrawerHome extends StatelessWidget {
         .coreValor
         .toString());
 
+    // TODO: remover daqui e pegar direto do login Controller
     return FutureBuilder(
         future: _loadLogin(),
         builder: (context, futuro) {
@@ -70,6 +86,7 @@ class DrawerHome extends StatelessWidget {
                     ),
                     RowCategoriesDrawerHome(
                         text: 'Mensagens',
+                        badgeText: "4",
                         // isSelected: index == 8,
                         icon: Icons.message,
                         onTap:
@@ -83,16 +100,22 @@ class DrawerHome extends StatelessWidget {
                     //   onTap: () => Get.toNamed(AppRoutes.shoppingCart),
                     // ),
                     RowCategoriesDrawerHome(
-                        text: 'Notícias da região',
-                        // isSelected: index == 1,
-                        icon: Icons.near_me_outlined,
-                        onTap: () => Get.toNamed(AppRoutes.news),
-                        ),
+                      text: 'Notícias da região',
+                      // isSelected: index == 1,
+                      icon: Icons.near_me_outlined,
+                      onTap: () => Get.toNamed(AppRoutes.news),
+                    ),
                     RowCategoriesDrawerHome(
                       text: 'Categorias',
                       // isSelected: index == 1,
                       icon: Icons.category,
                       onTap: () => Get.toNamed(AppRoutes.categories),
+                    ),
+                    RowCategoriesDrawerHome(
+                      text: 'Favoritos',
+                      // isSelected: index == 1,
+                      icon: Icons.favorite_border_outlined,
+                      onTap: () {},
                     ),
                     RowCategoriesDrawerHome(
                       text: 'Meus endereços',
@@ -104,7 +127,8 @@ class DrawerHome extends StatelessWidget {
                         text: 'Minhas compras',
                         // isSelected: index == 2,
                         icon: Icons.shopping_bag_outlined,
-                        onTap: () => Get.offAndToNamed(AppRoutes.orders, arguments: ["Compras"])),
+                        onTap: () => Get.offAndToNamed(AppRoutes.orders,
+                            arguments: ["Compras"])),
                     RowCategoriesDrawerHome(
                       text: 'Minhas lojas',
                       // isSelected: index == 3,
@@ -118,15 +142,17 @@ class DrawerHome extends StatelessWidget {
                       onTap: () => Get.toNamed(AppRoutes.mOffers),
                     ),
                     RowCategoriesDrawerHome(
-                      text: 'Vendas',
-                      // isSelected: index == 7,
-                      icon: Icons.monetization_on_outlined,
-                        onTap: () => Get.offAndToNamed(AppRoutes.orders, arguments: ["Vendas"])),
+                        text: 'Vendas',
+                        // isSelected: index == 7,
+                        icon: Icons.monetization_on_outlined,
+                        onTap: () => Get.offAndToNamed(AppRoutes.orders,
+                            arguments: ["Vendas"])),
                     RowCategoriesDrawerHome(
-                      text: 'Entregas',
-                      // isSelected: index == 8,
-                      icon: Icons.shopping_cart_outlined,
-                        onTap: () => Get.offAndToNamed(AppRoutes.orders, arguments: ["Entregas"])),
+                        text: 'Entregas',
+                        // isSelected: index == 8,
+                        icon: Icons.shopping_cart_outlined,
+                        onTap: () => Get.offAndToNamed(AppRoutes.orders,
+                            arguments: ["Entregas"])),
                     RowCategoriesDrawerHome(
                       text: 'Minha conta',
                       // isSelected: index == 5,
@@ -168,50 +194,89 @@ class RowCategoriesDrawerHome extends StatelessWidget {
   final String text;
   final Function() onTap;
   final IconData icon;
+  final String? badgeText;
 
-  const RowCategoriesDrawerHome({
-    Key? key,
-    required this.text,
-    required this.onTap,
-    required this.icon,
-    this.isSelected = false,
-  }) : super(key: key);
+  const RowCategoriesDrawerHome(
+      {Key? key,
+      required this.text,
+      required this.onTap,
+      required this.icon,
+      this.isSelected = false,
+      this.badgeText})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     LoginController _loginController = Get.find();
+    var x = badgeText;
 
-    return ListTile(
-      style: ListTileStyle.list,
-      onTap: onTap,
-      tileColor: _loginController.colorFromHex(_loginController.listCore
-          .where((coreItem) => coreItem.coreChave == 'backLight')
-          .first
-          .coreValor
-          .toString()),
-      minLeadingWidth: (Get.width * 0.3) * 0.01,
-      title: Text(
-        text,
-        style: TextStyle(
-          fontSize: 16, //fontWeight: FontWeight.bold,
-          // height: 0.1,
-          // fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+    if (badgeText == null) {
+      return ListTile(
+        style: ListTileStyle.list,
+        onTap: onTap,
+        tileColor: _loginController.colorFromHex(_loginController.listCore
+            .where((coreItem) => coreItem.coreChave == 'backLight')
+            .first
+            .coreValor
+            .toString()),
+        minLeadingWidth: (Get.width * 0.3) * 0.01,
+        title: Text(
+          text,
+          style: TextStyle(
+            fontSize: 16, //fontWeight: FontWeight.bold,
+            // height: 0.1,
+            // fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+            color: _loginController.colorFromHex(_loginController.listCore
+                .where((coreItem) => coreItem.coreChave == 'textDark')
+                .first
+                .coreValor
+                .toString()),
+          ),
+        ),
+        leading: Icon(
+          icon,
           color: _loginController.colorFromHex(_loginController.listCore
               .where((coreItem) => coreItem.coreChave == 'textDark')
               .first
               .coreValor
               .toString()),
+          size: 20,
         ),
-      ),
-      leading: Icon(
-        icon,
-        color: _loginController.colorFromHex(_loginController.listCore
-            .where((coreItem) => coreItem.coreChave == 'textDark')
-            .first
-            .coreValor
-            .toString()),
-        size: 20,
-      ),
-    );
+      );
+    } else {
+      return ListTile(
+          style: ListTileStyle.list,
+          onTap: onTap,
+          tileColor: _loginController.colorFromHex(_loginController.listCore
+              .where((coreItem) => coreItem.coreChave == 'backLight')
+              .first
+              .coreValor
+              .toString()),
+          minLeadingWidth: (Get.width * 0.3) * 0.01,
+          title: Text(
+            text,
+            style: TextStyle(
+              fontSize: 16, //fontWeight: FontWeight.bold,
+              // height: 0.1,
+              // fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+              color: _loginController.colorFromHex(_loginController.listCore
+                  .where((coreItem) => coreItem.coreChave == 'textDark')
+                  .first
+                  .coreValor
+                  .toString()),
+            ),
+          ),
+          leading: Badge(
+              badgeContent: Text('3'),
+              child: Icon(
+                icon,
+                color: _loginController.colorFromHex(_loginController.listCore
+                    .where((coreItem) => coreItem.coreChave == 'textDark')
+                    .first
+                    .coreValor
+                    .toString()),
+                size: 20,
+              )));
+    }
   }
 }

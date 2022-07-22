@@ -68,7 +68,7 @@ class OfferRepository extends GetConnect {
     String url = '${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiMelhoresOfertas').first.coreValor.toString()}/' + _loginController.usuCep.toString().substring(0,3) + '%25/' + limit.toString();
     print('url: ' + url);
     var response = await get(url, headers: Constants.headers);
-    print('resp bestOffers: ' + response.body.toString());
+    // print('resp bestOffers: ' + response.body.toString());
     if (response.hasError) throw 'Ocorreu um erro em getBestOffers() ' + response.body.toString();
     return (response.body['Ofertas'] as List)
         .map((oferta) => ProdutoOferta.fromJson(oferta))

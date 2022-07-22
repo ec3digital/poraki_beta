@@ -8,6 +8,7 @@ import 'package:poraki/app/modules/auth/login/login_controller.dart';
 import 'package:poraki/app/modules/home/widgets/gradient_header_home.dart';
 import 'package:poraki/app/modules/offers/widgets/button_offer.dart';
 import 'package:poraki/app/routes/app_routes.dart';
+import 'package:poraki/app/util/dialog_helper.dart';
 
 enum TiposEnd { Casa, Trabalho, Estudo, Outros }
 
@@ -61,15 +62,17 @@ class _AddressBodyState extends State<AddressBody> {
       await widget._controller.atualizaEndereco(end);
   }
 
-  Future<void> buscaCep() async {
+  Future<bool> buscaCep() async {
     CepApiBrasil cepApi = await CepApiBrasilRepository()
         .getCepApiBrasil(widget._controller.txtCEP.text.trimLeft().trimRight());
+
+    //await Future.delayed(const Duration(seconds: 2));
 
     widget._controller.txtEnderecoLogra.text = cepApi.street!;
     if (widget._controller.txtEnderecoLogra.text.isNotEmpty)
       FocusScope.of(context).requestFocus(txtEnderecoNroFocus);
 
-    //widget._controller.txtEnderecoTipo.text.trimLeft().trimRight(),
+    return true;
   }
 
   Color textDark = Colors.black;
@@ -114,6 +117,7 @@ class _AddressBodyState extends State<AddressBody> {
 
   @override
   Widget build(BuildContext context) {
+    // bool isLoading = false;
     LoginController _loginController = Get.find();
     Color textColor = _loginController.colorFromHex(_loginController.listCore
         .where((coreItem) => coreItem.coreChave == 'textDark')
@@ -134,7 +138,7 @@ class _AddressBodyState extends State<AddressBody> {
                 appBar: PreferredSize(
                   preferredSize: Size(double.maxFinite, 55),
                   child: AppBar(
-                   // elevation: 0,
+                    // elevation: 0,
                     centerTitle: false,
                     backgroundColor: _loginController.colorFromHex(
                         _loginController
@@ -151,15 +155,17 @@ class _AddressBodyState extends State<AddressBody> {
                   ),
                 ),
                 body:
-                // SingleChildScrollView(
-                //     child:
+                    // SingleChildScrollView(
+                    //     child:
                     GradientHeaderHome(
                         child: Padding(
                   padding: const EdgeInsets.all(15.0),
                   child: Form(
                       key: _form,
                       child: ListView(children: [
-                        const SizedBox(height: 20,),
+                        const SizedBox(
+                          height: 20,
+                        ),
                         TextFormField(
                           // validator: (value) {
                           //   if (value!.length < 4) {
@@ -180,12 +186,13 @@ class _AddressBodyState extends State<AddressBody> {
                               color: textDark,
                             ),
                           ),
-                          onEditingComplete: () {
-                            print('onEditingComplete');
-                            buscaCep();
+                          onEditingComplete: () async {
+                            await buscaCep();
                           },
                         ),
-                        const SizedBox(height: 20,),
+                        const SizedBox(
+                          height: 20,
+                        ),
                         TextFormField(
                           // validator: (value) {
                           //   if (value!.length < 10) {
@@ -207,7 +214,9 @@ class _AddressBodyState extends State<AddressBody> {
                             ),
                           ),
                         ),
-                        const SizedBox(height: 20,),
+                        const SizedBox(
+                          height: 20,
+                        ),
                         TextFormField(
                           // validator: (value) {
                           //   if (value!.length != 11) {
@@ -230,7 +239,9 @@ class _AddressBodyState extends State<AddressBody> {
                             ),
                           ),
                         ),
-                        const SizedBox(height: 20,),
+                        const SizedBox(
+                          height: 20,
+                        ),
                         TextFormField(
                           // validator: (value) {
                           //   if (value!.length != 11) {
@@ -251,7 +262,6 @@ class _AddressBodyState extends State<AddressBody> {
                             ),
                           ),
                         ),
-
                         ListTile(
                           title: const Text('Tipo:'),
                           trailing: DropdownButton<String>(
@@ -265,29 +275,33 @@ class _AddressBodyState extends State<AddressBody> {
                             items: dropDownMenuItems,
                           ),
                         ),
-
                         SizedBox(height: 20),
                         ButtonOffer(
                           onPressed: () {
                             salvar(widget._endGuid).then((value) =>
                                 Get.offAndToNamed(AppRoutes.addresses));
 
-                            final snackBar = SnackBar(
-                                backgroundColor: widget._loginController
-                                    .colorFromHex(widget
-                                        ._loginController.listCore
-                                        .where((coreItem) =>
-                                            coreItem.coreChave == 'textDark')
-                                        .first
-                                        .coreValor
-                                        .toString()),
-                                content: Container(
-                                    height: 40,
-                                    child: Center(
-                                        child: const Text(
-                                            'Informações salvas 1!'))));
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(snackBar);
+                            Get.defaultDialog(
+                                title: "Aviso",
+                                middleText:
+                                    "Informações atualizadas com sucesso!");
+
+                            // final snackBar = SnackBar(
+                            //     backgroundColor: widget._loginController
+                            //         .colorFromHex(widget
+                            //             ._loginController.listCore
+                            //             .where((coreItem) =>
+                            //                 coreItem.coreChave == 'textDark')
+                            //             .first
+                            //             .coreValor
+                            //             .toString()),
+                            //     content: Container(
+                            //         height: 40,
+                            //         child: Center(
+                            //             child: const Text(
+                            //                 'Informações salvas 1!'))));
+                            // ScaffoldMessenger.of(context)
+                            //     .showSnackBar(snackBar);
                           },
                           colorText: widget._loginController.colorFromHex(widget
                               ._loginController.listCore
@@ -312,22 +326,26 @@ class _AddressBodyState extends State<AddressBody> {
                             tornarEndAtual(widget._endGuid).then((value) =>
                                 Get.offAndToNamed(AppRoutes.addresses));
 
-                            final snackBar = SnackBar(
-                                backgroundColor: widget._loginController
-                                    .colorFromHex(widget
-                                        ._loginController.listCore
-                                        .where((coreItem) =>
-                                            coreItem.coreChave == 'textDark')
-                                        .first
-                                        .coreValor
-                                        .toString()),
-                                content: Container(
-                                    height: 40,
-                                    child: Center(
-                                        child: const Text(
-                                            'Definido como endereço atual'))));
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(snackBar);
+                            Get.defaultDialog(
+                                title: "Aviso",
+                                middleText: "Definido como endereço atual");
+
+                            // final snackBar = SnackBar(
+                            //     backgroundColor: widget._loginController
+                            //         .colorFromHex(widget
+                            //             ._loginController.listCore
+                            //             .where((coreItem) =>
+                            //                 coreItem.coreChave == 'textDark')
+                            //             .first
+                            //             .coreValor
+                            //             .toString()),
+                            //     content: Container(
+                            //         height: 40,
+                            //         child: Center(
+                            //             child: const Text(
+                            //                 'Definido como endereço atual'))));
+                            // ScaffoldMessenger.of(context)
+                            //     .showSnackBar(snackBar);
 
                             //Get.toNamed(AppRoutes.addresses);
                           },

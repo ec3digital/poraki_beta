@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
@@ -92,14 +93,16 @@ class _BodyCheckOut extends State<BodyCheckOut> {
                           // limpa o carrinho
                           widget.controller.esvaziaCarrinho());
 
-                          final snackBar = SnackBar(
-                              backgroundColor: darkText,
-                              content: Container(
-                                  height: 40,
-                                  child: Center(
-                                      child: const Text(
-                                          'Obrigado por sua compra!'))));
-                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                          // final snackBar = SnackBar(
+                          //     backgroundColor: darkText,
+                          //     content: Container(
+                          //         height: 40,
+                          //         child: Center(
+                          //             child: const Text(
+                          //                 'Obrigado por sua compra!'))));
+                          // ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+                          Get.defaultDialog(title: "Pedido realizado", middleText: "Obrigado por sua compra!");
 
                           Get.toNamed(AppRoutes.home);
                         },
@@ -329,14 +332,24 @@ class _BodyCheckOut extends State<BodyCheckOut> {
       child: Row(
         children: <Widget>[
           Container(
-            child: FadeInImage.assetNetwork(
-              placeholder: 'assets/images/pholder.png',
-              image: widget.controller.listShoppingCart[index].picture,
-              imageErrorBuilder: (context, url, error) =>
-                  new Icon(Icons.local_offer_outlined),
+
+            child: CachedNetworkImage(
+              imageUrl: widget.controller.listShoppingCart[index].picture,
+              progressIndicatorBuilder: (context, url, downloadProgress) =>
+                  CircularProgressIndicator(value: downloadProgress.progress),
+              errorWidget: (context, url, error) => Icon(Icons.local_offer_outlined),
               height: 30,
               fit: BoxFit.fitHeight,
             ),
+
+            // child: FadeInImage.assetNetwork(
+            //   placeholder: 'assets/images/pholder.png',
+            //   image: widget.controller.listShoppingCart[index].picture,
+            //   imageErrorBuilder: (context, url, error) =>
+            //       new Icon(Icons.local_offer_outlined),
+            //   height: 30,
+            //   fit: BoxFit.fitHeight,
+            // ),
 
             // child: Image.network(
             //   widget.controller.listShoppingCart[index]

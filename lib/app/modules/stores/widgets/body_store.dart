@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'package:brasil_fields/brasil_fields.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -137,7 +139,9 @@ class _StoreBodyState extends State<StoreBody> {
                       //   }
                       //   return null;
                       // },
+                      inputFormatters: [FilteringTextInputFormatter.digitsOnly,CnpjInputFormatter(), ],
                       controller: storeController.txtLojaCNPJ,
+                      onChanged: (cnpj) { if (!CNPJValidator.isValid(cnpj)) { Get.defaultDialog(title: "CNPJ Inválido", middleText: "Por favor informe um CNPJ válido" ); }  {} } ,
                       autofocus: true,
                       style: TextStyle(color: textColor),
                       decoration: InputDecoration(
@@ -285,14 +289,25 @@ class _StoreBodyState extends State<StoreBody> {
                           ],
                         )),
                     SizedBox(height: 20),
+
                     if (imgcloud != '')
-                      FadeInImage.assetNetwork(
-                        placeholder: 'assets/images/pholder.png',
-                        image: imgcloud,
-                        imageErrorBuilder: (context, url, error) =>
-                            new Icon(Icons.store),
+                      CachedNetworkImage(
+                        imageUrl: imgcloud,
                         height: 250,
+                        progressIndicatorBuilder: (context, url, downloadProgress) =>
+                            CircularProgressIndicator(value: downloadProgress.progress),
+                        errorWidget: (context, url, error) => Icon(Icons.local_offer_outlined),
                       ),
+
+                      // FadeInImage.assetNetwork(
+                      //   placeholder: 'assets/images/pholder.png',
+                      //   image: imgcloud,
+                      //   imageErrorBuilder: (context, url, error) =>
+                      //       new Icon(Icons.store),
+                      //   height: 250,
+                      // ),
+
+
                     if (image != null)
                       Image.file(
                         image!,

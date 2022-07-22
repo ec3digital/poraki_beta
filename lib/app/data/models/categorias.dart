@@ -11,14 +11,14 @@ class Categorias {
   Categorias({this.categoriaNome, this.categoriaChave, this.secao, this.iconcode, this.categoriaNomeLista, this.categoriaRevisao, this.categoriaFormasEntrega, this.categoriaFormasFechto});
 
   Categorias.fromJson(Map<String, dynamic> json) {
-    categoriaNome = json['CategoriaNome'];
-    categoriaChave = json['CategoriaChave'];
-    secao = json['Secao'];
-    iconcode = json['iconcode'];
+    categoriaNome = json['CategoriaNome'].toString();
+    categoriaChave = json['CategoriaChave'].toString();
+    secao = json['Secao'].toString();
+    iconcode = json['iconcode'].toString();
     categoriaNomeLista = json['CategoriaNomeLista'];
-    categoriaRevisao = json['CategoriaRevisao'];
-    categoriaFormasEntrega = json['CategoriaRevisao'];
-    categoriaFormasFechto = json['CategoriaFormasFechto'];
+    categoriaRevisao = json['CategoriaRevisao'].toString() == 'true' ? true : false;
+    categoriaFormasEntrega = json['CategoriaFormasEntrega'].toString();
+    categoriaFormasFechto = json['CategoriaFormasFechto'].toString();
   }
 
   Map<String, dynamic> toJson() {

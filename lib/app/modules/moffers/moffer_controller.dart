@@ -1,5 +1,5 @@
-import 'package:extended_masked_text/extended_masked_text.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:poraki/app/data/models/lojas.dart';
 import 'package:poraki/app/data/models/oferta.dart';
@@ -12,28 +12,30 @@ class MofferController extends GetxController {
 
   final TextEditingController   txtTitulo               = TextEditingController();
   final TextEditingController   txtDescricao            = TextEditingController();
-  final TextEditingController   txtPreco                = TextEditingController();
   final TextEditingController   txtQtdDispo             = TextEditingController();
   final TextEditingController   txtQtdMaxPorVenda       = TextEditingController();
   final TextEditingController   txtQtdAviso             = TextEditingController();
-  final MaskedTextController    txtCEP                  = MaskedTextController(mask: '00000-000');
+  //final MaskedTextController    txtCEP                  = MaskedTextController(mask: '00000-000');
   final TextEditingController   txtCepDistancia         = TextEditingController();
   final TextEditingController   txtMarca                = TextEditingController();
-  final TextEditingController   txtValorMin             = TextEditingController();
-  final TextEditingController   txtValorTaxa1km         = TextEditingController();
-  final TextEditingController   txtValorTaxa2km         = TextEditingController();
-  final TextEditingController   txtValorTaxaMaisQue2km  = TextEditingController();
   final TextEditingController   txtTempoEntrega         = TextEditingController();
   final TextEditingController   txtUrlMainImage         = TextEditingController();
   final TextEditingController   txtCores                = TextEditingController();
   final TextEditingController   txtTamanhos             = TextEditingController();
   final TextEditingController   txtDetalhes             = TextEditingController();
-  final TextEditingController   txtPesoPorcao           = TextEditingController();
   final TextEditingController   txtPesoPorcaoUn         = TextEditingController();
   final TextEditingController   txtSabor                = TextEditingController();
   final TextEditingController   txtValidade             = TextEditingController();
-  final TextEditingController   txtValorSinalOrc        = TextEditingController();
   final TextEditingController   txtCodigoAlt            = TextEditingController();
+  final TextEditingController   txtValorSinalOrc        = TextEditingController();
+  final TextEditingController   txtValorMin             = TextEditingController();
+  final TextEditingController   txtValorTaxa1km         = TextEditingController();
+  final TextEditingController   txtValorTaxa2km         = TextEditingController();
+  final TextEditingController   txtValorTaxaMaisQue2km  = TextEditingController();
+  final TextEditingController   txtPesoPorcao           = TextEditingController();
+  final TextEditingController   txtCEP                  = TextEditingController();
+  final TextEditingController   txtPreco                = TextEditingController();
+
 
   String valSegDas = '08:00';
   String valSegAs = '18:00';

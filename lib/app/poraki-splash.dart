@@ -40,7 +40,7 @@ class _PorakiSplash extends State<PorakiSplash> {
               Image.asset('assets/images/poraki250.png'),
               CircularProgressIndicator(),
               const SizedBox(height: 40),
-              Text('procurando por ofertas próximas de voce... ;-)',
+              Text('procurando por ofertas próximas à voce... ;-)',
                   style: TextStyle(
                       fontFamily: 'Montserrat',
                       fontSize: 16,

@@ -10,24 +10,24 @@ class ProdutoOferta {
   String? ofertaGUID;
   String? ofertaFKID;
   String? lojaID;
-  // int? ofertaQtdMaxVenda;
+  int? ofertaQtdMaxVenda;
   String? ofertaPeso;
   String? ofertaPesoUnidade;
-  // int? ofertaDiasValidade;
+  int? ofertaDiasValidade;
   double? ofertaPrecoMin;
   bool? ofertaMostraAval;
   bool? ofertaAceitaAuto;
   bool? ofertaAceitaProposta;
   bool? ofertaAceitaEncomenda;
   bool? ofertaSomenteEncomenda;
-  // int? ofertaTempoEntrega;
+  int? ofertaTempoEntrega;
   String? ofertaTempoEntregaUnidade;
   String? ofertaFormaFechamento;
   String? ofertaMarcaRevenda;
   String? ofertaCores;
   String? ofertaTamanhos;
   bool? oferta24hs;
-  // int? ofertaDistanciaKm;
+  int? ofertaDistanciaKm;
   double? ofertaSinal;
   String? ofertaEncomendasAPartirDe;
   String? ofertaEntregasAPartirDe;
@@ -42,6 +42,25 @@ class ProdutoOferta {
   bool? ofertaAceitaEntregaComprador;
   bool? ofertaAceitaEntregaVendedor;
   bool? ofertaAceitaEntregaParceiro;
+  String? segDas;
+  String? segAs;
+  String? terDas;
+  String? terAs;
+  String? quaDas;
+  String? quaAs;
+  String? quiDas;
+  String? quiAs;
+  String? sexDas;
+  String? sexAs;
+  String? sabDas;
+  String? sabAs;
+  String? domDas;
+  String? domAs;
+  String? ofertaDispoAte;
+  String? ofertaDispoTipo;
+  int? ofertaQtdAviso;
+  int? ofertaQtdDispo;
+  bool? ofertaSemQtd;
   // int? ofertaTotalAval;
   // int? ofertaQtdAval;
 
@@ -55,7 +74,7 @@ class ProdutoOferta {
       this.ofertaPreco,
       this.ofertaTitulo,
       this.ofertaFKID,
-        this.lojaID,
+      this.lojaID,
       this.ofertaGUID,
       this.oferta24hs,
       this.ofertaAceitaAuto,
@@ -66,8 +85,8 @@ class ProdutoOferta {
       this.ofertaAceitaProposta,
       this.ofertaCodigoAlt,
       this.ofertaCores,
-      // this.ofertaDiasValidade,
-      // this.ofertaDistanciaKm,
+      this.ofertaDiasValidade,
+      this.ofertaDistanciaKm,
       this.ofertaEncomendasAPartirDe,
       this.ofertaEntregasAPartirDe,
       this.ofertaFormaFechamento,
@@ -80,66 +99,145 @@ class ProdutoOferta {
       this.ofertaPrecoCombinar,
       this.ofertaPrecoMin,
       // this.ofertaQtdAval,
-      // this.ofertaQtdMaxVenda,
+      this.ofertaQtdMaxVenda,
       this.ofertaSinal,
       this.ofertaSinalTipo,
       this.ofertaSomenteEncomenda,
       this.ofertaTamanhos,
-      // this.ofertaTempoEntrega,
+      this.ofertaTempoEntrega,
       this.ofertaTempoEntregaUnidade,
       // this.ofertaTotalAval,
       this.valorEntregaAte1,
       this.valorEntregaAte2,
-      this.valorEntregaMaisDe2});
+      this.valorEntregaMaisDe2,
+      this.ofertaDispoAte,
+      this.ofertaDispoTipo,
+      this.ofertaQtdAviso,
+      this.ofertaQtdDispo,
+      this.ofertaSemQtd,
+      this.segDas,
+      this.segAs,
+      this.terDas,
+      this.terAs,
+      this.quaDas,
+      this.quaAs,
+      this.quiDas,
+      this.quiAs,
+      this.sexDas,
+      this.sexAs,
+      this.sabDas,
+      this.sabAs,
+      this.domDas,
+      this.domAs});
 
   ProdutoOferta.fromJson(Map<String, dynamic> json) {
-    print('ofertaGUID from Json:' + json['OfertaGUID'].toString());
+    //print('ofertaGUID from Json:' + json['OfertaGUID'].toString());
     ofertaGUID = json['OfertaGUID'].toString();
-    categoriaChave = json['CategoriaChave'];
-    ofertaCEP = json['OfertaCEP'];
-    ofertaDetalhe = json['OfertaDetalhe'];
+    categoriaChave = json['CategoriaChave'].toString();
+    ofertaCEP = json['OfertaCEP'].toString();
+    ofertaDetalhe = json['OfertaDetalhe'].toString();
     //ofertaDispoDesde = json['OfertaDispoDesde'];
     ofertaID = int.parse(json['OfertaID'].toString());
     //ofertaImgPath = json['OfertaImgPath'];
     ofertaPreco = double.parse(json['OfertaPreco'].toString());
-    ofertaTitulo = json['OfertaTitulo'];
-    ofertaFKID = json['OfertaFKID'];
-    lojaID = json['LojaID'];
+    ofertaTitulo = json['OfertaTitulo'].toString();
+    ofertaFKID = json['OfertaFKID'].toString();
+    lojaID = json['LojaID'].toString();
 
-    // oferta24hs = json['Oferta24hs'];
-    // ofertaAceitaAuto = json['OfertaAceitaAuto'];
-    // ofertaAceitaEncomenda = json['OfertaAceitaEncomenda'];
-    // ofertaAceitaEntregaComprador = json['OfertaAceitaEntregaComprador'];
-    // ofertaAceitaEntregaParceiro = json['OfertaAceitaEntregaParceiro'];
-    // ofertaAceitaEntregaVendedor = json['OfertaAceitaEntregaVendedor'];
-    // ofertaAceitaProposta = json['OfertaAceitaProposta'];
-    // ofertaCodigoAlt = json['OfertaCodigoAlt'];
-    // ofertaCores = json['OfertaCores'];
-    // // ofertaDiasValidade = json['OfertaDiasValidade'];
-    // // ofertaDistanciaKm = json['OfertaDistanciaKm'];
-    // ofertaEncomendasAPartirDe = json['OfertaEncomendasAPartirDe'];
-    // ofertaEntregasAPartirDe = json['OfertaEntregasAPartirDe'];
+    oferta24hs = json['Oferta24hs'].toString() == 'true' ? true : false;
+    ofertaAceitaAuto =
+        json['OfertaAceitaAuto'].toString() == 'true' ? true : false;
+    ofertaAceitaEncomenda =
+        json['OfertaAceitaEncomenda'].toString() == 'true' ? true : false;
+    ofertaSomenteEncomenda =
+        json['ofertaSomenteEncomenda'].toString() == 'true' ? true : false;
+    ofertaPrecoCombinar =
+        json['ofertaPrecoCombinar'].toString() == 'true' ? true : false;
+    ofertaPrecoAPartir =
+        json['ofertaPrecoAPartir'].toString() == 'true' ? true : false;
+    ofertaMostraReview =
+        json['ofertaMostraReview'].toString() == 'true' ? true : false;
+    ofertaMostraAval =
+        json['ofertaMostraAval'].toString() == 'true' ? true : false;
+    ofertaAceitaEntregaComprador =
+        json['OfertaAceitaEntregaComprador'].toString() == 'true'
+            ? true
+            : false;
+    ofertaAceitaEntregaParceiro =
+        json['OfertaAceitaEntregaParceiro'].toString() == 'true' ? true : false;
+    ofertaAceitaEntregaVendedor =
+        json['OfertaAceitaEntregaVendedor'].toString() == 'true' ? true : false;
+    ofertaAceitaProposta =
+        json['OfertaAceitaProposta'].toString() == 'true' ? true : false;
+
+    ofertaCodigoAlt = json['OfertaCodigoAlt'].toString();
+    ofertaCores = json['OfertaCores'].toString();
+    ofertaDiasValidade = json['OfertaDiasValidade'] == null
+        ? 0
+        : int.parse(json['OfertaDiasValidade'].toString());
+    ofertaDistanciaKm = json['OfertaDistanciaKm'] == null
+        ? 0
+        : int.parse(json['OfertaDistanciaKm'].toString());
+    ofertaEncomendasAPartirDe = json['OfertaEncomendasAPartirDe'].toString();
+    ofertaEntregasAPartirDe = json['OfertaEntregasAPartirDe'].toString();
     // ofertaFormaFechamento = json['OfertaFormaFechamento'];
-    // ofertaMarcaRevenda = json['OfertaMarcaRevenda'];
-    // ofertaMostraAval = json['OfertaMostraAval'];
-    // ofertaMostraReview = json['OfertaMostraReview'];
-    // ofertaPeso = json['OfertaPeso'];
-    // ofertaPesoUnidade = json['OfertaPesoUnidade'];
-    // ofertaPrecoAPartir = json['OfertaPrecoAPartir'];
-    // ofertaPrecoCombinar = json['OfertaPrecoCombinar'];
+    ofertaMarcaRevenda = json['OfertaMarcaRevenda'].toString();
+    ofertaMostraAval =
+        json['OfertaMostraAval'].toString() == 'true' ? true : false;
+    ofertaMostraReview =
+        json['OfertaMostraReview'].toString() == 'true' ? true : false;
+    ofertaPeso = json['OfertaPeso'].toString();
+    ofertaPesoUnidade = json['OfertaPesoUnidade'].toString();
+    ofertaTamanhos = json['OfertaTamanhos'].toString();
+
     // ofertaPrecoMin = json['OfertaPrecoMin'];
     // // ofertaQtdAval = json['OfertaQtdAval'];
-    // // ofertaQtdMaxVenda = json['OfertaQtdMaxVenda'];
+    ofertaQtdMaxVenda = json['OfertaQtdMaxVenda'] == null
+        ? 0
+        : int.parse(json['OfertaQtdMaxVenda'].toString());
     // ofertaSinal = json['OfertaSinal'];
     // ofertaSinalTipo = json['OfertaSinalTipo'];
     // ofertaSomenteEncomenda = json['OfertaSomenteEncomenda'];
-    // ofertaTamanhos = json['OfertaTamanhos'];
-    // // ofertaTempoEntrega = json['OfertaTempoEntrega'];
-    // ofertaTempoEntregaUnidade = json['OfertaTempoEntregaUnidade'];
+
+    ofertaTempoEntrega = json['OfertaTempoEntrega'] == null
+        ? 0
+        : int.parse(json['OfertaTempoEntrega'].toString());
+    ofertaTempoEntregaUnidade = json['OfertaTempoEntregaUnidade'].toString();
     // // ofertaTotalAval = json['OfertaTotalAval'];
-    // valorEntregaAte1 = json['ValorEntregaAte1'];
-    // valorEntregaAte2 = json['ValorEntregaAte2'];
-    // valorEntregaMaisDe2 = json['ValorEntregaMaisDe2'];
+
+    // valorEntregaAte1 = json['ValorEntregaAte1'] == null
+    //     ? 0
+    //     : double.parse(json['ValorEntregaAte1'].toString());
+    // valorEntregaAte2 = json['ValorEntregaAte2'] == null
+    //     ? 0
+    //     : double.parse(json['ValorEntregaAte2'].toString());
+    // valorEntregaMaisDe2 = json['ValorEntregaMaisDe2'] == null
+    //     ? 0
+    //     : double.parse(json['ValorEntregaMaisDe2'].toString());
+
+    ofertaDispoAte = json['OfertaDispoAte'].toString();
+    ofertaDispoTipo = json['OfertaDispoTipo'].toString();
+    ofertaQtdAviso = json['OfertaQtdAviso'] == null
+        ? 0
+        : int.parse(json['OfertaQtdAviso'].toString());
+    ofertaQtdDispo = json['OfertaQtdDispo'] == null
+        ? 0
+        : int.parse(json['OfertaQtdDispo'].toString());
+    ofertaSemQtd = json['OfertaSemQtd'].toString() == 'true' ? true : false;
+    segDas = json['SegDas'].toString();
+    segAs = json['SegAs'].toString();
+    terDas = json['TerDas'].toString();
+    terAs = json['TerAs'].toString();
+    quaDas = json['QuaDas'].toString();
+    quaAs = json['QuaAs'].toString();
+    quiDas = json['QuiDas'].toString();
+    quiAs = json['QuiAs'].toString();
+    sexDas = json['SexDas'].toString();
+    sexAs = json['SexAs'].toString();
+    sabDas = json['SabDas'].toString();
+    sabAs = json['SabAs'].toString();
+    domDas = json['DomDas'].toString();
+    domAs = json['DomAs'].toString();
   }
 
   Map<String, dynamic> toJson() {

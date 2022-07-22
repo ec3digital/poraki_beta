@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:infinite_carousel/infinite_carousel.dart';
@@ -23,28 +24,40 @@ class CardOffertsDayHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final LoginController _loginController = Get.find();
-    final OffersController offersController = Get.find(); // Get.put(OffersController());
-    final Color textDark = _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'textDark').first.coreValor.toString());
-    final Color textLight = _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'backLight').first.coreValor.toString());
+    final OffersController offersController =
+        Get.find(); // Get.put(OffersController());
+    final Color textDark = _loginController.colorFromHex(_loginController
+        .listCore
+        .where((coreItem) => coreItem.coreChave == 'textDark')
+        .first
+        .coreValor
+        .toString());
+    final Color textLight = _loginController.colorFromHex(_loginController
+        .listCore
+        .where((coreItem) => coreItem.coreChave == 'backLight')
+        .first
+        .coreValor
+        .toString());
 
     return GetBuilder<HomeController>(builder: (_controller) {
       if (!_controller.isLoading) {
         return Padding(
-          padding: const EdgeInsets.all(10.0),
+          padding: const EdgeInsets.all(5.0),
           child: SizedBox(
             width: double.maxFinite,
             child: Card(
-              elevation: 8,
+              elevation: 10,
               color: Color(0xffFFFFFF),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: Text(
-                        widgetTitle,
-                        style: TextStyle(color: textDark, fontSize: 30) //Get.textTheme.headline1,
-                    ),
+                    padding: const EdgeInsets.all(10.0),
+                    child: Text(widgetTitle,
+                        style: TextStyle(
+                            color: textDark,
+                            fontSize: 30) //Get.textTheme.headline1,
+                        ),
                   ),
                   SizedBox(
                     height: 300,
@@ -56,68 +69,172 @@ class CardOffertsDayHome extends StatelessWidget {
                       onIndexChanged: (index) {},
                       itemBuilder: (context, itemIndex, realIndex) {
                         return Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 10.0),
+                          padding: EdgeInsets.symmetric(horizontal: 3.0),
                           child: GestureDetector(
                             onTap: () {
-
                               //Future.wait([offersController.getOfferById(cardListOffers[itemIndex].ofertaID!)]);
-                              Get.toNamed(AppRoutes.offer, arguments:
-                              cardListOffers[itemIndex]);
+                              Get.toNamed(AppRoutes.offer,
+                                  arguments: cardListOffers[itemIndex]);
                             },
-                            child: Container(padding: const EdgeInsets.all(15.0),
-                              child:
+                            child: Container(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  // if(DateTime.parse(cardListOffers[itemIndex].ofertaDispoDesde) > )
+                                  // Chip(
+                                  //   //padding: EdgeInsets.all(0),
+                                  //   backgroundColor: textDark,
+                                  //   label: Text('TESTE', style: TextStyle(color: textLight)),
+                                  // ),
 
-                        Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Center(child:
-                                   FadeInImage.assetNetwork(
-                                    placeholder: 'assets/images/pholder.png',
-                                    image: _loginController.listCore.where((coreItem) => coreItem.coreChave == 'imgpath').first.coreValor.toString() + cardListOffers[itemIndex].ofertaID.toString() + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'imgpathsuffix').first.coreValor.toString(),
-                                    imageErrorBuilder: (context, url, error) => new Icon(Icons.local_offer_outlined),
-                                    height: 130,
-                                  ),),
-                              SizedBox(height: 10),
-                              Text(cardListOffers[itemIndex].ofertaTitulo.toString(), style: TextStyle(fontSize: 22, color: textDark),),
-                              SizedBox(height: 5),
+                                  if (cardListOffers[itemIndex].oferta24hs !=
+                                      null)
+                                    if (cardListOffers[itemIndex].oferta24hs!)
+                                      Chip(
+                                        //padding: EdgeInsets.all(0),
+                                        backgroundColor: textDark,
+                                        label: Text('24hs',
+                                            style: TextStyle(color: textLight)),
+                                      ),
 
-                              Text(
-                                'R\$ ${double.parse(cardListOffers[itemIndex].ofertaPreco.toString()).toStringAsFixed(2).replaceAll(',', '').replaceAll('.', ',')}',
+                                  if (cardListOffers[itemIndex]
+                                          .ofertaSomenteEncomenda !=
+                                      null)
+                                    if (cardListOffers[itemIndex]
+                                        .ofertaSomenteEncomenda!)
+                                      Chip(
+                                        //padding: EdgeInsets.all(0),
+                                        backgroundColor: textDark,
+                                        label: Text('Somente encomenda',
+                                            style: TextStyle(color: textLight)),
+                                      ),
 
-                                style: Get.textTheme.headline1!.copyWith(
-                                  color: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'backDark').first.coreValor.toString()),
-                                ),
+                                  if (cardListOffers[itemIndex]
+                                          .ofertaEntregasAPartirDe.toString() !=
+                                      'null')
+                                    if (DateTime.parse(cardListOffers[itemIndex]
+                                            .ofertaEntregasAPartirDe!)
+                                        .isAfter(DateTime.now()))
+                                      Chip(
+                                        //padding: EdgeInsets.all(0),
+                                        backgroundColor: textDark,
+                                        label: Text('Entregas em breve !',
+                                            style: TextStyle(color: textLight)),
+                                      ),
+
+                                  if (cardListOffers[itemIndex]
+                                          .ofertaAceitaEncomenda !=
+                                      null)
+                                    if (cardListOffers[itemIndex]
+                                        .ofertaAceitaEncomenda!)
+                                      Chip(
+                                        //padding: EdgeInsets.all(0),
+                                        backgroundColor: textDark,
+                                        label: Text('Aceita encomenda',
+                                            style: TextStyle(color: textLight)),
+                                      ),
+
+                                  Center(
+                                    // child:
+                                    //    FadeInImage.assetNetwork(
+                                    //     placeholder: 'assets/images/pholder.png',
+                                    //     image: _loginController.listCore.where((coreItem) => coreItem.coreChave == 'imgpath').first.coreValor.toString() + cardListOffers[itemIndex].ofertaID.toString() + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'imgpathsuffix').first.coreValor.toString(),
+                                    //     imageErrorBuilder: (context, url, error) => new Icon(Icons.local_offer_outlined),
+                                    //     height: 130,
+                                    //   ),
+
+                                    child: CachedNetworkImage(
+                                      imageUrl: _loginController.listCore
+                                              .where((coreItem) =>
+                                                  coreItem.coreChave ==
+                                                  'imgpath')
+                                              .first
+                                              .coreValor
+                                              .toString() +
+                                          cardListOffers[itemIndex]
+                                              .ofertaID
+                                              .toString() +
+                                          _loginController.listCore
+                                              .where((coreItem) =>
+                                                  coreItem.coreChave ==
+                                                  'imgpathsuffix')
+                                              .first
+                                              .coreValor
+                                              .toString(),
+                                      progressIndicatorBuilder: (context, url,
+                                              downloadProgress) =>
+                                          CircularProgressIndicator(
+                                              value: downloadProgress.progress),
+                                      errorWidget: (context, url, error) =>
+                                          Icon(Icons.local_offer_outlined),
+                                      height: 130,
+                                    ),
+                                  ),
+                                  SizedBox(height: 10),
+                                  Expanded(
+                                      child: Column(
+                                    children: [
+                                      Text(
+                                        cardListOffers[itemIndex]
+                                            .ofertaTitulo
+                                            .toString(),
+                                        style: TextStyle(
+                                            fontSize: 18, color: textDark),
+                                      ),
+                                      SizedBox(height: 5),
+                                      Text(
+                                        'R\$ ${double.parse(cardListOffers[itemIndex].ofertaPreco.toString()).toStringAsFixed(2).replaceAll(',', '').replaceAll('.', ',')}',
+                                        style:
+                                            Get.textTheme.headline1!.copyWith(
+                                          color: _loginController.colorFromHex(
+                                              _loginController.listCore
+                                                  .where((coreItem) =>
+                                                      coreItem.coreChave ==
+                                                      'backDark')
+                                                  .first
+                                                  .coreValor
+                                                  .toString()),
+                                        ),
+                                      ),
+                                      Flexible(
+                                        child: Text(
+                                          cardListOffers[itemIndex]
+                                              .ofertaDetalhe
+                                              .toString(),
+                                          style:
+                                              Get.textTheme.bodyText1!.copyWith(
+                                            fontWeight: FontWeight.w400,
+                                            color: textDark,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  )),
+
+                                  // Text(
+                                  //   'Cep da oferta: ${cardListOffers[itemIndex].ofertaCEP.toString()}',
+                                  //   style: Get.textTheme.bodyText1!.copyWith(
+                                  //     fontWeight: FontWeight.w400,
+                                  //     color: textDark,
+                                  //   ),
+                                  // ),
+                                ],
                               ),
-                              Text(
-                                cardListOffers[itemIndex].ofertaDetalhe.toString(),
-                                style: Get.textTheme.bodyText1!.copyWith(
-                                  fontWeight: FontWeight.w400,
-                                  color: textDark,
-                                ),
-                              ),
-                              // Text(
-                              //   'Cep da oferta: ${cardListOffers[itemIndex].ofertaCEP.toString()}',
-                              //   style: Get.textTheme.bodyText1!.copyWith(
-                              //     fontWeight: FontWeight.w400,
-                              //     color: textDark,
-                              //   ),
-                              // ),
-                            ],
-                          ),
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
+                                  borderRadius: BorderRadius.circular(5),
                                   border: Border.all(
                                     color: textLight,
                                     width: 1,
                                   ),
-                                //boxShadow: kElevationToShadow[1],
-                                color: Colors.white
+                                  //boxShadow: kElevationToShadow[1],
+                                  color: Colors.white
 
-                                // image: DecorationImage(
-                                //   image: NetworkImage(kDemoImages[itemIndex]),
-                                //   fit: BoxFit.fill,
-                                // ),
-                              ),
+                                  // image: DecorationImage(
+                                  //   image: NetworkImage(kDemoImages[itemIndex]),
+                                  //   fit: BoxFit.fill,
+                                  // ),
+                                  ),
                             ),
                           ),
                         );
@@ -129,22 +246,31 @@ class CardOffertsDayHome extends StatelessWidget {
                   // Divider(),
                   InkWell(
                     onTap: () {
-
                       // carrega as listas necessarias ao clicar
                       if (this.nomeLista.isNotEmpty) {
-                        if (this.nomeLista == 'dayoffers') Future.wait([offersController.getDayOffers(24)]);
+                        if (this.nomeLista == 'dayoffers')
+                          Future.wait([offersController.getDayOffers(24)]);
 
-                        if (this.nomeLista == 'bestoffers') Future.wait([offersController.getBestOffers(24)]);
+                        if (this.nomeLista == 'bestoffers')
+                          Future.wait([offersController.getBestOffers(24)]);
 
-                        if (this.nomeLista == 'freshoffers') Future.wait([offersController.getMostFreshOffers(24)]);
+                        if (this.nomeLista == 'freshoffers')
+                          Future.wait(
+                              [offersController.getMostFreshOffers(24)]);
 
-                        if (this.nomeLista == 'bestsellers') Future.wait([offersController.getBestSellerOffers(24)]);
+                        if (this.nomeLista == 'bestsellers')
+                          Future.wait(
+                              [offersController.getBestSellerOffers(24)]);
                       }
 
                       Get.toNamed(AppRoutes.offers, arguments: [
-                      {'listName': nomeLista}, {'limit': 24}, {'category': null }, {'title': null}, {'ofertaGuid': null}] );
-                    }
-                      ,
+                        {'listName': nomeLista},
+                        {'limit': 24},
+                        {'category': null},
+                        {'title': null},
+                        {'ofertaGuid': null}
+                      ]);
+                    },
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(15, 05, 15, 15),
                       child: Row(
@@ -152,11 +278,19 @@ class CardOffertsDayHome extends StatelessWidget {
                         children: [
                           Text(
                             'VER MAIS',
-                            style: TextStyle(color: textDark,),
+                            style: TextStyle(
+                              color: textDark,
+                            ),
                           ),
                           Icon(
                             Icons.arrow_forward_ios_rounded,
-                            color: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'iconColor').first.coreValor.toString()),
+                            color: _loginController.colorFromHex(
+                                _loginController.listCore
+                                    .where((coreItem) =>
+                                        coreItem.coreChave == 'iconColor')
+                                    .first
+                                    .coreValor
+                                    .toString()),
                           )
                         ],
                       ),

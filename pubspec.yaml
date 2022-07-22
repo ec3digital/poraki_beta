@@ -50,6 +50,10 @@ dependencies:
   infinite_carousel: ^1.0.2
   marquee: ^2.2.1
   carousel_slider: ^4.1.1
+  brasil_fields: ^1.4.5
+  cached_network_image: ^3.2.0
+  badges: ^2.0.3
+  #flutter_smart_dialog: ^4.3.1
   #simple_s3: ^0.3.2
 
 
