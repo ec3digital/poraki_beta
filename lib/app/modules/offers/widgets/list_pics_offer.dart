@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:poraki/app/modules/auth/login/login_controller.dart';
 
 class ListPicsOffer extends StatelessWidget {
   List<String> imagesList = [];
@@ -10,10 +11,18 @@ class ListPicsOffer extends StatelessWidget {
     required this.imagesList,
   }) : super(key: key);
 
-
+  final LoginController _loginController = Get.find();
 
   @override
   Widget build(BuildContext context) {
+
+    final Color backColor = _loginController.colorFromHex(_loginController
+        .listCore
+        .where((coreItem) => coreItem.coreChave == 'backLight')
+        .first
+        .coreValor
+        .toString());
+
     return Container(
       height: Get.height * 0.40,
       child: Stack(
@@ -52,13 +61,14 @@ class ListPicsOffer extends StatelessWidget {
           ),
           Positioned(
             right: 15,
-            bottom: 0,
+            //bottom: 0,
+            top: 0,
             child: FloatingActionButton(
               elevation: 0,
-              backgroundColor: Colors.white, //AppColors.containerLightColor,
+              backgroundColor: backColor, //AppColors.containerLightColor,
               mini: true,
               onPressed: () {},
-              child: Icon(Icons.share_outlined, color: Colors.black,),
+              child: Icon(Icons.favorite_outline, color: Colors.black,),
             ),
           )
         ],
