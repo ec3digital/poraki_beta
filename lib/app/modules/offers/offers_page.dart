@@ -13,7 +13,7 @@ class OffersPage extends StatelessWidget {
     LoginController _loginController = Get.find();
 
     return Scaffold(
-      appBar: appBarOffers(),
+      appBar: appBarOffers(Get.arguments[3]['title']),
       body: Container(
           decoration: new BoxDecoration(
               gradient: new LinearGradient(

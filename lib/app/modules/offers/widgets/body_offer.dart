@@ -35,7 +35,6 @@ class BodyOffer extends StatelessWidget {
     //   );
     // }
 
-
     return Container(
       child: GetBuilder<OffersController>(builder: (context) {
         if (offersController.isLoading) {
@@ -52,29 +51,56 @@ class BodyOffer extends StatelessWidget {
 
           var detail2 = '';
           var detailDispo = '';
-          if(produtoOferta.segDas!.toString() != 'null')// && (produtoOferta.segDas!.toString() != '00:00' && produtoOferta.segAs!.toString() != '23:59'))
-            detailDispo += 'Seg das ' + produtoOferta.segDas.toString() + ' às ' + produtoOferta.segAs.toString();
+          if (produtoOferta.segDas!.toString() !=
+              'null') // && (produtoOferta.segDas!.toString() != '00:00' && produtoOferta.segAs!.toString() != '23:59'))
+            detailDispo += 'Seg das ' +
+                produtoOferta.segDas.toString() +
+                ' às ' +
+                produtoOferta.segAs.toString();
 
-          if(produtoOferta.terDas!.toString() != 'null')// && (produtoOferta.terDas!.toString() != '00:00' && produtoOferta.terAs!.toString() != '23:59'))
-            detailDispo += ' / Ter das ' + produtoOferta.terDas.toString() + ' às ' + produtoOferta.terAs.toString();
+          if (produtoOferta.terDas!.toString() !=
+              'null') // && (produtoOferta.terDas!.toString() != '00:00' && produtoOferta.terAs!.toString() != '23:59'))
+            detailDispo += ' / Ter das ' +
+                produtoOferta.terDas.toString() +
+                ' às ' +
+                produtoOferta.terAs.toString();
 
-          if(produtoOferta.quaDas!.toString() != 'null')// && (produtoOferta.quaDas!.toString() != '00:00' && produtoOferta.quaAs!.toString() != '23:59'))
-            detailDispo += ' / Qua das ' + produtoOferta.quaDas.toString() + ' às ' + produtoOferta.quaAs.toString();
+          if (produtoOferta.quaDas!.toString() !=
+              'null') // && (produtoOferta.quaDas!.toString() != '00:00' && produtoOferta.quaAs!.toString() != '23:59'))
+            detailDispo += ' / Qua das ' +
+                produtoOferta.quaDas.toString() +
+                ' às ' +
+                produtoOferta.quaAs.toString();
 
-          if(produtoOferta.quiDas!.toString() != 'null')// && (produtoOferta.quiDas!.toString() != '00:00' && produtoOferta.quiAs!.toString() != '23:59'))
-            detailDispo += ' / Qui das ' + produtoOferta.quiDas.toString() + ' às ' + produtoOferta.quiAs.toString();
+          if (produtoOferta.quiDas!.toString() !=
+              'null') // && (produtoOferta.quiDas!.toString() != '00:00' && produtoOferta.quiAs!.toString() != '23:59'))
+            detailDispo += ' / Qui das ' +
+                produtoOferta.quiDas.toString() +
+                ' às ' +
+                produtoOferta.quiAs.toString();
 
-          if(produtoOferta.sexDas!.toString() != 'null')// && (produtoOferta.sexDas!.toString() != '00:00' && produtoOferta.sexAs!.toString() != '23:59'))
-            detailDispo += ' / Sex das ' + produtoOferta.sexDas.toString() + ' às ' + produtoOferta.sexAs.toString();
+          if (produtoOferta.sexDas!.toString() !=
+              'null') // && (produtoOferta.sexDas!.toString() != '00:00' && produtoOferta.sexAs!.toString() != '23:59'))
+            detailDispo += ' / Sex das ' +
+                produtoOferta.sexDas.toString() +
+                ' às ' +
+                produtoOferta.sexAs.toString();
 
-          if(produtoOferta.sabDas!.toString() != 'null')// && (produtoOferta.sabDas!.toString() != '00:00' && produtoOferta.sabAs!.toString() != '23:59'))
-            detailDispo += ' / Sáb das ' + produtoOferta.sabDas.toString() + ' às ' + produtoOferta.sabAs.toString();
+          if (produtoOferta.sabDas!.toString() !=
+              'null') // && (produtoOferta.sabDas!.toString() != '00:00' && produtoOferta.sabAs!.toString() != '23:59'))
+            detailDispo += ' / Sáb das ' +
+                produtoOferta.sabDas.toString() +
+                ' às ' +
+                produtoOferta.sabAs.toString();
 
-          if(produtoOferta.domDas!.toString() != 'null')// && (produtoOferta.domDas!.toString() != '00:00' && produtoOferta.domAs!.toString() != '23:59'))
-            detailDispo += ' / Dom das ' + produtoOferta.domDas.toString() + ' às ' + produtoOferta.domAs.toString();
+          if (produtoOferta.domDas!.toString() !=
+              'null') // && (produtoOferta.domDas!.toString() != '00:00' && produtoOferta.domAs!.toString() != '23:59'))
+            detailDispo += ' / Dom das ' +
+                produtoOferta.domDas.toString() +
+                ' às ' +
+                produtoOferta.domAs.toString();
 
-          if(detailDispo == '')
-            detailDispo = 'Todos os dias';
+          if (detailDispo == '') detailDispo = 'Todos os dias';
 
           if (produtoOferta.ofertaMarcaRevenda!.isNotEmpty)
             detail2 += produtoOferta.ofertaMarcaRevenda.toString();
@@ -115,7 +141,9 @@ class BodyOffer extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 10),
-                  ListPicsOffer(imagesList: offersImages),
+                  ListPicsOffer(
+                      imagesList: offersImages,
+                      offerGuid: produtoOferta.ofertaGUID.toString()),
                   // const SizedBox(height: 2),
                   Center(
                     child: Text(
@@ -207,15 +235,17 @@ class BodyOffer extends StatelessWidget {
                                     .first
                                     .coreValor
                                     .toString()),
-                            child: Column(mainAxisSize: MainAxisSize.max,verticalDirection: VerticalDirection.up,
+                            child: Column(
+                                mainAxisSize: MainAxisSize.max,
+                                verticalDirection: VerticalDirection.up,
                                 children: [
                                   const SizedBox(height: 5),
-                              Text(
-                                produtoOferta.ofertaDetalhe.toString(),
-                                style: TextStyle(fontSize: 18),
-                              ),
-                              const SizedBox(height: 5)
-                            ])),
+                                  Text(
+                                    produtoOferta.ofertaDetalhe.toString(),
+                                    style: TextStyle(fontSize: 18),
+                                  ),
+                                  const SizedBox(height: 5)
+                                ])),
                       if (produtoOferta.ofertaSinal != null)
                         Column(
                           children: [

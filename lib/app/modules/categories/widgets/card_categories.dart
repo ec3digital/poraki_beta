@@ -29,7 +29,7 @@ class CardCategoriesVertical extends StatelessWidget {
               width: Get.width * 0.14,
               child: IconButton(icon: Icon(iconData),
                   onPressed: () => Get.toNamed(AppRoutes.offers, arguments: [
-                    {'listName': null}, {'limit': 24}, {'category': chave.toString() }, {'title': null}, {'ofertaGuid': null}] )
+                    {'listName': null}, {'limit': 24}, {'category': chave.toString() }, {'title': 'Categorias'}, {'ofertaGuid': null}] )
               ),
             ),
           ),

@@ -22,7 +22,7 @@ class ListVerticalCategories extends StatelessWidget {
           Future.wait([offersController.getOfferByCEPCategory(chave.toString())]);
 
         Get.toNamed(AppRoutes.offers, arguments: [
-          {'listName': null}, {'limit': 24}, {'category': chave.toString() }, {'title': null}, {'ofertaGuid': null}] );
+          {'listName': null}, {'limit': 24}, {'category': chave.toString() }, {'title': 'Categorias'}, {'ofertaGuid': null}] );
         },
         title: Text(
           categoryName,

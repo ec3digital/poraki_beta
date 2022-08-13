@@ -38,7 +38,7 @@ class CardCategories extends StatelessWidget {
                     {'listName': null},
                     {'limit': 24},
                     {'category': chave.toString()},
-                    {'title': null},
+                    {'title': 'Categorias'},
                     {'ofertaGuid': null}
                   ]);
                 }

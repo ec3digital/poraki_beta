@@ -1,8 +1,7 @@
 import 'package:get/get.dart';
-import 'package:poraki/app/data/models/enderecos.dart';
-import 'package:poraki/app/data/repositories/address_repository.dart';
+//import 'package:poraki/app/data/models/ofertafav.dart';
+import 'package:poraki/app/data/repositories/offerfav_repository.dart';
 import 'package:poraki/app/modules/auth/login/login_controller.dart';
-import 'package:poraki/app/services/fbporaki_service.dart';
 import '../../data/models/categorias.dart';
 import '../../data/models/produto_oferta.dart';
 import '../../data/repositories/categories_repository.dart';
@@ -20,6 +19,7 @@ class HomeController extends GetxController {
   List<ProdutoOferta>? bestselleroffers = [];
   List<Categorias>? categorias;
 
+
   // List<Pessoas>? pessoas;
 
   bool isLoading = false;
@@ -32,11 +32,11 @@ class HomeController extends GetxController {
     await getBestOffers(4);
     await getMostFreshOffers(4);
     await getBestSellersOffers(4);
+
     // await getPeople();
 
     super.onInit();
   }
-
 
 
   Future<void> getOffers(int limit) async {

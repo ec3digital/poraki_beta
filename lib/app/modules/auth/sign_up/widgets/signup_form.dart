@@ -30,6 +30,7 @@ class FormSignup extends StatelessWidget {
             keyboardType: TextInputType.name,
             autofocus: true,
             style: TextStyle(color: Colors.white),
+            autofillHints: [AutofillHints.name],
             decoration: InputDecoration(
               border: OutlineInputBorder(),
               labelText: "Nome",
@@ -51,6 +52,7 @@ class FormSignup extends StatelessWidget {
             controller: controller.surnameInputController,
             autofocus: true,
             style: TextStyle(color: Colors.white),
+            autofillHints: [AutofillHints.familyName],
             decoration: InputDecoration(
               border: OutlineInputBorder(),
               labelText: "Sobrenome",
@@ -96,11 +98,12 @@ class FormSignup extends StatelessWidget {
             inputFormatters: [FilteringTextInputFormatter.digitsOnly,TelefoneInputFormatter(), ],
             controller: controller.phoneInputController,
             keyboardType: TextInputType.phone,
+            autofillHints: [AutofillHints.telephoneNumber],
             autofocus: true,
             style: TextStyle(color: Colors.white),
             decoration: InputDecoration(
               border: OutlineInputBorder(),
-              labelText: "Telefone Celular",
+              labelText: "Telefone Celular /Whatsapp",
               labelStyle: TextStyle(color: Colors.white),
               prefixIcon: Icon(
                 Icons.phone,
@@ -121,6 +124,7 @@ class FormSignup extends StatelessWidget {
             controller: controller.mailInputController,
             autofocus: true,
             style: TextStyle(color: Colors.white),
+            autofillHints: [AutofillHints.email],
             decoration: InputDecoration(
               border: OutlineInputBorder(),
               labelText: "E-mail",
@@ -143,6 +147,7 @@ class FormSignup extends StatelessWidget {
             },
             inputFormatters: [FilteringTextInputFormatter.digitsOnly,CepInputFormatter(), ],
             controller: controller.cepInputController,
+            autofillHints: [AutofillHints.postalCode],
             autofocus: true,
             style: TextStyle(color: Colors.white),
             decoration: InputDecoration(
@@ -169,6 +174,7 @@ class FormSignup extends StatelessWidget {
             //onChanged: (data) { if (!Validat.isValid(cnpj)) { Get.defaultDialog(title: "CNPJ Inválido", middleText: "Por favor informe um CNPJ válido" ); }  {} } ,
             controller: controller.dtNascInputController,
             autofocus: true,
+            autofillHints: [AutofillHints.birthday],
             style: TextStyle(color: Colors.white),
             decoration: InputDecoration(
               border: OutlineInputBorder(),

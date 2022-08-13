@@ -26,6 +26,9 @@ class CardBannerAloneHome extends StatelessWidget {
       avisoCep = value; // + ' (' + key + ')';
     });
 
+    if(avisoApp.isEmpty)
+      avisoApp = 'Sem avisos para a sua região no momento';
+
     // print('avisoCep: ' + avisoCep.toString());
   }
 

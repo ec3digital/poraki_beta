@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:poraki/app/data/models/lojas.dart';
 import 'package:poraki/app/data/models/oferta.dart';
+import 'package:poraki/app/data/repositories/brands_repository.dart';
 import 'package:poraki/app/modules/auth/login/login_controller.dart';
 import 'package:poraki/app/modules/moffers/moffer_controller.dart';
 import 'package:poraki/app/modules/offers/widgets/button_offer.dart';
@@ -38,12 +39,15 @@ class _ListMoffersState extends State<ListMoffers> {
             .getMoffersByStore(widget.selStore!.LojaGUID.toString());
     }
 
-    if (load && !widget.listStores.contains(new Lojas(null, null, 'Nenhuma', null, null, null,
-        null, null, null, null, null, null, null, null)))
+    if (load &&
+        !widget.listStores.contains(new Lojas(null, null, 'Nenhuma', null, null,
+            null, null, null, null, null, null, null, null, null)))
       widget.listStores.add(new Lojas(null, null, 'Nenhuma', null, null, null,
           null, null, null, null, null, null, null, null));
 
     load = false;
+
+    // await BrandsRepository().getAllBrands();
   }
 
   @override
@@ -121,7 +125,10 @@ class _ListMoffersState extends State<ListMoffers> {
                         ),
                         SizedBox(height: 20),
                         if (mofferController.moffers.length == 0)
-                          Container(height: Get.height * 0.6, child: Center(child: Text("Ops, nada poraki ainda... ;-)")))
+                          Container(
+                              height: Get.height * 0.6,
+                              child: Center(
+                                  child: Text("Ops, nada poraki ainda... ;-)")))
                         else
                           GridView.builder(
                             shrinkWrap: true,
@@ -154,13 +161,19 @@ class _ListMoffersState extends State<ListMoffers> {
                                           height: 80,
                                           margin: EdgeInsets.only(top: 4),
                                           child: CachedNetworkImage(
-                                            imageUrl: 'https://firebasestorage.googleapis.com/v0/b/ec3digrepo.appspot.com/o/ofertas%2F' +
-                                                          _oferta.OfertaGUID
-                                                              .toString() +
-                                                          '.jpg?alt=media',
-                                            progressIndicatorBuilder: (context, url, downloadProgress) =>
-                                                CircularProgressIndicator(value: downloadProgress.progress),
-                                            errorWidget: (context, url, error) => Icon(Icons.local_offer_outlined),
+                                            imageUrl:
+                                                'https://firebasestorage.googleapis.com/v0/b/ec3digrepo.appspot.com/o/ofertas%2F' +
+                                                    _oferta.OfertaGUID
+                                                        .toString() +
+                                                    '.jpg?alt=media',
+                                            progressIndicatorBuilder: (context,
+                                                    url, downloadProgress) =>
+                                                CircularProgressIndicator(
+                                                    value: downloadProgress
+                                                        .progress),
+                                            errorWidget:
+                                                (context, url, error) => Icon(
+                                                    Icons.local_offer_outlined),
                                             height: 50,
                                           ),
 

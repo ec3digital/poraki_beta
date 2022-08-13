@@ -46,6 +46,8 @@ class OffersController extends GetxController {
         if (this.listName == 'freshoffers') await getMostFreshOffers(limit);
 
         if (this.listName == 'bestsellers') await getBestSellerOffers(limit);
+
+        if (this.listName == 'favsoffers') await getBestSellerOffers(limit);
       }
       else {
         if (this.category == null && this.title == null &&
@@ -228,11 +230,24 @@ class OffersController extends GetxController {
   Future<void> getOffersBySeller(String sellerId) async {
     try {
       changeLoading(true);
-      print('entrou no getOfferById');
+      print('entrou no getOffersBySeller');
       offers = await offerRepository.getOffersBySeller(sellerId);
       this.refresh();
     } catch (e) {
-      print('Erro no getOfferById() controller ${e.toString()}');
+      print('Erro no getOffersBySeller() controller ${e.toString()}');
+    } finally {
+      changeLoading(false);
+    }
+  }
+
+  Future<void> getOffersFavsByUser(int limit) async {
+    try {
+      changeLoading(true);
+      print('entrou no getOffersFavsByUser');
+      offers = await offerRepository.getFavsOffers(limit);
+      this.refresh();
+    } catch (e) {
+      print('Erro no getOffersFavsByUser() controller ${e.toString()}');
     } finally {
       changeLoading(false);
     }

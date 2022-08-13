@@ -7,7 +7,7 @@ import 'package:poraki/app/modules/auth/login/login_controller.dart';
 import 'package:poraki/app/modules/offers/offers_controller.dart';
 import 'package:poraki/app/routes/app_routes.dart';
 import '../home_controller.dart';
-import 'package:intl/intl.dart';
+//import 'package:intl/intl.dart';
 
 class CardOffertsDayHome extends StatelessWidget {
   final List<ProdutoOferta> cardListOffers;
@@ -247,27 +247,36 @@ class CardOffertsDayHome extends StatelessWidget {
                   InkWell(
                     onTap: () {
                       // carrega as listas necessarias ao clicar
+                      var sendTitle = 'Ofertas';
                       if (this.nomeLista.isNotEmpty) {
-                        if (this.nomeLista == 'dayoffers')
+                        if (this.nomeLista == 'dayoffers') {
+                          sendTitle = 'Ofertas do dia';
                           Future.wait([offersController.getDayOffers(24)]);
+                        }
 
-                        if (this.nomeLista == 'bestoffers')
+                        if (this.nomeLista == 'bestoffers') {
+                          sendTitle = 'Melhores ofertas';
                           Future.wait([offersController.getBestOffers(24)]);
+                        }
 
-                        if (this.nomeLista == 'freshoffers')
+                        if (this.nomeLista == 'freshoffers') {
+                          sendTitle = 'Fresquinhas';
                           Future.wait(
                               [offersController.getMostFreshOffers(24)]);
+                        }
 
-                        if (this.nomeLista == 'bestsellers')
+                        if (this.nomeLista == 'bestsellers') {
+                          sendTitle = "Mais vendidas";
                           Future.wait(
                               [offersController.getBestSellerOffers(24)]);
+                        }
                       }
 
                       Get.toNamed(AppRoutes.offers, arguments: [
                         {'listName': nomeLista},
                         {'limit': 24},
                         {'category': null},
-                        {'title': null},
+                        {'title': sendTitle},
                         {'ofertaGuid': null}
                       ]);
                     },

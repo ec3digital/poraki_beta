@@ -108,6 +108,7 @@ class _LoginPageState extends State<LoginPage> {
                             controller: _mailInputController,
                             autofocus: _mailInputController.text.isEmpty,
                             style: TextStyle(color: Colors.white),
+                            autofillHints: [AutofillHints.email],
                             decoration: InputDecoration(
                               labelText: "E-mail",
                               labelStyle: TextStyle(
@@ -200,7 +201,7 @@ class _LoginPageState extends State<LoginPage> {
 
                     ElevatedButton(
                       onPressed: () {
-                        if(!isLoading)
+                        if(!isLoading && _formKey.currentState!.validate())
                           _doLogin(context);
 
                         setState(() {

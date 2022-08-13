@@ -3,7 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:poraki/app/modules/auth/login/login_controller.dart';
 
-AppBar appBarOffers() {
+AppBar appBarOffers(String? titulo) {
   LoginController _loginController = Get.find();
 
   return AppBar(
@@ -11,7 +11,7 @@ AppBar appBarOffers() {
     centerTitle: false,
     backgroundColor: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'backLight').first.coreValor.toString()),
     title: Text(
-      'Ofertas',
+      titulo == null ? 'Ofertas' : titulo,
       style: TextStyle(fontSize: 25,
       color: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'textDark').first.coreValor.toString()),
       ) // Get.textTheme.headline1!.copyWith(fontSize: 25),

@@ -14,7 +14,9 @@ import 'package:poraki/app/data/models/oferta.dart';
 import 'package:poraki/app/modules/auth/login/login_controller.dart';
 import 'package:poraki/app/modules/categories/categories_controller.dart';
 import 'package:poraki/app/modules/home/widgets/gradient_header_home.dart';
+import 'package:poraki/app/modules/moffers/brands_controller.dart';
 import 'package:poraki/app/modules/moffers/moffer_controller.dart';
+import 'package:poraki/app/modules/moffers/partners_controller.dart';
 import 'package:poraki/app/modules/offers/widgets/button_offer.dart';
 import 'package:poraki/app/shared/constants/constants.dart';
 import 'package:poraki/app/routes/app_routes.dart';
@@ -24,6 +26,8 @@ class MOfferPage extends StatefulWidget {
   final Oferta? offer;
   final CategoriesController categoriesController = Get.find();
   final MofferController mofferController = Get.find();
+  final BrandsController brandsController = Get.find();
+  final PartnersController partnersController = Get.find();
   // final LoginController loginController = Get.find();
   //final MofferController mofferController = Get.put(MofferController());
   final String tipo = 'G';
@@ -46,7 +50,8 @@ class MOfferPage extends StatefulWidget {
   // var listaCategs = ['selecione']; // pegar da API
   var listaTempoEntregaTipo = ['selecione', 'minutos', 'horas', 'dias'];
   var listaFormaFechamento = ['selecione'];
-  var listaFormaEntrega = ['selecione', 'vendedor', 'comprador', 'parceiro'];
+  var listaFormaEntrega = ['selecione', 'vendedor', 'comprador'];
+  var listaRevendas = ['selecione'];
   // var listaFormaEntrega2 = ['selecione', 'vendedor', 'comprador'];
   var listaParceiros = ['selecione']; //TODO: pegar da API
   var valueSel = 'selecione';
@@ -54,11 +59,18 @@ class MOfferPage extends StatefulWidget {
   var tempoEntregaTipoSel = 'selecione';
   var agenteEntregaSel = 'selecione';
   var formaFechSel = 'selecione';
+  var revendaSel = 'selecione';
+  var parceiroSel = 'escolha o parceiro';
   // var materialSel = 'selecione';
   // var voltagemSel = 'selecione';
   var categoriaSel = 'selecione';
   var labelEntrega = 'Entrega';
   var labelValidade = 'Validade';
+
+  bool valAceitaEntregaComprador = false;
+  bool valAceitaEntregaParceiro = false;
+  bool valAceitaEntregaVendedor = false;
+  //bool valRevisao = false;
   bool valDispoImediata = true;
   bool valMostraAval = false;
   bool valMostraReview = false;
@@ -135,7 +147,6 @@ class MOfferPage extends StatefulWidget {
 class _MOfferPage extends State<MOfferPage> {
   File? image;
 
-
   // // formatters
   // late TextFormField txtfValorSinalOrc;
   // late TextFormField txtfValorMin;
@@ -150,14 +161,28 @@ class _MOfferPage extends State<MOfferPage> {
   @override
   void initState() {
     widget._imageURLFocusNode.addListener(_updateImageUrl);
-    super.initState();
 
-    widget.textColor = widget._loginController.colorFromHex(widget._loginController.listCore
+    //var brandController = new BrandsController();
+    widget.brandsController.revendas?.forEach((rev) {
+      print(rev.RevendaNome.toString());
+      widget.listaRevendas.add(rev.RevendaNome.toString());
+    });
+    print('lista revendas: ' + widget.listaRevendas.length.toString());
+
+    widget.partnersController.parceiros?.forEach((part) {
+      print(part.ParceiroEntregaNome.toString());
+      widget.listaParceiros.add(part.ParceiroEntregaNome.toString());
+    });
+    print('lista parceiros: ' + widget.listaParceiros.length.toString());
+
+    widget.textColor = widget._loginController.colorFromHex(widget
+        ._loginController.listCore
         .where((coreItem) => coreItem.coreChave == 'textDark')
         .first
         .coreValor
         .toString());
-    widget.iconColor = widget._loginController.colorFromHex(widget._loginController.listCore
+    widget.iconColor = widget._loginController.colorFromHex(widget
+        ._loginController.listCore
         .where((coreItem) => coreItem.coreChave == 'backDark')
         .first
         .coreValor
@@ -179,15 +204,18 @@ class _MOfferPage extends State<MOfferPage> {
     widget.mofferController.txtCores.text = '';
     // widget.mofferController.txtPreco.text = '0.00';
     // widget.mofferController.txtValorMin.text = '0.00';
-    widget.mofferController.txtMarca.text = '';
+    // widget.mofferController.txtMarca.text = '';
     widget.mofferController.txtQtdMaxPorVenda.text = '0';
     widget.mofferController.txtQtdDispo.text = '0';
     widget.mofferController.txtQtdAviso.text = '0';
 
-    final LoginController loginController = Get.find();
-    widget.mofferController.txtCEP.text = loginController.usuCep.toString();
+    //final LoginController loginController = Get.find();
+    widget.mofferController.txtCEP.text =
+        widget._loginController.usuCep.toString();
 
     _manageCampos();
+
+    super.initState();
   }
 
   @override
@@ -201,12 +229,13 @@ class _MOfferPage extends State<MOfferPage> {
 
   @override
   Widget build(BuildContext context) {
-    print('build');
+    // print('build');
     //if (ModalRoute.of(context)?.settings.arguments != null) {}
 
     return FutureBuilder(
-        future:
-        ModalRoute.of(context)?.settings.arguments != null ? carregaObjs() : null, // widget.categoriesController.getCategoriesNames(),
+        future: ModalRoute.of(context)?.settings.arguments != null
+            ? carregaObjs()
+            : null, // widget.categoriesController.getCategoriesNames(),
         builder: (context, futuro) {
           if (futuro.connectionState == ConnectionState.waiting) {
             return Center(
@@ -220,14 +249,12 @@ class _MOfferPage extends State<MOfferPage> {
                 child: AppBar(
                   elevation: 0,
                   centerTitle: false,
-                  backgroundColor: widget._loginController.colorFromHex(
-                      widget._loginController
-                          .listCore
-                          .where(
-                              (coreItem) => coreItem.coreChave == 'backLight')
-                          .first
-                          .coreValor
-                          .toString()),
+                  backgroundColor: widget._loginController.colorFromHex(widget
+                      ._loginController.listCore
+                      .where((coreItem) => coreItem.coreChave == 'backLight')
+                      .first
+                      .coreValor
+                      .toString()),
                   title: Text(
                     'Minha oferta',
                     style: TextStyle(fontSize: 25, color: widget.textColor),
@@ -250,29 +277,32 @@ class _MOfferPage extends State<MOfferPage> {
 
                             ListTile(
                               leading: Text('Categoria'),
-                              trailing: ModalRoute.of(context)?.settings.arguments == null ?
-                              DropdownButton<String>(
-                                items: widget
-                                    .categoriesController.listaCategorias
-                                    ?.map((String value) {
-                                  return DropdownMenuItem<String>(
-                                    value: value,
-                                    child: Text(value),
-                                  );
-                                }).toList(),
-                                value: widget.categoriaSel,
-                                onChanged: (String? newValue) {
-                                  setState(() {
-                                    widget.categoriaSel = newValue!;
-                                    widget.categSelecionada = widget
-                                        .categoriesController
-                                        .selecionaCategoriaPorNome(
-                                        widget.categoriaSel)!;
+                              trailing:
+                                  ModalRoute.of(context)?.settings.arguments ==
+                                          null
+                                      ? DropdownButton<String>(
+                                          items: widget.categoriesController
+                                              .listaCategorias
+                                              ?.map((String value) {
+                                            return DropdownMenuItem<String>(
+                                              value: value,
+                                              child: Text(value),
+                                            );
+                                          }).toList(),
+                                          value: widget.categoriaSel,
+                                          onChanged: (String? newValue) {
+                                            setState(() {
+                                              widget.categoriaSel = newValue!;
+                                              widget.categSelecionada = widget
+                                                  .categoriesController
+                                                  .selecionaCategoriaPorNome(
+                                                      widget.categoriaSel)!;
 
-                                    _manageCampos();
-                                  });
-                                },
-                              ) : Text(widget.categoriaSel),
+                                              _manageCampos();
+                                            });
+                                          },
+                                        )
+                                      : Text(widget.categoriaSel),
                             ),
 
                             const SizedBox(height: 20),
@@ -351,9 +381,12 @@ class _MOfferPage extends State<MOfferPage> {
                                     ],
                                   ),
                                   TextFormField(
-                                    inputFormatters: [FilteringTextInputFormatter.digitsOnly,CentavosInputFormatter(), ],
+                                    inputFormatters: [
+                                      FilteringTextInputFormatter.digitsOnly,
+                                      CentavosInputFormatter(),
+                                    ],
                                     controller:
-                                    widget.mofferController.txtPreco,
+                                        widget.mofferController.txtPreco,
                                     // initialValue: '0',
 
                                     decoration: InputDecoration(
@@ -367,17 +400,19 @@ class _MOfferPage extends State<MOfferPage> {
                                         TextInputType.numberWithOptions(
                                             decimal: true),
                                     onFieldSubmitted: (_) {
-                                      FocusScope.of(context)
-                                          .requestFocus(widget._descriptionFocusNode);
+                                      FocusScope.of(context).requestFocus(
+                                          widget._descriptionFocusNode);
                                     },
-                                    // validator: (value) {
-                                    //   bool emptydUrl = value.trim().isEmpty;
-                                    //   var newPrice = double.tryParse(value);
-                                    //   bool isValid = newPrice == null || newPrice <= 0;
-                                    //   if (emptydUrl || isValid) {
-                                    //     return 'Informe um preço valido';
-                                    //   }
-                                    // },
+                                    validator: (value) {
+                                      double xPreco = double.parse(value
+                                          .toString()
+                                          .replaceAll('.', '')
+                                          .replaceAll(',', '.'));
+                                      if (xPreco <= 0 &&
+                                          !widget.valPrecoCombinar)
+                                        return 'Valor precisa ser maior do que zero, ou marque como Preço à combinar';
+                                      return null;
+                                    },
                                   ),
 
                                   if (widget.showTxtValorSinalOrc)
@@ -389,7 +424,8 @@ class _MOfferPage extends State<MOfferPage> {
                                               value: widget.valSinalPercentual,
                                               onChanged: (bool val) {
                                                 setState(() {
-                                                  widget.valSinalPercentual = val;
+                                                  widget.valSinalPercentual =
+                                                      val;
                                                 });
                                               }),
                                           const SizedBox(width: 20),
@@ -400,12 +436,19 @@ class _MOfferPage extends State<MOfferPage> {
                                         ],
                                       ),
                                       TextFormField(
-                                          inputFormatters: [FilteringTextInputFormatter.digitsOnly,CentavosInputFormatter(), ],
+                                          inputFormatters: [
+                                            FilteringTextInputFormatter
+                                                .digitsOnly,
+                                            CentavosInputFormatter(),
+                                          ],
                                           // initialValue: '0',
                                           controller: widget.mofferController
                                               .txtValorSinalOrc,
                                           decoration: InputDecoration(
-                                              prefix: Text(widget.valSinalPercentual ? '%' : 'R\$ '),
+                                              prefix: Text(
+                                                  widget.valSinalPercentual
+                                                      ? '%'
+                                                      : 'R\$ '),
                                               border: OutlineInputBorder(),
                                               labelText:
                                                   'Valor Sinal/Orçamento'),
@@ -432,7 +475,11 @@ class _MOfferPage extends State<MOfferPage> {
                                     Column(children: <Widget>[
                                       const SizedBox(height: 10),
                                       TextFormField(
-                                        inputFormatters: [FilteringTextInputFormatter.digitsOnly,CentavosInputFormatter(), ],
+                                        inputFormatters: [
+                                          FilteringTextInputFormatter
+                                              .digitsOnly,
+                                          CentavosInputFormatter(),
+                                        ],
                                         // initialValue: '0',
                                         controller:
                                             widget.mofferController.txtValorMin,
@@ -481,6 +528,13 @@ class _MOfferPage extends State<MOfferPage> {
                                           border: OutlineInputBorder(),
                                         ),
                                         keyboardType: TextInputType.number,
+                                        validator: (value) {
+                                          int xQtdDispo =
+                                              int.parse(value.toString());
+                                          if (xQtdDispo <= 0)
+                                            return 'Quantidade disponível precisa ser maior do que zero, ou marque como Sem controle de quantidade';
+                                          return null;
+                                        },
                                       ),
                                       const SizedBox(height: 20),
                                       TextFormField(
@@ -512,14 +566,17 @@ class _MOfferPage extends State<MOfferPage> {
                               Column(children: <Widget>[
                                 const SizedBox(height: 20),
                                 TextFormField(
-                                    inputFormatters: [FilteringTextInputFormatter.digitsOnly,PesoInputFormatter(), ],
+                                    inputFormatters: [
+                                      FilteringTextInputFormatter.digitsOnly,
+                                      PesoInputFormatter(),
+                                    ],
                                     controller:
                                         widget.mofferController.txtPesoPorcao,
                                     decoration: InputDecoration(
                                       labelText: 'Peso/Porção',
                                       border: OutlineInputBorder(),
                                     ),
-                                    keyboardType: TextInputType.text),
+                                    keyboardType: TextInputType.number),
                               ]),
 
                             if (widget.showTxtPesoPorcaoUn)
@@ -532,7 +589,18 @@ class _MOfferPage extends State<MOfferPage> {
                                       labelText: 'Peso/Porção Unidade',
                                       border: OutlineInputBorder(),
                                     ),
+                                    validator: (value) {
+                                      double xPeso = double.parse(widget
+                                          .mofferController.txtPesoPorcao
+                                          .toString()
+                                          .replaceAll('.', '')
+                                          .replaceAll(',', '.'));
+                                      if (xPeso > 0 && value.toString() == '')
+                                        return 'Favor informar uma unidade de peso';
+                                      return null;
+                                    },
                                     keyboardType: TextInputType.text),
+
                                 // if (showTxtSabor)
                                 //   TextFormField(
                                 //       controller: widget.mofferController.txtSabor,
@@ -549,8 +617,8 @@ class _MOfferPage extends State<MOfferPage> {
                                     decoration: InputDecoration(
                                         suffix: Text('dias'),
                                         border: OutlineInputBorder(),
-                                        labelText:
-                                        widget.labelValidade + ' (ex: 5 dias)'),
+                                        labelText: widget.labelValidade +
+                                            ' (ex: 5 dias)'),
                                     keyboardType: TextInputType.number),
                               ]),
 
@@ -558,7 +626,10 @@ class _MOfferPage extends State<MOfferPage> {
                               Column(children: <Widget>[
                                 const SizedBox(height: 20),
                                 TextFormField(
-                                  inputFormatters: [FilteringTextInputFormatter.digitsOnly,CepInputFormatter(), ],
+                                  inputFormatters: [
+                                    FilteringTextInputFormatter.digitsOnly,
+                                    CepInputFormatter(),
+                                  ],
                                   controller: widget.mofferController.txtCEP,
                                   decoration: InputDecoration(
                                     labelText: 'Cep da oferta',
@@ -569,7 +640,8 @@ class _MOfferPage extends State<MOfferPage> {
                                 ),
                               ]),
 
-                            if (widget.showTxtOfertaCepDistancia && widget.showCamposBasicos)
+                            if (widget.showTxtOfertaCepDistancia &&
+                                widget.showCamposBasicos)
                               Column(children: <Widget>[
                                 const SizedBox(height: 20),
                                 TextFormField(
@@ -578,24 +650,50 @@ class _MOfferPage extends State<MOfferPage> {
                                   decoration: InputDecoration(
                                       suffix: Text('Km '),
                                       border: OutlineInputBorder(),
-                                      labelText:
-                                          'Distância de ' + widget.labelEntrega + ' em Km'),
+                                      labelText: 'Distância de ' +
+                                          widget.labelEntrega +
+                                          ' em Km'),
                                   keyboardType: TextInputType.number,
                                 ),
                               ]),
 
+                            // if (widget.showTxtMarca)
+                            //   Column(children: <Widget>[
+                            //     const SizedBox(height: 20),
+                            //     TextFormField(
+                            //         controller:
+                            //             widget.mofferController.txtMarca,
+                            //         decoration: InputDecoration(
+                            //           labelText: 'Marca',
+                            //           border: OutlineInputBorder(),
+                            //         ),
+                            //         keyboardType: TextInputType.text),
+                            //   ]),
+
                             if (widget.showTxtMarca)
-                              Column(children: <Widget>[
-                                const SizedBox(height: 20),
-                                TextFormField(
-                                    controller:
-                                        widget.mofferController.txtMarca,
-                                    decoration: InputDecoration(
-                                      labelText: 'Marca',
-                                      border: OutlineInputBorder(),
-                                    ),
-                                    keyboardType: TextInputType.text),
-                              ]),
+                              Column(
+                                children: <Widget>[
+                                  const Divider(),
+                                  const SizedBox(height: 10),
+                                  Text('Revenda'),
+                                  const SizedBox(height: 10),
+                                  DropdownButton<String>(
+                                    items: widget.listaRevendas
+                                        .map((String value) {
+                                      return DropdownMenuItem<String>(
+                                        value: value,
+                                        child: Text(value),
+                                      );
+                                    }).toList(),
+                                    value: widget.revendaSel,
+                                    onChanged: (String? newValue) {
+                                      setState(() {
+                                        widget.revendaSel = newValue!;
+                                      });
+                                    },
+                                  ),
+                                ],
+                              ),
 
                             if (widget.showTxtCodigoAlt)
                               Column(children: <Widget>[
@@ -748,8 +846,9 @@ class _MOfferPage extends State<MOfferPage> {
                                               backgroundColor:
                                                   MaterialStateProperty.all<
                                                       Color>(
-                                            widget._loginController.colorFromHex(
-                                                widget._loginController.listCore
+                                            widget._loginController
+                                                .colorFromHex(widget
+                                                    ._loginController.listCore
                                                     .where((coreItem) =>
                                                         coreItem.coreChave ==
                                                         'backDark')
@@ -792,8 +891,9 @@ class _MOfferPage extends State<MOfferPage> {
                                               backgroundColor:
                                                   MaterialStateProperty.all<
                                                       Color>(
-                                                    widget._loginController.colorFromHex(
-                                                        widget._loginController.listCore
+                                            widget._loginController
+                                                .colorFromHex(widget
+                                                    ._loginController.listCore
                                                     .where((coreItem) =>
                                                         coreItem.coreChave ==
                                                         'backDark')
@@ -857,8 +957,9 @@ class _MOfferPage extends State<MOfferPage> {
                                               backgroundColor:
                                                   MaterialStateProperty.all<
                                                       Color>(
-                                                    widget._loginController.colorFromHex(
-                                                        widget._loginController.listCore
+                                            widget._loginController
+                                                .colorFromHex(widget
+                                                    ._loginController.listCore
                                                     .where((coreItem) =>
                                                         coreItem.coreChave ==
                                                         'backDark')
@@ -901,8 +1002,9 @@ class _MOfferPage extends State<MOfferPage> {
                                               backgroundColor:
                                                   MaterialStateProperty.all<
                                                       Color>(
-                                                    widget._loginController.colorFromHex(
-                                                widget._loginController.listCore
+                                            widget._loginController
+                                                .colorFromHex(widget
+                                                    ._loginController.listCore
                                                     .where((coreItem) =>
                                                         coreItem.coreChave ==
                                                         'backDark')
@@ -965,8 +1067,9 @@ class _MOfferPage extends State<MOfferPage> {
                                               backgroundColor:
                                                   MaterialStateProperty.all<
                                                       Color>(
-                                                    widget._loginController.colorFromHex(
-                                                widget._loginController.listCore
+                                            widget._loginController
+                                                .colorFromHex(widget
+                                                    ._loginController.listCore
                                                     .where((coreItem) =>
                                                         coreItem.coreChave ==
                                                         'backDark')
@@ -1009,8 +1112,9 @@ class _MOfferPage extends State<MOfferPage> {
                                               backgroundColor:
                                                   MaterialStateProperty.all<
                                                       Color>(
-                                                    widget._loginController.colorFromHex(
-                                                widget._loginController.listCore
+                                            widget._loginController
+                                                .colorFromHex(widget
+                                                    ._loginController.listCore
                                                     .where((coreItem) =>
                                                         coreItem.coreChave ==
                                                         'backDark')
@@ -1073,8 +1177,9 @@ class _MOfferPage extends State<MOfferPage> {
                                               backgroundColor:
                                                   MaterialStateProperty.all<
                                                       Color>(
-                                                    widget._loginController.colorFromHex(
-                                                widget._loginController.listCore
+                                            widget._loginController
+                                                .colorFromHex(widget
+                                                    ._loginController.listCore
                                                     .where((coreItem) =>
                                                         coreItem.coreChave ==
                                                         'backDark')
@@ -1117,8 +1222,9 @@ class _MOfferPage extends State<MOfferPage> {
                                               backgroundColor:
                                                   MaterialStateProperty.all<
                                                       Color>(
-                                                    widget._loginController.colorFromHex(
-                                                widget._loginController.listCore
+                                            widget._loginController
+                                                .colorFromHex(widget
+                                                    ._loginController.listCore
                                                     .where((coreItem) =>
                                                         coreItem.coreChave ==
                                                         'backDark')
@@ -1181,8 +1287,9 @@ class _MOfferPage extends State<MOfferPage> {
                                               backgroundColor:
                                                   MaterialStateProperty.all<
                                                       Color>(
-                                                    widget._loginController.colorFromHex(
-                                                widget._loginController.listCore
+                                            widget._loginController
+                                                .colorFromHex(widget
+                                                    ._loginController.listCore
                                                     .where((coreItem) =>
                                                         coreItem.coreChave ==
                                                         'backDark')
@@ -1225,8 +1332,9 @@ class _MOfferPage extends State<MOfferPage> {
                                               backgroundColor:
                                                   MaterialStateProperty.all<
                                                       Color>(
-                                                    widget._loginController.colorFromHex(
-                                                widget._loginController.listCore
+                                            widget._loginController
+                                                .colorFromHex(widget
+                                                    ._loginController.listCore
                                                     .where((coreItem) =>
                                                         coreItem.coreChave ==
                                                         'backDark')
@@ -1289,8 +1397,9 @@ class _MOfferPage extends State<MOfferPage> {
                                               backgroundColor:
                                                   MaterialStateProperty.all<
                                                       Color>(
-                                                    widget._loginController.colorFromHex(
-                                                widget._loginController.listCore
+                                            widget._loginController
+                                                .colorFromHex(widget
+                                                    ._loginController.listCore
                                                     .where((coreItem) =>
                                                         coreItem.coreChave ==
                                                         'backDark')
@@ -1333,8 +1442,9 @@ class _MOfferPage extends State<MOfferPage> {
                                               backgroundColor:
                                                   MaterialStateProperty.all<
                                                       Color>(
-                                                    widget._loginController.colorFromHex(
-                                                widget._loginController.listCore
+                                            widget._loginController
+                                                .colorFromHex(widget
+                                                    ._loginController.listCore
                                                     .where((coreItem) =>
                                                         coreItem.coreChave ==
                                                         'backDark')
@@ -1397,8 +1507,9 @@ class _MOfferPage extends State<MOfferPage> {
                                               backgroundColor:
                                                   MaterialStateProperty.all<
                                                       Color>(
-                                                    widget._loginController.colorFromHex(
-                                                widget._loginController.listCore
+                                            widget._loginController
+                                                .colorFromHex(widget
+                                                    ._loginController.listCore
                                                     .where((coreItem) =>
                                                         coreItem.coreChave ==
                                                         'backDark')
@@ -1441,8 +1552,9 @@ class _MOfferPage extends State<MOfferPage> {
                                               backgroundColor:
                                                   MaterialStateProperty.all<
                                                       Color>(
-                                                    widget._loginController.colorFromHex(
-                                                widget._loginController.listCore
+                                            widget._loginController
+                                                .colorFromHex(widget
+                                                    ._loginController.listCore
                                                     .where((coreItem) =>
                                                         coreItem.coreChave ==
                                                         'backDark')
@@ -1510,7 +1622,8 @@ class _MOfferPage extends State<MOfferPage> {
                                         setState(() {
                                           widget.valAceitaEncomenda = val;
                                           print('valAceitaEncomenda: ' +
-                                              widget.valAceitaEncomenda.toString());
+                                              widget.valAceitaEncomenda
+                                                  .toString());
                                         });
                                       }),
                                   const SizedBox(width: 20),
@@ -1528,7 +1641,8 @@ class _MOfferPage extends State<MOfferPage> {
                                         setState(() {
                                           widget.valSomenteEncomenda = val;
                                           print('valSomenteEncomenda: ' +
-                                              widget.valSomenteEncomenda.toString());
+                                              widget.valSomenteEncomenda
+                                                  .toString());
                                         });
                                       }),
                                   const SizedBox(width: 10),
@@ -1554,7 +1668,7 @@ class _MOfferPage extends State<MOfferPage> {
                                       style: ButtonStyle(
                                           backgroundColor:
                                               MaterialStateProperty.all<Color>(
-                                                widget._loginController.colorFromHex(
+                                        widget._loginController.colorFromHex(
                                             widget._loginController.listCore
                                                 .where((coreItem) =>
                                                     coreItem.coreChave ==
@@ -1620,25 +1734,117 @@ class _MOfferPage extends State<MOfferPage> {
                             //   ],
                             // ),
 
-                            if (widget.showCamposEntrega) // && widget.categSelecionada.categoriaFormasEntrega!.contains('other'))
+                            if (widget
+                                .showCamposEntrega) // && widget.categSelecionada.categoriaFormasEntrega!.contains('other'))
                               Column(
                                 children: <Widget>[
                                   Text('Agente de ' + widget.labelEntrega),
-                                  DropdownButton<String>(
-                                    items:
-                                    widget.listaFormaEntrega.map((String value) {
-                                      return DropdownMenuItem<String>(
-                                        value: value,
-                                        child: Text(value),
-                                      );
-                                    }).toList(),
-                                    value: widget.agenteEntregaSel,
-                                    onChanged: (String? newValue) {
-                                      setState(() {
-                                        widget.agenteEntregaSel = newValue!;
-                                      });
-                                    },
+                                  Row(
+                                    children: <Widget>[
+                                      Switch(
+                                          value: widget.valAceitaEntregaComprador,
+                                          onChanged: (bool val) {
+                                            setState(() {
+                                              widget.valAceitaEntregaComprador = val;
+                                            });
+                                          }),
+                                      const SizedBox(width: 20),
+                                      Text('Entrega por comprador'),
+                                    ],
                                   ),
+                                  Row(
+                                    children: <Widget>[
+                                      Switch(
+                                          value: widget.valAceitaEntregaVendedor,
+                                          onChanged: (bool val) {
+                                            setState(() {
+                                              widget.valAceitaEntregaVendedor = val;
+                                            });
+                                          }),
+                                      const SizedBox(width: 20),
+                                      Text('Entrega por vendedor'),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: <Widget>[
+                                      Switch(
+                                          value: widget.valAceitaEntregaParceiro,
+                                          onChanged: (bool val) {
+                                            setState(() {
+                                              // configura lista de parceiros
+                                                    widget.listaParceiros.clear();
+                                                    widget.listaParceiros.add('escolha o parceiro');
+                                                    widget.partnersController.parceiros
+                                                        ?.forEach((part) {
+                                                      print(part.ParceiroEntregaNome
+                                                          .toString());
+                                                      widget.listaParceiros.add(part
+                                                          .ParceiroEntregaNome.toString());
+                                                    });
+                                              widget.valAceitaEntregaParceiro = val;
+                                            });
+                                          }),
+                                      const SizedBox(width: 20),
+                                      Text('Entrega por parceiro'),
+                                    ],
+                                  ),
+
+                                  // DropdownButton<String>(
+                                  //   items: widget.listaFormaEntrega
+                                  //       .map((String value) {
+                                  //     return DropdownMenuItem<String>(
+                                  //       value: value,
+                                  //       child: Text(value),
+                                  //     );
+                                  //   }).toList(),
+                                  //   value: widget.agenteEntregaSel,
+                                  //   onChanged: (String? newValue) {
+                                  //     if (newValue == 'parceiro') {
+                                  //       // configura lista de parceiros
+                                  //       widget.listaParceiros.clear();
+                                  //       widget.listaParceiros.add('escolha o parceiro');
+                                  //       widget.partnersController.parceiros
+                                  //           ?.forEach((part) {
+                                  //         print(part.ParceiroEntregaNome
+                                  //             .toString());
+                                  //         widget.listaParceiros.add(part
+                                  //             .ParceiroEntregaNome.toString());
+                                  //       });
+                                  //       print('lista parceiros: ' +
+                                  //           widget.listaParceiros.length
+                                  //               .toString());
+                                  //     }
+                                  //
+                                  //     setState(() {
+                                  //       widget.agenteEntregaSel = newValue!;
+                                  //     });
+                                  //   },
+                                  // ),
+                                  if (widget.valAceitaEntregaParceiro)
+                                    Column(
+                                      children: <Widget>[
+                                        //const SizedBox(height: 20),
+                                        const Divider(),
+                                        const SizedBox(height: 10),
+                                        // Text('Parceiro'),
+                                        // const SizedBox(height: 10),
+                                        DropdownButton<String>(
+                                          items: widget.listaParceiros
+                                              .map((String value) {
+                                            return DropdownMenuItem<String>(
+                                              value: value,
+                                              child: Text(value),
+                                            );
+                                          }).toList(),
+                                          value: widget.parceiroSel,
+                                          onChanged: (String? newValue) {
+                                            setState(() {
+                                              widget.parceiroSel = newValue!;
+                                            });
+                                          },
+                                        ),
+                                      ],
+                                    ),
                                   const SizedBox(height: 20),
                                   Text(
                                     "Disponibilidade de " +
@@ -1664,7 +1870,7 @@ class _MOfferPage extends State<MOfferPage> {
                                       style: ButtonStyle(
                                           backgroundColor:
                                               MaterialStateProperty.all<Color>(
-                                                widget._loginController.colorFromHex(
+                                        widget._loginController.colorFromHex(
                                             widget._loginController.listCore
                                                 .where((coreItem) =>
                                                     coreItem.coreChave ==
@@ -1693,6 +1899,7 @@ class _MOfferPage extends State<MOfferPage> {
                                         ],
                                       )),
                                   const SizedBox(height: 20),
+
                                   Text("Horário de " + widget.labelEntrega),
                                   const SizedBox(height: 10),
                                   Row(
@@ -1724,8 +1931,9 @@ class _MOfferPage extends State<MOfferPage> {
                                               backgroundColor:
                                                   MaterialStateProperty.all<
                                                       Color>(
-                                                    widget._loginController.colorFromHex(
-                                                widget._loginController.listCore
+                                            widget._loginController
+                                                .colorFromHex(widget
+                                                    ._loginController.listCore
                                                     .where((coreItem) =>
                                                         coreItem.coreChave ==
                                                         'backDark')
@@ -1768,8 +1976,9 @@ class _MOfferPage extends State<MOfferPage> {
                                               backgroundColor:
                                                   MaterialStateProperty.all<
                                                       Color>(
-                                                    widget._loginController.colorFromHex(
-                                                widget._loginController.listCore
+                                            widget._loginController
+                                                .colorFromHex(widget
+                                                    ._loginController.listCore
                                                     .where((coreItem) =>
                                                         coreItem.coreChave ==
                                                         'backDark')
@@ -1799,7 +2008,11 @@ class _MOfferPage extends State<MOfferPage> {
                                         ),
                                         const SizedBox(height: 20),
                                         TextFormField(
-                                          inputFormatters: [FilteringTextInputFormatter.digitsOnly,CentavosInputFormatter(), ],
+                                          inputFormatters: [
+                                            FilteringTextInputFormatter
+                                                .digitsOnly,
+                                            CentavosInputFormatter(),
+                                          ],
                                           // initialValue: '0',
                                           controller: widget
                                               .mofferController.txtValorTaxa1km,
@@ -1815,7 +2028,11 @@ class _MOfferPage extends State<MOfferPage> {
                                         ),
                                         const SizedBox(height: 20),
                                         TextFormField(
-                                          inputFormatters: [FilteringTextInputFormatter.digitsOnly,CentavosInputFormatter(), ],
+                                          inputFormatters: [
+                                            FilteringTextInputFormatter
+                                                .digitsOnly,
+                                            CentavosInputFormatter(),
+                                          ],
                                           // initialValue: '0',
                                           controller: widget
                                               .mofferController.txtValorTaxa2km,
@@ -1831,7 +2048,11 @@ class _MOfferPage extends State<MOfferPage> {
                                         ),
                                         const SizedBox(height: 20),
                                         TextFormField(
-                                          inputFormatters: [FilteringTextInputFormatter.digitsOnly,CentavosInputFormatter(), ],
+                                          inputFormatters: [
+                                            FilteringTextInputFormatter
+                                                .digitsOnly,
+                                            CentavosInputFormatter(),
+                                          ],
                                           // initialValue: '0',
                                           controller: widget.mofferController
                                               .txtValorTaxaMaisQue2km,
@@ -1866,7 +2087,8 @@ class _MOfferPage extends State<MOfferPage> {
                                           value: widget.tempoEntregaTipoSel,
                                           onChanged: (String? newValue) {
                                             setState(() {
-                                              widget.tempoEntregaTipoSel = newValue!;
+                                              widget.tempoEntregaTipoSel =
+                                                  newValue!;
                                             });
                                           },
                                         ),
@@ -1885,9 +2107,8 @@ class _MOfferPage extends State<MOfferPage> {
                                     style: ButtonStyle(
                                         backgroundColor:
                                             MaterialStateProperty.all<Color>(
-                                              widget._loginController.colorFromHex(
-                                          widget._loginController
-                                              .listCore
+                                      widget._loginController.colorFromHex(
+                                          widget._loginController.listCore
                                               .where((coreItem) =>
                                                   coreItem.coreChave ==
                                                   'backDark')
@@ -1908,19 +2129,22 @@ class _MOfferPage extends State<MOfferPage> {
                                 if (widget.imgcloud != '')
                                   CachedNetworkImage(
                                     imageUrl: widget.imgcloud,
-                                    progressIndicatorBuilder: (context, url, downloadProgress) =>
-                                        CircularProgressIndicator(value: downloadProgress.progress),
-                                    errorWidget: (context, url, error) => Icon(Icons.local_offer_outlined),
+                                    progressIndicatorBuilder: (context, url,
+                                            downloadProgress) =>
+                                        CircularProgressIndicator(
+                                            value: downloadProgress.progress),
+                                    errorWidget: (context, url, error) =>
+                                        Icon(Icons.local_offer_outlined),
                                     height: 250,
                                   ),
 
-                                  // FadeInImage.assetNetwork(
-                                  //   placeholder: 'assets/images/pholder.png',
-                                  //   image: widget.imgcloud,
-                                  //   imageErrorBuilder: (context, url, error) =>
-                                  //       new Icon(Icons.local_offer_outlined),
-                                  //   height: 250,
-                                  // ),
+                                // FadeInImage.assetNetwork(
+                                //   placeholder: 'assets/images/pholder.png',
+                                //   image: widget.imgcloud,
+                                //   imageErrorBuilder: (context, url, error) =>
+                                //       new Icon(Icons.local_offer_outlined),
+                                //   height: 250,
+                                // ),
 
                                 if (image != null)
                                   Image.file(
@@ -1930,16 +2154,18 @@ class _MOfferPage extends State<MOfferPage> {
                                 const SizedBox(height: 20),
                                 ButtonOffer(
                                     text: 'Salvar',
-                                    colorText: widget._loginController.colorFromHex(
-                                        widget._loginController.listCore
+                                    colorText: widget._loginController
+                                        .colorFromHex(widget
+                                            ._loginController.listCore
                                             .where((coreItem) =>
                                                 coreItem.coreChave ==
                                                 'textLight')
                                             .first
                                             .coreValor
                                             .toString()),
-                                    colorButton: widget._loginController.colorFromHex(
-                                        widget._loginController.listCore
+                                    colorButton: widget._loginController
+                                        .colorFromHex(widget
+                                            ._loginController.listCore
                                             .where((coreItem) =>
                                                 coreItem.coreChave ==
                                                 'iconColor')
@@ -1949,7 +2175,7 @@ class _MOfferPage extends State<MOfferPage> {
                                     onPressed: () {
                                       uploadFoto(
                                               image == null ? null : image,
-                                          widget._loginController.usuGuid
+                                              widget._loginController.usuGuid
                                                   .toString())
                                           .then((value) => Get.offAndToNamed(
                                               AppRoutes.mOffers));
@@ -1997,7 +2223,8 @@ class _MOfferPage extends State<MOfferPage> {
     }
     //showSnackBar("Oferta salva! - " + widget.offerGuid, Duration(seconds: 3));
 
-    Get.defaultDialog(title: "Aviso", middleText: "Informações atualizadas com sucesso!");
+    Get.defaultDialog(
+        title: "Aviso", middleText: "Informações atualizadas com sucesso!");
   }
 
   //snackbar for  showing error
@@ -2039,6 +2266,12 @@ class _MOfferPage extends State<MOfferPage> {
       default:
         formaFechto = widget.formaFechSel;
     }
+
+    double valPreco = 0.0;
+    if (widget.categSelecionada.categoriaChave != 'DOACAO')
+      valPreco = double.parse(widget.mofferController.txtPreco.text
+          .replaceAll('.', '')
+          .replaceAll(',', '.'));
 
     var offerToSend = new Oferta(
         0,
@@ -2082,7 +2315,8 @@ class _MOfferPage extends State<MOfferPage> {
         widget.agenteEntregaSel,
         '',
         '',
-        widget.mofferController.txtMarca.text,
+        //widget.mofferController.txtMarca.text,
+        widget.revendaSel,
         widget.mofferController.txtCores.text,
         widget.mofferController.txtTamanhos.text,
         widget.val24hs,
@@ -2119,7 +2353,9 @@ class _MOfferPage extends State<MOfferPage> {
         widget.mofferController.valSabAs,
         widget.mofferController.valDomDas,
         widget.mofferController.valDomAs,
-        null);
+        null,
+      null,null,null,null,null
+    );
 
     // Uri url = Uri.https("ec3digrepo-default-rtdb.firebaseio.com", "/words.json");
 
@@ -2438,6 +2674,17 @@ class _MOfferPage extends State<MOfferPage> {
       widget.showTxtCodigoAlt = false;
     }
 
+    if (widget.showTxtMarca) {
+      //configura lista de revendas
+      widget.listaRevendas.clear();
+      widget.listaRevendas.add('selecione');
+      widget.listaRevendas.add('outra');
+      widget.brandsController.revendas?.forEach((rev) {
+        print(rev.RevendaNome.toString());
+        widget.listaRevendas.add(rev.RevendaNome.toString());
+      });
+    }
+
     print(widget.categSelecionada.categoriaFormasEntrega.toString());
     print(widget.categSelecionada.categoriaFormasFechto.toString());
 
@@ -2445,37 +2692,48 @@ class _MOfferPage extends State<MOfferPage> {
     widget.listaFormaEntrega.clear();
     widget.listaFormaEntrega.add('selecione');
 
-    if(widget.categSelecionada.categoriaFormasEntrega.toString().contains('/'))
-      widget.categSelecionada.categoriaFormasEntrega?.split('/').forEach((fe) { print(fe.toString()); widget.listaFormaEntrega.add(fe.toString()); });
+    // verifica se existem parceiros de entrega disponíveis na regiao
+
+
+    if (widget.categSelecionada.categoriaFormasEntrega.toString().contains('/'))
+      widget.categSelecionada.categoriaFormasEntrega?.split('/').forEach((fe) {
+        print(fe.toString());
+        if(fe.toString() == 'parceiro' && widget.partnersController.parceiros!.length > 0)
+          widget.listaFormaEntrega.add(fe.toString());
+      });
     else
-      widget.listaFormaEntrega.add(widget.categSelecionada.categoriaFormasEntrega.toString());
+      widget.listaFormaEntrega
+          .add(widget.categSelecionada.categoriaFormasEntrega.toString());
 
     // configura forma de fechamento por categoria
     widget.listaFormaFechamento.clear();
     widget.listaFormaFechamento.add('selecione');
 
-    if(widget.categSelecionada.categoriaFormasFechto.toString().contains('/'))
-      {
-        widget.categSelecionada.categoriaFormasFechto?.split('/').forEach((ff) {
-          print(ff.toString());
-          if(ff.contains('chatapp'))
-            widget.listaFormaFechamento.add('mensagem no aplicativo (seguro)');
-          if(ff.contains('whatsapp'))
-            widget.listaFormaFechamento.add('whatsapp');
-          if(ff.contains('gatewayapi'))
-            widget.listaFormaFechamento.add('pagamento no aplicativo (seguro)');
-        });
-      } else {
-      if(widget.categSelecionada.categoriaFormasFechto.toString() == 'chatapp')
+    if (widget.categSelecionada.categoriaFormasFechto
+        .toString()
+        .contains('/')) {
+      widget.categSelecionada.categoriaFormasFechto?.split('/').forEach((ff) {
+        print(ff.toString());
+        if (ff.contains('chatapp'))
+          widget.listaFormaFechamento.add('mensagem no aplicativo (seguro)');
+        if (ff.contains('whatsapp'))
+          widget.listaFormaFechamento.add('whatsapp');
+        if (ff.contains('gatewayapi'))
+          widget.listaFormaFechamento.add('pagamento no aplicativo (seguro)');
+      });
+    } else {
+      if (widget.categSelecionada.categoriaFormasFechto.toString() == 'chatapp')
         widget.listaFormaFechamento.add('mensagem no aplicativo (seguro)');
-      if(widget.categSelecionada.categoriaFormasFechto.toString() == 'whatsapp')
-        widget.listaFormaFechamento.add('whatsapp');
-      if(widget.categSelecionada.categoriaFormasFechto.toString() == 'gatewayapi')
+      if (widget.categSelecionada.categoriaFormasFechto.toString() ==
+          'whatsapp') widget.listaFormaFechamento.add('whatsapp');
+      if (widget.categSelecionada.categoriaFormasFechto.toString() ==
+          'gatewayapi')
         widget.listaFormaFechamento.add('pagamento no aplicativo (seguro)');
-
     }
 
-
+    //se for doacao, remove o preço
+    if (widget.categSelecionada.categoriaChave == 'DOACAO')
+      widget.showPreco = false;
   }
 
   Future<void> carregaObjs() async {
@@ -2554,10 +2812,11 @@ class _MOfferPage extends State<MOfferPage> {
       widget.mofferController.txtValorMin.text = oferta.OfertaPrecoMin == null
           ? '0'
           : oferta.OfertaPrecoMin.toString();
-      widget.mofferController.txtMarca.text =
-          oferta.OfertaMarcaRevenda! == 'null'
-              ? ''
-              : oferta.OfertaMarcaRevenda!;
+      // widget.mofferController.txtMarca.text =
+      //     oferta.OfertaMarcaRevenda! == 'null'
+      //         ? ''
+      //         : oferta.OfertaMarcaRevenda!;
+      widget.revendaSel = oferta.OfertaMarcaRevenda!;
       widget.mofferController.txtQtdMaxPorVenda.text =
           oferta.OfertaQtdMaxVenda == null
               ? '0'

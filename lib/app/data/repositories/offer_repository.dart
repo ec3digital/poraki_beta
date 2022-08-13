@@ -93,6 +93,16 @@ class OfferRepository extends GetConnect {
         .toList();
   }
 
+  Future<List<ProdutoOferta>> getFavsOffers(int limit) async {
+    // String url = '${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiOfertasMaisFrescas').first.coreValor.toString()}/' + _loginController.usuCep.toString().substring(0,3) + '%25/' + limit.toString();
+    String url = 'https://poraki.hasura.app/api/rest/ofertasfavperuser/' + _loginController.usuGuid.toString();
+    var response = await get(url, headers: Constants.headers);
+    if (response.hasError) throw 'Ocorreu um erro em getFavsOffers()';
+    return (response.body['OfertasFavs'] as List)
+        .map((oferta) => ProdutoOferta.fromJson(oferta['OfertasFavsOfertas']))
+        .toList();
+  }
+
   Future<List<ProdutoOferta>> getOffersBySeller(String SellerGuid) async {
     print('getOffersBySeller ' + SellerGuid);
     String url = '${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiMoffer').first.coreValor.toString()}/' + SellerGuid;

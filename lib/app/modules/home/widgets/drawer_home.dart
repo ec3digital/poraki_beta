@@ -1,8 +1,9 @@
 import 'package:badges/badges.dart';
-import 'package:flutter/cupertino.dart';
+// import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:poraki/app/modules/auth/login/login_controller.dart';
+import 'package:poraki/app/modules/offers/offers_controller.dart';
 import 'package:poraki/app/routes/app_routes.dart';
 import 'package:poraki/app/services/sqlite/sqlporaki_login_service.dart';
 import 'package:poraki/app/shared/porakiprefs.dart';
@@ -20,6 +21,7 @@ class DrawerHome extends StatefulWidget {
 
 class _DrawerHomeState extends State<DrawerHome> {
   final LoginController _login = Get.find();
+
   // Get.put(LoginController());
   //final OrderController _orderController = Get.find();
   bool load = true;
@@ -115,7 +117,19 @@ class _DrawerHomeState extends State<DrawerHome> {
                       text: 'Favoritos',
                       // isSelected: index == 1,
                       icon: Icons.favorite_border_outlined,
-                      onTap: () {},
+                      onTap: () async {
+                        OffersController _offersController = Get.find(); // Get.put(OffersController());
+                        Future.wait(
+                            [_offersController.getOffersFavsByUser(24)]);
+
+                        Get.toNamed(AppRoutes.offers, arguments: [
+                          {'listName': 'favsoffers'},
+                          {'limit': 24},
+                          {'category': null},
+                          {'title': 'Favoritas'},
+                          {'ofertaGuid': null}
+                        ]);
+                      },
                     ),
                     RowCategoriesDrawerHome(
                       text: 'Meus endereços',
