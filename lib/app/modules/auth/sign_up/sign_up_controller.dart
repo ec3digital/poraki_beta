@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:poraki/app/data/models/sql/sqlUsuario.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:extended_masked_text/extended_masked_text.dart';
+// import 'package:shared_preferences/shared_preferences.dart';
+// import 'package:extended_masked_text/extended_masked_text.dart';
 import '../../../data/models/login_model.dart';
 import '../../../routes/app_routes.dart';
 import '../../../shared/constants/preferences_keys.dart';
@@ -15,24 +15,13 @@ class SignUpController extends GetxController {
   TextEditingController mailInputController = TextEditingController();
   TextEditingController passwordInputController = TextEditingController();
   TextEditingController confirmInputController = TextEditingController();
-
   TextEditingController surnameInputController = TextEditingController();
-  //TextEditingController phoneInputController = TextEditingController();
-  //TextEditingController cepInputController = TextEditingController();
-  //TextEditingController dtNascInputController = TextEditingController();
-  //TextEditingController cpfInputController = TextEditingController();
-
   TextEditingController cpfInputController = TextEditingController();
   TextEditingController dtNascInputController = TextEditingController();
   TextEditingController cepInputController = TextEditingController();
   TextEditingController phoneInputController = TextEditingController();
 
-  // MaskedTextController cpfInputController = MaskedTextController(mask: '000.000.000-00');
-  // MaskedTextController dtNascInputController = MaskedTextController(mask: '00/00/0000');
-  // MaskedTextController cepInputController = MaskedTextController(mask: '00000-000');
-  // MaskedTextController phoneInputController = MaskedTextController(mask: '(00)00000-0000)');
-
-      bool showPassword = false;
+  bool showPassword = false;
   final formKey = GlobalKey<FormState>();
 
   signUp(String email, String password) async {
@@ -78,7 +67,8 @@ class SignUpController extends GetxController {
     var uid = 'eyCv21RfaURoMn0SUndCg6LPyJP2';
 
     var sqlSvc = new sqlPorakiLoginService();
-    var newUser = new sqlUsuarios(mailInputController.text.removeAllWhitespace,
+    var newUser = new sqlUsuarios(
+        mailInputController.text.removeAllWhitespace,
         nameInputController.text.removeAllWhitespace,
         surnameInputController.text.removeAllWhitespace,
         cpfInputController.text.removeAllWhitespace,
@@ -89,15 +79,14 @@ class SignUpController extends GetxController {
         '',
         DateTime.now().toString(),
         DateTime.now().toString(),
-        '1.00'
-    );
+        '1.00');
     sqlSvc.insertUsuario(newUser);
 
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString(
-      PreferencesKeys.activeUser,
-      json.encode(user.toJson()),
-    );
+    // SharedPreferences prefs = await SharedPreferences.getInstance();
+    // prefs.setString(
+    //   PreferencesKeys.activeUser,
+    //   json.encode(user.toJson()),
+    // );
 
     Get.toNamed(AppRoutes.offer);
   }

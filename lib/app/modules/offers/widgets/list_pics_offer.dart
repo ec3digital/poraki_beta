@@ -29,15 +29,13 @@ class _ListPicsOfferState extends State<ListPicsOffer> {
 
   @override
   void initState() {
-    backColor = _loginController.colorFromHex(_loginController
-        .listCore
+    backColor = _loginController.colorFromHex(_loginController.listCore
         .where((coreItem) => coreItem.coreChave == 'backLight')
         .first
         .coreValor
         .toString());
 
-    textColor = _loginController.colorFromHex(_loginController
-        .listCore
+    textColor = _loginController.colorFromHex(_loginController.listCore
         .where((coreItem) => coreItem.coreChave == 'backDark')
         .first
         .coreValor
@@ -47,9 +45,14 @@ class _ListPicsOfferState extends State<ListPicsOffer> {
   @override
   Widget build(BuildContext context) {
     print('fav usuGuid: ' + _loginController.usuGuid.toString());
-    var ofertaFav = new OfertasFavs(widget.offerGuid.toString(), _loginController.usuGuid.toString());
+    var ofertaFav = new OfertasFavs(widget.offerGuid.toString(),
+        _loginController.usuGuid.toString(), false, false);
     print('qtd fav de novo: ' + _loginController.ofertasFavs.length.toString());
-    bool favorited = _loginController.ofertasFavs.where((ofav) => ofav.OfertaGUID == widget.offerGuid).isNotEmpty ? true : false;
+    bool favorited = _loginController.ofertasFavs
+            .where((ofav) => ofav.OfertaGUID == widget.offerGuid)
+            .isNotEmpty
+        ? true
+        : false;
     print('fav : ' + widget.offerGuid + ' / ' + favorited.toString());
 
     var icon = favorited
@@ -104,13 +107,15 @@ class _ListPicsOfferState extends State<ListPicsOffer> {
               backgroundColor: backColor, //AppColors.containerLightColor,
               mini: true,
               onPressed: () async {
-                OffersFavController _offersFavController = Get.put(OffersFavController());
+                //OffersFavController _offersFavController = Get.put(OffersFavController());
+                //_loginController.refreshOfertasFavs = true;
                 if (favorited) {
-                  _loginController.ofertasFavs.remove(ofertaFav);
-                  await _offersFavController.removeObj(ofertaFav);
+                  _loginController.ofertasFavs.removeWhere(
+                      (ofFav) => ofFav.OfertaGUID == ofertaFav.OfertaGUID);
+                  //await _offersFavController.removeObj(ofertaFav);
                 } else {
                   _loginController.ofertasFavs.add(ofertaFav);
-                  await _offersFavController.addObj(ofertaFav);
+                  //await _offersFavController.addObj(ofertaFav);
                 }
 
                 setState(() {

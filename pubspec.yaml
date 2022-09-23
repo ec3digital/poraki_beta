@@ -26,11 +26,13 @@ dependencies:
   auto_size_text: ^3.0.0-nullsafety.0
   cloud_firestore: ^3.1.6
   firebase_storage: ^10.2.7
+  firebase_core: ^1.21.0
+  firebase_database: ^9.1.2
   cupertino_icons: ^1.0.4
   font_awesome_flutter: ^9.1.0
  # graphql_flutter: ^5.0.0
   http: ^0.13.3
-  shared_preferences: ^2.0.6
+  #shared_preferences: ^2.0.6
   flutter_rating_bar: ^4.0.0
   sqflite: ^2.0.1
   #number_inc_dec: ^0.8.0
@@ -46,13 +48,15 @@ dependencies:
   #flutter_svg: ^0.18.0
   flutter_localizations:
     sdk: flutter
-  get: ^4.6.1
+  get: ^4.6.5
   infinite_carousel: ^1.0.2
-  marquee: ^2.2.1
+  marquee: ^2.2.3
   carousel_slider: ^4.1.1
   brasil_fields: ^1.4.5
-  cached_network_image: ^3.2.0
+  cached_network_image: ^3.2.1
   badges: ^2.0.3
+  firebase_auth: ^3.8.0
+  firebase_messaging: ^12.0.1
   #flutter_smart_dialog: ^4.3.1
   #simple_s3: ^0.3.2
 

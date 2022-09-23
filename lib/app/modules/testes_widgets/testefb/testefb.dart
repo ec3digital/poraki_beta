@@ -11,6 +11,7 @@ class TesteFb extends StatefulWidget {
 class _TesteFb extends State<TesteFb> {
   List<String> listStrings = <String>["Nenhum registro carregado"];
   Uri url = Uri.https("ec3digrepo-default-rtdb.firebaseio.com", "/words.json");
+  Uri urlAkiChats = Uri.https("ec3digrepo-default-rtdb.firebaseio.com", "/akichats.json");
 
   TextEditingController _textController = TextEditingController();
   bool _isLoading = false;

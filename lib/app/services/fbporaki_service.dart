@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:poraki/app/modules/addresses/address_controller.dart';
 import 'dart:convert' show json;
+import 'package:http/http.dart' as http;
 
 class fbPorakiService {
   fbPorakiService();
@@ -65,10 +66,11 @@ class fbPorakiService {
     await _iniFirebase();
     CollectionReference coll = _fbInstance!.collection(col);
     DocumentSnapshot snapshot = await coll.doc(doc).get();
+
     // var data = snapshot.data() as Map;
 
     // var data = new Map<String, dynamic>.from(snapshot);
-    //
+
     // final _data = List<dynamic>.from(data.map<dynamic>((dynamic item) => item,),);
 
     // List<String, dynamic> ret = [];
@@ -91,6 +93,46 @@ class fbPorakiService {
     DocumentSnapshot snapshot = await coll.doc(cepAtual).get();
     var data = snapshot.data() as Map;
     return data as List<Map<dynamic, dynamic>>;
+  }
+
+  // TODO: fazer tudo por child
+  Future<dynamic> postNotif(String uuid, String notifType, String notifContent) async {
+    Uri urlAkiNotifs = Uri.https("ec3digrepo-default-rtdb.firebaseio.com", "/akinotif.json");
+    String jsonPost = "{'uuid': { '" + uuid + "': { 'notifs': [ { 'notifType': '" + notifType + "', 'notifContent': '" + notifContent + "' } ] } } }";
+
+    var resp = await http.post(urlAkiNotifs, body: jsonPost);
+    return resp;
+  }
+
+  Future<dynamic> deleteNotif(String uuid, String notifType, String notifContent) async {
+    Uri urlAkiNotifs = Uri.https("ec3digrepo-default-rtdb.firebaseio.com", "/akinotif.json");
+    String jsonPost = "{'uuid': { '" + uuid + "': { 'notifs': [ { 'notifType': '" + notifType + "', 'notifContent': '" + notifContent + "' } ] } } }";
+
+    var resp = await http.delete(urlAkiNotifs, body: jsonPost);
+    return resp;
+  }
+
+  Future<Stream<QuerySnapshot<Map<String, dynamic>>>> getFbTransMsgs(String transId, String doc) async {
+    await _iniFirebase();
+    CollectionReference coll = _fbInstance!.collection("akitransactions");
+    var snapshot = coll.doc(transId).collection("chat").orderBy("sentIn").snapshots();
+
+    // var data = snapshot.data() as Map;
+
+    // var data = new Map<String, dynamic>.from(snapshot);
+
+    // final _data = List<dynamic>.from(data.map<dynamic>((dynamic item) => item,),);
+
+    // List<String, dynamic> ret = [];
+    //await snapshot.forEach((element) {print(element.docs[0].data().toString());}); //  as Map<String, dynamic>;
+    //print(data);
+    // data.forEach((key, value) { });
+
+    // InternalLinkedHashMap<String, dynamic> invalidMap;
+    // final validMap = json.decode(json.encode(invalidMap)) as Map<String, dynamic>;
+
+    //print('chat data: qtd ' + data.length.toString());
+    return snapshot;
   }
 
 

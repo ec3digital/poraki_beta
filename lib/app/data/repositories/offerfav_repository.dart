@@ -17,6 +17,21 @@ class OfferfavRepository extends GetConnect {
         .toList();
   }
 
+  Future<String> updateCollection(List<OfertasFavs> ofertasfavs) async {
+    String resp = "";
+
+      ofertasfavs.forEach((oFav) async {
+        if(oFav.add)
+          resp += await postObj(oFav);
+
+        if(oFav.del)
+          resp += await deleteObj(oFav);
+      });
+
+    return resp;
+
+  }
+
   Future<String> postObj(OfertasFavs ofertafav) async {
     String url = 'https://poraki.hasura.app/api/rest/ofertafavadd/';
     var response = await http.post(

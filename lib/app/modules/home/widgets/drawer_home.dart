@@ -192,9 +192,9 @@ class _DrawerHomeState extends State<DrawerHome> {
         });
   }
 
-  Future<String?> getUserData() async {
-    return PorAkiPrefs().getPrefStr("userEmail");
-  }
+  // Future<String?> getUserData() async {
+  //   return PorAkiPrefs().getPrefStr("userEmail");
+  // }
 }
 
 void _runSpecialCmds() {

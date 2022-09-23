@@ -114,12 +114,11 @@ class FormSignup extends StatelessWidget {
           const SizedBox(height: 20,),
           TextFormField(
             validator: (value) {
-              if (value!.length < 5) {
-                return "Esse e-mail parece curto demais";
-              } else if (!value.contains("@")) {
-                return "Esse e-mail está meio estranho, não?";
-              }
-              return null;
+              RegExp regex = new RegExp(r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$');
+              if (value!.isEmpty || !regex.hasMatch(value))
+                return 'Favor informar um endereço de e-mail correto';
+              else
+                return null;
             },
             controller: controller.mailInputController,
             autofocus: true,

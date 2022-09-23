@@ -19,8 +19,9 @@ class OffersFavController extends GetxController {
     try {
       changeLoading(true);
       _loginController.ofertasFavs = await offerfavRepo.getAll();
-      if(_loginController.ofertasFavs == null)
-        _loginController.ofertasFavs = List.generate(1, (index) => new OfertasFavs('', ''));
+
+      // if(_loginController.ofertasFavs == null)
+      //   _loginController.ofertasFavs = List.generate(1, (index) => new OfertasFavs('', ''));
 
       print('qt ofertasfavs: ' + _loginController.ofertasFavs.length.toString());
     } catch (e) {
@@ -30,7 +31,35 @@ class OffersFavController extends GetxController {
     }
   }
 
-  Future<void> addObj(OfertasFavs ofertafav) async {
+  void addObj(OfertasFavs ofertafav) {
+    try {
+      if(_loginController.ofertasFavs.where((ofav) => ofav.OfertaGUID == ofertafav.OfertaGUID).isNotEmpty) {
+        var oFav = new OfertasFavs(ofertafav.OfertaGUID, ofertafav.usuGUID, true, false);
+        _loginController.ofertasFavs.add(oFav);
+      }
+        //offerfavRepo.postObj(_loginController.ofertasFavs.where((ofav) => ofav.OfertaGUID == ofertafav.OfertaGUID).first);
+    } catch (e) {
+      print('Erro no addObj() controller ${e.toString()}');
+    } finally {
+      changeLoading(false);
+    }
+  }
+
+  void removeObj(OfertasFavs ofertafav) {
+    try {
+      if(_loginController.ofertasFavs.where((ofav) => ofav.OfertaGUID == ofertafav.OfertaGUID).isNotEmpty) {
+        var oFav = new OfertasFavs(ofertafav.OfertaGUID, ofertafav.usuGUID, false, true);
+        _loginController.ofertasFavs.remove(oFav);
+      }
+        //offerfavRepo.deleteObj(_loginController.ofertasFavs.where((ofav) => ofav.OfertaGUID == ofertafav.OfertaGUID).first);
+    } catch (e) {
+      print('Erro no removeObj() controller ${e.toString()}');
+    } finally {
+      changeLoading(false);
+    }
+  }
+
+  Future<void> addObjApi(OfertasFavs ofertafav) async {
     try {
       changeLoading(true);
       await offerfavRepo.postObj(ofertafav);
@@ -41,7 +70,7 @@ class OffersFavController extends GetxController {
     }
   }
 
-  Future<void> removeObj(OfertasFavs ofertafav) async {
+  Future<void> removeObjApi(OfertasFavs ofertafav) async {
     try {
       changeLoading(true);
       await offerfavRepo.deleteObj(ofertafav);

@@ -34,6 +34,7 @@ class LoginController extends GetxController {
   List<Lojas> listLojas = [];
   List<OfertasFavs> ofertasFavs = [];
   bool _obscurePassword = false;
+  bool refreshOfertasFavs = false;
   String? usuCep;
   String? usuNome;
   String? usuEmail;
@@ -101,6 +102,12 @@ class LoginController extends GetxController {
   Future<void> loadOffersFavs() async {
     print('entrou no getOffersFavs()');
     var offerfavRepository = new OfferfavRepository();
+
+    if (refreshOfertasFavs) {
+      refreshOfertasFavs = false;
+      await offerfavRepository.updateCollection(ofertasFavs);
+    }
+
     ofertasFavs = await offerfavRepository.getAll();
     print('qt ofertasFavs: ' + ofertasFavs.length.toString());
   }

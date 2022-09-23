@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:poraki/app/app_widget.dart';
 import 'package:poraki/app/services/sqlite/sqlporaki_core_service.dart';
 import 'package:poraki/app/theme/app_theme.dart';
 import 'package:poraki/app/modules/auth/sign_up/sign_up_page.dart';
 import 'package:poraki/app/services/sqlite/sqlporaki_login_service.dart';
-
-import 'login_controller.dart';
+import '../../../util/alerta.dart';
+import 'login_service.dart';
 
 class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
 }
 
-Future<List<Map<String,dynamic>>> buscaSqlUserData() async {
+Future<List<Map<String, dynamic>>> buscaSqlUserData() async {
   // var termos = await fbPorakiService().getValueFromFirebase('akitermos', 'termos', 'ptbr');
   // print('termos new: ' + termos.toString());
 
@@ -26,7 +25,6 @@ Future<List<Map<String,dynamic>>> buscaSqlUserData() async {
   return await sqlSvc.buscaUsuDados();
 }
 
-
 class _LoginPageState extends State<LoginPage> {
   TextEditingController _mailInputController = TextEditingController();
   TextEditingController _passwordInputController = TextEditingController();
@@ -35,246 +33,270 @@ class _LoginPageState extends State<LoginPage> {
   bool _obscurePassword = true;
 
   final _formKey = GlobalKey<FormState>();
-  List<Map<String,dynamic>>? listUser; // = futuro.data as List<Map<String, dynamic>>?;
+  List<Map<String, dynamic>>? listUser;
+
+  String tempLoginResult =
+      'OK'; // = futuro.data as List<Map<String, dynamic>>?;
 
   @override
   Widget build(BuildContext context) {
     // _mailInputController.text = 'test';
-    return FutureBuilder(future: buscaSqlUserData(),
-      builder: (context, futuro) {
-        if (!futuro.hasData) {
-          return Scaffold();
-        } else {
-          listUser = futuro.data as List<Map<String, dynamic>>?;
-          //late String? userEmail = "";
-          // if (listUser != null) {
-            for(var u in listUser!) //{
-              listUser!.forEach((element) { _mailInputController.text = element["usuEmail"].toString(); });
-            // }
-          // }
+    return FutureBuilder(
+        future: buscaSqlUserData(),
+        builder: (context, futuro) {
+          if (!futuro.hasData) {
+            return Scaffold();
+          } else {
+            listUser = futuro.data as List<Map<String, dynamic>>?;
+            listUser!.forEach((element) {
+              _mailInputController.text = element["usuEmail"].toString();
+            });
 
-          return Scaffold(
-            body: Container(
-              height: MediaQuery.of(context).size.height,
-              padding: EdgeInsets.symmetric(horizontal: 50, vertical: 30),
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    AppColors.primaryBackground,
-                    AppColors.secondaryBackground
-                  ],
+            return Scaffold(
+              body: Container(
+                height: MediaQuery.of(context).size.height,
+                padding: EdgeInsets.symmetric(horizontal: 50, vertical: 30),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      AppColors.primaryBackground,
+                      AppColors.secondaryBackground
+                    ],
+                  ),
                 ),
-              ),
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Padding(
-                        padding: EdgeInsets.only(
-                          bottom: 1,
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Padding(
+                          padding: EdgeInsets.only(
+                            bottom: 1,
+                          ),
+                          child: new Container(
+                              child: FadeInImage.assetNetwork(
+                                  placeholder: 'assets/images/poraki250.png',
+                                  image:
+                                      'http://poraki-assets.ec3.digital/wp-content/uploads/2021/11/poraki250.png'))),
+                      Text(
+                        "Entrar",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.blueGrey,
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
                         ),
-                        child: new Container(
-                            child: FadeInImage.assetNetwork(
-                                placeholder: 'assets/images/poraki250.png',
-                                image: 'http://poraki-assets.ec3.digital/wp-content/uploads/2021/11/poraki250.png'
-                            )
-                        )
-                    ),
-                    Text(
-                      "Entrar",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.blueGrey,
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
                       ),
-                    ),
-                    Form(
-                      key: _formKey,
-                      child: Column(
-                        children: [
-                          TextFormField(
-                            validator: (value) {
-                              if (value!.length < 5) {
-                                return "Esse e-mail parece curto demais";
-                              } else if (!value.contains("@")) {
-                                return "Esse e-mail está meio estranho, não?";
-                              }
-                              return null;
-                            },
-                            controller: _mailInputController,
-                            autofocus: _mailInputController.text.isEmpty,
-                            style: TextStyle(color: Colors.white),
-                            autofillHints: [AutofillHints.email],
-                            decoration: InputDecoration(
-                              labelText: "E-mail",
-                              labelStyle: TextStyle(
-                                color: Colors.white,
-                              ),
-                              prefixIcon: Icon(
-                                Icons.mail_outline,
-                                color: Colors.white,
-                              ),
-                              focusedBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(
+                      Form(
+                        key: _formKey,
+                        child: Column(
+                          children: [
+                            TextFormField(
+                              validator: (value) {
+                                // RegExp regex = new RegExp(
+                                //     r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$');
+                                // if (value!.isEmpty || !regex.hasMatch(value))
+                                //   return 'Favor informar um endereço de e-mail correto';
+                                // else
+                                //   return null;
+
+                                if (value!.length < 5) {
+                                  return "Esse e-mail parece curto demais";
+                                } else if (!value.contains("@")) {
+                                  return "Esse e-mail está meio estranho, não?";
+                                }
+                                return null;
+                              },
+                              controller: _mailInputController,
+                              autofocus: _mailInputController.text.isEmpty,
+                              style: TextStyle(color: Colors.white),
+                              autofillHints: [AutofillHints.email],
+                              decoration: InputDecoration(
+                                labelText: "E-mail",
+                                labelStyle: TextStyle(
                                   color: Colors.white,
                                 ),
-                              ),
-                              enabledBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(
+                                prefixIcon: Icon(
+                                  Icons.mail_outline,
                                   color: Colors.white,
+                                ),
+                                focusedBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Colors.white,
+                                  ),
                                 ),
                               ),
                             ),
+                            TextFormField(
+                              validator: (value) {
+                                if (value!.length < 6) {
+                                  return "A senha deve ter pelo menos 6 caracteres";
+                                }
+                                return null;
+                              },
+                              autofocus: _mailInputController.text.isNotEmpty,
+                              obscureText: _obscurePassword,
+                              controller: _passwordInputController,
+                              style: TextStyle(color: Colors.white),
+                              decoration: InputDecoration(
+                                labelText: "Senha",
+                                labelStyle: TextStyle(
+                                  color: Colors.white,
+                                ),
+                                prefixIcon: Icon(
+                                  Icons.vpn_key_sharp,
+                                  color: Colors.white,
+                                ),
+                                focusedBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(bottom: 10),
+                      ),
+                      GestureDetector(
+                        onTap: () {},
+                        child: Text(
+                          "Esqueceu a senha?",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 12,
                           ),
-                          TextFormField(
-                            validator: (value) {
-                              if (value!.length < 6) {
-                                return "A senha deve ter pelo menos 6 caracteres";
-                              }
-                              return null;
+                          textAlign: TextAlign.right,
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          Checkbox(
+                            value: this._obscurePassword,
+                            onChanged: (newValue) {
+                              setState(() {
+                                this._obscurePassword = newValue!;
+                              });
                             },
-                            autofocus: _mailInputController.text.isNotEmpty,
-                            obscureText: _obscurePassword,
-                            controller: _passwordInputController,
-                            style: TextStyle(color: Colors.white),
-                            decoration: InputDecoration(
-                              labelText: "Senha",
-                              labelStyle: TextStyle(
-                                color: Colors.white,
-                              ),
-                              prefixIcon: Icon(
-                                Icons.vpn_key_sharp,
-                                color: Colors.white,
-                              ),
-                              focusedBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: Colors.white,
-                                ),
-                              ),
-                              enabledBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: Colors.white,
-                                ),
-                              ),
+                            activeColor: Colors.blue,
+                          ),
+                          Text(
+                            "Mostrar senha",
+                            style: TextStyle(
+                              color: Colors.white,
                             ),
                           )
                         ],
                       ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(bottom: 10),
-                    ),
-                    GestureDetector(
-                      onTap: () {},
-                      child: Text(
-                        "Esqueceu a senha?",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 12,
-                        ),
-                        textAlign: TextAlign.right,
-                      ),
-                    ),
-                    Row(
-                      children: [
-                        Checkbox(
-                          value: this._obscurePassword,
-                          onChanged: (newValue) {
-                            setState(() {
-                              this._obscurePassword = newValue!;
-                            });
-                          },
-                          activeColor: Colors.blue,
-                        ),
-                        Text(
-                          "Mostrar senha",
-                          style: TextStyle(
-                            color: Colors.white,
+                      ElevatedButton(
+                        onPressed: () async {
+                          if (!isLoading && _formKey.currentState!.validate())
+                            tempLoginResult = await _doLogin(context);
+
+                          setState(() {
+                            isLoading = true;
+                          });
+
+                          if (tempLoginResult == 'OK') {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => AppWidget(),
+                              ),
+                            );
+                          } else {
+                            print(tempLoginResult);
+                            Alerta(context, tempLoginResult);
+
+                            // DialogHelper.showAlert(context: context, description: tempLoginResult);
+                            // MostraAlerta(context, tempLoginResult);
+                            // AlertDialog(content: Text(tempLoginResult), title: Text('Erro'),);
+                            // SnackBar(content: Text(loginResult.toString()),);
+                          }
+
+                          setState(() {
+                            isLoading = tempLoginResult == 'OK' ? true: false;
+                          });
+                        },
+                        child: (isLoading)
+                            ? const SizedBox(
+                                width: 16,
+                                height: 16,
+                                child: CircularProgressIndicator(
+                                  color: Colors.white,
+                                  strokeWidth: 1.5,
+                                ))
+                            : const Text(
+                                "Login",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                            Color(0xFF116530),
                           ),
-                        )
-                      ],
-                    ),
-
-                    ElevatedButton(
-                      onPressed: () {
-                        if(!isLoading && _formKey.currentState!.validate())
-                          _doLogin(context);
-
-                        setState(() {
-                          isLoading = true;
-                        });
-
-                      },
-                      child: (isLoading)
-                          ? const SizedBox(
-                          width: 16,
-                          height: 16,
-                          child: CircularProgressIndicator(
-                            color: Colors.white,
-                            strokeWidth: 1.5,
-                          ))
-                          : const Text(
-                        "Login",
-                        style: TextStyle(
-                          color: Colors.white,
+                          shape: MaterialStateProperty.all<OutlinedBorder>(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(50),
+                            ),
+                          ),
                         ),
                       ),
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>(
-                          Color(0xFF116530),
+                      Padding(
+                        padding: EdgeInsets.symmetric(vertical: 10),
+                        child: Divider(
+                          color: Colors.black,
                         ),
-                        shape: MaterialStateProperty.all<OutlinedBorder>(
-                          RoundedRectangleBorder(
+                      ),
+                      Text(
+                        "Ainda não tem uma conta?",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 11),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(vertical: 10),
+                        // ignore: deprecated_member_use
+                        child: RaisedButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => SignUpPage(),
+                              ),
+                            );
+                          },
+                          child: Text("Cadastre-se"),
+                          color: Color(0xFFA3EBB1),
+                          shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(50),
                           ),
                         ),
                       ),
-                    ),
-
-                    Padding(
-                      padding: EdgeInsets.symmetric(vertical: 10),
-                      child: Divider(
-                        color: Colors.black,
-                      ),
-                    ),
-                    Text(
-                      "Ainda não tem uma conta?",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 11),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(vertical: 10),
-                      // ignore: deprecated_member_use
-                      child: RaisedButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => SignUpPage(),
-                            ),
-                          );
-                        },
-                        child: Text("Cadastre-se"),
-                        color: Color(0xFFA3EBB1),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(50),
-                        ),
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
-          );
-        }
-      });
+            );
+          }
+        });
   }
 
-  void _doLogin(BuildContext context) async {
+  Future<String> _doLogin(BuildContext context) async {
     if (_formKey.currentState!.validate()) {
       // //add email address to the shared prefs
       // PorAkiPrefs.savePrefStr("userEmail", _mailInputController.text);
@@ -288,7 +310,8 @@ class _LoginPageState extends State<LoginPage> {
       //
       // LoginService().login(_mailInputController.text, _passwordInputController.text);
 
-
+      var loginResult = await LoginService().loginWithEmailAndPassword(
+          _mailInputController.text, _passwordInputController.text);
 
       //TODO: tratar a resposta do login
 
@@ -305,16 +328,36 @@ class _LoginPageState extends State<LoginPage> {
       //     // hivePorakiUserService().SetUserUID('eyCv21RfaURoMn0SUndCg6LPyJP2');
       //   });
 
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => AppWidget(),
-        ),
-      );
+      return loginResult;
     } else {
-      print("invalido");
+      print("Tentativa inválida");
     }
+    return 'Erro';
   }
+
+  // Alerta(BuildContext context, String msg)
+  // {
+  //   // configura o button
+  //   Widget okButton = ElevatedButton(
+  //     child: Text("OK"),
+  //     onPressed: () { Navigator.of(context).pop(); },
+  //   );
+  //   // configura o  AlertDialog
+  //   AlertDialog alerta = AlertDialog(
+  //     title: Text("Alerta"),
+  //     content: Text(msg),
+  //     actions: [
+  //       okButton,
+  //     ],
+  //   );
+  //   // exibe o dialog
+  //   showDialog(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return alerta;
+  //     },
+  //   );
+  // }
 
 // Future<LoginModel> _getSavedUser() async {
 //   SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -326,19 +369,6 @@ class _LoginPageState extends State<LoginPage> {
 //   return user;
 // }
 }
-
-// WIDGETS
-// BoxDecoration
-// LinearGradient
-// MediaQuery.of(context).size.width
-// SingleChildScrollView
-// Column
-// Form
-// TextFormField
-// InputDecoration
-// GestureDectector
-
-
 
 // import 'package:flutter/material.dart';
 // import 'package:get/get_navigation/src/root/get_material_app.dart';

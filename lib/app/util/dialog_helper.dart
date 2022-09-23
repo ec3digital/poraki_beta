@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 
 class DialogHelper {
   //show error dialog
-  static void showAlert({String title = 'Alerta', String? description = 'Ops, algo deu errado dessa vez'}) {
+  static void showAlert({required BuildContext context, String title = 'Alerta', String? description = 'Ops, algo deu errado dessa vez'}) {
     Get.dialog(
       Dialog(
         child: Padding(
@@ -21,7 +21,8 @@ class DialogHelper {
               ),
               ElevatedButton(
                 onPressed: () {
-                  if (Get.isDialogOpen!) Get.back();
+                  Navigator.of(context).pop();
+                  // if (Get.isDialogOpen!) Get.back();
                 },
                 child: Text('Ok'),
               ),
