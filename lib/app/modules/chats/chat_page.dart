@@ -1,20 +1,10 @@
-import 'dart:convert';
-import 'dart:math';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
-import 'package:poraki/app/modules/chats/custom_shape.dart';
-import 'package:poraki/app/services/chatMsgs_service.dart';
 import 'package:poraki/app/theme/app_theme.dart';
-
 import '../../data/models/chatMsgs.dart';
-import '../../services/fbporaki_service.dart';
-import '../home/widgets/gradient_header_home.dart';
 
 class ChatPage extends StatefulWidget {
   @override
@@ -31,97 +21,126 @@ class _ChatPage extends State<ChatPage> {
 
   @override
   Widget build(BuildContext context) {
+    final TextEditingController txtMsg = TextEditingController();
     return Scaffold(
       body: Container(
-          height: MediaQuery.of(context).size.height,
-          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 26),
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                AppColors.primaryBackground,
-                AppColors.secondaryBackground
-              ],
-            ),
+        height: MediaQuery.of(context).size.height,
+        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 26),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              AppColors.primaryBackground,
+              AppColors.secondaryBackground
+            ],
           ),
-          child: SingleChildScrollView(
-              child:
-                  Column(mainAxisAlignment: MainAxisAlignment.start, children: [
-            Container(
-              height: MediaQuery.of(context).size.height,
-              margin: EdgeInsets.symmetric(
-                  vertical: MediaQuery.of(context).size.height * 0.02,
-                  horizontal: MediaQuery.of(context).size.width * 0.01),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  const Text(
-                    'Nova msg',
-                    style: TextStyle(fontSize: 16),
+        ),
+
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Expanded(
+                child:
+                    //
+                    //     GroupedListView<ChatMessages,DateTime>(
+                    //       padding: const EdgeInsets.all(8),
+                    //       reverse: true,
+                    //       order: GroupedListOrder.DESC,
+                    //       floatingHeader: true,
+                    //       useStickyGroupSeparators: true,
+                    //       elements: listMsgs,
+                    //       groupBy: (listMsgs) => DateTime(listMsgs.sentIn!.toDate().year,listMsgs.sentIn!.toDate().month,listMsgs.sentIn!.toDate().day),
+                    //       groupHeaderBuilder: (ChatMessages msg) => SizedBox(
+                    //         height: 40,
+                    //         child: Center(child: Card(color: AppColors.darkText, child: Padding(padding: const EdgeInsets.all(8),child: Text(DateFormat.yMMMd().format(msg.sentIn!.toDate()),style: TextStyle(color: AppColors.primaryLight),),),),),
+                    //       ),
+                    //       itemBuilder: (context, ChatMessages msg) => Align(
+                    //         alignment: msg.senderId == 'eyCv21RfaURoMn0SUndCg6LPyJP2' ? Alignment.centerRight : Alignment.centerLeft,
+                    //         child: Card(
+                    //           elevation: 8, child: Padding(padding: const EdgeInsets.all(12),child: Text(msg.msg.toString()),),
+                    //         ),
+                    //       ),
+                    //
+                    //       ),
+                    //
+                    //     )
+
+                    FirebaseAnimatedList(
+              shrinkWrap: true,
+              query: refDataInstance,
+              itemBuilder: (BuildContext context, DataSnapshot snapshot,
+                  Animation<double> animation, int index) {
+
+                var result = ChatMessages.fromJson(
+                    snapshot.value as Map<dynamic, dynamic>);
+
+                return ListTile(
+                  title: Text(
+                    DateFormat("dd/MM/yyyy HH:mm")
+                        .format(result.sentIn!.toDate()),
+                    textAlign: result.senderId.toString() ==
+                            "eyCv21RfaURoMn0SUndCg6LPyJP2"
+                        ? TextAlign.right
+                        : TextAlign.left,
+                    style: TextStyle(color: AppColors.darkText, fontSize: 14.0),
                   ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  TextField(
+                  subtitle: result.senderId.toString() ==
+                          "eyCv21RfaURoMn0SUndCg6LPyJP2"
+                      ? WidgetMessageSent(result.msg.toString())
+                      : WidgetMessageReceived(result.msg.toString()),
+                );
+              },
+            )),
+
+            const Divider(height: 2, thickness: 2),
+
+            Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: txtMsg,
+                    style: TextStyle(
+                        color: AppColors.darkText,
+                        fontSize: 16,
+                        fontStyle: FontStyle.italic),
                     onChanged: (value) {
                       msg = value;
                     },
-                    decoration: const InputDecoration(
-                      contentPadding:
-                          EdgeInsets.symmetric(vertical: 5.0, horizontal: 4.0),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(6.0)),
-                      ),
+                    decoration: InputDecoration.collapsed(
+                      hintText: "Digite a mensagem...",
                     ),
                   ),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  ElevatedButton.icon(
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(1.0),
+                  child: Container(
+                    padding: const EdgeInsets.all(1.0),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      // color: accentColor,
+                    ),
+                    child: IconButton(
+                      icon: const Icon(
+                        Icons.send_rounded,
+                        size: 24,
+                      ),
+                      color: Colors.white,
                       onPressed: () async {
                         var novaMsg = new ChatMessages(
-                            senderId: 'eyCv21RfaURoMn0SUndCg6LPyJP2', msg: msg);
-                        refDataInstance
-                            .push()
-                            .set(novaMsg.toJson()); //..asStream();
+                            senderId: 'eyCv21RfaURoMn0SUndCg6LPyJP2', msg: msg, sentIn: Timestamp.fromMillisecondsSinceEpoch(DateTime.now().millisecondsSinceEpoch));
+                        refDataInstance.push().set(novaMsg.toJson());
+                        txtMsg.text = "";
                       },
-                      icon: const Icon(Icons.add),
-                      label: const Text('OK')),
-                  const SizedBox(
-                    height: 20,
+                    ),
                   ),
-                  Flexible(
-                      child: FirebaseAnimatedList(
-                    shrinkWrap: true,
-                    query: refDataInstance,
-                    itemBuilder: (BuildContext context, DataSnapshot snapshot,
-                        Animation<double> animation, int index) {
-                      var result = ChatMessages.fromJson(
-                          snapshot.value as Map<dynamic, dynamic>);
-                      return ListTile(
-                        title: Text(
-                          DateFormat("dd/MM/yyyy HH:mm")
-                              .format(result.sentIn!.toDate()),
-                          textAlign: result.senderId.toString() ==
-                                  "eyCv21RfaURoMn0SUndCg6LPyJP2"
-                              ? TextAlign.right
-                              : TextAlign.left,
-                          style: TextStyle(
-                              color: AppColors.darkText, fontSize: 14.0),
-                        ),
-                        subtitle: result.senderId.toString() ==
-                                "eyCv21RfaURoMn0SUndCg6LPyJP2"
-                            ? WidgetMessageSent(result.msg.toString())
-                            : WidgetMessageReceived(result.msg.toString()),
-                      );
-                    },
-                  )),
-                ],
-              ),
+                ),
+              ],
             ),
-          ]))),
+          ],
+        ),
+      ),
     );
   }
 

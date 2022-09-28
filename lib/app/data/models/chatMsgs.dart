@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 class ChatMessages {
   String? senderId;
@@ -7,13 +8,21 @@ class ChatMessages {
 
   ChatMessages(
       {required this.senderId,
-        required this.msg});
+        required this.msg,
+      required this.sentIn});
 
   ChatMessages.fromJson(Map<dynamic, dynamic> json) {
     //print('ChatMessages.fromJson');
     msg = json['msg'].toString();
     senderId = json['senderId'].toString();
     sentIn = Timestamp.fromMillisecondsSinceEpoch(int.parse(json['sentIn'].toString())); //Timestamp.now();
+  }
+
+  ChatMessages.fromSnapshot(DataSnapshot snapshot) {
+    //print('ChatMessages.fromJson');
+    msg = snapshot.child("msg").toString();
+    senderId = snapshot.child("senderId").toString();
+    sentIn = Timestamp.fromMillisecondsSinceEpoch(int.parse(snapshot.child("sentIn").toString())); //Timestamp.now();
   }
 
   Map<String, dynamic> toJson() {
