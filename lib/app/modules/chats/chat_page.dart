@@ -2,9 +2,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:poraki/app/theme/app_theme.dart';
 import '../../data/models/chatMsgs.dart';
+import '../auth/login/login_controller.dart';
+import '../home/home_controller.dart';
+import '../home/widgets/app_bar_home.dart';
+import '../home/widgets/drawer_home.dart';
 
 class ChatPage extends StatefulWidget {
   @override
@@ -21,8 +26,31 @@ class _ChatPage extends State<ChatPage> {
 
   @override
   Widget build(BuildContext context) {
+    final LoginController _loginController = Get.find();
     final TextEditingController txtMsg = TextEditingController();
+    Color textColor = _loginController.colorFromHex(_loginController.listCore
+        .where((coreItem) => coreItem.coreChave == 'textDark')
+        .first
+        .coreValor
+        .toString());
+
     return Scaffold(
+      appBar: PreferredSize(
+        preferredSize: Size(double.maxFinite, 55),
+        child: AppBar(
+          elevation: 0,
+          centerTitle: false,
+          backgroundColor: _loginController.colorFromHex(_loginController.listCore
+              .where((coreItem) => coreItem.coreChave == 'backLight')
+              .first
+              .coreValor
+              .toString()),
+          title: Text(
+            'Mensagens',
+            style: TextStyle(fontSize: 25, color: textColor),
+          ),
+        ),
+      ),
       body: Container(
         height: MediaQuery.of(context).size.height,
         padding: EdgeInsets.symmetric(horizontal: 10, vertical: 26),
@@ -81,13 +109,13 @@ class _ChatPage extends State<ChatPage> {
                     DateFormat("dd/MM/yyyy HH:mm")
                         .format(result.sentIn!.toDate()),
                     textAlign: result.senderId.toString() ==
-                            "eyCv21RfaURoMn0SUndCg6LPyJP2"
+                        _loginController.usuGuid
                         ? TextAlign.right
                         : TextAlign.left,
                     style: TextStyle(color: AppColors.darkText, fontSize: 14.0),
                   ),
                   subtitle: result.senderId.toString() ==
-                          "eyCv21RfaURoMn0SUndCg6LPyJP2"
+                      _loginController.usuGuid
                       ? WidgetMessageSent(result.msg.toString())
                       : WidgetMessageReceived(result.msg.toString()),
                 );
@@ -129,7 +157,7 @@ class _ChatPage extends State<ChatPage> {
                       color: Colors.white,
                       onPressed: () async {
                         var novaMsg = new ChatMessages(
-                            senderId: 'eyCv21RfaURoMn0SUndCg6LPyJP2', msg: msg, sentIn: Timestamp.fromMillisecondsSinceEpoch(DateTime.now().millisecondsSinceEpoch));
+                            senderId: _loginController.usuGuid, msg: msg, sentIn: Timestamp.fromMillisecondsSinceEpoch(DateTime.now().millisecondsSinceEpoch));
                         refDataInstance.push().set(novaMsg.toJson());
                         txtMsg.text = "";
                       },

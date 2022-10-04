@@ -26,4 +26,6 @@ abstract class AppRoutes {
   static const stores = '/stores';
   static const porakiSplash = '/porakisplash';
   static const news = '/news';
+  static const chats = '/chats';
+  static const chat = '/chat';
 }

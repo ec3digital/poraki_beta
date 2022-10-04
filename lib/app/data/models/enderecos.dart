@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 class Enderecos {
   String? EnderecoGuid;
   String? UsuEmail;

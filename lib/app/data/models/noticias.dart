@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Noticia {
   int? NoticiaID;
   String? NoticiaCEP;
-  String? NoticiaDesde;
+  Timestamp? NoticiaDesde;
   String? NoticiaAte;
   String? NoticiaPor;
   String? NoticiaUID;
@@ -18,7 +20,7 @@ class Noticia {
     NoticiaUID = json['NoticiaUID'];
     NoticiaPor = json['NoticiaPor'];
     NoticiaAte = json['NoticiaAte'];
-    NoticiaDesde = json['NoticiaDesde'];
+    NoticiaDesde = Timestamp.fromDate(DateTime.parse(json['NoticiaDesde']));
     NoticiaCEP = json['NoticiaCEP'];
     //NoticiaID = int.parse(json['NoticiaID']);
   }

@@ -133,26 +133,29 @@ class LoginController extends GetxController {
       // pega os valores da tabela local
       var coreSqlCep = listCoreCep;
 
-      //faz o iteracao da tabela local contra a nuvem pra nao causar erro caso haja mais chaves na nuvem
-      coreSqlCep.forEach((coreItem) {
-        coreFBcep.forEach((key, value) {
-          //   print(key);
-          //   var coreSqlUpdate =
-          //       coreSqlCep.where((coreItem) => coreItem.coreChave == key).first;
-          //   if (coreSqlUpdate.coreValor != value) {
-          //     coreSqlUpdate.coreValor = value.toString();
-          //     sqlPorakiCoreService().atualizaCoreCep(coreSqlUpdate);
-          //   }
-          var coreFBcepTemp = coreFB.entries
-              .where((element) => element.key == coreItem.coreChave)
-              .first;
-          if (coreItem.coreValor != coreFBcepTemp.value) {
-            coreItem.coreValor = coreFBcepTemp.value;
-
-            sqlPorakiCoreService().atualizaCoreCep(coreItem);
-          }
-        });
-      });
+      // //faz o iteracao da tabela local contra a nuvem pra nao causar erro caso haja mais chaves na nuvem
+      // coreSqlCep.forEach((coreItem) {
+      //   print('coreSqlCep: ' + coreItem.toString());
+      //   coreFBcep.forEach((key, value) {
+      //     print('coreFBcep key: ' + key.toString() + ' / coreFBcep value: ' + value.toString());
+      //
+      //     //   print(key);
+      //     //   var coreSqlUpdate =
+      //     //       coreSqlCep.where((coreItem) => coreItem.coreChave == key).first;
+      //     //   if (coreSqlUpdate.coreValor != value) {
+      //     //     coreSqlUpdate.coreValor = value.toString();
+      //     //     sqlPorakiCoreService().atualizaCoreCep(coreSqlUpdate);
+      //     //   }
+      //     var coreFBcepTemp = coreFB.entries
+      //         .where((element) => element.key == coreItem.coreChave)
+      //         .first;
+      //     if (coreItem.coreValor != coreFBcepTemp.value) {
+      //       coreItem.coreValor = coreFBcepTemp.value;
+      //
+      //       sqlPorakiCoreService().atualizaCoreCep(coreItem);
+      //     }
+      //   });
+      // });
 
       // atualiza lista de params core
       listCoreCep = await sqlPorakiCoreService().buscaTodosValoresCep();
@@ -173,19 +176,19 @@ class LoginController extends GetxController {
       var coreSql = listCoreTemp;
       // print('coreSql new qtd: ' + coreSql.length.toString());
 
-      //faz o iteracao da tabela local contra a nuvem pra nao causar erro caso haja mais chaves na nuvem
-      coreSql.forEach((coreItem) {
-        // print('coreItem: ' + coreItem.coreChave);
-        var coreFBtemp = coreFB.entries
-            .where((element) => element.key == coreItem.coreChave)
-            .first;
-        if (coreItem.coreValor != coreFBtemp.value) {
-          coreItem.coreValor = coreFBtemp.value;
-          print('coreItem atualizado: ' + coreItem.coreChave);
-
-          sqlPorakiCoreService().atualizaCore(coreItem);
-        }
-      });
+      // //faz o iteracao da tabela local contra a nuvem pra nao causar erro caso haja mais chaves na nuvem
+      // coreSql.forEach((coreItem) {
+      //   // print('coreItem: ' + coreItem.coreChave);
+      //   var coreFBtemp = coreFB.entries
+      //       .where((element) => element.key == coreItem.coreChave)
+      //       .first;
+      //   if (coreItem.coreValor != coreFBtemp.value) {
+      //     coreItem.coreValor = coreFBtemp.value;
+      //     print('coreItem atualizado: ' + coreItem.coreChave);
+      //
+      //     sqlPorakiCoreService().atualizaCore(coreItem);
+      //   }
+      // });
 
       // atualiza lista de params core
       listCore = await sqlPorakiCoreService().buscaTodosValores();

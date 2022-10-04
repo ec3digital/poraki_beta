@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'PorAki',
-      home: ChatPage(), //LoginPage(),
+      home: LoginPage(),
       debugShowCheckedModeBanner: false,
       // localizationsDelegates: [
       //   GlobalMaterialLocalizations.delegate,

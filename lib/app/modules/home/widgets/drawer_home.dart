@@ -87,13 +87,12 @@ class _DrawerHomeState extends State<DrawerHome> {
                       onTap: () => Get.toNamed(AppRoutes.home),
                     ),
                     RowCategoriesDrawerHome(
-                        text: 'Mensagens',
-                        badgeText: "4",
-                        // isSelected: index == 8,
-                        icon: Icons.message,
-                        onTap:
-                            () {} // => Get.offAndToNamed(AppRoutes.orders, arguments: {"tipo": "Entregas"}),
-                        ),
+                      text: 'Mensagens',
+                      badgeText: "4",
+                      // isSelected: index == 8,
+                      icon: Icons.message,
+                      onTap: () => Get.toNamed(AppRoutes.chats),
+                    ),
                     //Divider(color: lightBack),
                     // RowCategoriesDrawerHome(
                     //   text: 'Carrinho',
@@ -118,7 +117,8 @@ class _DrawerHomeState extends State<DrawerHome> {
                       // isSelected: index == 1,
                       icon: Icons.favorite_border_outlined,
                       onTap: () async {
-                        OffersController _offersController = Get.find(); // Get.put(OffersController());
+                        OffersController _offersController =
+                            Get.find(); // Get.put(OffersController());
                         Future.wait(
                             [_offersController.getOffersFavsByUser(24)]);
 

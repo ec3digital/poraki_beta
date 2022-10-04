@@ -30,9 +30,9 @@ class ListAddresses extends StatelessWidget {
     LoginController _loginController = Get.find();
 
     Widget _buildRow(sqlEndereco endereco) {
-      print(endereco.enderecoCEP +
-          ' atual: ' +
-          endereco.enderecoAtual.toString());
+      // print(endereco.enderecoCEP +
+      //     ' atual: ' +
+      //     endereco.enderecoAtual.toString());
       return Column(children: [
         ListTile(
           leading: retIcon(endereco.enderecoTipo, endereco.enderecoAtual),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:poraki/app/data/models/noticias.dart';
 import 'package:poraki/app/modules/auth/login/login_controller.dart';
 import 'package:poraki/app/modules/home/widgets/gradient_header_home.dart';
@@ -22,9 +23,7 @@ class NewsListPage extends StatelessWidget {
         .toString());
 
     Widget _buildRow(Noticia noticia) {
-      print(noticia.NoticiaTitulo.toString());
-      return Expanded(
-          child: Column(children: [
+      return Column(children: [
         ListTile(
           //leading: retIcon(endereco.enderecoTipo, endereco.enderecoAtual),
           // onTap: () {
@@ -33,33 +32,40 @@ class NewsListPage extends StatelessWidget {
           //     {'enderecoGuid': endereco.enderecoGuid}
           //   ]);
           // },
-          title: Text(
-            noticia.NoticiaTitulo.toString(),
-            // style: _biggerFont,
-          ),
-          subtitle: Column(children: [
-            Text('Publicado em: ' + noticia.NoticiaDesde.toString()),
+          leading: Icon(Icons.newspaper),
+          title: Text(noticia.NoticiaTitulo.toString(),
+              style: TextStyle(
+                  fontSize: 20, color: colorText, fontWeight: FontWeight.w900)
+              // style: _biggerFont,
+              ),
+          subtitle: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            const SizedBox(height: 10),
+            Text(
+              noticia.NoticiaTexto.toString(),
+              style: TextStyle(fontSize: 16, color: colorText),),
+            const SizedBox(height: 30),
             // TODO: jogar a Image da noticia se existir
-            Text(noticia.NoticiaTexto.toString(), style: TextStyle(
-      fontSize: 16,
-      color: colorText,
-      fontWeight: FontWeight.w900),),
+            Text('Publicado em: ' +
+                DateFormat("dd/MM/yyyy")
+                    .format(noticia.NoticiaDesde!.toDate()) +
+                ' às ' +
+                DateFormat("hh:mm").format(noticia.NoticiaDesde!.toDate()),style: TextStyle(fontSize: 13, color: colorText),),
           ]),
-          trailing: Column(
-            children: [
-          Expanded(
-          child: Text(noticia.NoticiaFonte.toString(),style: TextStyle(
-              fontSize: 16,
-              color: colorText,
-              fontWeight: FontWeight.w900),)),
-            ],
-          ),
+          // trailing: Column(
+          //   children: [
+          // Expanded(
+          // child: Text(noticia.NoticiaFonte.toString(),style: TextStyle(
+          //     fontSize: 16,
+          //     color: colorText,
+          //     fontWeight: FontWeight.w900),)),
+          //   ],
+          // ),
           //trailing: Icon(IconData(int.parse(iconcode), fontFamily: 'MaterialIcons'))
         ),
         const SizedBox(height: 5),
         const Divider(),
         const SizedBox(height: 5),
-      ]));
+      ]);
     }
 
     Future<void> pegaNoticias() async {
@@ -75,7 +81,7 @@ class NewsListPage extends StatelessWidget {
             // } else if (futuro.hasError) {
             //   return Center(child: Text(futuro.error.toString()));
           } else {
-            print('qt news: ' + _newsController.noticias.length.toString());
+            // print('qt news: ' + _newsController.noticias.length.toString());
             return SingleChildScrollView(
                 child: GradientHeaderHome(
                     child: Column(
@@ -115,5 +121,4 @@ class NewsListPage extends StatelessWidget {
           }
         });
   }
-
 }

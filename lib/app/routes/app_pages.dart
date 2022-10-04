@@ -3,6 +3,7 @@ import 'package:poraki/app/modules/account/account_page.dart';
 import 'package:poraki/app/modules/addresses/address_page.dart';
 import 'package:poraki/app/modules/addresses/addresses_list_page.dart';
 import 'package:poraki/app/modules/categories/categories_page.dart';
+import 'package:poraki/app/modules/chats/chatList_page.dart';
 import 'package:poraki/app/modules/checkout/checkout_page.dart';
 import 'package:poraki/app/modules/moffers/moffer_page.dart';
 import 'package:poraki/app/modules/moffers/moffers_page.dart';
@@ -15,6 +16,7 @@ import 'package:poraki/app/modules/stores/stores_list_page.dart';
 import 'package:poraki/app/poraki-splash.dart';
 import '../modules/auth/login/login_page.dart';
 import '../modules/auth/sign_up/sign_up_page.dart';
+import '../modules/chats/chat_page.dart';
 import '../modules/days_offers/days_offers_page.dart';
 import '../modules/days_offers/show_day_offer/show_day_offer_page.dart';
 import '../modules/days_offers/show_day_offer/widgets/view_search_product.dart';
@@ -111,6 +113,14 @@ class AppPages {
     GetPage(
       name: AppRoutes.news,
       page: () => NewsPage(),
+    ),
+    GetPage(
+      name: AppRoutes.chats,
+      page: () => ChatListPage(),
+    ),
+    GetPage(
+      name: AppRoutes.chat,
+      page: () => ChatPage(),
     )
 
   ];

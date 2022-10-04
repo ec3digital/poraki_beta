@@ -23,6 +23,10 @@ class Pessoas {
     pessoaLogin = json['PessoaLogin'];
   }
 
+  Pessoas.fromJsonChat(Map<String, dynamic> json) {
+    pessoaNome = json['PessoaNome'];
+  }
+
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['PessoaCEP'] = this.pessoaCEP;
