@@ -66,7 +66,7 @@ class sqlPorakiCartService {
     if(exist) {
       print('caiu no existe');
       await increaseQtyItemCarrinho(int.parse(item.ofertaId));
-      return "Item adicionado!";
+      return "Item  adicionado!";
     }
     else {
       print('caiu no NAO existe');
@@ -80,7 +80,7 @@ class sqlPorakiCartService {
       });
 
       await db.insert('carrinho', item.toMap());
-      return "Item adicionado!";
+      return "Item  adicionado!";
     }
 
     // print('ret: ' + ret.toString());

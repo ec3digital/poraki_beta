@@ -36,7 +36,8 @@ class _ChatListPageState extends State<ChatListPage> {
       return Column(children: [
         ListTile(
           onTap: () {
-            Get.toNamed(AppRoutes.chat); // arguments: [ {'enderecoGuid': endereco.enderecoGuid} ]);
+            Get.toNamed(AppRoutes
+                .chat); // arguments: [ {'enderecoGuid': endereco.enderecoGuid} ]);
           },
           leading: Icon(Icons.message),
           title: Text(
@@ -104,10 +105,11 @@ class _ChatListPageState extends State<ChatListPage> {
             } else {
               // print('qt chats: ' + _chatController.listChats.length.toString());
               return SingleChildScrollView(
-                  child: GradientHeaderHome(
-                      child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
+
+                  //child: GradientHeaderHome(
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
                     const SizedBox(height: 15),
                     Center(
                         child: Text(
@@ -136,7 +138,9 @@ class _ChatListPageState extends State<ChatListPage> {
                           },
                         ),
                       )
-                  ])));
+                  ])
+                  // )
+                  );
             }
           }),
       drawer: DrawerHome(0),

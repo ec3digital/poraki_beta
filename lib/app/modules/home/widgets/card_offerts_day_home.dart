@@ -47,7 +47,15 @@ class CardOffertsDayHome extends StatelessWidget {
             width: double.maxFinite,
             child: Card(
               elevation: 10,
-              color: Color(0xffFFFFFF),
+              //color: Color(0xffFFFFFF),
+              color: _loginController.colorFromHex(
+                  _loginController.listCore
+                      .where((coreItem) =>
+                  coreItem.coreChave ==
+                      'backLight')
+                      .first
+                      .coreValor
+                      .toString()),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -63,13 +71,13 @@ class CardOffertsDayHome extends StatelessWidget {
                     height: 300,
                     child: InfiniteCarousel.builder(
                       itemCount: cardListOffers.length,
-                      itemExtent: 320,
+                      itemExtent: 300,
                       loop: true,
                       controller: InfiniteScrollController(),
                       onIndexChanged: (index) {},
                       itemBuilder: (context, itemIndex, realIndex) {
                         return Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 3.0),
+                          padding: EdgeInsets.symmetric(horizontal: 8.0),
                           child: GestureDetector(
                             onTap: () {
                               //Future.wait([offersController.getOfferById(cardListOffers[itemIndex].ofertaID!)]);
@@ -78,6 +86,18 @@ class CardOffertsDayHome extends StatelessWidget {
                             },
                             child: Container(
                               padding: const EdgeInsets.all(8.0),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.all(Radius.circular(8)),
+                              ),
+
+                              // decoration: BoxDecoration(
+                              //   borderRadius: BorderRadius.circular(5),
+                              //   border: Border.all(
+                              //     color: textLight,
+                              //     width: 1,
+                              //   ),
+
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -111,7 +131,8 @@ class CardOffertsDayHome extends StatelessWidget {
                                       ),
 
                                   if (cardListOffers[itemIndex]
-                                          .ofertaEntregasAPartirDe.toString() !=
+                                          .ofertaEntregasAPartirDe
+                                          .toString() !=
                                       'null')
                                     if (DateTime.parse(cardListOffers[itemIndex]
                                             .ofertaEntregasAPartirDe!)
@@ -136,14 +157,17 @@ class CardOffertsDayHome extends StatelessWidget {
                                       ),
 
                                   Center(
-                                    // child:
-                                    //    FadeInImage.assetNetwork(
-                                    //     placeholder: 'assets/images/pholder.png',
-                                    //     image: _loginController.listCore.where((coreItem) => coreItem.coreChave == 'imgpath').first.coreValor.toString() + cardListOffers[itemIndex].ofertaID.toString() + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'imgpathsuffix').first.coreValor.toString(),
-                                    //     imageErrorBuilder: (context, url, error) => new Icon(Icons.local_offer_outlined),
-                                    //     height: 130,
-                                    //   ),
+                                      // child:
+                                      //    FadeInImage.assetNetwork(
+                                      //     placeholder: 'assets/images/pholder.png',
+                                      //     image: _loginController.listCore.where((coreItem) => coreItem.coreChave == 'imgpath').first.coreValor.toString() + cardListOffers[itemIndex].ofertaID.toString() + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'imgpathsuffix').first.coreValor.toString(),
+                                      //     imageErrorBuilder: (context, url, error) => new Icon(Icons.local_offer_outlined),
+                                      //     height: 130,
+                                      //   ),
 
+                                      child: Container(
+                                    decoration:
+                                        BoxDecoration(color: Colors.white),
                                     child: CachedNetworkImage(
                                       imageUrl: _loginController.listCore
                                               .where((coreItem) =>
@@ -170,7 +194,7 @@ class CardOffertsDayHome extends StatelessWidget {
                                           Icon(Icons.local_offer_outlined),
                                       height: 130,
                                     ),
-                                  ),
+                                  )),
                                   SizedBox(height: 10),
                                   Expanded(
                                       child: Column(
@@ -221,22 +245,23 @@ class CardOffertsDayHome extends StatelessWidget {
                                   // ),
                                 ],
                               ),
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5),
-                                  border: Border.all(
-                                    color: textLight,
-                                    width: 1,
-                                  ),
-                                  //boxShadow: kElevationToShadow[1],
-                                  color: Colors.white
 
-                                  // image: DecorationImage(
-                                  //   image: NetworkImage(kDemoImages[itemIndex]),
-                                  //   fit: BoxFit.fill,
-                                  // ),
-                                  ),
+                                //boxShadow: kElevationToShadow[1],
+                                // color: _loginController.colorFromHex(
+                                //     _loginController.listCore
+                                //         .where((coreItem) =>
+                                //             coreItem.coreChave == 'backLight')
+                                //         .first
+                                //         .coreValor
+                                //         .toString()),
+
+                                // image: DecorationImage(
+                                //   image: NetworkImage(kDemoImages[itemIndex]),
+                                //   fit: BoxFit.fill,
+                                // ),
+                              ),
                             ),
-                          ),
+                          //),
                         );
                       },
                     ),

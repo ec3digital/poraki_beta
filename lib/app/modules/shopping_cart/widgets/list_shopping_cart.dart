@@ -62,7 +62,14 @@ class _ListShoppingCartState extends State<ListShoppingCart> {
                       child: Container(
                         //height: Get.height *
                         padding: const EdgeInsets.only(bottom: 15),
-                        color: Colors.white,
+                        color: _loginController.colorFromHex(
+                            _loginController.listCore
+                                .where((coreItem) =>
+                            coreItem.coreChave ==
+                                'backLight')
+                                .first
+                                .coreValor
+                                .toString()),
                         child: Column(
                           children: [
                             Container(

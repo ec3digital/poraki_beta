@@ -83,7 +83,7 @@ class NewsListPage extends StatelessWidget {
           } else {
             // print('qt news: ' + _newsController.noticias.length.toString());
             return SingleChildScrollView(
-                child: GradientHeaderHome(
+                //child: GradientHeaderHome(
                     child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -117,7 +117,9 @@ class NewsListPage extends StatelessWidget {
                       },
                     ),
                   //)
-                ])));
+                ])
+                //)
+            );
           }
         });
   }

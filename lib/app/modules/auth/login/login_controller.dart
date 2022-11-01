@@ -57,8 +57,8 @@ class LoginController extends GetxController {
   // carrega dados do usuario
   Future<void> loadUserData() async {
     print('loadUserData');
-    usuGuid = 'eyCv21RfaURoMn0SUndCg6LPyJP2';
-    usuEmail = 'danilojazz@gmail.com';
+    // usuGuid = 'eyCv21RfaURoMn0SUndCg6LPyJP2';
+    // usuEmail = 'danilojazz@gmail.com';
 
     //pega o cep local
     await _getCep();

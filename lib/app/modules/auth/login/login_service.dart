@@ -1,9 +1,12 @@
 import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:poraki/app/routes/app_routes.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
+
+import 'login_controller.dart';
 
 class LoginService {
   static FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -37,6 +40,16 @@ class LoginService {
       final currentUserObject = auth.FirebaseAuth.instance.currentUser;
 
       if (currentUserObject?.uid != null) {
+        final LoginController _loginController = Get.put(LoginController());
+        _loginController.usuGuid = currentUserObject!.uid;
+        _loginController.usuEmail = currentUserObject.email;
+
+        var u = currentUserObject;
+        // print('usuario fb uid: ' + u.uid.toString());
+        // print('usuario fb email:' + u.email.toString());
+        print('usuario fb display name: ' + u.displayName.toString());
+        print('usuario fb token: ' + u.refreshToken.toString());
+
         return 'OK';
       }
     } on auth.FirebaseAuthException catch (exception, s) {

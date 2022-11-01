@@ -16,14 +16,21 @@ class OffersPage extends StatelessWidget {
       appBar: appBarOffers(Get.arguments[3]['title']),
       body: Container(
           decoration: new BoxDecoration(
-              gradient: new LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'backLight').first.coreValor.toString()),
-                  _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'backDark').first.coreValor.toString()),
-                ],
-              )),
+            color: _loginController.colorFromHex(_loginController.listCore
+                .where((coreItem) => coreItem.coreChave == 'backLight')
+                .first
+                .coreValor
+                .toString()),
+
+              // gradient: new LinearGradient(
+              //   begin: Alignment.topCenter,
+              //   end: Alignment.bottomCenter,
+              //   colors: [
+              //     _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'backLight').first.coreValor.toString()),
+              //     _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'backDark').first.coreValor.toString()),
+              //   ],
+              // )
+          ),
           child: BodyOffers()),
       // backgroundColor: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'backDark').first.coreValor.toString()),
 

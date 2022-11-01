@@ -61,14 +61,21 @@ class BodyShowDayOffer extends StatelessWidget {
                     SizedBox(height: 10),
                     ButtonsDayOffer(
                       onPressed: () {},
-                      colorText: Colors.white,
+                      colorText: _loginController.colorFromHex(
+                          _loginController.listCore
+                              .where((coreItem) =>
+                          coreItem.coreChave ==
+                              'backLight')
+                              .first
+                              .coreValor
+                              .toString()),
                       text: 'Comprar agora',
                       colorButton: AppColors.primaryColor,
                     ),
                     ButtonsDayOffer(
                       onPressed: () {},
                       colorText: AppColors.primaryColor,
-                      text: 'Adicionar ao carrinho1',
+                      text: 'Adicionar ao carrinho',
                       colorButton: AppColors.primaryColorButton,
                     ),
                   ],

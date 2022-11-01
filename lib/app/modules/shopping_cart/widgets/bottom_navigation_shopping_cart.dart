@@ -23,8 +23,13 @@ class _BottomNavigationShoppingCartState
   @override
   Widget build(BuildContext context) {
     LoginController _loginController = Get.find();
-    Color darkText = _loginController.colorFromHex(_loginController.listCore
+    Color _darkText = _loginController.colorFromHex(_loginController.listCore
         .where((coreItem) => coreItem.coreChave == 'textDark')
+        .first
+        .coreValor
+        .toString());
+    Color _lightText = _loginController.colorFromHex(_loginController.listCore
+        .where((coreItem) => coreItem.coreChave == 'backLight')
         .first
         .coreValor
         .toString());
@@ -34,30 +39,30 @@ class _BottomNavigationShoppingCartState
       margin: const EdgeInsets.all(0),
       elevation: 4,
       child: Container(
+        decoration: BoxDecoration(color: _lightText),
         width: Get.width,
         height: Get.height * 0.30,
         child: Column(
           children: [
             Container(
+              decoration: BoxDecoration(color: _lightText),
               padding: const EdgeInsets.only(left: 10, top: 10),
               child: Row(
                 children: [
                   Text(
                     'Envio: ',
-                    style: TextStyle(color: darkText, fontSize: 15),
+                    style: TextStyle(color: _darkText, fontSize: 15),
                   ),
                   Text(
                     _loginController.usuCep.toString(),
                     // 'Rua tal com tal coisa 85, São Paulo',
-                    style: TextStyle(color: darkText, fontSize: 15),
+                    style: TextStyle(color: _darkText, fontSize: 15),
                   ),
                 ],
               ),
             ),
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 10),
-              child: Divider(),
-            ),
+            Divider(),
+
             Container(
               margin: const EdgeInsets.symmetric(horizontal: 10),
               child: Row(
@@ -65,7 +70,7 @@ class _BottomNavigationShoppingCartState
                 children: [
                   Text(
                     'Total',
-                    style: TextStyle(color: darkText, fontSize: 16),
+                    style: TextStyle(color: _darkText, fontSize: 16),
                   ),
                   Obx(() => Text(
                         'R\$ ' +
@@ -73,7 +78,7 @@ class _BottomNavigationShoppingCartState
                                 .toStringAsFixed(2)
                                 .replaceAll(',', '')
                                 .replaceAll('.', ','),
-                        style: TextStyle(color: darkText, fontSize: 16),
+                        style: TextStyle(color: _darkText, fontSize: 16),
                       )),
                 ],
               ),
@@ -112,7 +117,7 @@ class _BottomNavigationShoppingCartState
                         Navigator.pop(context);
                       },
                       text: 'Esvaziar o carrinho',
-                      colorText: darkText,
+                      colorText: _darkText,
                       colorButton: _loginController.colorFromHex(
                           _loginController.listCore
                               .where((coreItem) =>

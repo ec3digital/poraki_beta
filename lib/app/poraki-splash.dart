@@ -15,7 +15,7 @@ class _PorakiSplash extends State<PorakiSplash> {
   void initState() {
     super.initState();
     Timer(Duration(seconds: 0), () async {
-      final LoginController _loginController = Get.put(LoginController());
+      final LoginController _loginController = Get.find(); //.put(LoginController());
 
       await _loginController.getCloudId();
       await _loginController.runCore();

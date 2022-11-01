@@ -55,14 +55,20 @@ class _ChatPage extends State<ChatPage> {
         height: MediaQuery.of(context).size.height,
         padding: EdgeInsets.symmetric(horizontal: 10, vertical: 26),
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              AppColors.primaryBackground,
-              AppColors.secondaryBackground
-            ],
-          ),
+          color: _loginController.colorFromHex(_loginController.listCore
+              .where((coreItem) => coreItem.coreChave == 'backLight')
+              .first
+              .coreValor
+              .toString()),
+
+          // gradient: LinearGradient(
+          //   begin: Alignment.topCenter,
+          //   end: Alignment.bottomCenter,
+          //   colors: [
+          //     AppColors.primaryBackground,
+          //     AppColors.secondaryBackground
+          //   ],
+          // ),
         ),
 
         child: Column(

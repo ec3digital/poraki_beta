@@ -9,7 +9,7 @@ class CardBannerAloneHome extends StatelessWidget {
 
   String avisoApp = '';
   String avisoCep = '';
-  final LoginController loginController = Get.find();
+  final LoginController _loginController = Get.find();
 
   Future<void> carregaAvisos() async {
 
@@ -21,7 +21,7 @@ class CardBannerAloneHome extends StatelessWidget {
     // print('avisoApp: ' + avisoApp.toString());
 
     var tempAvisosCep = await fbPorakiService().getListFromFirebase(
-        "akiavisos", loginController.usuCep!.substring(0, 3));
+        "akiavisos", _loginController.usuCep!.substring(0, 3));
     tempAvisosCep.forEach((key, value) {
       avisoCep = value; // + ' (' + key + ')';
     });
@@ -52,10 +52,10 @@ class CardBannerAloneHome extends StatelessWidget {
                 },
                 child: Container(height: 30, width: Get.width * 0.92, decoration: BoxDecoration(
                     // border: Border.all(color: Colors.black),
-                    color: Colors.white
+                    color: Colors.white,
                 ),
                   //margin: EdgeInsets.all(10),
-                  child: Marquee(text: avisoApp + ' / ' + ' ', startAfter: Duration(seconds: 1), style: TextStyle(color: loginController.colorFromHex(loginController.listCore.where((coreItem) => coreItem.coreChave == 'textDark').first.coreValor.toString()),),),
+                  child: Marquee(text: avisoApp + ' / ' + ' ', startAfter: Duration(seconds: 1), style: TextStyle(color: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'textDark').first.coreValor.toString()),),),
                   // child: ClipRRect(
                   //   borderRadius: BorderRadius.circular(15),
                   //   // child: Image.network(

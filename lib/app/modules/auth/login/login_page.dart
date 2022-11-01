@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:poraki/app/app_widget.dart';
 import 'package:poraki/app/services/sqlite/sqlporaki_core_service.dart';
 import 'package:poraki/app/theme/app_theme.dart';
 import 'package:poraki/app/modules/auth/sign_up/sign_up_page.dart';
 import 'package:poraki/app/services/sqlite/sqlporaki_login_service.dart';
 import '../../../util/alerta.dart';
+import 'login_controller.dart';
 import 'login_service.dart';
 
 class LoginPage extends StatefulWidget {
