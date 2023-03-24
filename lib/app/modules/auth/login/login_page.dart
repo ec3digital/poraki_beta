@@ -31,9 +31,7 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController _mailInputController = TextEditingController();
   TextEditingController _passwordInputController = TextEditingController();
   bool isLoading = false;
-
-  bool _obscurePassword = true;
-
+  bool _obscurePassword = false;
   final _formKey = GlobalKey<FormState>();
   List<Map<String, dynamic>>? listUser;
 
@@ -57,7 +55,7 @@ class _LoginPageState extends State<LoginPage> {
             return Scaffold(
               body: Container(
                 height: MediaQuery.of(context).size.height,
-                padding: EdgeInsets.symmetric(horizontal: 50, vertical: 30),
+                padding: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment.topCenter,
@@ -70,24 +68,22 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 child: SingleChildScrollView(
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       Padding(
-                          padding: EdgeInsets.only(
-                            bottom: 1,
-                          ),
-                          child: new Container(
-                              child: FadeInImage.assetNetwork(
+                          padding: EdgeInsets.symmetric(horizontal: 1, vertical: 2),
+                          child:  FadeInImage.assetNetwork(
+                                  height: 110,imageCacheHeight: 110,placeholderCacheHeight: 110,
                                   placeholder: 'assets/images/poraki250.png',
                                   image:
-                                      'http://poraki-assets.ec3.digital/wp-content/uploads/2021/11/poraki250.png'))),
+                                      'http://ec3.digital/wp-content/uploads/2023/03/poraki_pqn.png')),
                       Text(
                         "Entrar",
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           color: Colors.blueGrey,
-                          fontSize: 24,
+                          fontSize: 26,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -144,7 +140,7 @@ class _LoginPageState extends State<LoginPage> {
                                 return null;
                               },
                               autofocus: _mailInputController.text.isNotEmpty,
-                              obscureText: _obscurePassword,
+                              obscureText: !_obscurePassword,
                               controller: _passwordInputController,
                               style: TextStyle(color: Colors.white),
                               decoration: InputDecoration(
@@ -172,7 +168,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.only(bottom: 10),
+                        padding: EdgeInsets.only(bottom: 6),
                       ),
                       GestureDetector(
                         onTap: () {},
@@ -180,12 +176,12 @@ class _LoginPageState extends State<LoginPage> {
                           "Esqueceu a senha?",
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 12,
+                            fontSize: 15,
                           ),
                           textAlign: TextAlign.right,
                         ),
                       ),
-                      Row(
+                      Row(mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Checkbox(
                             value: this._obscurePassword,
@@ -223,15 +219,10 @@ class _LoginPageState extends State<LoginPage> {
                           } else {
                             print(tempLoginResult);
                             Alerta(context, tempLoginResult);
-
-                            // DialogHelper.showAlert(context: context, description: tempLoginResult);
-                            // MostraAlerta(context, tempLoginResult);
-                            // AlertDialog(content: Text(tempLoginResult), title: Text('Erro'),);
-                            // SnackBar(content: Text(loginResult.toString()),);
                           }
 
                           setState(() {
-                            isLoading = tempLoginResult == 'OK' ? true: false;
+                            isLoading = tempLoginResult == 'OK' ? true : false;
                           });
                         },
                         child: (isLoading)
@@ -268,7 +259,7 @@ class _LoginPageState extends State<LoginPage> {
                       Text(
                         "Ainda não tem uma conta?",
                         textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 11),
+                        style: TextStyle(fontSize: 14),
                       ),
                       Padding(
                         padding: EdgeInsets.symmetric(vertical: 10),
@@ -288,6 +279,9 @@ class _LoginPageState extends State<LoginPage> {
                             borderRadius: BorderRadius.circular(50),
                           ),
                         ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(bottom: 10),
                       ),
                     ],
                   ),

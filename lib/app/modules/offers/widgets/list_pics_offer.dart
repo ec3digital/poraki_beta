@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:poraki/app/data/models/ofertafav.dart';
 import 'package:poraki/app/modules/auth/login/login_controller.dart';
-import '../offersfav_controller.dart';
+//import '../offersfav_controller.dart';
 
 class ListPicsOffer extends StatefulWidget {
   List<String> imagesList = [];
@@ -64,13 +64,14 @@ class _ListPicsOfferState extends State<ListPicsOffer> {
       child: Stack(
         children: [
           ListView.builder(
-            scrollDirection: Axis.horizontal,
+
+            //scrollDirection: Axis.horizontal,
             itemCount: 1, //controller.listPictures.length,
             itemBuilder: (context, index) {
               return Container(
                 width: Get.width * 1,
-                child: Align(
-                  alignment: Alignment.topCenter,
+                // child: Align(
+                //   alignment: Alignment.topCenter,
                   child: Container(
                     height: Get.height * 0.37,
 
@@ -94,7 +95,7 @@ class _ListPicsOfferState extends State<ListPicsOffer> {
                     //   imagesList[index],
                     // ),
                   ),
-                ),
+                //),
               );
             },
           ),

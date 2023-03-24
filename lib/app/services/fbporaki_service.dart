@@ -67,20 +67,27 @@ class fbPorakiService {
     CollectionReference coll = _fbInstance!.collection(col);
     DocumentSnapshot snapshot = await coll.doc(doc).get();
 
-    // var data = snapshot.data() as Map;
+     Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
 
-    // var data = new Map<String, dynamic>.from(snapshot);
+    return data;
+  }
 
-    // final _data = List<dynamic>.from(data.map<dynamic>((dynamic item) => item,),);
+  Future<Map<String, dynamic>> getListFromFirebaseCol(String col) async {
+    await _iniFirebase();
+    CollectionReference coll = _fbInstance!.collection(col).get().then((value) => value.docs) as CollectionReference<Object?>;
 
-    // List<String, dynamic> ret = [];
-    Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
-    // data.forEach((key, value) { });
+    var snapshot = coll.snapshots();
+    Map<String, dynamic> data = snapshot.toList() as Map<String, dynamic>;
 
-    // InternalLinkedHashMap<String, dynamic> invalidMap;
-    // final validMap = json.decode(json.encode(invalidMap)) as Map<String, dynamic>;
+    return data;
+  }
 
-    print('core data: qtd ' + data.length.toString());
+  Future<Map<String, dynamic>> getListFromFirebaseCol3rdLevel(String colName, String docName, String col3rdLevelName) async {
+    await _iniFirebase();
+    var coll = _fbInstance!.collection(colName).doc(docName).collection(col3rdLevelName).get();
+    var snapshot = coll.asStream(); //.snapshots();
+
+    Map<String, dynamic> data = snapshot.toList() as Map<String, dynamic>;
     return data;
   }
 
@@ -91,6 +98,7 @@ class fbPorakiService {
     await _iniFirebase();
     CollectionReference coll = _fbInstance!.collection(col);
     DocumentSnapshot snapshot = await coll.doc(cepAtual).get();
+
     var data = snapshot.data() as Map;
     return data as List<Map<dynamic, dynamic>>;
   }

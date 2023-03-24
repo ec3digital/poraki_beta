@@ -7,6 +7,7 @@ import 'package:poraki/app/modules/account/account_controller.dart';
 import 'package:poraki/app/modules/auth/login/login_controller.dart';
 import 'package:poraki/app/modules/home/widgets/gradient_header_home.dart';
 import 'package:poraki/app/modules/offers/widgets/button_offer.dart';
+import '../../../routes/app_routes.dart';
 
 class AccountBody extends StatefulWidget {
   AccountBody({
@@ -22,6 +23,7 @@ class AccountBody extends StatefulWidget {
 
 class _AccountBodyState extends State<AccountBody> {
   final _form = GlobalKey<FormState>();
+  bool _missingFields = false;
 
   @override
   Widget build(BuildContext context) {
@@ -71,6 +73,25 @@ class _AccountBodyState extends State<AccountBody> {
                       key: _form,
                       // key: controller.formKey,
                       child: ListView(children: [
+                        Text(_missingFields ? "Ops, existem informações faltantes na sua conta": ""),
+                        ButtonOffer(
+                            colorText: _loginController.colorFromHex(
+                                _loginController.listCore
+                                    .where((coreItem) =>
+                                        coreItem.coreChave == 'textLight')
+                                    .first
+                                    .coreValor
+                                    .toString()),
+                            text: 'Salvar',
+                            colorButton: _loginController.colorFromHex(
+                                _loginController.listCore
+                                    .where((coreItem) =>
+                                        coreItem.coreChave == 'iconColor')
+                                    .first
+                                    .coreValor
+                                    .toString()),
+                            onPressed: () =>
+                                Get.toNamed(AppRoutes.accountValidation)),
                         TextFormField(
                           // validator: (value) {
                           //   if (value!.length < 4) {
@@ -91,7 +112,9 @@ class _AccountBodyState extends State<AccountBody> {
                             ),
                           ),
                         ),
-                        const SizedBox(height: 20,),
+                        const SizedBox(
+                          height: 20,
+                        ),
                         TextFormField(
                           // validator: (value) {
                           //   if (value!.length < 10) {
@@ -112,7 +135,9 @@ class _AccountBodyState extends State<AccountBody> {
                             ),
                           ),
                         ),
-                        const SizedBox(height: 20,),
+                        const SizedBox(
+                          height: 20,
+                        ),
                         TextFormField(
                           // validator: (value) {
                           //   if (value!.length != 11) {
@@ -121,11 +146,25 @@ class _AccountBodyState extends State<AccountBody> {
                           //   return null;
                           // },
 
-                          inputFormatters: [FilteringTextInputFormatter.digitsOnly,CpfInputFormatter(), ],
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly,
+                            CpfInputFormatter(),
+                          ],
                           controller: widget._controller.txtCPF,
                           keyboardType: TextInputType.number,
                           autofocus: true,
-                          onChanged: (cpf) { if (!CNPJValidator.isValid(cpf)) { Get.defaultDialog(title: "CPF Inválido", middleText: "Por favor informe um CPF válido" ); }  {} } ,
+                          onChanged: (cpf) {
+                            if (!CNPJValidator.isValid(cpf)) {
+                              _missingFields = true;
+                              Get.defaultDialog(
+                                  title: "CPF Inválido",
+                                  middleText:
+                                      "Por favor informe um CPF válido");
+                            } else
+                            { if(widget._controller.txtCEP.text.isEmpty) setState(() {
+                              _missingFields = true;
+                            }); }
+                          },
                           style: TextStyle(color: textDark),
                           decoration: InputDecoration(
                             border: OutlineInputBorder(),
@@ -137,7 +176,9 @@ class _AccountBodyState extends State<AccountBody> {
                             ),
                           ),
                         ),
-                        const SizedBox(height: 20,),
+                        const SizedBox(
+                          height: 20,
+                        ),
                         TextFormField(
                           // validator: (value) {
                           //   if (value!.length != 11) {
@@ -146,10 +187,18 @@ class _AccountBodyState extends State<AccountBody> {
                           //   return null;
                           // },
 
-                          inputFormatters: [FilteringTextInputFormatter.digitsOnly,TelefoneInputFormatter(), ],
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly,
+                            TelefoneInputFormatter(),
+                          ],
                           controller: widget._controller.txtTelefone,
                           keyboardType: TextInputType.phone,
                           autofocus: true,
+                          onChanged: (tel) {
+                            if(widget._controller.txtTelefone.text.isEmpty) setState(() {
+                                _missingFields = true;
+                              });
+                            },
                           style: TextStyle(color: textDark),
                           decoration: InputDecoration(
                             border: OutlineInputBorder(),
@@ -161,7 +210,9 @@ class _AccountBodyState extends State<AccountBody> {
                             ),
                           ),
                         ),
-                        const SizedBox(height: 20,),
+                        const SizedBox(
+                          height: 20,
+                        ),
                         TextFormField(
                           // validator: (value) {
                           //   if (value!.length < 5) {
@@ -171,6 +222,7 @@ class _AccountBodyState extends State<AccountBody> {
                           //   }
                           //   return null;
                           // },
+                          readOnly: true,
                           controller: widget._controller.txtEmail,
                           keyboardType: TextInputType.emailAddress,
                           autofocus: true,
@@ -187,7 +239,9 @@ class _AccountBodyState extends State<AccountBody> {
                             ),
                           ),
                         ),
-                        const SizedBox(height: 20,),
+                        const SizedBox(
+                          height: 20,
+                        ),
                         TextFormField(
                           validator: (value) {
                             if (value!.length != 8) {
@@ -195,10 +249,18 @@ class _AccountBodyState extends State<AccountBody> {
                             }
                             return null;
                           },
-                          inputFormatters: [FilteringTextInputFormatter.digitsOnly,CepInputFormatter(), ],
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly,
+                            CepInputFormatter(),
+                          ],
                           controller: widget._controller.txtCEP,
                           keyboardType: TextInputType.number,
                           autofocus: true,
+                          onChanged: (cep) {
+                            if(widget._controller.txtCEP.text.isEmpty) setState(() {
+                              _missingFields = true;
+                            });
+                          },
                           style: TextStyle(color: textDark),
                           decoration: InputDecoration(
                             border: OutlineInputBorder(),
@@ -210,7 +272,9 @@ class _AccountBodyState extends State<AccountBody> {
                             ),
                           ),
                         ),
-                        const SizedBox(height: 20,),
+                        const SizedBox(
+                          height: 20,
+                        ),
                         TextFormField(
                           validator: (value) {
                             if (value!.length != 10) {
@@ -218,8 +282,10 @@ class _AccountBodyState extends State<AccountBody> {
                             }
                             return null;
                           },
-
-                          inputFormatters: [FilteringTextInputFormatter.digitsOnly,DataInputFormatter(), ],
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly,
+                            DataInputFormatter(),
+                          ],
                           controller: widget._controller.txtDtNasc,
                           keyboardType: TextInputType.datetime,
                           autofocus: true,
@@ -358,7 +424,10 @@ class _AccountBodyState extends State<AccountBody> {
                                 null,
                                 null));
 
-                            Get.defaultDialog(title: "Aviso", middleText: "Informações atualizadas com sucesso!");
+                            Get.defaultDialog(
+                                title: "Aviso",
+                                middleText:
+                                    "Informações atualizadas com sucesso!");
 
                             // final snackBar = SnackBar(
                             //     backgroundColor: _loginController.colorFromHex(

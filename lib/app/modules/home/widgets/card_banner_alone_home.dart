@@ -4,11 +4,18 @@ import 'package:marquee/marquee.dart';
 import 'package:poraki/app/modules/auth/login/login_controller.dart';
 import 'package:poraki/app/services/fbporaki_service.dart';
 
-class CardBannerAloneHome extends StatelessWidget {
+class CardBannerAloneHome extends StatefulWidget {
   CardBannerAloneHome({Key? key}) : super(key: key);
 
+  @override
+  State<CardBannerAloneHome> createState() => _CardBannerAloneHomeState();
+}
+
+class _CardBannerAloneHomeState extends State<CardBannerAloneHome> {
   String avisoApp = '';
+
   String avisoCep = '';
+
   final LoginController _loginController = Get.find();
 
   Future<void> carregaAvisos() async {
@@ -26,8 +33,8 @@ class CardBannerAloneHome extends StatelessWidget {
       avisoCep = value; // + ' (' + key + ')';
     });
 
-    if(avisoApp.isEmpty)
-      avisoApp = 'Sem avisos para a sua região no momento';
+    // if(avisoApp.isEmpty)
+    //   avisoApp = 'Sem avisos para a sua região no momento';
 
     // print('avisoCep: ' + avisoCep.toString());
   }
@@ -46,8 +53,8 @@ class CardBannerAloneHome extends StatelessWidget {
             return GestureDetector(
                 onTap: () {
                   Get.defaultDialog(
-                    title: 'Você descobriu um recurso do futuro!',
-                    middleText: 'Será implementado na próxima versão!',
+                    title: 'Avisos',
+                    middleText: avisoApp + '\n\n' + avisoCep,
                   );
                 },
                 child: Container(height: 30, width: Get.width * 0.92, decoration: BoxDecoration(
@@ -55,7 +62,7 @@ class CardBannerAloneHome extends StatelessWidget {
                     color: Colors.white,
                 ),
                   //margin: EdgeInsets.all(10),
-                  child: Marquee(text: avisoApp + ' / ' + ' ', startAfter: Duration(seconds: 1), style: TextStyle(color: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'textDark').first.coreValor.toString()),),),
+                  child: Marquee(text: avisoApp + ' / ' + avisoCep, startAfter: Duration(seconds: 1), style: TextStyle(color: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'textDark').first.coreValor.toString()),),),
                   // child: ClipRRect(
                   //   borderRadius: BorderRadius.circular(15),
                   //   // child: Image.network(

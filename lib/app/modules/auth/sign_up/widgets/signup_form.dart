@@ -103,7 +103,7 @@ class FormSignup extends StatelessWidget {
             style: TextStyle(color: Colors.white),
             decoration: InputDecoration(
               border: OutlineInputBorder(),
-              labelText: "Telefone Celular /Whatsapp",
+              labelText: "Telefone Celular / Whatsapp",
               labelStyle: TextStyle(color: Colors.white),
               prefixIcon: Icon(
                 Icons.phone,

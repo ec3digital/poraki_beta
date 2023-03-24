@@ -1,7 +1,9 @@
 import 'package:get/get.dart';
 import 'package:poraki/app/modules/account/account_page.dart';
+import 'package:poraki/app/modules/account/account_validation.dart';
 import 'package:poraki/app/modules/addresses/address_page.dart';
 import 'package:poraki/app/modules/addresses/addresses_list_page.dart';
+import 'package:poraki/app/modules/auth/termos_page.dart';
 import 'package:poraki/app/modules/categories/categories_page.dart';
 import 'package:poraki/app/modules/chats/chatList_page.dart';
 import 'package:poraki/app/modules/checkout/checkout_page.dart';
@@ -22,6 +24,7 @@ import '../modules/days_offers/show_day_offer/show_day_offer_page.dart';
 import '../modules/days_offers/show_day_offer/widgets/view_search_product.dart';
 import '../modules/home/home_page.dart';
 import '../modules/shopping_cart/shopping_cart_page.dart';
+import '../modules/stores/store_validation.dart';
 import 'app_routes.dart';
 import '../modules/offers/offers_page.dart';
 
@@ -88,7 +91,9 @@ class AppPages {
     ),
     GetPage(
       name: AppRoutes.order,
-      page: () => OrderPage(ped: null,),
+      page: () => OrderPage(
+        ped: null,
+      ),
     ),
     GetPage(
       name: AppRoutes.mOffers,
@@ -121,7 +126,19 @@ class AppPages {
     GetPage(
       name: AppRoutes.chat,
       page: () => ChatPage(),
-    )
+    ),
+    GetPage(
+      name: AppRoutes.accountValidation,
+      page: () => AccountValidation(),
+    ),
+    GetPage(
+      name: AppRoutes.storeValidation,
+      page: () => StoreValidation(),
+    ),
+    GetPage(
+      name: AppRoutes.termos,
+      page: () => TermosPage(),
+    ),
 
   ];
 }

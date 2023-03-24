@@ -1,5 +1,5 @@
 class Lojas {
-  String? LojaAtivaDesde;
+  DateTime? LojaAtivaDesde;
   // String? LojaInativaDesde;
   // String? LojaInativaAdminID;
   String? LojaTemplateChave;
@@ -19,7 +19,7 @@ class Lojas {
   Lojas(this.LojaAtivaDesde, this.LojaTemplateChave, this.LojaNome, this.LojaCEP, this.LojaSlogan, this.LojaGUID, this.VendedorID, this.LojaCNPJ, this.LojaRazao, this.Categorias, this.LojaConfigs, this.LojaLogra, this.LojaNumero, this.LojaCompl);
 
   Lojas.fromJson(Map<String, dynamic> json) {
-    LojaAtivaDesde = json['LojaAtivaDesde'];
+    LojaAtivaDesde = DateTime.now(); // json['LojaAtivaDesde'];
     LojaTemplateChave = json['LojaTemplateChave'];
     LojaNome = json['LojaNome'];
     LojaCEP = json['LojaCEP'];

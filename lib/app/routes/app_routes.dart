@@ -28,4 +28,7 @@ abstract class AppRoutes {
   static const news = '/news';
   static const chats = '/chats';
   static const chat = '/chat';
+  static const accountValidation = '/account-validation';
+  static const storeValidation = '/store-validation';
+  static const termos = '/termos';
 }

@@ -86,13 +86,13 @@ class _DrawerHomeState extends State<DrawerHome> {
                       icon: Icons.home_outlined,
                       onTap: () => Get.toNamed(AppRoutes.home),
                     ),
-                    RowCategoriesDrawerHome(
-                      text: 'Mensagens',
-                      badgeText: "4",
-                      // isSelected: index == 8,
-                      icon: Icons.message,
-                      onTap: () => Get.toNamed(AppRoutes.chats),
-                    ),
+                    // RowCategoriesDrawerHome(
+                    //   text: 'Mensagens',
+                    //   badgeText: "4",
+                    //   // isSelected: index == 8,
+                    //   icon: Icons.message,
+                    //   onTap: () => Get.toNamed(AppRoutes.chats),
+                    // ),
                     //Divider(color: lightBack),
                     // RowCategoriesDrawerHome(
                     //   text: 'Carrinho',
@@ -137,12 +137,12 @@ class _DrawerHomeState extends State<DrawerHome> {
                       icon: Icons.map,
                       onTap: () => Get.toNamed(AppRoutes.addresses),
                     ),
-                    RowCategoriesDrawerHome(
-                        text: 'Minhas compras',
-                        // isSelected: index == 2,
-                        icon: Icons.shopping_bag_outlined,
-                        onTap: () => Get.offAndToNamed(AppRoutes.orders,
-                            arguments: ["Compras"])),
+                    // RowCategoriesDrawerHome(
+                    //     text: 'Minhas compras',
+                    //     // isSelected: index == 2,
+                    //     icon: Icons.shopping_bag_outlined,
+                    //     onTap: () => Get.offAndToNamed(AppRoutes.orders,
+                    //         arguments: ["Compras"])),
                     RowCategoriesDrawerHome(
                       text: 'Minhas lojas',
                       // isSelected: index == 3,
@@ -155,18 +155,18 @@ class _DrawerHomeState extends State<DrawerHome> {
                       icon: Icons.local_offer_rounded,
                       onTap: () => Get.toNamed(AppRoutes.mOffers),
                     ),
-                    RowCategoriesDrawerHome(
-                        text: 'Vendas',
-                        // isSelected: index == 7,
-                        icon: Icons.monetization_on_outlined,
-                        onTap: () => Get.offAndToNamed(AppRoutes.orders,
-                            arguments: ["Vendas"])),
-                    RowCategoriesDrawerHome(
-                        text: 'Entregas',
-                        // isSelected: index == 8,
-                        icon: Icons.shopping_cart_outlined,
-                        onTap: () => Get.offAndToNamed(AppRoutes.orders,
-                            arguments: ["Entregas"])),
+                    // RowCategoriesDrawerHome(
+                    //     text: 'Vendas',
+                    //     // isSelected: index == 7,
+                    //     icon: Icons.monetization_on_outlined,
+                    //     onTap: () => Get.offAndToNamed(AppRoutes.orders,
+                    //         arguments: ["Vendas"])),
+                    // RowCategoriesDrawerHome(
+                    //     text: 'Entregas',
+                    //     // isSelected: index == 8,
+                    //     icon: Icons.shopping_cart_outlined,
+                    //     onTap: () => Get.offAndToNamed(AppRoutes.orders,
+                    //         arguments: ["Entregas"])),
                     RowCategoriesDrawerHome(
                       text: 'Minha conta',
                       // isSelected: index == 5,

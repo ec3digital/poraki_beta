@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:poraki/app/modules/auth/login/login_controller.dart';
 import '../../../data/models/categorias.dart';
 import '../home_controller.dart';
 import 'card_category_home.dart';
@@ -13,6 +14,7 @@ class ListHorizontalCategoriesHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    LoginController _loginController = Get.find();
     return GetBuilder<HomeController>(
       builder: (_) {
         if (controller.isLoading) {
@@ -22,9 +24,9 @@ class ListHorizontalCategoriesHome extends StatelessWidget {
           height: Get.height * 0.14,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
-            itemCount: controller.categorias!.length,
+            itemCount: _loginController.categorias.length,
             itemBuilder: (BuildContext context, int index) {
-              Categorias categories = controller.categorias![index];
+              Categorias categories = _loginController.categorias[index];
               //print('iconcode: ' + categories.categoriaChave.toString() + ' / ' + categories.iconcode.toString());
               return CardCategories(
                 text: categories.categoriaNome!,

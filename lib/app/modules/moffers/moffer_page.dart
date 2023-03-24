@@ -364,22 +364,22 @@ class _MOfferPage extends State<MOfferPage> {
                             if (widget.showPreco && !widget.valPrecoCombinar)
                               Column(
                                 children: <Widget>[
-                                  Row(
-                                    children: <Widget>[
-                                      Switch(
-                                          value: widget.valPrecoInicial,
-                                          onChanged: (bool val) {
-                                            setState(() {
-                                              widget.valPrecoInicial = val;
-                                            });
-                                          }),
-                                      const SizedBox(width: 20),
-                                      Text(widget.valPrecoInicial
-                                          ? 'Preco à partir de'
-                                          : 'Preço fechado'),
-                                      const SizedBox(height: 20),
-                                    ],
-                                  ),
+                                  // Row(
+                                  //   children: <Widget>[
+                                  //     Switch(
+                                  //         value: widget.valPrecoInicial,
+                                  //         onChanged: (bool val) {
+                                  //           setState(() {
+                                  //             widget.valPrecoInicial = val;
+                                  //           });
+                                  //         }),
+                                  //     const SizedBox(width: 20),
+                                  //     Text(widget.valPrecoInicial
+                                  //         ? 'Preco à partir de'
+                                  //         : 'Preço fechado'),
+                                  //     const SizedBox(height: 20),
+                                  //   ],
+                                  // ),
                                   TextFormField(
                                     inputFormatters: [
                                       FilteringTextInputFormatter.digitsOnly,
@@ -415,260 +415,260 @@ class _MOfferPage extends State<MOfferPage> {
                                     },
                                   ),
 
-                                  if (widget.showTxtValorSinalOrc)
-                                    Column(children: <Widget>[
-                                      const SizedBox(width: 20),
-                                      Row(
-                                        children: <Widget>[
-                                          Switch(
-                                              value: widget.valSinalPercentual,
-                                              onChanged: (bool val) {
-                                                setState(() {
-                                                  widget.valSinalPercentual =
-                                                      val;
-                                                });
-                                              }),
-                                          const SizedBox(width: 20),
-                                          Text(widget.valSinalPercentual
-                                              ? 'Sinal em Percentual (opcional)'
-                                              : 'Sinal em valor cheio (opcional)'),
-                                          const SizedBox(height: 20)
-                                        ],
-                                      ),
-                                      TextFormField(
-                                          inputFormatters: [
-                                            FilteringTextInputFormatter
-                                                .digitsOnly,
-                                            CentavosInputFormatter(),
-                                          ],
-                                          // initialValue: '0',
-                                          controller: widget.mofferController
-                                              .txtValorSinalOrc,
-                                          decoration: InputDecoration(
-                                              prefix: Text(
-                                                  widget.valSinalPercentual
-                                                      ? '%'
-                                                      : 'R\$ '),
-                                              border: OutlineInputBorder(),
-                                              labelText:
-                                                  'Valor Sinal/Orçamento'),
-                                          keyboardType: TextInputType.number),
-                                      const SizedBox(width: 20),
-                                    ]),
+                                  // if (widget.showTxtValorSinalOrc)
+                                  //   Column(children: <Widget>[
+                                  //     const SizedBox(width: 20),
+                                  //     Row(
+                                  //       children: <Widget>[
+                                  //         Switch(
+                                  //             value: widget.valSinalPercentual,
+                                  //             onChanged: (bool val) {
+                                  //               setState(() {
+                                  //                 widget.valSinalPercentual =
+                                  //                     val;
+                                  //               });
+                                  //             }),
+                                  //         const SizedBox(width: 20),
+                                  //         Text(widget.valSinalPercentual
+                                  //             ? 'Sinal em Percentual (opcional)'
+                                  //             : 'Sinal em valor cheio (opcional)'),
+                                  //         const SizedBox(height: 20)
+                                  //       ],
+                                  //     ),
+                                  //     TextFormField(
+                                  //         inputFormatters: [
+                                  //           FilteringTextInputFormatter
+                                  //               .digitsOnly,
+                                  //           CentavosInputFormatter(),
+                                  //         ],
+                                  //         // initialValue: '0',
+                                  //         controller: widget.mofferController
+                                  //             .txtValorSinalOrc,
+                                  //         decoration: InputDecoration(
+                                  //             prefix: Text(
+                                  //                 widget.valSinalPercentual
+                                  //                     ? '%'
+                                  //                     : 'R\$ '),
+                                  //             border: OutlineInputBorder(),
+                                  //             labelText:
+                                  //                 'Valor Sinal/Orçamento'),
+                                  //         keyboardType: TextInputType.number),
+                                  //     const SizedBox(width: 20),
+                                  //   ]),
 
-                                  if (widget.showAceitaProposta)
-                                    Row(
-                                      children: <Widget>[
-                                        Switch(
-                                            value: widget.valAceitaProposta,
-                                            onChanged: (bool val) {
-                                              setState(() {
-                                                widget.valAceitaProposta = val;
-                                              });
-                                            }),
-                                        const SizedBox(width: 20),
-                                        Text('Aceita contra proposta'),
-                                      ],
-                                    ),
-
-                                  if (widget.valAceitaProposta)
-                                    Column(children: <Widget>[
-                                      const SizedBox(height: 10),
-                                      TextFormField(
-                                        inputFormatters: [
-                                          FilteringTextInputFormatter
-                                              .digitsOnly,
-                                          CentavosInputFormatter(),
-                                        ],
-                                        // initialValue: '0',
-                                        controller:
-                                            widget.mofferController.txtValorMin,
-                                        decoration: InputDecoration(
-                                          labelText: 'Valor mín',
-                                          prefix: Text('R\$ '),
-                                          border: OutlineInputBorder(),
-                                        ),
-                                        keyboardType:
-                                            TextInputType.numberWithOptions(
-                                                decimal: true),
-                                      ),
-                                    ]),
+                                  // if (widget.showAceitaProposta)
+                                  //   Row(
+                                  //     children: <Widget>[
+                                  //       Switch(
+                                  //           value: widget.valAceitaProposta,
+                                  //           onChanged: (bool val) {
+                                  //             setState(() {
+                                  //               widget.valAceitaProposta = val;
+                                  //             });
+                                  //           }),
+                                  //       const SizedBox(width: 20),
+                                  //       Text('Aceita contra proposta'),
+                                  //     ],
+                                  //   ),
+                                  //
+                                  // if (widget.valAceitaProposta)
+                                  //   Column(children: <Widget>[
+                                  //     const SizedBox(height: 10),
+                                  //     TextFormField(
+                                  //       inputFormatters: [
+                                  //         FilteringTextInputFormatter
+                                  //             .digitsOnly,
+                                  //         CentavosInputFormatter(),
+                                  //       ],
+                                  //       // initialValue: '0',
+                                  //       controller:
+                                  //           widget.mofferController.txtValorMin,
+                                  //       decoration: InputDecoration(
+                                  //         labelText: 'Valor mín',
+                                  //         prefix: Text('R\$ '),
+                                  //         border: OutlineInputBorder(),
+                                  //       ),
+                                  //       keyboardType:
+                                  //           TextInputType.numberWithOptions(
+                                  //               decimal: true),
+                                  //     ),
+                                  //   ]),
 
                                   // if (showTxtValorSinalOrc)
                                 ],
                               ),
 
-                            if (widget.showQtd && widget.showCamposBasicos)
-                              Column(
-                                children: <Widget>[
-                                  Row(
-                                    children: <Widget>[
-                                      Switch(
-                                          value: widget.valQtd,
-                                          onChanged: (bool val) {
-                                            setState(() {
-                                              widget.valQtd = val;
-                                            });
-                                          }),
-                                      const SizedBox(width: 20),
-                                      Text(widget.valQtd
-                                          ? 'Controla quantidade'
-                                          : 'Sem controle de quantidade'),
-                                      const SizedBox(height: 10)
-                                    ],
-                                  ),
-                                  if (widget.valQtd)
-                                    Column(children: <Widget>[
-                                      const SizedBox(height: 10),
-                                      TextFormField(
-                                        controller:
-                                            widget.mofferController.txtQtdDispo,
-                                        decoration: InputDecoration(
-                                          labelText: 'Qtd disponível',
-                                          border: OutlineInputBorder(),
-                                        ),
-                                        keyboardType: TextInputType.number,
-                                        validator: (value) {
-                                          int xQtdDispo =
-                                              int.parse(value.toString());
-                                          if (xQtdDispo <= 0)
-                                            return 'Quantidade disponível precisa ser maior do que zero, ou marque como Sem controle de quantidade';
-                                          return null;
-                                        },
-                                      ),
-                                      const SizedBox(height: 20),
-                                      TextFormField(
-                                        controller: widget
-                                            .mofferController.txtQtdMaxPorVenda,
-                                        decoration: InputDecoration(
-                                          labelText: 'Qtd máxima por venda',
-                                          border: OutlineInputBorder(),
-                                        ),
-                                        keyboardType: TextInputType.number,
-                                      ),
-                                      const SizedBox(
-                                        height: 20,
-                                      ),
-                                      TextFormField(
-                                        controller:
-                                            widget.mofferController.txtQtdAviso,
-                                        decoration: InputDecoration(
-                                          labelText: 'Qtd aviso acabando',
-                                          border: OutlineInputBorder(),
-                                        ),
-                                        keyboardType: TextInputType.number,
-                                      ),
-                                    ]),
-                                ],
-                              ),
-
-                            if (widget.showTxtPesoPorcao)
-                              Column(children: <Widget>[
-                                const SizedBox(height: 20),
-                                TextFormField(
-                                    inputFormatters: [
-                                      FilteringTextInputFormatter.digitsOnly,
-                                      PesoInputFormatter(),
-                                    ],
-                                    controller:
-                                        widget.mofferController.txtPesoPorcao,
-                                    decoration: InputDecoration(
-                                      labelText: 'Peso/Porção',
-                                      border: OutlineInputBorder(),
-                                    ),
-                                    keyboardType: TextInputType.number),
-                              ]),
-
-                            if (widget.showTxtPesoPorcaoUn)
-                              Column(children: <Widget>[
-                                const SizedBox(height: 20),
-                                TextFormField(
-                                    controller:
-                                        widget.mofferController.txtPesoPorcaoUn,
-                                    decoration: InputDecoration(
-                                      labelText: 'Peso/Porção Unidade',
-                                      border: OutlineInputBorder(),
-                                    ),
-                                    validator: (value) {
-                                      double xPeso = double.parse(widget
-                                          .mofferController.txtPesoPorcao
-                                          .toString()
-                                          .replaceAll('.', '')
-                                          .replaceAll(',', '.'));
-                                      if (xPeso > 0 && value.toString() == '')
-                                        return 'Favor informar uma unidade de peso';
-                                      return null;
-                                    },
-                                    keyboardType: TextInputType.text),
-
-                                // if (showTxtSabor)
-                                //   TextFormField(
-                                //       controller: widget.mofferController.txtSabor,
-                                //       decoration: InputDecoration(labelText: 'Sabores divididos por /'),
-                                //       keyboardType: TextInputType.multiline),
-                              ]),
-
-                            if (widget.showTxtValidade)
-                              Column(children: <Widget>[
-                                const SizedBox(height: 20),
-                                TextFormField(
-                                    controller:
-                                        widget.mofferController.txtValidade,
-                                    decoration: InputDecoration(
-                                        suffix: Text('dias'),
-                                        border: OutlineInputBorder(),
-                                        labelText: widget.labelValidade +
-                                            ' (ex: 5 dias)'),
-                                    keyboardType: TextInputType.number),
-                              ]),
-
-                            if (widget.showTxtCep)
-                              Column(children: <Widget>[
-                                const SizedBox(height: 20),
-                                TextFormField(
-                                  inputFormatters: [
-                                    FilteringTextInputFormatter.digitsOnly,
-                                    CepInputFormatter(),
-                                  ],
-                                  controller: widget.mofferController.txtCEP,
-                                  decoration: InputDecoration(
-                                    labelText: 'Cep da oferta',
-                                    fillColor: Colors.redAccent.shade100,
-                                    border: OutlineInputBorder(),
-                                  ),
-                                  keyboardType: TextInputType.number,
-                                ),
-                              ]),
-
-                            if (widget.showTxtOfertaCepDistancia &&
-                                widget.showCamposBasicos)
-                              Column(children: <Widget>[
-                                const SizedBox(height: 20),
-                                TextFormField(
-                                  controller:
-                                      widget.mofferController.txtCepDistancia,
-                                  decoration: InputDecoration(
-                                      suffix: Text('Km '),
-                                      border: OutlineInputBorder(),
-                                      labelText: 'Distância de ' +
-                                          widget.labelEntrega +
-                                          ' em Km'),
-                                  keyboardType: TextInputType.number,
-                                ),
-                              ]),
-
-                            // if (widget.showTxtMarca)
+                            // if (widget.showQtd && widget.showCamposBasicos)
+                            //   Column(
+                            //     children: <Widget>[
+                            //       Row(
+                            //         children: <Widget>[
+                            //           Switch(
+                            //               value: widget.valQtd,
+                            //               onChanged: (bool val) {
+                            //                 setState(() {
+                            //                   widget.valQtd = val;
+                            //                 });
+                            //               }),
+                            //           const SizedBox(width: 20),
+                            //           Text(widget.valQtd
+                            //               ? 'Controla quantidade'
+                            //               : 'Sem controle de quantidade'),
+                            //           const SizedBox(height: 10)
+                            //         ],
+                            //       ),
+                            //       if (widget.valQtd)
+                            //         Column(children: <Widget>[
+                            //           const SizedBox(height: 10),
+                            //           TextFormField(
+                            //             controller:
+                            //                 widget.mofferController.txtQtdDispo,
+                            //             decoration: InputDecoration(
+                            //               labelText: 'Qtd disponível',
+                            //               border: OutlineInputBorder(),
+                            //             ),
+                            //             keyboardType: TextInputType.number,
+                            //             validator: (value) {
+                            //               int xQtdDispo =
+                            //                   int.parse(value.toString());
+                            //               if (xQtdDispo <= 0)
+                            //                 return 'Quantidade disponível precisa ser maior do que zero, ou marque como Sem controle de quantidade';
+                            //               return null;
+                            //             },
+                            //           ),
+                            //           const SizedBox(height: 20),
+                            //           TextFormField(
+                            //             controller: widget
+                            //                 .mofferController.txtQtdMaxPorVenda,
+                            //             decoration: InputDecoration(
+                            //               labelText: 'Qtd máxima por venda',
+                            //               border: OutlineInputBorder(),
+                            //             ),
+                            //             keyboardType: TextInputType.number,
+                            //           ),
+                            //           const SizedBox(
+                            //             height: 20,
+                            //           ),
+                            //           TextFormField(
+                            //             controller:
+                            //                 widget.mofferController.txtQtdAviso,
+                            //             decoration: InputDecoration(
+                            //               labelText: 'Qtd aviso acabando',
+                            //               border: OutlineInputBorder(),
+                            //             ),
+                            //             keyboardType: TextInputType.number,
+                            //           ),
+                            //         ]),
+                            //     ],
+                            //   ),
+                            //
+                            // if (widget.showTxtPesoPorcao)
+                            //   Column(children: <Widget>[
+                            //     const SizedBox(height: 20),
+                            //     TextFormField(
+                            //         inputFormatters: [
+                            //           FilteringTextInputFormatter.digitsOnly,
+                            //           PesoInputFormatter(),
+                            //         ],
+                            //         controller:
+                            //             widget.mofferController.txtPesoPorcao,
+                            //         decoration: InputDecoration(
+                            //           labelText: 'Peso/Porção',
+                            //           border: OutlineInputBorder(),
+                            //         ),
+                            //         keyboardType: TextInputType.number),
+                            //   ]),
+                            //
+                            // if (widget.showTxtPesoPorcaoUn)
                             //   Column(children: <Widget>[
                             //     const SizedBox(height: 20),
                             //     TextFormField(
                             //         controller:
-                            //             widget.mofferController.txtMarca,
+                            //             widget.mofferController.txtPesoPorcaoUn,
                             //         decoration: InputDecoration(
-                            //           labelText: 'Marca',
+                            //           labelText: 'Peso/Porção Unidade',
                             //           border: OutlineInputBorder(),
                             //         ),
+                            //         validator: (value) {
+                            //           double xPeso = double.parse(widget
+                            //               .mofferController.txtPesoPorcao
+                            //               .toString()
+                            //               .replaceAll('.', '')
+                            //               .replaceAll(',', '.'));
+                            //           if (xPeso > 0 && value.toString() == '')
+                            //             return 'Favor informar uma unidade de peso';
+                            //           return null;
+                            //         },
                             //         keyboardType: TextInputType.text),
+                            //
+                            //     // if (showTxtSabor)
+                            //     //   TextFormField(
+                            //     //       controller: widget.mofferController.txtSabor,
+                            //     //       decoration: InputDecoration(labelText: 'Sabores divididos por /'),
+                            //     //       keyboardType: TextInputType.multiline),
                             //   ]),
+                            //
+                            // if (widget.showTxtValidade)
+                            //   Column(children: <Widget>[
+                            //     const SizedBox(height: 20),
+                            //     TextFormField(
+                            //         controller:
+                            //             widget.mofferController.txtValidade,
+                            //         decoration: InputDecoration(
+                            //             suffix: Text('dias'),
+                            //             border: OutlineInputBorder(),
+                            //             labelText: widget.labelValidade +
+                            //                 ' (ex: 5 dias)'),
+                            //         keyboardType: TextInputType.number),
+                            //   ]),
+                            //
+                            // if (widget.showTxtCep)
+                            //   Column(children: <Widget>[
+                            //     const SizedBox(height: 20),
+                            //     TextFormField(
+                            //       inputFormatters: [
+                            //         FilteringTextInputFormatter.digitsOnly,
+                            //         CepInputFormatter(),
+                            //       ],
+                            //       controller: widget.mofferController.txtCEP,
+                            //       decoration: InputDecoration(
+                            //         labelText: 'Cep da oferta',
+                            //         fillColor: Colors.redAccent.shade100,
+                            //         border: OutlineInputBorder(),
+                            //       ),
+                            //       keyboardType: TextInputType.number,
+                            //     ),
+                            //   ]),
+                            //
+                            // if (widget.showTxtOfertaCepDistancia &&
+                            //     widget.showCamposBasicos)
+                            //   Column(children: <Widget>[
+                            //     const SizedBox(height: 20),
+                            //     TextFormField(
+                            //       controller:
+                            //           widget.mofferController.txtCepDistancia,
+                            //       decoration: InputDecoration(
+                            //           suffix: Text('Km '),
+                            //           border: OutlineInputBorder(),
+                            //           labelText: 'Distância de ' +
+                            //               widget.labelEntrega +
+                            //               ' em Km'),
+                            //       keyboardType: TextInputType.number,
+                            //     ),
+                            //   ]),
+                            //
+                            // // if (widget.showTxtMarca)
+                            // //   Column(children: <Widget>[
+                            // //     const SizedBox(height: 20),
+                            // //     TextFormField(
+                            // //         controller:
+                            // //             widget.mofferController.txtMarca,
+                            // //         decoration: InputDecoration(
+                            // //           labelText: 'Marca',
+                            // //           border: OutlineInputBorder(),
+                            // //         ),
+                            // //         keyboardType: TextInputType.text),
+                            // //   ]),
 
                             if (widget.showTxtMarca)
                               Column(
@@ -695,46 +695,46 @@ class _MOfferPage extends State<MOfferPage> {
                                 ],
                               ),
 
-                            if (widget.showTxtCodigoAlt)
-                              Column(children: <Widget>[
-                                const SizedBox(height: 20),
-                                TextFormField(
-                                    controller:
-                                        widget.mofferController.txtCodigoAlt,
-                                    decoration: InputDecoration(
-                                      labelText: 'Código da revenda',
-                                      border: OutlineInputBorder(),
-                                    ),
-                                    keyboardType: TextInputType.text),
-                              ]),
+                            // if (widget.showTxtCodigoAlt)
+                            //   Column(children: <Widget>[
+                            //     const SizedBox(height: 20),
+                            //     TextFormField(
+                            //         controller:
+                            //             widget.mofferController.txtCodigoAlt,
+                            //         decoration: InputDecoration(
+                            //           labelText: 'Código da revenda',
+                            //           border: OutlineInputBorder(),
+                            //         ),
+                            //         keyboardType: TextInputType.text),
+                            //   ]),
 
-                            if (widget.showTxtCores)
-                              Column(children: <Widget>[
-                                const SizedBox(height: 20),
-                                TextFormField(
-                                    decoration: InputDecoration(
-                                      labelText: 'Cores ',
-                                      hintText: '(separadas por /)',
-                                      border: OutlineInputBorder(),
-                                    ),
-                                    controller:
-                                        widget.mofferController.txtCores,
-                                    keyboardType: TextInputType.multiline),
-                              ]),
-
-                            if (widget.showTxtTamanhos)
-                              Column(children: <Widget>[
-                                const SizedBox(height: 20),
-                                TextFormField(
-                                    decoration: InputDecoration(
-                                      labelText: 'Tamanhos ',
-                                      hintText: '(separados por /)',
-                                      border: OutlineInputBorder(),
-                                    ),
-                                    controller:
-                                        widget.mofferController.txtTamanhos,
-                                    keyboardType: TextInputType.multiline),
-                              ]),
+                            // if (widget.showTxtCores)
+                            //   Column(children: <Widget>[
+                            //     const SizedBox(height: 20),
+                            //     TextFormField(
+                            //         decoration: InputDecoration(
+                            //           labelText: 'Cores ',
+                            //           hintText: '(separadas por /)',
+                            //           border: OutlineInputBorder(),
+                            //         ),
+                            //         controller:
+                            //             widget.mofferController.txtCores,
+                            //         keyboardType: TextInputType.multiline),
+                            //   ]),
+                            //
+                            // if (widget.showTxtTamanhos)
+                            //   Column(children: <Widget>[
+                            //     const SizedBox(height: 20),
+                            //     TextFormField(
+                            //         decoration: InputDecoration(
+                            //           labelText: 'Tamanhos ',
+                            //           hintText: '(separados por /)',
+                            //           border: OutlineInputBorder(),
+                            //         ),
+                            //         controller:
+                            //             widget.mofferController.txtTamanhos,
+                            //         keyboardType: TextInputType.multiline),
+                            //   ]),
 
                             // SizedBox(height: 20),
                             // Text('Nome 1º campo personalizado'),
@@ -1576,42 +1576,42 @@ class _MOfferPage extends State<MOfferPage> {
                                   ),
                               ]),
 
-                            const SizedBox(height: 10),
-                            const Divider(),
-                            if (widget.showMostraReview)
-                              Row(
-                                children: <Widget>[
-                                  Switch(
-                                      value: widget.valMostraReview,
-                                      onChanged: (bool val) {
-                                        setState(() {
-                                          widget.valMostraReview = val;
-                                        });
-                                      }),
-                                  const SizedBox(width: 20),
-                                  Text('Mostrar opiniões'),
-                                  const SizedBox(height: 20)
-                                ],
-                              ),
-
-                            if (widget.showAceiteAuto)
-                              Row(
-                                children: <Widget>[
-                                  Switch(
-                                      value: widget.valAceiteAuto,
-                                      onChanged: (bool val) {
-                                        setState(() {
-                                          widget.valAceiteAuto = val;
-                                        });
-                                      }),
-                                  const SizedBox(width: 20),
-                                  Expanded(
-                                    child: Text(
-                                        'Aceite automático dentro do horário'),
-                                  ),
-                                  const SizedBox(height: 20)
-                                ],
-                              ),
+                            // const SizedBox(height: 10),
+                            // const Divider(),
+                            // if (widget.showMostraReview)
+                            //   Row(
+                            //     children: <Widget>[
+                            //       Switch(
+                            //           value: widget.valMostraReview,
+                            //           onChanged: (bool val) {
+                            //             setState(() {
+                            //               widget.valMostraReview = val;
+                            //             });
+                            //           }),
+                            //       const SizedBox(width: 20),
+                            //       Text('Mostrar opiniões'),
+                            //       const SizedBox(height: 20)
+                            //     ],
+                            //   ),
+                            //
+                            // if (widget.showAceiteAuto)
+                            //   Row(
+                            //     children: <Widget>[
+                            //       Switch(
+                            //           value: widget.valAceiteAuto,
+                            //           onChanged: (bool val) {
+                            //             setState(() {
+                            //               widget.valAceiteAuto = val;
+                            //             });
+                            //           }),
+                            //       const SizedBox(width: 20),
+                            //       Expanded(
+                            //         child: Text(
+                            //             'Aceite automático dentro do horário'),
+                            //       ),
+                            //       const SizedBox(height: 20)
+                            //     ],
+                            //   ),
 
                             if (widget.showAceitaEncomenda)
                               Row(
@@ -1734,368 +1734,372 @@ class _MOfferPage extends State<MOfferPage> {
                             //   ],
                             // ),
 
-                            if (widget
-                                .showCamposEntrega) // && widget.categSelecionada.categoriaFormasEntrega!.contains('other'))
-                              Column(
-                                children: <Widget>[
-                                  Text('Agente de ' + widget.labelEntrega),
-                                  Row(
-                                    children: <Widget>[
-                                      Switch(
-                                          value: widget.valAceitaEntregaComprador,
-                                          onChanged: (bool val) {
-                                            setState(() {
-                                              widget.valAceitaEntregaComprador = val;
-                                            });
-                                          }),
-                                      const SizedBox(width: 20),
-                                      Text('Entrega por comprador'),
-                                    ],
-                                  ),
-                                  Row(
-                                    children: <Widget>[
-                                      Switch(
-                                          value: widget.valAceitaEntregaVendedor,
-                                          onChanged: (bool val) {
-                                            setState(() {
-                                              widget.valAceitaEntregaVendedor = val;
-                                            });
-                                          }),
-                                      const SizedBox(width: 20),
-                                      Text('Entrega por vendedor'),
-                                    ],
-                                  ),
-                                  Row(
-                                    children: <Widget>[
-                                      Switch(
-                                          value: widget.valAceitaEntregaParceiro,
-                                          onChanged: (bool val) {
-                                            setState(() {
-                                              // configura lista de parceiros
-                                                    widget.listaParceiros.clear();
-                                                    widget.listaParceiros.add('escolha o parceiro');
-                                                    widget.partnersController.parceiros
-                                                        ?.forEach((part) {
-                                                      print(part.ParceiroEntregaNome
-                                                          .toString());
-                                                      widget.listaParceiros.add(part
-                                                          .ParceiroEntregaNome.toString());
-                                                    });
-                                              widget.valAceitaEntregaParceiro = val;
-                                            });
-                                          }),
-                                      const SizedBox(width: 20),
-                                      Text('Entrega por parceiro'),
-                                    ],
-                                  ),
+                            // if (widget
+                            //     .showCamposEntrega) // && widget.categSelecionada.categoriaFormasEntrega!.contains('other'))
+                            //   Column(
+                            //     children: <Widget>[
+                            //       Text('Agente de ' + widget.labelEntrega),
+                            //       Row(
+                            //         children: <Widget>[
+                            //           Switch(
+                            //               value: widget.valAceitaEntregaComprador,
+                            //               onChanged: (bool val) {
+                            //                 setState(() {
+                            //                   widget.valAceitaEntregaComprador = val;
+                            //                 });
+                            //               }),
+                            //           const SizedBox(width: 20),
+                            //           Text('Entrega por comprador'),
+                            //         ],
+                            //       ),
+                            //       Row(
+                            //         children: <Widget>[
+                            //           Switch(
+                            //               value: widget.valAceitaEntregaVendedor,
+                            //               onChanged: (bool val) {
+                            //                 setState(() {
+                            //                   widget.valAceitaEntregaVendedor = val;
+                            //                 });
+                            //               }),
+                            //           const SizedBox(width: 20),
+                            //           Text('Entrega por vendedor'),
+                            //         ],
+                            //       ),
+                            //       // Row(
+                            //       //   children: <Widget>[
+                            //       //     Switch(
+                            //       //         value: widget.valAceitaEntregaParceiro,
+                            //       //         onChanged: (bool val) {
+                            //       //           setState(() {
+                            //       //             // configura lista de parceiros
+                            //       //                   widget.listaParceiros.clear();
+                            //       //                   widget.listaParceiros.add('escolha o parceiro');
+                            //       //                   widget.partnersController.parceiros
+                            //       //                       ?.forEach((part) {
+                            //       //                     print(part.ParceiroEntregaNome
+                            //       //                         .toString());
+                            //       //                     widget.listaParceiros.add(part
+                            //       //                         .ParceiroEntregaNome.toString());
+                            //       //                   });
+                            //       //             widget.valAceitaEntregaParceiro = val;
+                            //       //           });
+                            //       //         }),
+                            //       //     const SizedBox(width: 20),
+                            //       //     Text('Entrega por parceiro'),
+                            //       //   ],
+                            //       // ),
+                            //
+                            //       // NAO USAR!
+                            //       // DropdownButton<String>(
+                            //       //   items: widget.listaFormaEntrega
+                            //       //       .map((String value) {
+                            //       //     return DropdownMenuItem<String>(
+                            //       //       value: value,
+                            //       //       child: Text(value),
+                            //       //     );
+                            //       //   }).toList(),
+                            //       //   value: widget.agenteEntregaSel,
+                            //       //   onChanged: (String? newValue) {
+                            //       //     if (newValue == 'parceiro') {
+                            //       //       // configura lista de parceiros
+                            //       //       widget.listaParceiros.clear();
+                            //       //       widget.listaParceiros.add('escolha o parceiro');
+                            //       //       widget.partnersController.parceiros
+                            //       //           ?.forEach((part) {
+                            //       //         print(part.ParceiroEntregaNome
+                            //       //             .toString());
+                            //       //         widget.listaParceiros.add(part
+                            //       //             .ParceiroEntregaNome.toString());
+                            //       //       });
+                            //       //       print('lista parceiros: ' +
+                            //       //           widget.listaParceiros.length
+                            //       //               .toString());
+                            //       //     }
+                            //       //
+                            //       //     setState(() {
+                            //       //       widget.agenteEntregaSel = newValue!;
+                            //       //     });
+                            //       //   },
+                            //       // ),
+                            //
+                            //
+                            //       // if (widget.valAceitaEntregaParceiro)
+                            //       //   Column(
+                            //       //     children: <Widget>[
+                            //       //       //const SizedBox(height: 20),
+                            //       //       const Divider(),
+                            //       //       const SizedBox(height: 10),
+                            //       //       // Text('Parceiro'),
+                            //       //       // const SizedBox(height: 10),
+                            //       //       DropdownButton<String>(
+                            //       //         items: widget.listaParceiros
+                            //       //             .map((String value) {
+                            //       //           return DropdownMenuItem<String>(
+                            //       //             value: value,
+                            //       //             child: Text(value),
+                            //       //           );
+                            //       //         }).toList(),
+                            //       //         value: widget.parceiroSel,
+                            //       //         onChanged: (String? newValue) {
+                            //       //           setState(() {
+                            //       //             widget.parceiroSel = newValue!;
+                            //       //           });
+                            //       //         },
+                            //       //       ),
+                            //       //     ],
+                            //       //   ),
+                            //       const SizedBox(height: 20),
+                            //       Text(
+                            //         "Disponibilidade de " +
+                            //             widget.labelEntrega +
+                            //             ' à partir de: ',
+                            //         textAlign: TextAlign.center,
+                            //       ),
+                            //       const SizedBox(height: 10),
+                            //       ElevatedButton(
+                            //           onPressed: () {
+                            //             showDatePicker(
+                            //                     context: context,
+                            //                     initialDate: DateTime.now(),
+                            //                     firstDate: DateTime.now(),
+                            //                     lastDate: DateTime.now()
+                            //                         .add(Duration(days: 1000)))
+                            //                 .then((value) => setState(() {
+                            //                       widget.mofferController
+                            //                               .valEntregasAPartir =
+                            //                           value!;
+                            //                     }));
+                            //           },
+                            //           style: ButtonStyle(
+                            //               backgroundColor:
+                            //                   MaterialStateProperty.all<Color>(
+                            //             widget._loginController.colorFromHex(
+                            //                 widget._loginController.listCore
+                            //                     .where((coreItem) =>
+                            //                         coreItem.coreChave ==
+                            //                         'backDark')
+                            //                     .first
+                            //                     .coreValor
+                            //                     .toString()),
+                            //           )),
+                            //           child: Row(
+                            //             children: [
+                            //               Icon(Icons.calendar_today_rounded),
+                            //               const SizedBox(
+                            //                 width: 16,
+                            //               ),
+                            //               Text(widget.mofferController
+                            //                       .valEntregasAPartir.day
+                            //                       .toString() +
+                            //                   '/' +
+                            //                   widget.mofferController
+                            //                       .valEntregasAPartir.month
+                            //                       .toString() +
+                            //                   '/' +
+                            //                   widget.mofferController
+                            //                       .valEntregasAPartir.year
+                            //                       .toString())
+                            //             ],
+                            //           )),
+                            //       const SizedBox(height: 20),
+                            //
+                            //       Text("Horário de " + widget.labelEntrega),
+                            //       const SizedBox(height: 10),
+                            //       Row(
+                            //         children: <Widget>[
+                            //           const SizedBox(width: 5),
+                            //           Text('Das '),
+                            //           const SizedBox(width: 5),
+                            //           ElevatedButton(
+                            //               onPressed: () {
+                            //                 showTimePicker(
+                            //                         context: context,
+                            //                         initialTime: TimeOfDay(
+                            //                             hour: 08, minute: 00))
+                            //                     .then((value) => setState(() {
+                            //                           widget.mofferController
+                            //                                   .valEntregaDas =
+                            //                               value!.hour
+                            //                                       .toString()
+                            //                                       .padLeft(
+                            //                                           2, '0') +
+                            //                                   ':' +
+                            //                                   value.minute
+                            //                                       .toString()
+                            //                                       .padLeft(
+                            //                                           2, '0');
+                            //                         }));
+                            //               },
+                            //               style: ButtonStyle(
+                            //                   backgroundColor:
+                            //                       MaterialStateProperty.all<
+                            //                           Color>(
+                            //                 widget._loginController
+                            //                     .colorFromHex(widget
+                            //                         ._loginController.listCore
+                            //                         .where((coreItem) =>
+                            //                             coreItem.coreChave ==
+                            //                             'backDark')
+                            //                         .first
+                            //                         .coreValor
+                            //                         .toString()),
+                            //               )),
+                            //               child: Row(
+                            //                 children: [
+                            //                   Icon(Icons.access_time_outlined),
+                            //                   const SizedBox(
+                            //                     width: 16,
+                            //                   ),
+                            //                   Text(widget.mofferController
+                            //                       .valEntregaDas)
+                            //                 ],
+                            //               )),
+                            //           const SizedBox(width: 5),
+                            //           Text(' às '),
+                            //           const SizedBox(width: 5),
+                            //           ElevatedButton(
+                            //               onPressed: () {
+                            //                 showTimePicker(
+                            //                         context: context,
+                            //                         initialTime: TimeOfDay(
+                            //                             hour: 18, minute: 00))
+                            //                     .then((value) => setState(() {
+                            //                           widget.mofferController
+                            //                               .valEntregaAs = value!
+                            //                                   .hour
+                            //                                   .toString()
+                            //                                   .padLeft(2, '0') +
+                            //                               ':' +
+                            //                               value.minute
+                            //                                   .toString()
+                            //                                   .padLeft(2, '0');
+                            //                         }));
+                            //               },
+                            //               style: ButtonStyle(
+                            //                   backgroundColor:
+                            //                       MaterialStateProperty.all<
+                            //                           Color>(
+                            //                 widget._loginController
+                            //                     .colorFromHex(widget
+                            //                         ._loginController.listCore
+                            //                         .where((coreItem) =>
+                            //                             coreItem.coreChave ==
+                            //                             'backDark')
+                            //                         .first
+                            //                         .coreValor
+                            //                         .toString()),
+                            //               )),
+                            //               child: Row(
+                            //                 children: [
+                            //                   Icon(Icons.access_time_outlined),
+                            //                   const SizedBox(
+                            //                     width: 16,
+                            //                   ),
+                            //                   Text(widget.mofferController
+                            //                       .valEntregaAs)
+                            //                 ],
+                            //               )),
+                            //         ],
+                            //       ),
+                            //       if (widget.labelEntrega == 'Entrega')
+                            //         Column(
+                            //           children: <Widget>[
+                            //             const SizedBox(height: 20),
+                            //             Text(
+                            //               "Taxas de Entrega",
+                            //               textAlign: TextAlign.left,
+                            //             ),
+                            //             const SizedBox(height: 20),
+                            //             TextFormField(
+                            //               inputFormatters: [
+                            //                 FilteringTextInputFormatter
+                            //                     .digitsOnly,
+                            //                 CentavosInputFormatter(),
+                            //               ],
+                            //               // initialValue: '0',
+                            //               controller: widget
+                            //                   .mofferController.txtValorTaxa1km,
+                            //               decoration: InputDecoration(
+                            //                   prefix: Text('R\$ '),
+                            //                   border: OutlineInputBorder(),
+                            //                   labelText: 'Até 1km'),
+                            //               textInputAction: TextInputAction.next,
+                            //               //focusNode: _priceFocusNode,
+                            //               keyboardType:
+                            //                   TextInputType.numberWithOptions(
+                            //                       decimal: true),
+                            //             ),
+                            //             const SizedBox(height: 20),
+                            //             TextFormField(
+                            //               inputFormatters: [
+                            //                 FilteringTextInputFormatter
+                            //                     .digitsOnly,
+                            //                 CentavosInputFormatter(),
+                            //               ],
+                            //               // initialValue: '0',
+                            //               controller: widget
+                            //                   .mofferController.txtValorTaxa2km,
+                            //               decoration: InputDecoration(
+                            //                   prefix: Text('R\$ '),
+                            //                   border: OutlineInputBorder(),
+                            //                   labelText: 'Entre 1km e 2km'),
+                            //               textInputAction: TextInputAction.next,
+                            //               //focusNode: _priceFocusNode,
+                            //               keyboardType:
+                            //                   TextInputType.numberWithOptions(
+                            //                       decimal: true),
+                            //             ),
+                            //             const SizedBox(height: 20),
+                            //             TextFormField(
+                            //               inputFormatters: [
+                            //                 FilteringTextInputFormatter
+                            //                     .digitsOnly,
+                            //                 CentavosInputFormatter(),
+                            //               ],
+                            //               // initialValue: '0',
+                            //               controller: widget.mofferController
+                            //                   .txtValorTaxaMaisQue2km,
+                            //               decoration: InputDecoration(
+                            //                   prefix: Text('R\$ '),
+                            //                   border: OutlineInputBorder(),
+                            //                   labelText: 'Acima de 2km'),
+                            //               textInputAction: TextInputAction.next,
+                            //               //focusNode: _priceFocusNode,
+                            //               keyboardType:
+                            //                   TextInputType.numberWithOptions(
+                            //                       decimal: true),
+                            //             ),
+                            //             const SizedBox(height: 20),
+                            //             // Text('Tempo de Entrega após aceite'),
+                            //             TextFormField(
+                            //                 decoration: InputDecoration(
+                            //                     border: OutlineInputBorder(),
+                            //                     labelText:
+                            //                         'Tempo de entrega após aceite'),
+                            //                 keyboardType: TextInputType.number),
+                            //             const SizedBox(height: 20),
+                            //             Text('Unidade de Tempo'),
+                            //             DropdownButton<String>(
+                            //               items: widget.listaTempoEntregaTipo
+                            //                   .map((String value) {
+                            //                 return DropdownMenuItem<String>(
+                            //                   value: value,
+                            //                   child: Text(value),
+                            //                 );
+                            //               }).toList(),
+                            //               value: widget.tempoEntregaTipoSel,
+                            //               onChanged: (String? newValue) {
+                            //                 setState(() {
+                            //                   widget.tempoEntregaTipoSel =
+                            //                       newValue!;
+                            //                 });
+                            //               },
+                            //             ),
+                            //           ],
+                            //         ),
+                            //     ],
+                            //   ),
 
-                                  // DropdownButton<String>(
-                                  //   items: widget.listaFormaEntrega
-                                  //       .map((String value) {
-                                  //     return DropdownMenuItem<String>(
-                                  //       value: value,
-                                  //       child: Text(value),
-                                  //     );
-                                  //   }).toList(),
-                                  //   value: widget.agenteEntregaSel,
-                                  //   onChanged: (String? newValue) {
-                                  //     if (newValue == 'parceiro') {
-                                  //       // configura lista de parceiros
-                                  //       widget.listaParceiros.clear();
-                                  //       widget.listaParceiros.add('escolha o parceiro');
-                                  //       widget.partnersController.parceiros
-                                  //           ?.forEach((part) {
-                                  //         print(part.ParceiroEntregaNome
-                                  //             .toString());
-                                  //         widget.listaParceiros.add(part
-                                  //             .ParceiroEntregaNome.toString());
-                                  //       });
-                                  //       print('lista parceiros: ' +
-                                  //           widget.listaParceiros.length
-                                  //               .toString());
-                                  //     }
-                                  //
-                                  //     setState(() {
-                                  //       widget.agenteEntregaSel = newValue!;
-                                  //     });
-                                  //   },
-                                  // ),
-                                  if (widget.valAceitaEntregaParceiro)
-                                    Column(
-                                      children: <Widget>[
-                                        //const SizedBox(height: 20),
-                                        const Divider(),
-                                        const SizedBox(height: 10),
-                                        // Text('Parceiro'),
-                                        // const SizedBox(height: 10),
-                                        DropdownButton<String>(
-                                          items: widget.listaParceiros
-                                              .map((String value) {
-                                            return DropdownMenuItem<String>(
-                                              value: value,
-                                              child: Text(value),
-                                            );
-                                          }).toList(),
-                                          value: widget.parceiroSel,
-                                          onChanged: (String? newValue) {
-                                            setState(() {
-                                              widget.parceiroSel = newValue!;
-                                            });
-                                          },
-                                        ),
-                                      ],
-                                    ),
-                                  const SizedBox(height: 20),
-                                  Text(
-                                    "Disponibilidade de " +
-                                        widget.labelEntrega +
-                                        ' à partir de: ',
-                                    textAlign: TextAlign.center,
-                                  ),
-                                  const SizedBox(height: 10),
-                                  ElevatedButton(
-                                      onPressed: () {
-                                        showDatePicker(
-                                                context: context,
-                                                initialDate: DateTime.now(),
-                                                firstDate: DateTime.now(),
-                                                lastDate: DateTime.now()
-                                                    .add(Duration(days: 1000)))
-                                            .then((value) => setState(() {
-                                                  widget.mofferController
-                                                          .valEntregasAPartir =
-                                                      value!;
-                                                }));
-                                      },
-                                      style: ButtonStyle(
-                                          backgroundColor:
-                                              MaterialStateProperty.all<Color>(
-                                        widget._loginController.colorFromHex(
-                                            widget._loginController.listCore
-                                                .where((coreItem) =>
-                                                    coreItem.coreChave ==
-                                                    'backDark')
-                                                .first
-                                                .coreValor
-                                                .toString()),
-                                      )),
-                                      child: Row(
-                                        children: [
-                                          Icon(Icons.calendar_today_rounded),
-                                          const SizedBox(
-                                            width: 16,
-                                          ),
-                                          Text(widget.mofferController
-                                                  .valEntregasAPartir.day
-                                                  .toString() +
-                                              '/' +
-                                              widget.mofferController
-                                                  .valEntregasAPartir.month
-                                                  .toString() +
-                                              '/' +
-                                              widget.mofferController
-                                                  .valEntregasAPartir.year
-                                                  .toString())
-                                        ],
-                                      )),
-                                  const SizedBox(height: 20),
-
-                                  Text("Horário de " + widget.labelEntrega),
-                                  const SizedBox(height: 10),
-                                  Row(
-                                    children: <Widget>[
-                                      const SizedBox(width: 5),
-                                      Text('Das '),
-                                      const SizedBox(width: 5),
-                                      ElevatedButton(
-                                          onPressed: () {
-                                            showTimePicker(
-                                                    context: context,
-                                                    initialTime: TimeOfDay(
-                                                        hour: 08, minute: 00))
-                                                .then((value) => setState(() {
-                                                      widget.mofferController
-                                                              .valEntregaDas =
-                                                          value!.hour
-                                                                  .toString()
-                                                                  .padLeft(
-                                                                      2, '0') +
-                                                              ':' +
-                                                              value.minute
-                                                                  .toString()
-                                                                  .padLeft(
-                                                                      2, '0');
-                                                    }));
-                                          },
-                                          style: ButtonStyle(
-                                              backgroundColor:
-                                                  MaterialStateProperty.all<
-                                                      Color>(
-                                            widget._loginController
-                                                .colorFromHex(widget
-                                                    ._loginController.listCore
-                                                    .where((coreItem) =>
-                                                        coreItem.coreChave ==
-                                                        'backDark')
-                                                    .first
-                                                    .coreValor
-                                                    .toString()),
-                                          )),
-                                          child: Row(
-                                            children: [
-                                              Icon(Icons.access_time_outlined),
-                                              const SizedBox(
-                                                width: 16,
-                                              ),
-                                              Text(widget.mofferController
-                                                  .valEntregaDas)
-                                            ],
-                                          )),
-                                      const SizedBox(width: 5),
-                                      Text(' às '),
-                                      const SizedBox(width: 5),
-                                      ElevatedButton(
-                                          onPressed: () {
-                                            showTimePicker(
-                                                    context: context,
-                                                    initialTime: TimeOfDay(
-                                                        hour: 18, minute: 00))
-                                                .then((value) => setState(() {
-                                                      widget.mofferController
-                                                          .valEntregaAs = value!
-                                                              .hour
-                                                              .toString()
-                                                              .padLeft(2, '0') +
-                                                          ':' +
-                                                          value.minute
-                                                              .toString()
-                                                              .padLeft(2, '0');
-                                                    }));
-                                          },
-                                          style: ButtonStyle(
-                                              backgroundColor:
-                                                  MaterialStateProperty.all<
-                                                      Color>(
-                                            widget._loginController
-                                                .colorFromHex(widget
-                                                    ._loginController.listCore
-                                                    .where((coreItem) =>
-                                                        coreItem.coreChave ==
-                                                        'backDark')
-                                                    .first
-                                                    .coreValor
-                                                    .toString()),
-                                          )),
-                                          child: Row(
-                                            children: [
-                                              Icon(Icons.access_time_outlined),
-                                              const SizedBox(
-                                                width: 16,
-                                              ),
-                                              Text(widget.mofferController
-                                                  .valEntregaAs)
-                                            ],
-                                          )),
-                                    ],
-                                  ),
-                                  if (widget.labelEntrega == 'Entrega')
-                                    Column(
-                                      children: <Widget>[
-                                        const SizedBox(height: 20),
-                                        Text(
-                                          "Taxas de Entrega",
-                                          textAlign: TextAlign.left,
-                                        ),
-                                        const SizedBox(height: 20),
-                                        TextFormField(
-                                          inputFormatters: [
-                                            FilteringTextInputFormatter
-                                                .digitsOnly,
-                                            CentavosInputFormatter(),
-                                          ],
-                                          // initialValue: '0',
-                                          controller: widget
-                                              .mofferController.txtValorTaxa1km,
-                                          decoration: InputDecoration(
-                                              prefix: Text('R\$ '),
-                                              border: OutlineInputBorder(),
-                                              labelText: 'Até 1km'),
-                                          textInputAction: TextInputAction.next,
-                                          //focusNode: _priceFocusNode,
-                                          keyboardType:
-                                              TextInputType.numberWithOptions(
-                                                  decimal: true),
-                                        ),
-                                        const SizedBox(height: 20),
-                                        TextFormField(
-                                          inputFormatters: [
-                                            FilteringTextInputFormatter
-                                                .digitsOnly,
-                                            CentavosInputFormatter(),
-                                          ],
-                                          // initialValue: '0',
-                                          controller: widget
-                                              .mofferController.txtValorTaxa2km,
-                                          decoration: InputDecoration(
-                                              prefix: Text('R\$ '),
-                                              border: OutlineInputBorder(),
-                                              labelText: 'Entre 1km e 2km'),
-                                          textInputAction: TextInputAction.next,
-                                          //focusNode: _priceFocusNode,
-                                          keyboardType:
-                                              TextInputType.numberWithOptions(
-                                                  decimal: true),
-                                        ),
-                                        const SizedBox(height: 20),
-                                        TextFormField(
-                                          inputFormatters: [
-                                            FilteringTextInputFormatter
-                                                .digitsOnly,
-                                            CentavosInputFormatter(),
-                                          ],
-                                          // initialValue: '0',
-                                          controller: widget.mofferController
-                                              .txtValorTaxaMaisQue2km,
-                                          decoration: InputDecoration(
-                                              prefix: Text('R\$ '),
-                                              border: OutlineInputBorder(),
-                                              labelText: 'Acima de 2km'),
-                                          textInputAction: TextInputAction.next,
-                                          //focusNode: _priceFocusNode,
-                                          keyboardType:
-                                              TextInputType.numberWithOptions(
-                                                  decimal: true),
-                                        ),
-                                        const SizedBox(height: 20),
-                                        // Text('Tempo de Entrega após aceite'),
-                                        TextFormField(
-                                            decoration: InputDecoration(
-                                                border: OutlineInputBorder(),
-                                                labelText:
-                                                    'Tempo de entrega após aceite'),
-                                            keyboardType: TextInputType.number),
-                                        const SizedBox(height: 20),
-                                        Text('Unidade de Tempo'),
-                                        DropdownButton<String>(
-                                          items: widget.listaTempoEntregaTipo
-                                              .map((String value) {
-                                            return DropdownMenuItem<String>(
-                                              value: value,
-                                              child: Text(value),
-                                            );
-                                          }).toList(),
-                                          value: widget.tempoEntregaTipoSel,
-                                          onChanged: (String? newValue) {
-                                            setState(() {
-                                              widget.tempoEntregaTipoSel =
-                                                  newValue!;
-                                            });
-                                          },
-                                        ),
-                                      ],
-                                    ),
-                                ],
-                              ),
 
                             if (widget.showCamposBasicos)
                               Column(children: <Widget>[
@@ -2755,8 +2759,8 @@ class _MOfferPage extends State<MOfferPage> {
           'widget guidOffer: ' + widget.mofferController.mofferGuid.toString());
       widget.mofferController.txtTitulo.text = oferta.OfertaTitulo.toString();
 
-      if (widget.categoriesController.listaCategorias == null)
-        await widget.categoriesController.getAllCategories();
+      if (widget._loginController.categorias.isEmpty)
+        await widget._loginController.getCategories();
 
       widget.categSelecionada = widget.categoriesController
           .selecionaCategoriaPorChave(oferta.CategoriaChave.toString())!;

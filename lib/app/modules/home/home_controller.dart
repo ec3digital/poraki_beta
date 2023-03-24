@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
 //import 'package:poraki/app/data/models/ofertafav.dart';
 import 'package:poraki/app/data/repositories/offerfav_repository.dart';
@@ -17,27 +19,24 @@ class HomeController extends GetxController {
   List<ProdutoOferta>? bestoffers = [];
   List<ProdutoOferta>? mostfresheroffers = [];
   List<ProdutoOferta>? bestselleroffers = [];
-  List<Categorias>? categorias;
-
+  // List<Categorias>? categorias;
+  bool isLoading = false;
 
   // List<Pessoas>? pessoas;
 
-  bool isLoading = false;
-
   @override
   void onInit() async {
-    await getCategories();
+    // await getCategories();
     // mostra as 4 ofertas de cada seção; esses valores sao passados para a API, evitando trazer dados desnecessários
-    await getOffers(4);
-    await getBestOffers(4);
-    await getMostFreshOffers(4);
-    await getBestSellersOffers(4);
+    // await getOffers(4);
+    // await getBestOffers(4);
+    // await getMostFreshOffers(4);
+    // await getBestSellersOffers(4);
 
     // await getPeople();
 
     super.onInit();
   }
-
 
   Future<void> getOffers(int limit) async {
     try {
@@ -82,18 +81,17 @@ class HomeController extends GetxController {
       changeLoading(false);
     }
   }
-
-  Future<void> getCategories() async {
-    try {
-      changeLoading(true);
-      categorias = await categoriesRepository.getCategoriesBarra();
-      // categorias?.forEach((element) { print(element);});
-    } catch (e) {
-      print('Erro no getCategories() controller ${e.toString()}');
-    } finally {
-      changeLoading(false);
-    }
-  }
+  //
+  // Future<void> getCategories() async {
+  //   FirebaseFirestore? _fbInstance;
+  //   if (Firebase.apps.isEmpty) {
+  //     await Firebase.initializeApp();
+  //   }
+  //
+  //   _fbInstance = FirebaseFirestore.instance;
+  //
+  //   await _fbInstance.collection("akicategs").doc("Categorias").collection("lista").get().then((value) => value.docs.forEach((element) { categorias!.add(Categorias.fromJson(element.data())); }));
+  // }
 
   // Future<void> getAddresses() async {
   //   try {
@@ -123,6 +121,5 @@ class HomeController extends GetxController {
     isLoading = newValue;
     update();
   }
-
 
 }

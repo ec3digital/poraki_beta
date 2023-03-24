@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:poraki/app/data/models/enderecos.dart';
@@ -12,6 +14,7 @@ import 'package:poraki/app/services/fbporaki_service.dart';
 import 'package:poraki/app/services/sqlite/sqlporaki_address_service.dart';
 import 'package:poraki/app/services/sqlite/sqlporaki_core_service.dart';
 import 'package:poraki/app/services/sqlite/sqlporaki_login_service.dart';
+import '../../../data/models/categorias.dart';
 import '../../../data/repositories/login_repository.dart';
 import '../../../routes/app_routes.dart';
 
@@ -20,6 +23,7 @@ class LoginController extends GetxController {
   final TextEditingController passwordInputController = TextEditingController();
   final formKey = GlobalKey<FormState>();
   final LoginRepository loginRepository = LoginRepository();
+  late FirebaseFirestore? fbInstance;
   //final AddressController addressController = Get.find();
 
   get obscurePassword => _obscurePassword;
@@ -33,6 +37,7 @@ class LoginController extends GetxController {
   List<Enderecos> listEnderecos = [];
   List<Lojas> listLojas = [];
   List<OfertasFavs> ofertasFavs = [];
+  List<Categorias> categorias = [];
   bool _obscurePassword = false;
   bool refreshOfertasFavs = false;
   String? usuCep;
@@ -43,6 +48,17 @@ class LoginController extends GetxController {
   // TODO: implementar baseUrl + headers por CEP
   // String? baseUrl;
   // Map<String, String>? headers;
+
+  @override
+  void onInit() async {
+    super.onInit();
+
+    if (Firebase.apps.isEmpty) {
+      await Firebase.initializeApp();
+    }
+
+    fbInstance = FirebaseFirestore.instance;
+  }
 
   void changeCheckBox(bool newObscurePassword) {
     _obscurePassword = newObscurePassword;
@@ -64,8 +80,8 @@ class LoginController extends GetxController {
     await _getCep();
 
     //apaga todos os ceps da tabela local e baixa tudo de novo da nuvem
-    await sqlPorakiAddressService().deleteEnderecos();
-    await sqlPorakiAddressService().buscaEnderecos(false);
+    // await sqlPorakiAddressService().deleteEnderecos();
+    // await sqlPorakiAddressService().buscaEnderecos(false);
 
     //pega o nome do usuario
     List<Map<String, dynamic>>? listUser;
@@ -79,35 +95,46 @@ class LoginController extends GetxController {
 
   // carrega endereços do usuario
   Future<void> loadAddressData() async {
-    print('loadAddressData');
-    var addressSvc = new AddressRepository();
-    listEnderecos = await addressSvc.getAllAddresses();
-    // for (var u in listUser) //{
-    //   listUser.forEach((element) {
-    //     usuNome = element["usuNome"].toString();
-    //   });
+    listEnderecos.clear();
+    await fbInstance!.collection("akienderecos").doc("eyCv21RfaURoMn0SUndCg6LPyJP2").collection("Enderecos").get().then((value) => value.docs.forEach((element) { listEnderecos.add(Enderecos.fromJson(element.data())); }));
+
+    // var tempEnderecos =
+    // await fbPorakiService().getListFromFirebase("akienderecos", "eyCv21RfaURoMn0SUndCg6LPyJP2");
+    // tempEnderecos.forEach((key, value) {
+    //   print('endereço: ' + value);
+    //   listEnderecos.add(value);
+    // });
+
+    // print(tempEnderecos.values);
+
+    // var addressSvc = new AddressRepository();
+    // listEnderecos = await addressSvc.getAllAddresses();
+    // // for (var u in listUser) //{
+    // //   listUser.forEach((element) {
+    // //     usuNome = element["usuNome"].toString();
+    // //   });
   }
 
   // carrega lojas do usuario
   Future<void> loadStoresData() async {
-    print('loadStoresData');
-    var storeSvc = new StoreRepository();
-    listLojas = await storeSvc.getAllStores(this.usuGuid.toString());
-    // for (var u in listUser) //{
-    //   listUser.forEach((element) {
-    //     usuNome = element["usuNome"].toString();
-    //   });
+    listLojas.clear();
+    await fbInstance!.collection("akilojas").doc("eyCv21RfaURoMn0SUndCg6LPyJP2").collection("Lojas").get().then((value) => value.docs.forEach((element) { listLojas.add(Lojas.fromJson(element.data())); }));
+  }
+
+  Future<void> getCategories() async {
+    categorias.clear();
+    await fbInstance!.collection("akicategs").doc("Categorias").collection("lista").get().then((value) => value.docs.forEach((element) { categorias.add(Categorias.fromJson(element.data())); }));
   }
 
   Future<void> loadOffersFavs() async {
-    print('entrou no getOffersFavs()');
+    print('entrou no loadOffersFavs()');
     var offerfavRepository = new OfferfavRepository();
 
     if (refreshOfertasFavs) {
       refreshOfertasFavs = false;
       await offerfavRepository.updateCollection(ofertasFavs);
     }
-
+    // ofertasFavs.clear();
     ofertasFavs = await offerfavRepository.getAll();
     print('qt ofertasFavs: ' + ofertasFavs.length.toString());
   }
@@ -203,23 +230,23 @@ class LoginController extends GetxController {
 
   _getCep() async {
     if (usuCep == null) {
-      var _addressController = new AddressController();
+      //var _addressController = new AddressController();
       usuCep = '05735-030'; // await _addressController.getCepAtualLocal();
     }
     print('usuCep atual: ' + usuCep.toString());
   }
 
   Future<void> getListBannersFromFBCloud() async {
-    LoginController loginController = Get.find();
+    // LoginController loginController = Get.find();
 
     var tempBannersApp =
         await fbPorakiService().getListFromFirebase("akibanners", "core");
     tempBannersApp.forEach((key, value) {
       print('banner: ' + value);
-      loginController.listBanners.add(value);
+      listBanners.add(value);
     });
     var tempBannersCep = await fbPorakiService().getListFromFirebase(
-        "akibanners", loginController.usuCep!.substring(0, 3));
+        "akibanners", usuCep!.substring(0, 3));
     tempBannersCep.forEach((key, value) {
       listBanners.add(value);
     });
@@ -246,7 +273,10 @@ class LoginController extends GetxController {
     // await loadStoresData();
 
     // redireciona para a home de ofertas
-    Get.toNamed(AppRoutes.offer);
+    // Get.toNamed(AppRoutes.offer);
+    Get.toNamed(AppRoutes.categories);
+
+
     // } else {
     //   print("invalido");
     // }

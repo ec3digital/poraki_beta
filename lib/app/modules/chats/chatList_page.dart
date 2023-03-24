@@ -31,6 +31,12 @@ class _ChatListPageState extends State<ChatListPage> {
         .first
         .coreValor
         .toString());
+    final Color backColor = _loginController.colorFromHex(_loginController
+        .listCore
+        .where((coreItem) => coreItem.coreChave == 'backLight')
+        .first
+        .coreValor
+        .toString());
 
     Widget _buildRow(Chats chat) {
       return Column(children: [
@@ -78,9 +84,9 @@ class _ChatListPageState extends State<ChatListPage> {
           // ),
           //trailing: Icon(IconData(int.parse(iconcode), fontFamily: 'MaterialIcons'))
         ),
-        const SizedBox(height: 5),
-        const Divider(),
-        const SizedBox(height: 5),
+        // const SizedBox(height: 5),
+        // const Divider(),
+        // const SizedBox(height: 5),
       ]);
     }
 
@@ -123,7 +129,15 @@ class _ChatListPageState extends State<ChatListPage> {
                               child: Text(
                                   "Ops, nenhuma mensagem poraki neste momento... ;-)")))
                     else
-                      Scrollbar(
+                      Container(padding: const EdgeInsets.all(5),margin: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: backColor,
+                          ),
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          color: backColor,
+                        ),
+                        //color: backColor,
                         child: ListView.builder(
                           scrollDirection: Axis.vertical,
                           shrinkWrap: true,

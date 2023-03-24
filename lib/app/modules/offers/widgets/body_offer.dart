@@ -60,42 +60,42 @@ class BodyOffer extends StatelessWidget {
 
           if (produtoOferta.terDas!.toString() !=
               'null') // && (produtoOferta.terDas!.toString() != '00:00' && produtoOferta.terAs!.toString() != '23:59'))
-            detailDispo += ' / Ter das ' +
+            detailDispo += '\nTer das ' +
                 produtoOferta.terDas.toString() +
                 ' às ' +
                 produtoOferta.terAs.toString();
 
           if (produtoOferta.quaDas!.toString() !=
               'null') // && (produtoOferta.quaDas!.toString() != '00:00' && produtoOferta.quaAs!.toString() != '23:59'))
-            detailDispo += ' / Qua das ' +
+            detailDispo += '\nQua das ' +
                 produtoOferta.quaDas.toString() +
                 ' às ' +
                 produtoOferta.quaAs.toString();
 
           if (produtoOferta.quiDas!.toString() !=
               'null') // && (produtoOferta.quiDas!.toString() != '00:00' && produtoOferta.quiAs!.toString() != '23:59'))
-            detailDispo += ' / Qui das ' +
+            detailDispo += '\nQui das ' +
                 produtoOferta.quiDas.toString() +
                 ' às ' +
                 produtoOferta.quiAs.toString();
 
           if (produtoOferta.sexDas!.toString() !=
               'null') // && (produtoOferta.sexDas!.toString() != '00:00' && produtoOferta.sexAs!.toString() != '23:59'))
-            detailDispo += ' / Sex das ' +
+            detailDispo += '\nSex das ' +
                 produtoOferta.sexDas.toString() +
                 ' às ' +
                 produtoOferta.sexAs.toString();
 
           if (produtoOferta.sabDas!.toString() !=
               'null') // && (produtoOferta.sabDas!.toString() != '00:00' && produtoOferta.sabAs!.toString() != '23:59'))
-            detailDispo += ' / Sáb das ' +
+            detailDispo += '\nSáb das ' +
                 produtoOferta.sabDas.toString() +
                 ' às ' +
                 produtoOferta.sabAs.toString();
 
           if (produtoOferta.domDas!.toString() !=
               'null') // && (produtoOferta.domDas!.toString() != '00:00' && produtoOferta.domAs!.toString() != '23:59'))
-            detailDispo += ' / Dom das ' +
+            detailDispo += '\nDom das ' +
                 produtoOferta.domDas.toString() +
                 ' às ' +
                 produtoOferta.domAs.toString();
@@ -130,7 +130,7 @@ class BodyOffer extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Align(
-                    alignment: Alignment.topLeft,
+                    alignment: Alignment.topCenter,
                     child: Text(
                       produtoOferta.ofertaTitulo.toString(),
                       textAlign: TextAlign.start,
@@ -140,7 +140,7 @@ class BodyOffer extends StatelessWidget {
                           color: darkText),
                     ),
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 20),
                   ListPicsOffer(
                       imagesList: offersImages,
                       offerGuid: produtoOferta.ofertaGUID.toString()),
@@ -160,7 +160,7 @@ class BodyOffer extends StatelessWidget {
                     ),
                   ),
 
-                  const SizedBox(height: 5),
+                  const SizedBox(height: 15),
                   ButtonOffer(
                     onPressed: () async {
                       var entregaPrev =
@@ -195,6 +195,7 @@ class BodyOffer extends StatelessWidget {
                       );
                     },
                     // colorText: darkText,
+
                     text: 'Adicionar ao carrinho',
 
                     colorText: _loginController.colorFromHex(_loginController
@@ -212,7 +213,7 @@ class BodyOffer extends StatelessWidget {
                   ),
                   const SizedBox(height: 5),
                   DetailOffer(
-                    detailProduct: "Disponibilidade: ",
+                    detailProduct: "Disponibilidade",
                     moreDetailProduct: detailDispo,
                   ),
                   const SizedBox(height: 10),

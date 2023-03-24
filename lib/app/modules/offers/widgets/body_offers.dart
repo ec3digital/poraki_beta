@@ -12,7 +12,7 @@ class BodyOffers extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-        const SizedBox(height: 20),
+        //const SizedBox(height: 10),
         ListOffers(),
       ],
     );

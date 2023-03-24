@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:infinite_carousel/infinite_carousel.dart';
@@ -42,7 +43,7 @@ class CardOffertsDayHome extends StatelessWidget {
     return GetBuilder<HomeController>(builder: (_controller) {
       if (!_controller.isLoading) {
         return Padding(
-          padding: const EdgeInsets.all(5.0),
+          padding: const EdgeInsets.all(12.0),
           child: SizedBox(
             width: double.maxFinite,
             child: Card(
@@ -64,14 +65,14 @@ class CardOffertsDayHome extends StatelessWidget {
                     child: Text(widgetTitle,
                         style: TextStyle(
                             color: textDark,
-                            fontSize: 30) //Get.textTheme.headline1,
+                            fontSize: 24) //Get.textTheme.headline1,
                         ),
                   ),
                   SizedBox(
-                    height: 300,
+                    height: 260,
                     child: InfiniteCarousel.builder(
                       itemCount: cardListOffers.length,
-                      itemExtent: 300,
+                      itemExtent: 260,
                       loop: true,
                       controller: InfiniteScrollController(),
                       onIndexChanged: (index) {},
@@ -192,20 +193,20 @@ class CardOffertsDayHome extends StatelessWidget {
                                               value: downloadProgress.progress),
                                       errorWidget: (context, url, error) =>
                                           Icon(Icons.local_offer_outlined),
-                                      height: 130,
+                                      height: 110,
                                     ),
                                   )),
                                   SizedBox(height: 10),
                                   Expanded(
                                       child: Column(
-                                    children: [
-                                      Text(
-                                        cardListOffers[itemIndex]
-                                            .ofertaTitulo
-                                            .toString(),
-                                        style: TextStyle(
-                                            fontSize: 18, color: textDark),
-                                      ),
+                                    children: [Center(child: Text(
+                                      cardListOffers[itemIndex]
+                                          .ofertaTitulo
+                                          .toString(),
+                                      style: TextStyle(
+                                          fontSize: 16, color: textDark,fontWeight: FontWeight.bold),textAlign: TextAlign.center,
+                                    )),
+
                                       SizedBox(height: 5),
                                       Text(
                                         'R\$ ${double.parse(cardListOffers[itemIndex].ofertaPreco.toString()).toStringAsFixed(2).replaceAll(',', '').replaceAll('.', ',')}',
@@ -219,20 +220,20 @@ class CardOffertsDayHome extends StatelessWidget {
                                                   .first
                                                   .coreValor
                                                   .toString()),
-                                        ),
+                                        ),textAlign: TextAlign.center
                                       ),
-                                      Flexible(
-                                        child: Text(
-                                          cardListOffers[itemIndex]
-                                              .ofertaDetalhe
-                                              .toString(),
-                                          style:
-                                              Get.textTheme.bodyText1!.copyWith(
-                                            fontWeight: FontWeight.w400,
-                                            color: textDark,
-                                          ),
-                                        ),
-                                      ),
+                                      // Flexible(
+                                      //   child: Text(
+                                      //     cardListOffers[itemIndex]
+                                      //         .ofertaDetalhe
+                                      //         .toString(),
+                                      //     style:
+                                      //         Get.textTheme.bodyText1!.copyWith(
+                                      //       fontWeight: FontWeight.w400,
+                                      //       color: textDark,
+                                      //     ),
+                                      //   ),
+                                      // ),
                                     ],
                                   )),
 
@@ -267,7 +268,7 @@ class CardOffertsDayHome extends StatelessWidget {
                     ),
                   ),
 
-                  const SizedBox(height: 10),
+                  // const SizedBox(height: 5),
                   // Divider(),
                   InkWell(
                     onTap: () {
@@ -306,7 +307,7 @@ class CardOffertsDayHome extends StatelessWidget {
                       ]);
                     },
                     child: Padding(
-                      padding: const EdgeInsets.fromLTRB(15, 05, 15, 15),
+                      padding: const EdgeInsets.fromLTRB(10, 07, 07, 07),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [

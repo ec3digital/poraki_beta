@@ -19,6 +19,8 @@ class StoreController extends GetxController {
   final TextEditingController txtLojaSlogan = TextEditingController();
   final TextEditingController txtLojaCNPJ = TextEditingController();
   final TextEditingController txtLojaRazao = TextEditingController();
+  final TextEditingController txtOutroCupom = TextEditingController();
+  final TextEditingController txtPercCupom = TextEditingController();
 
   String? lojaGuid;
   List<Lojas> lojas = [];
@@ -55,6 +57,7 @@ class StoreController extends GetxController {
       txtLojaLogra.text = loja!.LojaLogra.toString();
       txtLojaNumero.text = loja!.LojaNumero.toString();
       txtLojaCompl?.text = loja!.LojaCompl.toString();
+      //txtOutroCupom.text = loja!
     } catch (e) {
       print('Erro no carregaLoja() controller ${e.toString()}');
     } finally {
@@ -83,6 +86,8 @@ class StoreController extends GetxController {
     txtLojaLogra.text = "";
     txtLojaNumero.text = "";
     txtLojaCompl?.text = "";
+    txtOutroCupom.text = "";
+    txtPercCupom.text = "";
     this.refresh();
   }
 
