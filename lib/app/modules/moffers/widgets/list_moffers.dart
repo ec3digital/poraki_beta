@@ -39,11 +39,11 @@ class _ListMoffersState extends State<ListMoffers> {
             .getMoffersByStore(selStore!.LojaGUID.toString());
     }
 
-    if (load &&
-        !listStores.contains(new Lojas(null, null, 'Nenhuma', null, null,
-            null, null, null, null, null, null, null, null, null)))
-      listStores.add(new Lojas(null, null, 'Nenhuma', null, null, null,
-          null, null, null, null, null, null, null, null));
+    // if (load &&
+    //     !listStores.contains(new Lojas(null, null, 'Nenhuma', null, null,
+    //         null, null, null, null, null, null, null, null, null)))
+    //   listStores.add(new Lojas(null, null, 'Nenhuma', null, null, null,
+    //       null, null, null, null, null, null, null, null));
 
     load = false;
 

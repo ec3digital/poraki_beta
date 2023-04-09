@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:poraki/app/data/models/lojas.dart';
 import 'package:poraki/app/data/repositories/store_repository.dart';
 import 'package:poraki/app/modules/auth/login/login_controller.dart';
+//import 'package:cloud_firestore/cloud_firestore.dart';
 
 class StoreController extends GetxController {
   StoreRepository storeRepo = StoreRepository();
@@ -23,20 +24,23 @@ class StoreController extends GetxController {
   final TextEditingController txtPercCupom = TextEditingController();
 
   String? lojaGuid;
-  List<Lojas> lojas = [];
+  //List<Lojas> lojas = [];
   Lojas? loja;
 
   Future<void> carregaLojas() async {
-    try {
-      _changeLoading(true);
-      var lojasTemp = await storeRepo.getAllStores(_login.usuGuid.toString());
-      print('lojasTemp: ' + lojasTemp.length.toString());
-      lojas = lojasTemp;
-    } catch (e) {
-      print('Erro no carregaLojas() controller ${e.toString()}');
-    } finally {
-      _changeLoading(false);
-    }
+    _login.listLojas.clear();
+    await _login.fbInstance!.collection("akilojas").doc("eyCv21RfaURoMn0SUndCg6LPyJP2").collection("Lojas").get().then((value) => value.docs.forEach((element) { _login.listLojas.add(Lojas.fromJson(element.data())); }));
+
+    // try {
+    //   _changeLoading(true);
+    //   var lojasTemp = await storeRepo.getAllStores(_login.usuGuid.toString());
+    //   print('lojasTemp: ' + lojasTemp.length.toString());
+    //   lojas = lojasTemp;
+    // } catch (e) {
+    //   print('Erro no carregaLojas() controller ${e.toString()}');
+    // } finally {
+    //   _changeLoading(false);
+    // }
   }
 
   void _changeLoading(bool newValue) {
@@ -47,7 +51,7 @@ class StoreController extends GetxController {
   Future<void> carregaLoja(String? guid) async {
     try {
       _changeLoading(true);
-      if (guid != "") loja = await storeRepo.getStore(guid!);
+      if (guid != "") loja = _login.listLojas.where((store) => store.LojaGUID == guid).first; //1await storeRepo.getStore(guid!);
 
       txtLojaCEP.text = loja!.LojaCEP.toString();
       txtLojaCNPJ.text = loja!.LojaCNPJ.toString();
@@ -108,10 +112,9 @@ class StoreController extends GetxController {
     if (persistLoja.LojaGUID == null) {
       resp = await storeRepo.postStore(persistLoja);
 
-      var jsonResp = jsonDecode(resp);
-      var strGuid = jsonResp['insert_Lojas_one']['LojaGUID'];
+      // var jsonResp = jsonDecode(resp);
+      // var strGuid = jsonResp['insert_Lojas_one']['LojaGUID'];
 
-      resp = strGuid;
     } else {
       await storeRepo.putStore(persistLoja);
       resp = loja!.LojaGUID.toString();

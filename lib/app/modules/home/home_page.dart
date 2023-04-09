@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:poraki/app/modules/categories/categories_controller.dart';
@@ -10,13 +9,13 @@ import 'widgets/drawer_home.dart';
 
 class HomePage extends StatelessWidget {
   final HomeController controller = Get.put(HomeController());
-  final CategoriesController categController = Get.find(); // Get.put(CategoriesController());
+  //final CategoriesController categController = Get.put(CategoriesController());
 
   HomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    Get.lazyPut(()=>OffersController());
+    Get.lazyPut(() => OffersController());
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size(double.maxFinite, 55),

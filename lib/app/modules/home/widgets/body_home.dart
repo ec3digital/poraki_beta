@@ -48,47 +48,47 @@ class BodyHome extends StatelessWidget {
                   ListHorizontalBannersHome(controller: _controller),
                   const SizedBox(height: 5),
                   ListHorizontalCategoriesHome(controller: _controller),
-                  const SizedBox(height: 5),
-                  Container(
-                      height: 40,
-                      width: Get.width * 0.94,
-                      decoration: BoxDecoration(
-                        // border: Border.all(color: Colors.black),
-                          color: Colors.cyan,
-                          border: Border.all(
-                            width: 1,
-                          )),
-                      //margin: EdgeInsets.all(10),
-                      child: GestureDetector(
-                          onTap: () {
-                            Get.defaultDialog(
-                              title: 'Voce pode ganhar prêmios no Poraki!',
-                              middleText: textoVizinho.replaceAll('\\n', '\n')
-                              //"Existem várias maneiras de ganhar prêmios no Poraki, através dos selos que voce conquista: \n\nSelo SUPER CONSUMIDOR\nvoce ganha este selo à partir de 20 compras realizadas através do aplicativo. \n\nSelo BOM VIZINHO\nvoce ganha este selo quando voce envia 10 avisos e que são validados por outro vizinho da sua região, ou quando você valida 20 avisos enviados por outros vizinhos. ",
-                              //textConfirm: 'OK', onConfirm: () => Get.closeAllSnackbars()
-                            );
-                          },
-                          child: Center(
-                              child: Text(
-                                  "Você pode ganhar prêmios no Poraki! \nClique para saber",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      fontStyle: FontStyle.normal,
-                                      fontWeight: FontWeight.normal))))),
+                  // const SizedBox(height: 5),
+                  // Container(
+                  //     height: 40,
+                  //     width: Get.width * 0.94,
+                  //     decoration: BoxDecoration(
+                  //       // border: Border.all(color: Colors.black),
+                  //         color: Colors.cyan,
+                  //         border: Border.all(
+                  //           width: 1,
+                  //         )),
+                  //     //margin: EdgeInsets.all(10),
+                  //     child: GestureDetector(
+                  //         onTap: () {
+                  //           Get.defaultDialog(
+                  //             title: 'Voce pode ganhar prêmios no Poraki!',
+                  //             middleText: textoVizinho.replaceAll('\\n', '\n')
+                  //             //"Existem várias maneiras de ganhar prêmios no Poraki, através dos selos que voce conquista: \n\nSelo SUPER CONSUMIDOR\nvoce ganha este selo à partir de 20 compras realizadas através do aplicativo. \n\nSelo BOM VIZINHO\nvoce ganha este selo quando voce envia 10 avisos e que são validados por outro vizinho da sua região, ou quando você valida 20 avisos enviados por outros vizinhos. ",
+                  //             //textConfirm: 'OK', onConfirm: () => Get.closeAllSnackbars()
+                  //           );
+                  //         },
+                  //         child: Center(
+                  //             child: Text(
+                  //                 "Você pode ganhar prêmios no Poraki! \nClique para saber",
+                  //                 textAlign: TextAlign.center,
+                  //                 style: TextStyle(
+                  //                     fontSize: 16,
+                  //                     fontStyle: FontStyle.normal,
+                  //                     fontWeight: FontWeight.normal))))),
                   const SizedBox(height: 5),
                   Padding(
                       padding: const EdgeInsets.all(5.0),
                       child: Text(
-                          'Mostrando ofertas próximas à ', // +
-                              // _loginController.listEnderecos
-                              //     .where((end) => end.EnderecoAtual)
-                              //     .first
-                              //     .EnderecoLogra
-                              //     .toString(),
+                          'Mostrando ofertas próximas à ' +
+                               _loginController.listaEnderecos
+                                  .where((end) => end.EnderecoAtual)
+                                  .first
+                                  .EnderecoLogra
+                                  .toString(),
                           style:
                           TextStyle(
-                              fontSize: 12, fontStyle: FontStyle.italic))),
+                              fontSize: 14, fontStyle: FontStyle.italic))),
                   //const SizedBox(height: 5),
                   GetBuilder<HomeController>(
                     builder: (_) {

@@ -25,8 +25,8 @@ class CardOffertsDayHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final LoginController _loginController = Get.find();
-    final OffersController offersController =
-        Get.find(); // Get.put(OffersController());
+    final OffersController offersController = Get.put(OffersController());
+
     final Color textDark = _loginController.colorFromHex(_loginController
         .listCore
         .where((coreItem) => coreItem.coreChave == 'textDark')
@@ -49,19 +49,16 @@ class CardOffertsDayHome extends StatelessWidget {
             child: Card(
               elevation: 10,
               //color: Color(0xffFFFFFF),
-              color: _loginController.colorFromHex(
-                  _loginController.listCore
-                      .where((coreItem) =>
-                  coreItem.coreChave ==
-                      'backLight')
-                      .first
-                      .coreValor
-                      .toString()),
+              color: _loginController.colorFromHex(_loginController.listCore
+                  .where((coreItem) => coreItem.coreChave == 'backLight')
+                  .first
+                  .coreValor
+                  .toString()),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.all(10.0),
+                    padding: const EdgeInsets.all(8.0),
                     child: Text(widgetTitle,
                         style: TextStyle(
                             color: textDark,
@@ -86,182 +83,196 @@ class CardOffertsDayHome extends StatelessWidget {
                                   arguments: cardListOffers[itemIndex]);
                             },
                             child: Container(
-                              padding: const EdgeInsets.all(8.0),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.all(Radius.circular(8)),
-                              ),
+                                padding: const EdgeInsets.all(8.0),
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(5),
+                                    border: Border.all(
+                                      color: textDark,
+                                      width: 1,
+                                    )),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    // if(DateTime.parse(cardListOffers[itemIndex].ofertaDispoDesde) > )
+                                    // Chip(
+                                    //   //padding: EdgeInsets.all(0),
+                                    //   backgroundColor: textDark,
+                                    //   label: Text('TESTE', style: TextStyle(color: textLight)),
+                                    // ),
 
-                              // decoration: BoxDecoration(
-                              //   borderRadius: BorderRadius.circular(5),
-                              //   border: Border.all(
-                              //     color: textLight,
-                              //     width: 1,
-                              //   ),
+                                    if (cardListOffers[itemIndex].oferta24hs !=
+                                        null)
+                                      if (cardListOffers[itemIndex].oferta24hs!)
+                                        Chip(
+                                          //padding: EdgeInsets.all(0),
+                                          backgroundColor: textDark,
+                                          label: Text('24hs',
+                                              style:
+                                                  TextStyle(color: textLight)),
+                                        ),
 
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  // if(DateTime.parse(cardListOffers[itemIndex].ofertaDispoDesde) > )
-                                  // Chip(
-                                  //   //padding: EdgeInsets.all(0),
-                                  //   backgroundColor: textDark,
-                                  //   label: Text('TESTE', style: TextStyle(color: textLight)),
-                                  // ),
-
-                                  if (cardListOffers[itemIndex].oferta24hs !=
-                                      null)
-                                    if (cardListOffers[itemIndex].oferta24hs!)
-                                      Chip(
-                                        //padding: EdgeInsets.all(0),
-                                        backgroundColor: textDark,
-                                        label: Text('24hs',
-                                            style: TextStyle(color: textLight)),
-                                      ),
-
-                                  if (cardListOffers[itemIndex]
-                                          .ofertaSomenteEncomenda !=
-                                      null)
                                     if (cardListOffers[itemIndex]
-                                        .ofertaSomenteEncomenda!)
-                                      Chip(
-                                        //padding: EdgeInsets.all(0),
-                                        backgroundColor: textDark,
-                                        label: Text('Somente encomenda',
-                                            style: TextStyle(color: textLight)),
-                                      ),
+                                            .ofertaSomenteEncomenda !=
+                                        null)
+                                      if (cardListOffers[itemIndex]
+                                          .ofertaSomenteEncomenda!)
+                                        Chip(
+                                          //padding: EdgeInsets.all(0),
+                                          backgroundColor: textDark,
+                                          label: Text('Somente encomenda',
+                                              style:
+                                                  TextStyle(color: textLight)),
+                                        ),
 
-                                  if (cardListOffers[itemIndex]
-                                          .ofertaEntregasAPartirDe
-                                          .toString() !=
-                                      'null')
-                                    if (DateTime.parse(cardListOffers[itemIndex]
-                                            .ofertaEntregasAPartirDe!)
-                                        .isAfter(DateTime.now()))
-                                      Chip(
-                                        //padding: EdgeInsets.all(0),
-                                        backgroundColor: textDark,
-                                        label: Text('Entregas em breve !',
-                                            style: TextStyle(color: textLight)),
-                                      ),
-
-                                  if (cardListOffers[itemIndex]
-                                          .ofertaAceitaEncomenda !=
-                                      null)
                                     if (cardListOffers[itemIndex]
-                                        .ofertaAceitaEncomenda!)
-                                      Chip(
-                                        //padding: EdgeInsets.all(0),
-                                        backgroundColor: textDark,
-                                        label: Text('Aceita encomenda',
-                                            style: TextStyle(color: textLight)),
+                                            .ofertaEntregasAPartirDe
+                                            .toString() !=
+                                        'null')
+                                      if (DateTime.parse(
+                                              cardListOffers[itemIndex]
+                                                  .ofertaEntregasAPartirDe!)
+                                          .isAfter(DateTime.now()))
+                                        Chip(
+                                          //padding: EdgeInsets.all(0),
+                                          backgroundColor: textDark,
+                                          label: Text('Entregas em breve !',
+                                              style:
+                                                  TextStyle(color: textLight)),
+                                        ),
+
+                                    if (cardListOffers[itemIndex]
+                                            .ofertaAceitaEncomenda !=
+                                        null)
+                                      if (cardListOffers[itemIndex]
+                                          .ofertaAceitaEncomenda!)
+                                        Chip(
+                                          //padding: EdgeInsets.all(0),
+                                          backgroundColor: textDark,
+                                          label: Text('Aceita encomenda',
+                                              style:
+                                                  TextStyle(color: textLight)),
+                                        ),
+                                    SizedBox(height: 5),
+                                    Center(
+                                        // child:
+                                        //    FadeInImage.assetNetwork(
+                                        //     placeholder: 'assets/images/pholder.png',
+                                        //     image: _loginController.listCore.where((coreItem) => coreItem.coreChave == 'imgpath').first.coreValor.toString() + cardListOffers[itemIndex].ofertaID.toString() + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'imgpathsuffix').first.coreValor.toString(),
+                                        //     imageErrorBuilder: (context, url, error) => new Icon(Icons.local_offer_outlined),
+                                        //     height: 130,
+                                        //   ),
+
+                                        child: Container(
+                                      decoration:
+                                          BoxDecoration(color: Colors.white),
+                                      child: CachedNetworkImage(
+                                        imageUrl: _loginController.listCore
+                                                .where((coreItem) =>
+                                                    coreItem.coreChave ==
+                                                    'imgpath')
+                                                .first
+                                                .coreValor
+                                                .toString() +
+                                            cardListOffers[itemIndex]
+                                                .ofertaID
+                                                .toString() +
+                                            _loginController.listCore
+                                                .where((coreItem) =>
+                                                    coreItem.coreChave ==
+                                                    'imgpathsuffix')
+                                                .first
+                                                .coreValor
+                                                .toString(),
+                                        progressIndicatorBuilder: (context, url,
+                                                downloadProgress) =>
+                                            CircularProgressIndicator(
+                                                value:
+                                                    downloadProgress.progress),
+                                        errorWidget: (context, url, error) =>
+                                            Icon(Icons.local_offer_outlined),
+                                        height: 110,alignment: Alignment.bottomCenter,
                                       ),
+                                    )),
+                                    SizedBox(height: 10),
+                                    Expanded(
+                                        child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      verticalDirection: VerticalDirection.down,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Center(
+                                          child: Text(
+                                            cardListOffers[itemIndex]
+                                                .ofertaTitulo
+                                                .toString(),
+                                            style: TextStyle(
+                                                fontSize: 16,
+                                                color: textDark,
+                                                fontWeight: FontWeight.bold),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ),
 
-                                  Center(
-                                      // child:
-                                      //    FadeInImage.assetNetwork(
-                                      //     placeholder: 'assets/images/pholder.png',
-                                      //     image: _loginController.listCore.where((coreItem) => coreItem.coreChave == 'imgpath').first.coreValor.toString() + cardListOffers[itemIndex].ofertaID.toString() + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'imgpathsuffix').first.coreValor.toString(),
-                                      //     imageErrorBuilder: (context, url, error) => new Icon(Icons.local_offer_outlined),
-                                      //     height: 130,
-                                      //   ),
-
-                                      child: Container(
-                                    decoration:
-                                        BoxDecoration(color: Colors.white),
-                                    child: CachedNetworkImage(
-                                      imageUrl: _loginController.listCore
-                                              .where((coreItem) =>
-                                                  coreItem.coreChave ==
-                                                  'imgpath')
-                                              .first
-                                              .coreValor
-                                              .toString() +
-                                          cardListOffers[itemIndex]
-                                              .ofertaID
-                                              .toString() +
-                                          _loginController.listCore
-                                              .where((coreItem) =>
-                                                  coreItem.coreChave ==
-                                                  'imgpathsuffix')
-                                              .first
-                                              .coreValor
-                                              .toString(),
-                                      progressIndicatorBuilder: (context, url,
-                                              downloadProgress) =>
-                                          CircularProgressIndicator(
-                                              value: downloadProgress.progress),
-                                      errorWidget: (context, url, error) =>
-                                          Icon(Icons.local_offer_outlined),
-                                      height: 110,
-                                    ),
-                                  )),
-                                  SizedBox(height: 10),
-                                  Expanded(
-                                      child: Column(
-                                    children: [Center(child: Text(
-                                      cardListOffers[itemIndex]
-                                          .ofertaTitulo
-                                          .toString(),
-                                      style: TextStyle(
-                                          fontSize: 16, color: textDark,fontWeight: FontWeight.bold),textAlign: TextAlign.center,
+                                        SizedBox(height: 5),
+                                        Text(
+                                            'R\$ ${double.parse(cardListOffers[itemIndex].ofertaPreco.toString()).toStringAsFixed(2).replaceAll(',', '').replaceAll('.', ',')}',
+                                            style: Get.textTheme.headline1!
+                                                .copyWith(
+                                              color: _loginController
+                                                  .colorFromHex(_loginController
+                                                      .listCore
+                                                      .where((coreItem) =>
+                                                          coreItem.coreChave ==
+                                                          'backDark')
+                                                      .first
+                                                      .coreValor
+                                                      .toString()),
+                                            ),
+                                            textAlign: TextAlign.center),
+                                        // Flexible(
+                                        //   child: Text(
+                                        //     cardListOffers[itemIndex]
+                                        //         .ofertaDetalhe
+                                        //         .toString(),
+                                        //     style:
+                                        //         Get.textTheme.bodyText1!.copyWith(
+                                        //       fontWeight: FontWeight.w400,
+                                        //       color: textDark,
+                                        //     ),
+                                        //   ),
+                                        // ),
+                                      ],
                                     )),
 
-                                      SizedBox(height: 5),
-                                      Text(
-                                        'R\$ ${double.parse(cardListOffers[itemIndex].ofertaPreco.toString()).toStringAsFixed(2).replaceAll(',', '').replaceAll('.', ',')}',
-                                        style:
-                                            Get.textTheme.headline1!.copyWith(
-                                          color: _loginController.colorFromHex(
-                                              _loginController.listCore
-                                                  .where((coreItem) =>
-                                                      coreItem.coreChave ==
-                                                      'backDark')
-                                                  .first
-                                                  .coreValor
-                                                  .toString()),
-                                        ),textAlign: TextAlign.center
-                                      ),
-                                      // Flexible(
-                                      //   child: Text(
-                                      //     cardListOffers[itemIndex]
-                                      //         .ofertaDetalhe
-                                      //         .toString(),
-                                      //     style:
-                                      //         Get.textTheme.bodyText1!.copyWith(
-                                      //       fontWeight: FontWeight.w400,
-                                      //       color: textDark,
-                                      //     ),
-                                      //   ),
-                                      // ),
-                                    ],
-                                  )),
+                                    // Text(
+                                    //   'Cep da oferta: ${cardListOffers[itemIndex].ofertaCEP.toString()}',
+                                    //   style: Get.textTheme.bodyText1!.copyWith(
+                                    //     fontWeight: FontWeight.w400,
+                                    //     color: textDark,
+                                    //   ),
+                                    // ),
+                                  ],
+                                )),
 
-                                  // Text(
-                                  //   'Cep da oferta: ${cardListOffers[itemIndex].ofertaCEP.toString()}',
-                                  //   style: Get.textTheme.bodyText1!.copyWith(
-                                  //     fontWeight: FontWeight.w400,
-                                  //     color: textDark,
-                                  //   ),
-                                  // ),
-                                ],
-                              ),
+                            //boxShadow: kElevationToShadow[1],
+                            // color: _loginController.colorFromHex(
+                            //     _loginController.listCore
+                            //         .where((coreItem) =>
+                            //             coreItem.coreChave == 'backLight')
+                            //         .first
+                            //         .coreValor
+                            //         .toString()),
 
-                                //boxShadow: kElevationToShadow[1],
-                                // color: _loginController.colorFromHex(
-                                //     _loginController.listCore
-                                //         .where((coreItem) =>
-                                //             coreItem.coreChave == 'backLight')
-                                //         .first
-                                //         .coreValor
-                                //         .toString()),
-
-                                // image: DecorationImage(
-                                //   image: NetworkImage(kDemoImages[itemIndex]),
-                                //   fit: BoxFit.fill,
-                                // ),
-                              ),
-                            ),
+                            // image: DecorationImage(
+                            //   image: NetworkImage(kDemoImages[itemIndex]),
+                            //   fit: BoxFit.fill,
+                            // ),
+                          ),
+                          // ),
                           //),
                         );
                       },

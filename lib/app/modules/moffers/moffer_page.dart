@@ -24,12 +24,13 @@ import 'package:poraki/app/routes/app_routes.dart';
 class MOfferPage extends StatefulWidget {
   //final String? offerGuid;
   final Oferta? offer;
-  final CategoriesController categoriesController = Get.find();
+  final CategoriesController categoriesController =
+      Get.put(CategoriesController()); // .find();
   final MofferController mofferController = Get.find();
-  final BrandsController brandsController = Get.find();
-  final PartnersController partnersController = Get.find();
-  // final LoginController loginController = Get.find();
-  //final MofferController mofferController = Get.put(MofferController());
+  final BrandsController brandsController = Get.put(BrandsController());
+  // final PartnersController partnersController = Get.find();
+  final LoginController loginController = Get.find();
+  // final MofferController mofferController = Get.put(MofferController());
   final String tipo = 'G';
   late Categorias categSelecionada = new Categorias();
   late String imgcloud = '';
@@ -54,7 +55,7 @@ class MOfferPage extends StatefulWidget {
   var listaRevendas = ['selecione'];
   // var listaFormaEntrega2 = ['selecione', 'vendedor', 'comprador'];
   var listaParceiros = ['selecione']; //TODO: pegar da API
-  var valueSel = 'selecione';
+  String? valueSel;
   //late String categSel = 'selecione';
   var tempoEntregaTipoSel = 'selecione';
   var agenteEntregaSel = 'selecione';
@@ -63,7 +64,7 @@ class MOfferPage extends StatefulWidget {
   var parceiroSel = 'escolha o parceiro';
   // var materialSel = 'selecione';
   // var voltagemSel = 'selecione';
-  var categoriaSel = 'selecione';
+  String categoriaSel = '';
   var labelEntrega = 'Entrega';
   var labelValidade = 'Validade';
 
@@ -146,6 +147,7 @@ class MOfferPage extends StatefulWidget {
 
 class _MOfferPage extends State<MOfferPage> {
   File? image;
+  List<String> listaCategoriasNomes = [];
 
   // // formatters
   // late TextFormField txtfValorSinalOrc;
@@ -163,16 +165,16 @@ class _MOfferPage extends State<MOfferPage> {
     widget._imageURLFocusNode.addListener(_updateImageUrl);
 
     //var brandController = new BrandsController();
-    widget.brandsController.revendas?.forEach((rev) {
+    widget.brandsController.revendas.forEach((rev) {
       print(rev.RevendaNome.toString());
       widget.listaRevendas.add(rev.RevendaNome.toString());
     });
     print('lista revendas: ' + widget.listaRevendas.length.toString());
 
-    widget.partnersController.parceiros?.forEach((part) {
-      print(part.ParceiroEntregaNome.toString());
-      widget.listaParceiros.add(part.ParceiroEntregaNome.toString());
-    });
+    // widget.partnersController.parceiros?.forEach((part) {
+    //   print(part.ParceiroEntregaNome.toString());
+    //   widget.listaParceiros.add(part.ParceiroEntregaNome.toString());
+    // });
     print('lista parceiros: ' + widget.listaParceiros.length.toString());
 
     widget.textColor = widget._loginController.colorFromHex(widget
@@ -212,6 +214,11 @@ class _MOfferPage extends State<MOfferPage> {
     //final LoginController loginController = Get.find();
     widget.mofferController.txtCEP.text =
         widget._loginController.usuCep.toString();
+
+    widget._loginController.listaCategorias.forEach((categ) {
+      listaCategoriasNomes.add(categ.categoriaNome!.trimRight());
+    });
+    //listaCategoriasNomes.add('selecione');
 
     _manageCampos();
 
@@ -281,28 +288,31 @@ class _MOfferPage extends State<MOfferPage> {
                                   ModalRoute.of(context)?.settings.arguments ==
                                           null
                                       ? DropdownButton<String>(
-                                          items: widget.categoriesController
-                                              .listaCategorias
-                                              ?.map((String value) {
+                                          items: listaCategoriasNomes
+                                              .map((String value) {
                                             return DropdownMenuItem<String>(
                                               value: value,
                                               child: Text(value),
                                             );
                                           }).toList(),
-                                          value: widget.categoriaSel,
+                                          value: widget.categoriaSel == '' ? null : widget.categoriaSel,
                                           onChanged: (String? newValue) {
                                             setState(() {
-                                              widget.categoriaSel = newValue!;
-                                              widget.categSelecionada = widget
-                                                  .categoriesController
-                                                  .selecionaCategoriaPorNome(
-                                                      widget.categoriaSel)!;
+                                              if (newValue != '') {
+                                                widget.categoriaSel =
+                                                    newValue.toString();
+                                                widget.categSelecionada = widget
+                                                    .categoriesController
+                                                    .selecionaCategoriaPorNome(
+                                                        widget.categoriaSel
+                                                            .toString())!;
 
-                                              _manageCampos();
+                                                _manageCampos();
+                                              }
                                             });
                                           },
                                         )
-                                      : Text(widget.categoriaSel),
+                                      : Text(widget.categoriaSel.toString()),
                             ),
 
                             const SizedBox(height: 20),
@@ -1700,32 +1710,33 @@ class _MOfferPage extends State<MOfferPage> {
                                 ],
                               ),
 
-                            if (widget.showCamposBasicos)
-                              Column(
-                                children: <Widget>[
-                                  const Divider(),
-                                  const SizedBox(height: 10),
-                                  Text('Forma de Fechamento'),
-                                  const SizedBox(height: 10),
-                                  DropdownButton<String>(
-                                    items: widget.listaFormaFechamento
-                                        .map((String value) {
-                                      return DropdownMenuItem<String>(
-                                        value: value,
-                                        child: Text(value),
-                                      );
-                                    }).toList(),
-                                    value: widget.formaFechSel,
-                                    onChanged: (String? newValue) {
-                                      setState(() {
-                                        widget.formaFechSel = newValue!;
-                                      });
-                                    },
-                                  ),
-                                ],
-                              ),
+                            // if (widget.showCamposBasicos)
+                            //   Column(
+                            //     children: <Widget>[
+                            //       const Divider(),
+                            //       const SizedBox(height: 10),
+                            //       Text('Forma de Fechamento'),
+                            //       const SizedBox(height: 10),
+                            //       DropdownButton<String>(
+                            //         items: widget.listaFormaFechamento
+                            //             .map((String value) {
+                            //           return DropdownMenuItem<String>(
+                            //             value: value,
+                            //             child: Text(value),
+                            //           );
+                            //         }).toList(),
+                            //         value: widget.formaFechSel,
+                            //         onChanged: (String? newValue) {
+                            //           setState(() {
+                            //             widget.formaFechSel = newValue!;
+                            //           });
+                            //         },
+                            //       ),
+                            //     ],
+                            //   ),
+                            //
+                            // const SizedBox(height: 20),
 
-                            const SizedBox(height: 20),
                             // Row(
                             //   crossAxisAlignment: CrossAxisAlignment.end,
                             //   children: [
@@ -2100,7 +2111,6 @@ class _MOfferPage extends State<MOfferPage> {
                             //     ],
                             //   ),
 
-
                             if (widget.showCamposBasicos)
                               Column(children: <Widget>[
                                 const SizedBox(height: 10),
@@ -2358,8 +2368,11 @@ class _MOfferPage extends State<MOfferPage> {
         widget.mofferController.valDomDas,
         widget.mofferController.valDomAs,
         null,
-      null,null,null,null,null
-    );
+        null,
+        null,
+        null,
+        null,
+        null);
 
     // Uri url = Uri.https("ec3digrepo-default-rtdb.firebaseio.com", "/words.json");
 
@@ -2683,7 +2696,7 @@ class _MOfferPage extends State<MOfferPage> {
       widget.listaRevendas.clear();
       widget.listaRevendas.add('selecione');
       widget.listaRevendas.add('outra');
-      widget.brandsController.revendas?.forEach((rev) {
+      widget.brandsController.revendas.forEach((rev) {
         print(rev.RevendaNome.toString());
         widget.listaRevendas.add(rev.RevendaNome.toString());
       });
@@ -2698,12 +2711,12 @@ class _MOfferPage extends State<MOfferPage> {
 
     // verifica se existem parceiros de entrega disponíveis na regiao
 
-
     if (widget.categSelecionada.categoriaFormasEntrega.toString().contains('/'))
       widget.categSelecionada.categoriaFormasEntrega?.split('/').forEach((fe) {
         print(fe.toString());
-        if(fe.toString() == 'parceiro' && widget.partnersController.parceiros!.length > 0)
-          widget.listaFormaEntrega.add(fe.toString());
+
+        // if(fe.toString() == 'parceiro' && widget.partnersController.parceiros!.length > 0)
+        //   widget.listaFormaEntrega.add(fe.toString());
       });
     else
       widget.listaFormaEntrega
@@ -2759,7 +2772,7 @@ class _MOfferPage extends State<MOfferPage> {
           'widget guidOffer: ' + widget.mofferController.mofferGuid.toString());
       widget.mofferController.txtTitulo.text = oferta.OfertaTitulo.toString();
 
-      if (widget._loginController.categorias.isEmpty)
+      if (widget._loginController.listaCategorias.isEmpty)
         await widget._loginController.getCategories();
 
       widget.categSelecionada = widget.categoriesController
@@ -2856,6 +2869,16 @@ class _MOfferPage extends State<MOfferPage> {
       widget.mofferController.valDomAs = oferta.DomAs.toString();
     } else {
       widget.isEditing = false;
+    }
+  }
+
+  Categorias? selecionaCategoriaPorNome(String categName) {
+    if (listaCategoriasNomes.isEmpty) {
+      return null;
+    } else {
+      return widget._loginController.listaCategorias
+          .where((categ) => categ.categoriaNome == categName)
+          .first;
     }
   }
 }

@@ -31,14 +31,14 @@ class fbPorakiService {
       }
   }
 
-  _getCepCloud() async {
-    if(cepAtual!.isEmpty)
-    {
-      var _addressController = new AddressController();
-      cepAtual = await _addressController.getCepAtualCloud();
-      print('cep atual cloud:' + cepAtual!);
-    }
-  }
+  // _getCepCloud() async {
+  //   if(cepAtual!.isEmpty)
+  //   {
+  //     var _addressController = new AddressController();
+  //     cepAtual = await _addressController.getCepAtualCloud();
+  //     print('cep atual cloud:' + cepAtual!);
+  //   }
+  // }
 
 
   Future<String> getValueFromFirebase(String col, String doc, String subKey) async {

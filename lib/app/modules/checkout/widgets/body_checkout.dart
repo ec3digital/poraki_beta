@@ -127,7 +127,7 @@ class _BodyCheckOut extends State<BodyCheckOut> {
   }
 
   selectedAddressSection(Color textColor, LoginController _loginController) {
-    Enderecos endereco = _loginController.listEnderecos.first;
+    Enderecos endereco = _loginController.listaEnderecos.first;
     return Container(
       margin: EdgeInsets.all(4),
       decoration: BoxDecoration(
@@ -213,9 +213,9 @@ class _BodyCheckOut extends State<BodyCheckOut> {
                 scrollDirection: Axis.vertical,
                   shrinkWrap: true,
                   padding: const EdgeInsets.all(16.0),
-                  itemCount: _loginController.listEnderecos.length,
+                  itemCount: _loginController.listaEnderecos.length,
                   itemBuilder: (BuildContext context, int index) {
-                    return buildAddressesOptions(_loginController.listEnderecos[index]);
+                    return buildAddressesOptions(_loginController.listaEnderecos[index]);
                   }),
                   ],
                 ),

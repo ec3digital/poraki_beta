@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:poraki/app/data/models/cepApiBrasil.dart';
@@ -9,6 +10,7 @@ import 'package:poraki/app/modules/home/widgets/gradient_header_home.dart';
 import 'package:poraki/app/modules/offers/widgets/button_offer.dart';
 import 'package:poraki/app/routes/app_routes.dart';
 import 'package:poraki/app/util/dialog_helper.dart';
+import 'package:uuid/uuid.dart';
 
 enum TiposEnd { Casa, Trabalho, Estudo, Outros }
 
@@ -16,8 +18,7 @@ class AddressBody extends StatefulWidget {
   String enderecoGuid = '';
   AddressBody({Key? key, required this.enderecoGuid}) : super(key: key);
 
-  final AddressController _controller =
-      Get.find(); // Get.put(AddressController());
+  final AddressController _controller = Get.put(AddressController());
   final LoginController _loginController = Get.find();
 
   var _endGuid = '';
@@ -31,7 +32,6 @@ class _AddressBodyState extends State<AddressBody> {
   final FocusNode txtEnderecoNroFocus = new FocusNode();
   final _form = GlobalKey<FormState>();
   TiposEnd tiposEnd = TiposEnd.Casa;
-
   var tipoSel = "Casa";
 
   Future<void> tornarEndAtual(String enderecoGuid) async {
@@ -40,26 +40,30 @@ class _AddressBodyState extends State<AddressBody> {
   }
 
   Future<void> salvar(String enderecoGuid) async {
+    final LoginController _loginController = Get.find();
+
     var end = new Enderecos(
-        widget._controller.enderecoSingle.enderecoGuid,
-        widget._controller.enderecoSingle.usuEmail,
-        widget._controller.enderecoSingle.usuGuid,
+        enderecoGuid == '' ? Uuid().v4() : enderecoGuid,
+        _loginController.usuEmail,
+        _loginController.usuGuid,
         widget._controller.txtCEP.text.removeAllWhitespace,
         widget._controller.txtEnderecoLogra.text.trimRight(),
         widget._controller.txtEnderecoNumero.text.trimRight(),
         widget._controller.txtEnderecoCompl?.text.trimRight(),
         tipoSel,
-        widget._controller.enderecoSingle.enderecoAtual,
-        widget._controller.enderecoSingle.enderecoUltData,
+        false,
+        Timestamp.fromDate(DateTime.now()).toDate(),
         null,
-        widget._controller.enderecoSingle.enderecoLat,
-        widget._controller.enderecoSingle.enderecoLong);
+        null,
+        null);
 
     //DateTime.now().toString());
     if (enderecoGuid == '')
       await widget._controller.adicionaEndereco(end);
     else
       await widget._controller.atualizaEndereco(end);
+
+    await _loginController.loadAddressData();
   }
 
   Future<bool> buscaCep() async {
@@ -101,16 +105,16 @@ class _AddressBodyState extends State<AddressBody> {
 
       try {
         var args = ModalRoute.of(context)?.settings.arguments
-            as List<Map<String, String>>;
+            as List<Map<String, String?>>;
         widget._endGuid =
             args[0].values.first.toString(); // .first.values.first.toString();
         print('_endGuid: ' + widget._endGuid);
-      } catch (e) {}
+      } catch (e) { print (e.toString()); }
 
       await widget._controller.bindEndereco(widget._endGuid);
-      tipoSel = widget._endGuid == ''
+      tipoSel = (widget._endGuid == ''
           ? 'Casa'
-          : widget._controller.enderecoSingle.enderecoTipo;
+          : widget._loginController.listaEnderecos.where((end) => end.EnderecoGuid == widget._endGuid).first.EnderecoTipo)!;
       widget.load = false;
     }
   }
@@ -118,8 +122,7 @@ class _AddressBodyState extends State<AddressBody> {
   @override
   Widget build(BuildContext context) {
     // bool isLoading = false;
-    LoginController _loginController = Get.find();
-    Color textColor = _loginController.colorFromHex(_loginController.listCore
+    Color textColor = widget._loginController.colorFromHex(widget._loginController.listCore
         .where((coreItem) => coreItem.coreChave == 'textDark')
         .first
         .coreValor
@@ -140,8 +143,8 @@ class _AddressBodyState extends State<AddressBody> {
                   child: AppBar(
                     // elevation: 0,
                     centerTitle: false,
-                    backgroundColor: _loginController.colorFromHex(
-                        _loginController
+                    backgroundColor: widget._loginController.colorFromHex(
+                        widget._loginController
                             .listCore
                             .where(
                                 (coreItem) => coreItem.coreChave == 'backLight')
@@ -190,6 +193,9 @@ class _AddressBodyState extends State<AddressBody> {
                             await buscaCep();
                           },
                         ),
+
+                        // TODO: colocar o progress na busca do CEP
+
                         const SizedBox(
                           height: 20,
                         ),

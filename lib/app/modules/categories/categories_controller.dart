@@ -7,7 +7,7 @@ import '../../data/repositories/categories_repository.dart';
 class CategoriesController extends GetxController {
   CategoriesRepository categoriesRepository = CategoriesRepository();
   List<Categorias> categorias = [];
-  List<String>? listaCategorias = [];
+  List<String>? listaCategoriasNomes = [];
   bool isLoading = false;
   late Categorias categSelected;
 
@@ -52,7 +52,7 @@ class CategoriesController extends GetxController {
   }
 
   Categorias? selecionaCategoriaPorNome(String categName) {
-    if (listaCategorias!.isEmpty) {
+    if (listaCategoriasNomes!.isEmpty) {
       return null;
     } else {
       return categorias
@@ -74,33 +74,36 @@ class CategoriesController extends GetxController {
 
   Future<void> getAllCategoriesFb() async {
     print('getAllCategoriesFb');
-    FirebaseFirestore? _fbInstance;
-    if (Firebase.apps.isEmpty) {
-      await Firebase.initializeApp();
-    }
 
-    _fbInstance = FirebaseFirestore.instance;
-    //criar mapping de revendas e jogar o toList no mapping e depois iterar
-    //List<dynamic> categs = [];
-    // var tempCategs = [];
-    // await _fbInstance.collection("akicategs").doc("Categorias").collection("lista").get().then((value) => value.docs.forEach((element) { tempCategs.add(element.data()); }));
-    // tempCategs.forEach((element) { print(element['CategoriaNome']);});
-    // print('tipo: ' + tempCategs. ..toString());
-    // await _fbInstance.collection("akicategs").doc("Categorias").collection("lista").get().then((value) => value.docs.forEach((element) { categorias?.add(Categorias.fromJson(element.data())); }));
-    try {
-      changeLoading(true);
-      await _fbInstance
-          .collection("akicategs")
-          .doc("Categorias")
-          .collection("lista")
-          .get()
-          .then((value) => value.docs.forEach((element) {
-                categorias.add(Categorias.fromJson(element.data()));
-              }));
-    } catch (e) {
-      print('Erro no getAllCategories() controller ${e.toString()}');
-    } finally {
-      changeLoading(false);
+    if (categorias.isEmpty) {
+      FirebaseFirestore? _fbInstance;
+      if (Firebase.apps.isEmpty) {
+        await Firebase.initializeApp();
+      }
+
+      _fbInstance = FirebaseFirestore.instance;
+      //criar mapping de revendas e jogar o toList no mapping e depois iterar
+      //List<dynamic> categs = [];
+      // var tempCategs = [];
+      // await _fbInstance.collection("akicategs").doc("Categorias").collection("lista").get().then((value) => value.docs.forEach((element) { tempCategs.add(element.data()); }));
+      // tempCategs.forEach((element) { print(element['CategoriaNome']);});
+      // print('tipo: ' + tempCategs. ..toString());
+      // await _fbInstance.collection("akicategs").doc("Categorias").collection("lista").get().then((value) => value.docs.forEach((element) { categorias?.add(Categorias.fromJson(element.data())); }));
+      try {
+        changeLoading(true);
+        await _fbInstance
+            .collection("akicategs")
+            .doc("Categorias")
+            .collection("lista")
+            .get()
+            .then((value) => value.docs.forEach((element) {
+                  categorias.add(Categorias.fromJson(element.data()));
+                }));
+      } catch (e) {
+        print('Erro no getAllCategories() controller ${e.toString()}');
+      } finally {
+        changeLoading(false);
+      }
     }
 
     //categorias!.forEach((categ) { print(categ.categoriaNome!.trimRight());});
@@ -112,12 +115,12 @@ class CategoriesController extends GetxController {
     try {
       changeLoading(true);
       await getAllCategoriesFb();
-      listaCategorias!.clear();
+      listaCategoriasNomes!.clear();
       categorias.forEach((categ) {
-        listaCategorias!.add(categ.categoriaNome!.trimRight());
+        listaCategoriasNomes!.add(categ.categoriaNome!.trimRight());
       });
-      listaCategorias!.add('selecione');
-      return listaCategorias;
+      // listaCategoriasNomes!.add('selecione');
+      return listaCategoriasNomes;
     } catch (e) {
       print('Erro no getCategoriesNamesFb() controller ${e.toString()}');
     } finally {

@@ -280,17 +280,18 @@ class RowCategoriesDrawerHome extends StatelessWidget {
                   .toString()),
             ),
           ),
-          leading: Badge(
-              badgeContent: Text('3'),
-              child: Icon(
-                icon,
-                color: _loginController.colorFromHex(_loginController.listCore
-                    .where((coreItem) => coreItem.coreChave == 'textDark')
-                    .first
-                    .coreValor
-                    .toString()),
-                size: 20,
-              )));
+          // leading: Badge(
+          //     badgeContent: Text('3'),
+          //     child: Icon(
+          //       icon,
+          //       color: _loginController.colorFromHex(_loginController.listCore
+          //           .where((coreItem) => coreItem.coreChave == 'textDark')
+          //           .first
+          //           .coreValor
+          //           .toString()),
+          //       size: 20,
+          //     ))
+      );
     }
   }
 }

@@ -28,10 +28,10 @@ class HomeController extends GetxController {
   void onInit() async {
     // await getCategories();
     // mostra as 4 ofertas de cada seção; esses valores sao passados para a API, evitando trazer dados desnecessários
-    // await getOffers(4);
-    // await getBestOffers(4);
-    // await getMostFreshOffers(4);
-    // await getBestSellersOffers(4);
+    await getOffers(4);
+    await getBestOffers(4);
+    await getMostFreshOffers(4);
+    await getBestSellersOffers(4);
 
     // await getPeople();
 

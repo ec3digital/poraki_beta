@@ -7,6 +7,7 @@ import 'package:poraki/app/data/repositories/offer_repository.dart';
 import 'package:poraki/app/data/repositories/store_repository.dart';
 import '../../data/models/categorias.dart';
 import '../../data/repositories/categories_repository.dart';
+import '../auth/login/login_controller.dart';
 
 class MofferController extends GetxController {
 
@@ -82,6 +83,7 @@ class MofferController extends GetxController {
   bool isLoading = false;
   List<Oferta> moffers = [];
   OfferRepository offerRepository = OfferRepository();
+  LoginController _loginController = Get.find();
 
   MofferController();
 
@@ -121,17 +123,18 @@ class MofferController extends GetxController {
   }
 
   Future<List<Lojas>> getStores(String sellerGuid) async {
-    List<Lojas> retLojas = [];
-    try {
-      changeLoading(true);
-      retLojas = await StoreRepository().getAllStores(sellerGuid);
-    } catch (e) {
-      print('Erro no carregaLojas() controller ${e.toString()}');
-    } finally {
-      changeLoading(false);
-    }
+    //List<Lojas> retLojas = [];
 
-    return retLojas;
+    // try {
+    //   changeLoading(true);
+    //   retLojas = await StoreRepository().getAllStores(sellerGuid);
+    // } catch (e) {
+    //   print('Erro no carregaLojas() controller ${e.toString()}');
+    // } finally {
+    //   changeLoading(false);
+    // }
+
+    return _loginController.listLojas;
   }
 
   // Future<void> getMoffer() async {

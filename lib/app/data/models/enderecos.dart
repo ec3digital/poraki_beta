@@ -8,7 +8,7 @@ class Enderecos {
   String? EnderecoCompl;
   String? EnderecoTipo;
   bool    EnderecoAtual = false;
-  String? EnderecoUltData;
+  DateTime? EnderecoUltData;
   String? EnderecoDesde;
   String? EnderecoLat;
   String? EnderecoLong;
@@ -25,7 +25,7 @@ class Enderecos {
     EnderecoCompl = json['EnderecoCompl'].toString();
     EnderecoTipo = json['EnderecoTipo'].toString();
     EnderecoAtual = json['EnderecoAtual'].toString().toLowerCase() == 'true';
-    EnderecoUltData = json['EnderecoUltData'].toString();
+    EnderecoUltData = DateTime.now(); // json['EnderecoUltData'].toString();
     EnderecoDesde = json['EnderecoDesde'].toString();
     EnderecoLat = json['EnderecoLat'].toString();
     EnderecoLong = json['EnderecoLong'].toString();

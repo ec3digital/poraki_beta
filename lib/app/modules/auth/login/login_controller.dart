@@ -34,10 +34,10 @@ class LoginController extends GetxController {
   ];
   List<sqlCore> listCore = [];
   List<sqlCore> listCoreCep = [];
-  List<Enderecos> listEnderecos = [];
+  List<Enderecos> listaEnderecos = [];
   List<Lojas> listLojas = [];
   List<OfertasFavs> ofertasFavs = [];
-  List<Categorias> categorias = [];
+  List<Categorias> listaCategorias = [];
   bool _obscurePassword = false;
   bool refreshOfertasFavs = false;
   String? usuCep;
@@ -73,7 +73,7 @@ class LoginController extends GetxController {
   // carrega dados do usuario
   Future<void> loadUserData() async {
     print('loadUserData');
-    // usuGuid = 'eyCv21RfaURoMn0SUndCg6LPyJP2';
+    usuGuid = 'eyCv21RfaURoMn0SUndCg6LPyJP2';
     // usuEmail = 'danilojazz@gmail.com';
 
     //pega o cep local
@@ -95,8 +95,8 @@ class LoginController extends GetxController {
 
   // carrega endereços do usuario
   Future<void> loadAddressData() async {
-    listEnderecos.clear();
-    await fbInstance!.collection("akienderecos").doc("eyCv21RfaURoMn0SUndCg6LPyJP2").collection("Enderecos").get().then((value) => value.docs.forEach((element) { listEnderecos.add(Enderecos.fromJson(element.data())); }));
+    listaEnderecos.clear();
+    await fbInstance!.collection("akienderecos").doc("eyCv21RfaURoMn0SUndCg6LPyJP2").collection("Enderecos").get().then((value) => value.docs.forEach((element) { listaEnderecos.add(Enderecos.fromJson(element.data())); }));
 
     // var tempEnderecos =
     // await fbPorakiService().getListFromFirebase("akienderecos", "eyCv21RfaURoMn0SUndCg6LPyJP2");
@@ -122,8 +122,8 @@ class LoginController extends GetxController {
   }
 
   Future<void> getCategories() async {
-    categorias.clear();
-    await fbInstance!.collection("akicategs").doc("Categorias").collection("lista").get().then((value) => value.docs.forEach((element) { categorias.add(Categorias.fromJson(element.data())); }));
+    listaCategorias.clear();
+    await fbInstance!.collection("akicategs").doc("Categorias").collection("lista").get().then((value) => value.docs.forEach((element) { listaCategorias.add(Categorias.fromJson(element.data())); }));
   }
 
   Future<void> loadOffersFavs() async {

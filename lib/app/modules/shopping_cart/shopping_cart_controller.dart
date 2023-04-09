@@ -149,7 +149,7 @@ class ShoppingCartController extends GetxController {
     var orderSvc = new OrdersRepository();
     var pedDate = DateTime.now().toString();
     var endereco =
-        _loginController.listEnderecos.where((end) => end.EnderecoAtual).first;
+        _loginController.listaEnderecos.where((end) => end.EnderecoAtual).first;
 
     // // sort by eta
     // cartBySeller.sort((a, b) => a.deliverIn!.compareTo(b.deliverIn!));

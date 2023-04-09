@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:extended_masked_text/extended_masked_text.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:poraki/app/data/models/enderecos.dart';
@@ -24,9 +26,11 @@ class AddressController extends GetxController {
   bool isLoading = false;
   final formKey = GlobalKey<FormState>();
 
-  List<sqlEndereco> enderecos = [];
-  late sqlEndereco enderecoSingle;
-  late Enderecos selEndereco;
+  //List<Enderecos> listaEnderecos = [];
+  //late sqlEndereco enderecoSingle;
+  Enderecos? enderecoSingle;
+  late FirebaseFirestore? fbInstance;
+  // late Enderecos selEndereco;
   AddressRepository repo = new AddressRepository();
   LoginController _login = Get.find();
 
@@ -42,7 +46,17 @@ class AddressController extends GetxController {
   // }
 
   @override
-  void initState() {
+  void initState() {}
+
+  @override
+  void onInit() async {
+    super.onInit();
+
+    if (Firebase.apps.isEmpty) {
+      await Firebase.initializeApp();
+    }
+
+    fbInstance = _login.fbInstance;
 
   }
 
@@ -58,14 +72,23 @@ class AddressController extends GetxController {
   // }
 
   Future<void> bindEndereco(String? endGuid) async {
-    if(endGuid!.isNotEmpty) {
-      enderecoSingle = enderecos.where((end) => end.enderecoGuid == endGuid).first;
-      txtEnderecoLogra.text = enderecoSingle.enderecoLogra.toString();
-      txtEnderecoNumero.text = enderecoSingle.enderecoNumero.toString();
-      txtEnderecoTipo.text = enderecoSingle.enderecoTipo.toString();
-      txtCEP.text = enderecoSingle.enderecoCEP.toString();
-    }
-    else {
+    if (endGuid!.isNotEmpty) {
+      // enderecoSingle = enderecos.where((end) => end.enderecoGuid == endGuid).first;
+      // txtEnderecoLogra.text = enderecoSingle.enderecoLogra.toString();
+      // txtEnderecoNumero.text = enderecoSingle.enderecoNumero.toString();
+      // txtEnderecoTipo.text = enderecoSingle.enderecoTipo.toString();
+      // txtCEP.text = enderecoSingle.enderecoCEP.toString();
+
+      final end = _login.listaEnderecos
+          .where((end) => end.EnderecoGuid == endGuid)
+          .first;
+      txtEnderecoLogra.text = enderecoSingle!.EnderecoLogra.toString();
+      txtEnderecoNumero.text = enderecoSingle!.EnderecoNumero.toString();
+      txtEnderecoTipo.text = enderecoSingle!.EnderecoTipo.toString();
+      txtCEP.text = enderecoSingle!.EnderecoCEP.toString();
+
+      enderecoSingle = new Enderecos(end.EnderecoGuid, end.UsuEmail, end.UsuGuid, end.EnderecoCEP, end.EnderecoLogra, end.EnderecoNumero, end.EnderecoCompl, end.EnderecoTipo, end.EnderecoAtual, end.EnderecoUltData, end.EnderecoDesde, end.EnderecoLat, end.EnderecoLong);
+    } else {
       txtEnderecoLogra.text = '';
       txtEnderecoNumero.text = '';
       txtEnderecoTipo.text = '';
@@ -73,220 +96,178 @@ class AddressController extends GetxController {
     }
   }
 
-  Future<void> carregaEnderecos() async {
-    print('carregaEnderecos');
-    enderecos.clear();
+  // Future<void> carregaEnderecos() async {
+  //   listaEnderecos.clear();
+  //   await fbInstance!.collection("akienderecos").doc("eyCv21RfaURoMn0SUndCg6LPyJP2").collection("Enderecos").get().then((value) => value.docs.forEach((element) { listaEnderecos.add(Enderecos.fromJson(element.data())); }));
+  //
+  // }
+  //
+  // Future<sqlEndereco> retornaEnderecoAtualSqlLocal() async {
+  //   print('carregaEnderecoAtual');
+  //
+  //   var lista = await sqlPorakiAddressService().buscaEnderecos(true);
+  //   late sqlEndereco endereco;
+  //   lista.forEach((item) {
+  //     endereco = new sqlEndereco(
+  //         item.enderecoGuid.toString(),
+  //         item.usuEmail.toString(),
+  //         item.enderecoGuid.toString(),
+  //         item.enderecoCEP.toString(),
+  //         item.enderecoLogra.toString(),
+  //         item.enderecoNumero.toString(),
+  //         item.enderecoCompl.toString(),
+  //         item.enderecoTipo.toString(),
+  //         item.enderecoAtual,
+  //         item.enderecoUltData.toString(),'',''
+  //         // item.enderecoLat,
+  //         // item.enderecoLong.toString()
+  //         //item.enderecoDesde.toString(),
+  //         );
+  //   });
+  //
+  //   return endereco;
+  // }
 
-    // var flag = 1;
-    // if(flag == 1){
-    //   //await sqlPorakiAddressService().verificaTabela();
-    //   await sqlPorakiAddressService().deleteEnderecos();
-    //
-    // }
-
-    // await sqlPorakiAddressService().initDB();
-
-    var lista = await sqlPorakiAddressService().buscaEnderecos(false);
-    lista.forEach((item) {
-      print('item endereco atual: ' + item.enderecoAtual.toString());
-      var endereco = new sqlEndereco(
-          item.enderecoGuid.toString(),
-          item.usuEmail.toString(),
-          item.usuGuid.toString(),
-          item.enderecoCEP.toString(),
-          item.enderecoLogra.toString(),
-          item.enderecoNumero.toString(),
-          item.enderecoCompl.toString(),
-          item.enderecoTipo.toString(),
-          item.enderecoAtual,
-          item.enderecoUltData.toString(), "",""
-          // item.enderecoLat,
-          // item.enderecoLong.toString()
-          //item.enderecoDesde.toString(),
-          );
-
-      enderecos.add(endereco);
-    });
-
-    print('enderecos empty? - ' + enderecos.isEmpty.toString());
-    // se a tabela estiver vazia no sqlite, busca da nuvem
-    if (enderecos.isEmpty)
-      {
-        sqlPorakiAddressService().verificaTabela();
-        print('enderecos empty - usuGuid: ' + _login.usuGuid.toString());
-        var lista = await repo.getAllAddresses();
-        print('lista endereco nuvem qtd: ' + lista.length.toString());
-        lista.forEach((itemApi) {
-          print('itemApi end atual: ' + itemApi.EnderecoCEP.toString() + ' = ' + itemApi.EnderecoAtual.toString());
-          var endereco = new sqlEndereco(
-              itemApi.EnderecoGuid.toString(),
-              itemApi.UsuEmail.toString(),
-              itemApi.UsuGuid.toString(),
-              itemApi.EnderecoCEP.toString(),
-              itemApi.EnderecoLogra.toString(),
-              itemApi.EnderecoNumero.toString(),
-              itemApi.EnderecoCompl.toString(),
-              itemApi.EnderecoTipo.toString(),
-              itemApi.EnderecoAtual,
-              '',
-              itemApi.EnderecoLat,
-              itemApi.EnderecoLong.toString()
-            //item.enderecoDesde.toString(),
-          );
-
-          enderecos.add(endereco);
-
-          // adiciona na base local
-          sqlPorakiAddressService().insertEndereco(endereco);
-        });
-      }
-
-    // forca a atualizacao do endereço local pq no fetch SIMPLESMENTE NAO FUNCIONA
-    var end = enderecos.where((_end) => _end.enderecoCEP == _login.usuCep).first;
-    await sqlPorakiAddressService().updateEnderecoAtual(end.enderecoGuid);
-
-    await sqlPorakiAddressService().closeDB();
-  }
-
-  Future<sqlEndereco> retornaEnderecoAtualSqlLocal() async {
-    print('carregaEnderecoAtual');
-
-    var lista = await sqlPorakiAddressService().buscaEnderecos(true);
-    late sqlEndereco endereco;
-    lista.forEach((item) {
-      endereco = new sqlEndereco(
-          item.enderecoGuid.toString(),
-          item.usuEmail.toString(),
-          item.enderecoGuid.toString(),
-          item.enderecoCEP.toString(),
-          item.enderecoLogra.toString(),
-          item.enderecoNumero.toString(),
-          item.enderecoCompl.toString(),
-          item.enderecoTipo.toString(),
-          item.enderecoAtual,
-          item.enderecoUltData.toString(),'',''
-          // item.enderecoLat,
-          // item.enderecoLong.toString()
-          //item.enderecoDesde.toString(),
-          );
-    });
-
-    return endereco;
-  }
-
-  Future<String> getCepAtualLocal() async {
-    var lista = await sqlPorakiAddressService().buscaEnderecos(true);
-    late sqlEndereco endereco;
-    lista.forEach((item) {
-      endereco = new sqlEndereco(
-          item.enderecoGuid.toString(),
-          item.usuEmail.toString(),
-          item.enderecoGuid.toString(),
-          item.enderecoCEP.toString(),
-          item.enderecoLogra.toString(),
-          item.enderecoNumero.toString(),
-          item.enderecoCompl.toString(),
-          item.enderecoTipo.toString(),
-          item.enderecoAtual,
-          item.enderecoUltData.toString(),"",""
-          // item.enderecoLat,
-          // item.enderecoLong.toString()
-        //item.enderecoDesde.toString(),
-      );
-    });
-
-    print('cep atual: ' + endereco.enderecoCEP);
-
-    return endereco.enderecoCEP;
-  }
-
-  Future<String?> getCepAtualCloud() async {
-    var endereco = await repo.getCurrentAddress();
-    return endereco.EnderecoCEP;
-  }
+  // Future<String> getCepAtualLocal() async {
+  //   var lista = await sqlPorakiAddressService().buscaEnderecos(true);
+  //   late sqlEndereco endereco;
+  //   lista.forEach((item) {
+  //     endereco = new sqlEndereco(
+  //         item.enderecoGuid.toString(),
+  //         item.usuEmail.toString(),
+  //         item.enderecoGuid.toString(),
+  //         item.enderecoCEP.toString(),
+  //         item.enderecoLogra.toString(),
+  //         item.enderecoNumero.toString(),
+  //         item.enderecoCompl.toString(),
+  //         item.enderecoTipo.toString(),
+  //         item.enderecoAtual,
+  //         item.enderecoUltData.toString(),"",""
+  //         // item.enderecoLat,
+  //         // item.enderecoLong.toString()
+  //       //item.enderecoDesde.toString(),
+  //     );
+  //   });
+  //
+  //   print('cep atual: ' + endereco.enderecoCEP);
+  //
+  //   return endereco.enderecoCEP;
+  // }
+  //
+  // Future<String?> getCepAtualCloud() async {
+  //   var endereco = await repo.getCurrentAddress();
+  //   return endereco.EnderecoCEP;
+  // }
 
   Future<void> carregaEnderecoSingle(String enderecoGuid) async {
     print('carregaEnderecoSingle');
+    enderecoSingle = _login.listaEnderecos.where((end) => end.EnderecoGuid == enderecoGuid).first;
+    txtEnderecoLogra.text = enderecoSingle!.EnderecoLogra.toString();
+    txtEnderecoNumero.text = enderecoSingle!.EnderecoNumero.toString();
+    txtEnderecoTipo.text = enderecoSingle!.EnderecoTipo.toString();
+    txtCEP.text = enderecoSingle!.EnderecoCEP.toString();
+  }
 
-    var lista =
-        await sqlPorakiAddressService().buscaEnderecoSingle(enderecoGuid);
-    lista.forEach((item) {
-      enderecoSingle = new sqlEndereco(
-          item.enderecoGuid.toString(),
-          item.usuEmail.toString(),
-          item.enderecoGuid.toString(),
-          item.enderecoCEP.toString(),
-          item.enderecoLogra.toString(),
-          item.enderecoNumero.toString(),
-          item.enderecoCompl.toString(),
-          item.enderecoTipo.toString(),
-          item.enderecoAtual,
-          item.enderecoUltData.toString(),
-          item.enderecoLat,
-          item.enderecoLong.toString()
-          //item.enderecoDesde.toString(),
-          );
-    });
-
-    txtCEP.text = enderecoSingle.enderecoCEP;
-    txtEnderecoLogra.text = enderecoSingle.enderecoLogra;
-    txtEnderecoNumero.text = enderecoSingle.enderecoNumero;
-    txtEnderecoCompl!.text = enderecoSingle.enderecoCompl!;
-    txtEnderecoTipo.text = enderecoSingle.enderecoTipo;
+  Future<String> getCepAtualLocal() async {
+    print('getCepAtualLocal');
+    return _login.listaEnderecos.where((end) => end.EnderecoAtual).first.EnderecoCEP.toString();
   }
 
   Future<void> atualizaEndereco(Enderecos endereco) async {
-    //endereco.EnderecoUltData = DateTime.now().toString();
-    var resp = await repo.putAddress(endereco);
+    //var obj = fbInstance!.collection("akienderecos").doc(_login.usuGuid).collection("Enderecos").get().then((value) => value.docs.where((end) => end.)
 
-    //if (resp.isEmpty)
-    var sqlEnd = new sqlEndereco(endereco.EnderecoGuid.toString(), endereco.UsuEmail.toString(), endereco.UsuGuid.toString(), endereco.EnderecoCEP.toString(),
-        endereco.EnderecoLogra.toString(), endereco.EnderecoNumero.toString(), endereco.EnderecoCompl, endereco.EnderecoTipo.toString(), endereco.EnderecoAtual,
-        DateTime.now().toString(), endereco.EnderecoLat, endereco.EnderecoLong);
+    //TODO: pegar o id do endereço
+    String getId = '';
+    await fbInstance!.collection("akienderecos").doc(_login.usuGuid).collection("Enderecos").where('EnderecoGuid', isEqualTo: endereco.EnderecoGuid).get().then((ss) => getId = ss.docs.first.id);
+    await fbInstance!.collection("akienderecos").doc(_login.usuGuid).collection("Enderecos").doc(getId).set(endereco.toJson());
+    
+    print('getId: ' + getId);
 
-    await sqlPorakiAddressService().updateEndereco(sqlEnd);
-    // await carregaUsuario();
+    // //endereco.EnderecoUltData = DateTime.now().toString();
+    // var resp = await repo.putAddress(endereco);
+    //
+    // //if (resp.isEmpty)
+    // var sqlEnd = new sqlEndereco(endereco.EnderecoGuid.toString(), endereco.UsuEmail.toString(), endereco.UsuGuid.toString(), endereco.EnderecoCEP.toString(),
+    //     endereco.EnderecoLogra.toString(), endereco.EnderecoNumero.toString(), endereco.EnderecoCompl, endereco.EnderecoTipo.toString(), endereco.EnderecoAtual,
+    //     DateTime.now().toString(), endereco.EnderecoLat, endereco.EnderecoLong);
+    //
+    // await sqlPorakiAddressService().updateEndereco(sqlEnd);
+    // // await carregaUsuario();
   }
 
+
   Future<void> adicionaEndereco(Enderecos endereco) async {
-    await repo.postAddress(endereco);
-
-    //if (resp.isEmpty)
-    var sqlEnd = new sqlEndereco(endereco.EnderecoGuid.toString(), endereco.UsuEmail.toString(), endereco.UsuGuid.toString(), endereco.EnderecoCEP.toString(),
-        endereco.EnderecoLogra.toString(), endereco.EnderecoNumero.toString(), endereco.EnderecoCompl, endereco.EnderecoTipo.toString(), endereco.EnderecoAtual,
-        DateTime.now().toString(), endereco.EnderecoLat, endereco.EnderecoLong);
-
-    await sqlPorakiAddressService().insertEndereco(sqlEnd);
-    // await carregaUsuario();
+    await fbInstance!.collection("akienderecos").doc(_login.usuGuid).collection("Enderecos").add(endereco.toJson());
+    
+    // await repo.postAddress(endereco);
+    //
+    // //if (resp.isEmpty)
+    // var sqlEnd = new sqlEndereco(endereco.EnderecoGuid.toString(), endereco.UsuEmail.toString(), endereco.UsuGuid.toString(), endereco.EnderecoCEP.toString(),
+    //     endereco.EnderecoLogra.toString(), endereco.EnderecoNumero.toString(), endereco.EnderecoCompl, endereco.EnderecoTipo.toString(), endereco.EnderecoAtual,
+    //     DateTime.now().toString(), endereco.EnderecoLat, endereco.EnderecoLong);
+    //
+    // await sqlPorakiAddressService().insertEndereco(sqlEnd);
+    // // await carregaUsuario();
   }
 
   Future<void> apagaEndereco(Enderecos endereco) async {
-    endereco.EnderecoTipo = 'Inativo';
-    var resp = await repo.putAddress(endereco);
 
-    var sqlEnd = new sqlEndereco(endereco.EnderecoGuid.toString(), endereco.UsuEmail.toString(), endereco.UsuGuid.toString(), endereco.EnderecoCEP.toString(),
-        endereco.EnderecoLogra.toString(), endereco.EnderecoNumero.toString(), endereco.EnderecoCompl, endereco.EnderecoTipo.toString(), endereco.EnderecoAtual,
-        DateTime.now().toString(), endereco.EnderecoLat, endereco.EnderecoLong);
+//     final docRef = fbInstance!.collection("appointments").doc("FpS9NDSdMD2GeE9GL3i2");
+//
+// // Remove the 'service' field from the document
+//     final updates = <String, dynamic>{
+//       "service": FieldValue.delete(),
+//     };
+//
+//     docRef.update(updates);
 
-    if (resp.isNotEmpty)
-      await sqlPorakiAddressService().deleteEndereco(endereco.EnderecoGuid.toString());
-    // await carregaUsuario();
+    String getId = '';
+    final objEndereco = { 'EnderecoAtual': true };
+    await fbInstance!.collection("akienderecos").doc(_login.usuGuid).collection("Enderecos").where('EnderecoGuid', isEqualTo: endereco.EnderecoGuid).get().then((ss) => getId = ss.docs.first.id);
+    await fbInstance!.collection("akienderecos").doc(_login.usuGuid).collection("Enderecos").doc(getId).delete();
+
+    print('getId: ' + getId);
+
+    // endereco.EnderecoTipo = 'Inativo';
+    // var resp = await repo.putAddress(endereco);
+    //
+    // var sqlEnd = new sqlEndereco(endereco.EnderecoGuid.toString(), endereco.UsuEmail.toString(), endereco.UsuGuid.toString(), endereco.EnderecoCEP.toString(),
+    //     endereco.EnderecoLogra.toString(), endereco.EnderecoNumero.toString(), endereco.EnderecoCompl, endereco.EnderecoTipo.toString(), endereco.EnderecoAtual,
+    //     DateTime.now().toString(), endereco.EnderecoLat, endereco.EnderecoLong);
+    //
+    // if (resp.isNotEmpty)
+    //   await sqlPorakiAddressService().deleteEndereco(endereco.EnderecoGuid.toString());
+    // // await carregaUsuario();
   }
 
   Future<void> tornarEnderecoAtual(String enderecoGuid) async {
-    print('tornarEnderecoAtual');
-    var resp = await repo.putCurrentAddress(enderecoGuid);
-    print('resp current address: ' + resp.toString());
 
-    if (resp.isNotEmpty) {
-      var respn = await repo.putCurrentNAddress(enderecoGuid);
-      print('resp current naddress: ' + respn.toString());
+    String getId = '';
+    final objEndereco = { 'EnderecoAtual': true };
+    await fbInstance!.collection("akienderecos").doc(_login.usuGuid).collection("Enderecos").where('EnderecoGuid', isNotEqualTo: enderecoGuid).get().then((ss) => ss.docs.forEach((doc) { alteraFBEnderecoNAtual(doc.id); }));
+    await fbInstance!.collection("akienderecos").doc(_login.usuGuid).collection("Enderecos").where('EnderecoGuid', isEqualTo: enderecoGuid).get().then((ss) => getId = ss.docs.first.id);
+    await fbInstance!.collection("akienderecos").doc(_login.usuGuid).collection("Enderecos").doc(getId).update(objEndereco);
 
-      if (respn.isNotEmpty)
-        await sqlPorakiAddressService().updateEnderecoAtual(enderecoGuid);
-    }
+    print('getId: ' + getId);
 
-    // await carregaUsuario();
+    // print('tornarEnderecoAtual');
+    // var resp = await repo.putCurrentAddress(enderecoGuid);
+    // print('resp current address: ' + resp.toString());
+    //
+    // if (resp.isNotEmpty) {
+    //   var respn = await repo.putCurrentNAddress(enderecoGuid);
+    //   print('resp current naddress: ' + respn.toString());
+    //
+    //   if (respn.isNotEmpty)
+    //     await sqlPorakiAddressService().updateEnderecoAtual(enderecoGuid);
+    // }
+    //
+    // // await carregaUsuario();
+  }
+
+  Future<void> alteraFBEnderecoNAtual(String docId) async {
+    final objEndereco = { 'EnderecoAtual': true };
+    await fbInstance!.collection("akienderecos").doc(_login.usuGuid).collection("Enderecos").doc(docId).update(objEndereco);
   }
 
 }

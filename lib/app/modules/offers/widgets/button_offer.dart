@@ -7,6 +7,7 @@ class ButtonOffer extends StatelessWidget {
   final Color? colorButton;
   final Color colorText;
   final VoidCallback onPressed;
+  final bool isWhatsapp;
 
   const ButtonOffer({
     Key? key,
@@ -14,6 +15,7 @@ class ButtonOffer extends StatelessWidget {
     this.colorButton,
     required this.colorText,
     required this.onPressed,
+    this.isWhatsapp = false,
   }) : super(key: key);
 
   @override
@@ -23,7 +25,7 @@ class ButtonOffer extends StatelessWidget {
       height: 50,
       width: double.maxFinite,
       child: ElevatedButton(
-        style: ElevatedButton.styleFrom(primary: colorButton),
+        style: ElevatedButton.styleFrom(primary: isWhatsapp ? Color.fromRGBO(18, 140, 126, 1.0) : colorButton),
         onPressed: onPressed,
         // onPressed: () {
         //   Get.toNamed(AppRoutes.shoppingCart);

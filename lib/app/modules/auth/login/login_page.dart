@@ -264,7 +264,7 @@ class _LoginPageState extends State<LoginPage> {
                       Padding(
                         padding: EdgeInsets.symmetric(vertical: 10),
                         // ignore: deprecated_member_use
-                        child: RaisedButton(
+                        child: ElevatedButton(
                           onPressed: () {
                             Navigator.push(
                               context,
@@ -274,12 +274,11 @@ class _LoginPageState extends State<LoginPage> {
                             );
                           },
                           child: Text("Cadastre-se"),
-                          color: Color(0xFFA3EBB1),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(50),
+                          //color: Color(0xFFA3EBB1),
+                          //shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50),
                           ),
                         ),
-                      ),
+                     // ),
                       Padding(
                         padding: EdgeInsets.only(bottom: 10),
                       ),

@@ -60,16 +60,16 @@ class MyStatelessWidget extends StatelessWidget {
             alignment: MainAxisAlignment.start,
             children: [
               // ignore: deprecated_member_use
-              FlatButton(
-                textColor: const Color(0xFF6200EE),
+              ElevatedButton(
+                //textColor: const Color(0xFF6200EE),
                 onPressed: () {
                   // Perform some action
                 },
                 child: const Text('ACTION 1'),
               ),
               // ignore: deprecated_member_use
-              FlatButton(
-                textColor: const Color(0xFF6200EE),
+              ElevatedButton(
+                //textColor: const Color(0xFF6200EE),
                 onPressed: () {
                   // Perform some action
                 },

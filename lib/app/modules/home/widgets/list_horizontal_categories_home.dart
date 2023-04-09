@@ -24,9 +24,9 @@ class ListHorizontalCategoriesHome extends StatelessWidget {
           height: Get.height * 0.14,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
-            itemCount: _loginController.categorias.length,
+            itemCount: _loginController.listaCategorias.where((element) => element.mostraBarra == true).length,
             itemBuilder: (BuildContext context, int index) {
-              Categorias categories = _loginController.categorias[index];
+              Categorias categories = _loginController.listaCategorias.where((element) => element.mostraBarra == true).toList()[index];
               //print('iconcode: ' + categories.categoriaChave.toString() + ' / ' + categories.iconcode.toString());
               return CardCategories(
                 text: categories.categoriaNome!,

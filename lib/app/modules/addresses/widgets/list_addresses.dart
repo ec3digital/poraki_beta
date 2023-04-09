@@ -9,7 +9,7 @@ import 'package:poraki/app/modules/offers/widgets/button_offer.dart';
 import 'package:poraki/app/routes/app_routes.dart';
 
 class ListAddresses extends StatelessWidget {
-  //final AddressController controller = Get.find(); // put(AddressController());
+  final AddressController controller = Get.put(AddressController());
 
   ListAddresses({Key? key}) : super(key: key);
 
@@ -34,12 +34,12 @@ class ListAddresses extends StatelessWidget {
       return Column(children: [
         ListTile(
           leading: retIcon(endereco.EnderecoTipo.toString(), endereco.EnderecoAtual),
-          // onTap: () {
-          //   controller.enderecoSingle = endereco;
-          //   Get.toNamed(AppRoutes.address, arguments: [
-          //     {'enderecoGuid': endereco.enderecoGuid}
-          //   ]);
-          // },
+          onTap: () {
+            controller.enderecoSingle = endereco;
+            Get.toNamed(AppRoutes.address, arguments: [
+              {'enderecoGuid': endereco.EnderecoGuid}
+            ]);
+          },
           title: Text(
             endereco.EnderecoCEP.toString(),
           ),
@@ -91,7 +91,7 @@ class ListAddresses extends StatelessWidget {
                 .coreValor
                 .toString()),
           ),
-          if (_loginController.listEnderecos.length == 0)
+          if (_loginController.listaEnderecos.length == 0)
             Container(
                 child: Center(child: Text("Ops, nada poraki ainda... ;-)")))
           else
@@ -99,11 +99,11 @@ class ListAddresses extends StatelessWidget {
               child: ListView.builder(
                 scrollDirection: Axis.vertical,
                 shrinkWrap: true,
-                itemCount: _loginController.listEnderecos.length,
+                itemCount: _loginController.listaEnderecos.length,
                 itemBuilder: (BuildContext context, int index) {
                   //if (index.isOdd) return const Divider();
                   //index = index ~/ 2 + 1;
-                  var endereco = _loginController.listEnderecos[index];
+                  var endereco = _loginController.listaEnderecos[index];
                   return _buildRow(endereco);
                 },
               ),

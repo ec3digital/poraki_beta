@@ -49,7 +49,14 @@ class AppBarHome extends StatelessWidget {
             ),
             const SizedBox(width: 08),
             IconButton(
-              onPressed: () => Get.toNamed(AppRoutes.shoppingCart),
+              onPressed: () =>
+                  Get.defaultDialog(
+                      title: 'Aviso',
+                      middleText: 'Em breve !'
+                    //"Existem várias maneiras de ganhar prêmios no Poraki, através dos selos que voce conquista: \n\nSelo SUPER CONSUMIDOR\nvoce ganha este selo à partir de 20 compras realizadas através do aplicativo. \n\nSelo BOM VIZINHO\nvoce ganha este selo quando voce envia 10 avisos e que são validados por outro vizinho da sua região, ou quando você valida 20 avisos enviados por outros vizinhos. ",
+                    //textConfirm: 'OK', onConfirm: () => Get.closeAllSnackbars()
+                  ),
+                  // Get.toNamed(AppRoutes.shoppingCart),
               icon: Icon(
                 Icons.shopping_cart_outlined,
               ),

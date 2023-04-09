@@ -6,7 +6,7 @@ import '../categories_controller.dart';
 import 'list_vertical_categories.dart';
 
 class BodyCategories extends StatelessWidget {
-  final CategoriesController _controller = Get.find(); // Get.put(CategoriesController());
+  final CategoriesController _controller = Get.put(CategoriesController());
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,7 @@ class BodyCategories extends StatelessWidget {
             const SizedBox(height: 15),
             Center(child: Text("Categorias",style: TextStyle(fontSize: 24),)),
             const SizedBox(height: 5),
-            ListVerticalCategories(controller: _controller)
+            ListVerticalCategories()
           ],
         ),
       ),

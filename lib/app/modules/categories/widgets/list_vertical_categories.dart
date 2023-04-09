@@ -7,10 +7,10 @@ import '../../../data/models/categorias.dart';
 import '../categories_controller.dart';
 
 class ListVerticalCategories extends StatelessWidget {
-  final CategoriesController controller;
+  //final CategoriesController controller;
   const ListVerticalCategories({
     Key? key,
-    required this.controller,
+    //required this.controller,
   }) : super(key: key);
 
   @override
@@ -22,7 +22,8 @@ class ListVerticalCategories extends StatelessWidget {
         .first
         .coreValor
         .toString());
-    var categoriasBarra = controller.categorias.where((element) => element.mostraBarra == true).toList(); //.sort((o1,o2) => o1.or);
+    var categoriasAll =
+        _loginController.listaCategorias.toList(); //.sort((o1,o2) => o1.or);
 
     Widget _buildRow(
         int idx, String categoryName, String chave, String iconcode) {
@@ -51,25 +52,29 @@ class ListVerticalCategories extends StatelessWidget {
       );
     }
 
-    return GetBuilder<CategoriesController>(
-      builder: (_) {
-        if (controller.isLoading) {
-          return CircularProgressIndicator.adaptive();
-        } else {
-          return Container(
-            // height: Get.height * 50, // * 0.14,
-            height: MediaQuery.of(context).size.height,
+    return GetBuilder<CategoriesController>(builder: (_) {
+      var h = MediaQuery.of(context).size.height;
+
+      return LimitedBox(
+          maxHeight: h + 250,
+          // height: Get.height * 50, // * 0.14,
+          //height: MediaQuery.of(context).size.height,
+          //constraints: BoxConstraints(maxHeight: h, minHeight: 56.0),
+          child: Column(
+            children: [ Flexible(
             child: ListView.builder(
+              shrinkWrap: true,
+              //physics: const NeverScrollableScrollPhysics(),
               scrollDirection: Axis.vertical,
               padding: const EdgeInsets.all(6.0),
-              itemCount: categoriasBarra.length,
+              itemCount: categoriasAll.length,
               itemBuilder: (BuildContext context, int index) {
                 //if (index.isOdd) return const Divider();
                 //index = index ~/ 2 + 1;
-                Categorias categories = categoriasBarra[index];
+                Categorias categories = categoriasAll[index];
 
                 return Container(
-                    padding: const EdgeInsets.all(5),
+                    padding: const EdgeInsets.all(2),
                     margin: const EdgeInsets.all(5),
                     decoration: BoxDecoration(
                       border: Border.all(
@@ -85,10 +90,11 @@ class ListVerticalCategories extends StatelessWidget {
                         categories.categoriaChave.toString(),
                         categories.iconcode.toString()));
               },
-            ),
-          );
-        }
-      },
-    );
+            )),
+              const SizedBox(height: 20),],
+          ),
+      )
+      ;
+    });
   }
 }

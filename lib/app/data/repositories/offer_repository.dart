@@ -48,7 +48,7 @@ class OfferRepository extends GetConnect {
   Future<List<ProdutoOferta>> getOfferByCEPTitle(String title) async {
     String url = '${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiOfertasTitulo').first.coreValor.toString()}/' + _loginController.usuCep.toString().substring(0,3) + '%25';
     var response = await get(url, headers: Constants.headers);
-    if (response.hasError) throw 'Ocorreu um erro em getOfferByCEPTitle() - '; // + response.bodyString.toString();
+    if (response.hasError) throw 'Ocorreu um erro em getOfferByCEPTitle() - ' + response.bodyString.toString();
     return (response.body['Ofertas'] as List)
         .map((oferta) => ProdutoOferta.fromJson(oferta))
         .toList();

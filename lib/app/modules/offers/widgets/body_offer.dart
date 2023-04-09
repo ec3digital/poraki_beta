@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+//import 'package:open_whatsapp/open_whatsapp.dart';
 import 'package:get/get.dart';
 import 'package:poraki/app/data/models/sql/sqlCarrinho.dart';
 import 'package:poraki/app/modules/auth/login/login_controller.dart';
@@ -6,6 +7,12 @@ import 'package:poraki/app/modules/offers/widgets/button_offer.dart';
 import 'package:poraki/app/modules/offers/widgets/detail_offer.dart';
 import 'package:poraki/app/routes/app_routes.dart';
 import 'package:poraki/app/services/sqlite/sqlporaki_cart_service.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
+import 'package:whatsapp_unilink/whatsapp_unilink.dart';
+//import 'package:whatsapp_sender_flutter/whatsapp_sender_flutter.dart';
+//import 'package:whatsapp_share2/whatsapp_share2.dart';
+//import 'package:whatsapp_unilink/whatsapp_unilink.dart';
 import '../../../data/models/produto_oferta.dart';
 import '../offers_controller.dart';
 import 'list_pics_offer.dart';
@@ -163,40 +170,95 @@ class BodyOffer extends StatelessWidget {
                   const SizedBox(height: 15),
                   ButtonOffer(
                     onPressed: () async {
-                      var entregaPrev =
-                          DateTime.now().add(new Duration(hours: 1)).toString();
-                      print('botao press, offerGuid: ' +
-                          produtoOferta.ofertaGUID.toString());
-                      var cart = new sqlCarrinho(
-                          produtoOferta.ofertaID.toString(),
-                          produtoOferta.ofertaGUID.toString(),
-                          produtoOferta.ofertaTitulo.toString(),
-                          produtoOferta.ofertaCEP.toString(),
-                          produtoOferta.ofertaFKID.toString(),
-                          produtoOferta.ofertaPreco.toString(),
-                          '1',
-                          produtoOferta.ofertaImgPath.toString(),
-                          produtoOferta.categoriaChave.toString(),
-                          entregaPrev,
-                          produtoOferta.lojaID,
-                          produtoOferta.ofertaDetalhe);
+                      // var entregaPrev =
+                      //     DateTime.now().add(new Duration(hours: 1)).toString();
+                      // print('botao press, offerGuid: ' +
+                      //     produtoOferta.ofertaGUID.toString());
+                      // var cart = new sqlCarrinho(
+                      //     produtoOferta.ofertaID.toString(),
+                      //     produtoOferta.ofertaGUID.toString(),
+                      //     produtoOferta.ofertaTitulo.toString(),
+                      //     produtoOferta.ofertaCEP.toString(),
+                      //     produtoOferta.ofertaFKID.toString(),
+                      //     produtoOferta.ofertaPreco.toString(),
+                      //     '1',
+                      //     produtoOferta.ofertaImgPath.toString(),
+                      //     produtoOferta.categoriaChave.toString(),
+                      //     entregaPrev,
+                      //     produtoOferta.lojaID,
+                      //     produtoOferta.ofertaDetalhe);
 
-                      var msg =
-                          await sqlPorakiCartService().insertItemCarrinho(cart);
-                      showDialog<String>(
-                          context: buildContext,
-                          builder: (buildContext) => AlertDialog(
-                                title: const Text("Aviso"),
-                                content: Text(msg.removeAllWhitespace),
-                              ));
+                      // var msg =
+                      //     await sqlPorakiCartService().insertItemCarrinho(cart);
+                      // showDialog<String>(
+                      //     context: buildContext,
+                      //     builder: (buildContext) => AlertDialog(
+                      //           title: const Text("Aviso"),
+                      //           content: Text(msg.removeAllWhitespace),
+                      //         ));
 
-                      Get.toNamed(
-                        AppRoutes.shoppingCart,
+                      // Get.toNamed(
+                      //   AppRoutes.shoppingCart,
+                      // );
+
+                      // var contact = "+880123232333";
+                      // var androidUrl = "whatsapp://send?phone=$contact&text=Hi, I need some help";
+                      // var iosUrl = "https://wa.me/$contact?text=${Uri.parse('Hi, I need some help')}";
+                      //
+                      // try{
+                      //   if(Platform.isIOS){
+                      //     await launchUrl(Uri.parse(iosUrl));
+                      //   }
+                      //   else{
+                      //     await launchUrl(Uri.parse(androidUrl));
+                      //   }
+                      // } on Exception{
+                      //   EasyLoading.showError('WhatsApp is not installed.');
+                      // }
+
+                      // var whatsapp = "+91XXXXXXXXXX";
+                      // var whatsappAndroid =Uri.parse("whatsapp://send?phone=$whatsapp&text=hello");
+                      // if (await canLaunchUrl(whatsappAndroid)) {
+                      //   await launchUrl(whatsappAndroid);
+                      // } else {
+                      //   ScaffoldMessenger.of(context).showSnackBar(
+                      //     const SnackBar(
+                      //       content: Text("WhatsApp is not installed on the device"),
+                      //     ),
+                      //   );
+                      // }
+
+                      var androidUrl = "Olá, vi sua oferta no Poraki e tenho interesse em saber mais sobre isso: " + produtoOferta.ofertaTitulo.toString();
+                      final link = WhatsAppUnilink(
+                        phoneNumber: '+5511997267192',
+                        text: androidUrl,
                       );
+
+                      await launchUrl(Uri.parse(link.asUri().toString()),
+                          mode: LaunchMode.externalApplication);
+
+                      // await WhatsAppSenderFlutter.send(
+                      //   phones: [ "+5511997267192"],
+                      //   message: "Olá !",
+                      // );
+
+                      // final val = await WhatsappShare.isInstalled(
+                      //     package: Package.whatsapp
+                      // );
+                      // print('Whatsapp está instalado? $val');
+                      //
+                      // await WhatsappShare.share(
+                      //   text: 'Msg do Poraki',
+                      //   //linkUrl: 'https://flutter.dev/',
+                      //   phone: '+5511997267192',
+                      // );
+
+                      //await FlutterOpenWhatsapp.sendSingleMessage("5511997267192", "Msg do Poraki 2222");
                     },
                     // colorText: darkText,
 
-                    text: 'Adicionar ao carrinho',
+                    // text: 'Adicionar ao carrinho',
+                    text: 'Solicitar via Whatsapp', isWhatsapp: true,
 
                     colorText: _loginController.colorFromHex(_loginController
                         .listCore
@@ -217,12 +279,12 @@ class BodyOffer extends StatelessWidget {
                     moreDetailProduct: detailDispo,
                   ),
                   const SizedBox(height: 10),
-                  if (produtoOferta.ofertaPeso.toString() != '0')
-                    Text('Peso: ' +
-                        produtoOferta.ofertaPeso.toString() +
-                        ' ' +
-                        produtoOferta.ofertaPesoUnidade.toString()),
-                  const SizedBox(height: 2),
+                  // if (produtoOferta.ofertaPeso.toString() != '0')
+                  //   Text('Peso: ' +
+                  //       produtoOferta.ofertaPeso.toString() +
+                  //       ' ' +
+                  //       produtoOferta.ofertaPesoUnidade.toString()),
+                  // const SizedBox(height: 2),
                   SingleChildScrollView(
                       child: Column(
                     children: [

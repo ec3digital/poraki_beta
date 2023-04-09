@@ -39,6 +39,7 @@ class OffersController extends GetxController {
       // }
       // else
       if (this.listName != null) {
+        print('offers listName: ' + this.listName.toString());
         if (this.listName == 'dayoffers') await getDayOffers(limit);
 
         if (this.listName == 'bestoffers') await getBestOffers(limit);

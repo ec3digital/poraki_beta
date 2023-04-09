@@ -3,7 +3,7 @@ class ProdutoOferta {
   String? ofertaCEP;
   String? ofertaDetalhe;
   String? ofertaDispoDesde;
-  int? ofertaID;
+  String? ofertaID;
   String? ofertaImgPath;
   double? ofertaPreco;
   String? ofertaTitulo;
@@ -137,7 +137,7 @@ class ProdutoOferta {
     ofertaCEP = json['OfertaCEP'].toString();
     ofertaDetalhe = json['OfertaDetalhe'].toString();
     //ofertaDispoDesde = json['OfertaDispoDesde'];
-    ofertaID = int.parse(json['OfertaID'].toString());
+    ofertaID = json['OfertaID'].toString();
     //ofertaImgPath = json['OfertaImgPath'];
     ofertaPreco = double.parse(json['OfertaPreco'].toString());
     ofertaTitulo = json['OfertaTitulo'].toString();

@@ -35,45 +35,46 @@ class ListOffers extends StatelessWidget {
       //     ' atual: ' +
       //     endereco.enderecoAtual.toString());
       return Column(children: [
-      Container(padding: const EdgeInsets.all(5),margin: const EdgeInsets.all(10),
-      decoration: BoxDecoration(
-      border: Border.all(
-      color: backColor,
-      ),
-      borderRadius: BorderRadius.all(Radius.circular(10)),
-      color: backColor,
-      ),
-      //color: backColor,
-      child:
-        ListTile(
-            leading: CachedNetworkImage(
-              imageUrl: _loginController.listCore
-                      .where((coreItem) => coreItem.coreChave == 'imgpath')
-                      .first
-                      .coreValor
-                      .toString() +
-                  oferta.ofertaID.toString() +
-                  _loginController.listCore
-                      .where(
-                          (coreItem) => coreItem.coreChave == 'imgpathsuffix')
-                      .first
-                      .coreValor
-                      .toString(),
-              progressIndicatorBuilder: (context, url, downloadProgress) =>
-                  CircularProgressIndicator(value: downloadProgress.progress),
-              errorWidget: (context, url, error) =>
-                  Icon(Icons.local_offer_outlined),
-              height: 110,
+        //const SizedBox(height: 8),
+        Container(
+          padding: const EdgeInsets.all(8), margin: const EdgeInsets.all(5),
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: backColor,
             ),
-            onTap: () => Get.toNamed(AppRoutes.offer, arguments: oferta),
-            title: Text(oferta.ofertaTitulo.toString()),
-            subtitle: Text(oferta.ofertaDetalhe.toString()),
-            trailing: Text(
-                'R\$ ${oferta.ofertaPreco?.toStringAsFixed(2).replaceAll(',', '').replaceAll('.', ',') ?? ''}')),
-        //trailing: Icon(IconData(int.parse(iconcode), fontFamily: 'MaterialIcons'))
-        //),
-        // const SizedBox(height: 3),
-      )//const Divider(),
+            borderRadius: BorderRadius.all(Radius.circular(8)),
+            color: backColor,
+          ),
+          //color: backColor,
+          child: ListTile(
+              leading: CachedNetworkImage(
+                imageUrl: _loginController.listCore
+                        .where((coreItem) => coreItem.coreChave == 'imgpath')
+                        .first
+                        .coreValor
+                        .toString() +
+                    oferta.ofertaID.toString() +
+                    _loginController.listCore
+                        .where(
+                            (coreItem) => coreItem.coreChave == 'imgpathsuffix')
+                        .first
+                        .coreValor
+                        .toString(),
+                progressIndicatorBuilder: (context, url, downloadProgress) =>
+                    CircularProgressIndicator(value: downloadProgress.progress),
+                errorWidget: (context, url, error) =>
+                    Icon(Icons.local_offer_outlined),
+                height: 110,
+              ),
+              onTap: () => Get.toNamed(AppRoutes.offer, arguments: oferta),
+              title: Text(oferta.ofertaTitulo.toString()),
+              subtitle: Text(oferta.ofertaDetalhe.toString()),
+              trailing: Text(
+                  'R\$ ${oferta.ofertaPreco?.toStringAsFixed(2).replaceAll(',', '').replaceAll('.', ',') ?? ''}')),
+          //trailing: Icon(IconData(int.parse(iconcode), fontFamily: 'MaterialIcons'))
+          //),
+          // const SizedBox(height: 3),
+        ) //const Divider(),
         // const SizedBox(height: 3),
       ]);
     }
@@ -81,7 +82,7 @@ class ListOffers extends StatelessWidget {
     return Expanded(
       child: Container(
         color: backDark,
-        child: GetBuilder<OffersController>(builder: (context) {
+        child: Column(children: [const SizedBox(height: 20), GetBuilder<OffersController>(builder: (context) {
           if (offersController.isLoading) {
             return Center(
               child: CircularProgressIndicator(),
@@ -92,7 +93,7 @@ class ListOffers extends StatelessWidget {
                   child: Center(child: Text("Ops, nada poraki ainda... ;-)")));
             else
               return Scrollbar(
-                child:  ListView.builder(
+                child: ListView.builder(
                   scrollDirection: Axis.vertical,
                   shrinkWrap: true,
                   //scrollDirection: Axis.vertical,
@@ -227,7 +228,7 @@ class ListOffers extends StatelessWidget {
             // );
 
           }
-        }),
+        }),],)
       ),
     );
   }
