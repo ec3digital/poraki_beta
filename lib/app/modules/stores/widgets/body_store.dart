@@ -111,7 +111,9 @@ class _StoreBodyState extends State<StoreBody> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 20,),
+                    const SizedBox(
+                      height: 20,
+                    ),
                     TextFormField(
                       // validator: (value) {
                       //   if (value!.length != 11) {
@@ -134,7 +136,9 @@ class _StoreBodyState extends State<StoreBody> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 20,),
+                    const SizedBox(
+                      height: 20,
+                    ),
                     TextFormField(
                       // validator: (value) {
                       //   if (value!.length != 11) {
@@ -142,9 +146,20 @@ class _StoreBodyState extends State<StoreBody> {
                       //   }
                       //   return null;
                       // },
-                      inputFormatters: [FilteringTextInputFormatter.digitsOnly,CnpjInputFormatter(), ],
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly,
+                        CnpjInputFormatter(),
+                      ],
                       controller: storeController.txtLojaCNPJ,
-                      onChanged: (cnpj) { if (!CNPJValidator.isValid(cnpj)) { Get.defaultDialog(title: "CNPJ Inválido", middleText: "Por favor informe um CNPJ válido" ); }  {} } ,
+
+                      onFieldSubmitted: (cnpj) {
+                        if (!CNPJValidator.isValid(cnpj)) {
+                          Get.defaultDialog(
+                              title: "CNPJ Inválido",
+                              middleText: "Por favor informe um CNPJ válido");
+                        }
+                        {}
+                      },
                       autofocus: true,
                       style: TextStyle(color: textColor),
                       decoration: InputDecoration(
@@ -157,7 +172,9 @@ class _StoreBodyState extends State<StoreBody> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 20,),
+                    const SizedBox(
+                      height: 20,
+                    ),
                     TextFormField(
                       // validator: (value) {
                       //   if (value!.length != 11) {
@@ -178,7 +195,9 @@ class _StoreBodyState extends State<StoreBody> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 20,),
+                    const SizedBox(
+                      height: 20,
+                    ),
                     TextFormField(
                       // validator: (value) {
                       //   if (value!.length < 4) {
@@ -203,7 +222,9 @@ class _StoreBodyState extends State<StoreBody> {
                         buscaCep();
                       },
                     ),
-                    const SizedBox(height: 20,),
+                    const SizedBox(
+                      height: 20,
+                    ),
                     TextFormField(
                       // validator: (value) {
                       //   if (value!.length < 10) {
@@ -225,7 +246,9 @@ class _StoreBodyState extends State<StoreBody> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 20,),
+                    const SizedBox(
+                      height: 20,
+                    ),
                     TextFormField(
                       // validator: (value) {
                       //   if (value!.length != 11) {
@@ -248,7 +271,9 @@ class _StoreBodyState extends State<StoreBody> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 20,),
+                    const SizedBox(
+                      height: 20,
+                    ),
                     TextFormField(
                       // validator: (value) {
                       //   if (value!.length != 11) {
@@ -270,159 +295,159 @@ class _StoreBodyState extends State<StoreBody> {
                       ),
                     ),
                     const SizedBox(height: 20),
-                  //   Row(
-                  //     children: <Widget>[
-                  //       Checkbox(
-                  //         value: this.valAceitaPoraki10,
-                  //         onChanged: (val) {
-                  //           setState(() {
-                  //             this.valAceitaPoraki10 = val!;
-                  //           });
-                  //         },
-                  //         activeColor: Colors.blue,
-                  //       ),
-                  //       const SizedBox(width: 20),
-                  //       Text('PORAKI10 - Aceita cupom de 10% na primeira compra'),
-                  //       const SizedBox(height: 20)
-                  //     ],
-                  //   ),
-                  //   const SizedBox(height: 20),
-                  //   TextFormField(
-                  //     // validator: (value) {
-                  //     //   if (value!.length != 11) {
-                  //     //     return "Por favor digite um telefone válido";
-                  //     //   }
-                  //     //   return null;
-                  //     // },
-                  //     controller: storeController.txtLojaCompl,
-                  //     autofocus: true,
-                  //     style: TextStyle(color: textColor),
-                  //     decoration: InputDecoration(
-                  //       border: OutlineInputBorder(),
-                  //       labelText: "Outro CUPOM",
-                  //       labelStyle: TextStyle(color: textColor),
-                  //       prefixIcon: Icon(
-                  //         Icons.location_city_outlined,
-                  //         color: textColor,
-                  //       ),
-                  //     ),
-                  //   ),
-                  //   const SizedBox(height: 20),
-                  // Column(children: <Widget>[
-                  //   const SizedBox(height: 10),
-                  //   TextFormField(
-                  //     controller:
-                  //     storeController.txtPercCupom,
-                  //     decoration: InputDecoration(
-                  //       labelText: 'Percentual do Cupom',
-                  //       border: OutlineInputBorder(),
-                  //     ),
-                  //     keyboardType: TextInputType.number,
-                  //     validator: (value) {
-                  //       int xPercCupom =
-                  //       int.parse(value.toString());
-                  //       if (xPercCupom <= 0 || xPercCupom >= 100)
-                  //         return 'Precisa ser maior do que zero e menor do que 100';
-                  //       return null;
-                  //     },
-                  //   )]),
-                  //
-                  //   const SizedBox(height: 20),
-                  //   Row(
-                  //     children: <Widget>[
-                  //       Text('A partir de: '),
-                  //       ElevatedButton(
-                  //           onPressed: () {
-                  //             showDatePicker(
-                  //                 context: buildContext,
-                  //                 initialDate: DateTime.now(),
-                  //                 firstDate: DateTime.now(),
-                  //                 lastDate: DateTime.now()
-                  //                     .add(Duration(days: 1000)))
-                  //                 .then((value) => setState(() {
-                  //               valDataCupomDe =
-                  //               value!;
-                  //             }));
-                  //           },
-                  //           style: ButtonStyle(
-                  //               backgroundColor:
-                  //               MaterialStateProperty.all<Color>(
-                  //                 _loginController.colorFromHex(
-                  //                     _loginController.listCore
-                  //                         .where((coreItem) =>
-                  //                     coreItem.coreChave ==
-                  //                         'backDark')
-                  //                         .first
-                  //                         .coreValor
-                  //                         .toString()),
-                  //               )),
-                  //           child: Row(
-                  //             children: [
-                  //               Icon(Icons.calendar_today_rounded),
-                  //               const SizedBox(
-                  //                 width: 16,
-                  //               ),
-                  //               Text(valDataCupomDe.day
-                  //                   .toString() +
-                  //                   '/' +
-                  //                   valDataCupomDe.month
-                  //                       .toString() +
-                  //                   '/' +
-                  //                   valDataCupomDe.year
-                  //                       .toString())
-                  //             ],
-                  //           )),
-                  //       const SizedBox(height: 20),
-                  //     ],
-                  //   ),
-                  //   const SizedBox(height: 20),
-                  //   Row(
-                  //     children: <Widget>[
-                  //       Text('Até: '),
-                  //       ElevatedButton(
-                  //           onPressed: () {
-                  //             showDatePicker(
-                  //                 context: buildContext,
-                  //                 initialDate: DateTime.now(),
-                  //                 firstDate: DateTime.now(),
-                  //                 lastDate: DateTime.now()
-                  //                     .add(Duration(days: 1000)))
-                  //                 .then((value) => setState(() {
-                  //               valDataCupomAte =
-                  //               value!;
-                  //             }));
-                  //           },
-                  //           style: ButtonStyle(
-                  //               backgroundColor:
-                  //               MaterialStateProperty.all<Color>(
-                  //                 _loginController.colorFromHex(
-                  //                     _loginController.listCore
-                  //                         .where((coreItem) =>
-                  //                     coreItem.coreChave ==
-                  //                         'backDark')
-                  //                         .first
-                  //                         .coreValor
-                  //                         .toString()),
-                  //               )),
-                  //           child: Row(
-                  //             children: [
-                  //               Icon(Icons.calendar_today_rounded),
-                  //               const SizedBox(
-                  //                 width: 16,
-                  //               ),
-                  //               Text(valDataCupomAte.day
-                  //                   .toString() +
-                  //                   '/' +
-                  //                   valDataCupomAte.month
-                  //                       .toString() +
-                  //                   '/' +
-                  //                   valDataCupomAte.year
-                  //                       .toString())
-                  //             ],
-                  //           )),
-                  //       const SizedBox(height: 20),
-                  //     ],
-                  //   ),
+                    //   Row(
+                    //     children: <Widget>[
+                    //       Checkbox(
+                    //         value: this.valAceitaPoraki10,
+                    //         onChanged: (val) {
+                    //           setState(() {
+                    //             this.valAceitaPoraki10 = val!;
+                    //           });
+                    //         },
+                    //         activeColor: Colors.blue,
+                    //       ),
+                    //       const SizedBox(width: 20),
+                    //       Text('PORAKI10 - Aceita cupom de 10% na primeira compra'),
+                    //       const SizedBox(height: 20)
+                    //     ],
+                    //   ),
+                    //   const SizedBox(height: 20),
+                    //   TextFormField(
+                    //     // validator: (value) {
+                    //     //   if (value!.length != 11) {
+                    //     //     return "Por favor digite um telefone válido";
+                    //     //   }
+                    //     //   return null;
+                    //     // },
+                    //     controller: storeController.txtLojaCompl,
+                    //     autofocus: true,
+                    //     style: TextStyle(color: textColor),
+                    //     decoration: InputDecoration(
+                    //       border: OutlineInputBorder(),
+                    //       labelText: "Outro CUPOM",
+                    //       labelStyle: TextStyle(color: textColor),
+                    //       prefixIcon: Icon(
+                    //         Icons.location_city_outlined,
+                    //         color: textColor,
+                    //       ),
+                    //     ),
+                    //   ),
+                    //   const SizedBox(height: 20),
+                    // Column(children: <Widget>[
+                    //   const SizedBox(height: 10),
+                    //   TextFormField(
+                    //     controller:
+                    //     storeController.txtPercCupom,
+                    //     decoration: InputDecoration(
+                    //       labelText: 'Percentual do Cupom',
+                    //       border: OutlineInputBorder(),
+                    //     ),
+                    //     keyboardType: TextInputType.number,
+                    //     validator: (value) {
+                    //       int xPercCupom =
+                    //       int.parse(value.toString());
+                    //       if (xPercCupom <= 0 || xPercCupom >= 100)
+                    //         return 'Precisa ser maior do que zero e menor do que 100';
+                    //       return null;
+                    //     },
+                    //   )]),
+                    //
+                    //   const SizedBox(height: 20),
+                    //   Row(
+                    //     children: <Widget>[
+                    //       Text('A partir de: '),
+                    //       ElevatedButton(
+                    //           onPressed: () {
+                    //             showDatePicker(
+                    //                 context: buildContext,
+                    //                 initialDate: DateTime.now(),
+                    //                 firstDate: DateTime.now(),
+                    //                 lastDate: DateTime.now()
+                    //                     .add(Duration(days: 1000)))
+                    //                 .then((value) => setState(() {
+                    //               valDataCupomDe =
+                    //               value!;
+                    //             }));
+                    //           },
+                    //           style: ButtonStyle(
+                    //               backgroundColor:
+                    //               MaterialStateProperty.all<Color>(
+                    //                 _loginController.colorFromHex(
+                    //                     _loginController.listCore
+                    //                         .where((coreItem) =>
+                    //                     coreItem.coreChave ==
+                    //                         'backDark')
+                    //                         .first
+                    //                         .coreValor
+                    //                         .toString()),
+                    //               )),
+                    //           child: Row(
+                    //             children: [
+                    //               Icon(Icons.calendar_today_rounded),
+                    //               const SizedBox(
+                    //                 width: 16,
+                    //               ),
+                    //               Text(valDataCupomDe.day
+                    //                   .toString() +
+                    //                   '/' +
+                    //                   valDataCupomDe.month
+                    //                       .toString() +
+                    //                   '/' +
+                    //                   valDataCupomDe.year
+                    //                       .toString())
+                    //             ],
+                    //           )),
+                    //       const SizedBox(height: 20),
+                    //     ],
+                    //   ),
+                    //   const SizedBox(height: 20),
+                    //   Row(
+                    //     children: <Widget>[
+                    //       Text('Até: '),
+                    //       ElevatedButton(
+                    //           onPressed: () {
+                    //             showDatePicker(
+                    //                 context: buildContext,
+                    //                 initialDate: DateTime.now(),
+                    //                 firstDate: DateTime.now(),
+                    //                 lastDate: DateTime.now()
+                    //                     .add(Duration(days: 1000)))
+                    //                 .then((value) => setState(() {
+                    //               valDataCupomAte =
+                    //               value!;
+                    //             }));
+                    //           },
+                    //           style: ButtonStyle(
+                    //               backgroundColor:
+                    //               MaterialStateProperty.all<Color>(
+                    //                 _loginController.colorFromHex(
+                    //                     _loginController.listCore
+                    //                         .where((coreItem) =>
+                    //                     coreItem.coreChave ==
+                    //                         'backDark')
+                    //                         .first
+                    //                         .coreValor
+                    //                         .toString()),
+                    //               )),
+                    //           child: Row(
+                    //             children: [
+                    //               Icon(Icons.calendar_today_rounded),
+                    //               const SizedBox(
+                    //                 width: 16,
+                    //               ),
+                    //               Text(valDataCupomAte.day
+                    //                   .toString() +
+                    //                   '/' +
+                    //                   valDataCupomAte.month
+                    //                       .toString() +
+                    //                   '/' +
+                    //                   valDataCupomAte.year
+                    //                       .toString())
+                    //             ],
+                    //           )),
+                    //       const SizedBox(height: 20),
+                    //     ],
+                    //   ),
                     const SizedBox(height: 20),
 
                     ElevatedButton(
@@ -452,18 +477,21 @@ class _StoreBodyState extends State<StoreBody> {
                       CachedNetworkImage(
                         imageUrl: imgcloud,
                         height: 250,
-                        progressIndicatorBuilder: (context, url, downloadProgress) =>
-                            CircularProgressIndicator(value: downloadProgress.progress),
-                        errorWidget: (context, url, error) => Icon(Icons.local_offer_outlined),
+                        progressIndicatorBuilder:
+                            (context, url, downloadProgress) =>
+                                CircularProgressIndicator(
+                                    value: downloadProgress.progress),
+                        errorWidget: (context, url, error) =>
+                            Icon(Icons.local_offer_outlined),
                       ),
 
-                      // FadeInImage.assetNetwork(
-                      //   placeholder: 'assets/images/pholder.png',
-                      //   image: imgcloud,
-                      //   imageErrorBuilder: (context, url, error) =>
-                      //       new Icon(Icons.store),
-                      //   height: 250,
-                      // ),
+                    // FadeInImage.assetNetwork(
+                    //   placeholder: 'assets/images/pholder.png',
+                    //   image: imgcloud,
+                    //   imageErrorBuilder: (context, url, error) =>
+                    //       new Icon(Icons.store),
+                    //   height: 250,
+                    // ),
 
                     if (image != null)
                       Image.file(
@@ -475,6 +503,10 @@ class _StoreBodyState extends State<StoreBody> {
                       onPressed: () {
                         salvar().then(
                             (value) => Get.offAndToNamed(AppRoutes.stores));
+
+                        Get.defaultDialog(
+                            title: "Aviso",
+                            middleText: "Informações atualizadas com sucesso!");
 
                         // final snackBar = SnackBar(
                         //     backgroundColor: _loginController.colorFromHex(
@@ -507,6 +539,33 @@ class _StoreBodyState extends State<StoreBody> {
                               .coreValor
                               .toString()),
                     ),
+
+                    if (storeController.loja != null)
+                      ButtonOffer(
+                        onPressed: () async {
+                          await storeController.apagaLoja(storeController.loja).then((value) => Get.offAndToNamed(AppRoutes.stores));
+
+                          Get.defaultDialog(
+                              title: "Aviso",
+                              middleText: "Loja removida do Poraki !");
+
+                        },
+                        colorText: _loginController.colorFromHex(_loginController
+                            .listCore
+                            .where((coreItem) => coreItem.coreChave == 'textDark')
+                            .first
+                            .coreValor
+                            .toString()),
+                        text: 'Apagar Loja',
+                        colorButton: _loginController.colorFromHex(
+                            _loginController.listCore
+                                .where((coreItem) =>
+                                    coreItem.coreChave == 'textLight')
+                                .first
+                                .coreValor
+                                .toString()),
+                      ),
+
                   ])
                   // ],
                   ),
@@ -520,6 +579,8 @@ class _StoreBodyState extends State<StoreBody> {
     storeGuid = storeGuidTemp.toString();
 
     await uploadFoto(image == null ? null : image);
+
+    await _loginController.loadStoresData();
   }
 
   Future<void> buscaCep() async {

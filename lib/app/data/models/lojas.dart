@@ -20,18 +20,18 @@ class Lojas {
 
   Lojas.fromJson(Map<String, dynamic> json) {
     LojaAtivaDesde = DateTime.now(); // json['LojaAtivaDesde'];
-    LojaTemplateChave = json['LojaTemplateChave'];
-    LojaNome = json['LojaNome'];
-    LojaCEP = json['LojaCEP'];
-    LojaSlogan = json['LojaSlogan'];
-    LojaGUID = json['LojaGUID'];
-    VendedorID = json['VendedorID'];
-    LojaCNPJ = json['LojaCNPJ'];
-    LojaRazao = json['LojaRazao'];
-    Categorias = json['Categorias'];
-    LojaLogra = json['LojaConfigs'];
-    LojaNumero = json['LojaNumero'];
-    LojaCompl = json['LojaCompl'];
+    //LojaTemplateChave = json['LojaTemplateChave'];
+    LojaNome = json['LojaNome'].toString();
+    LojaCEP = json['LojaCEP'].toString();
+    LojaSlogan = json['LojaSlogan'].toString();
+    LojaGUID = json['LojaGUID'].toString();
+    VendedorID = json['VendedorID'].toString();
+    LojaCNPJ = json['LojaCNPJ'].toString();
+    LojaRazao = json['LojaRazao'].toString();
+    Categorias = json['Categorias'].toString();
+    LojaLogra = json['LojaLogra'].toString();
+    LojaNumero = json['LojaNumero'].toString();
+    LojaCompl = json['LojaCompl'].toString();
   }
 
   // Lojas.listFromJson(List<Map<String, dynamic>> json) {
@@ -69,11 +69,11 @@ class Lojas {
     data['LojaNumero'] = this.LojaNumero;
     data['LojaCompl'] = this.LojaCompl;
 
-    if(this.LojaGUID != null) {
+    //if(this.LojaGUID != null) {
       data['LojaGUID'] = this.LojaGUID;
-    } else {
-      data['VendedorID'] = this.VendedorID;
-    }
+    //} else {
+    //  data['VendedorID'] = this.VendedorID;
+    //}
 
     return data;
   }

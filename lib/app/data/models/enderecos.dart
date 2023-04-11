@@ -16,7 +16,7 @@ class Enderecos {
   Enderecos(this.EnderecoGuid, this.UsuEmail, this.UsuGuid, this.EnderecoCEP, this.EnderecoLogra, this.EnderecoNumero, this.EnderecoCompl, this.EnderecoTipo, this.EnderecoAtual, this.EnderecoUltData, this.EnderecoDesde, this.EnderecoLat, this.EnderecoLong);
 
   Enderecos.fromJson(Map<String, dynamic> json) {
-    EnderecoGuid = json['EnderecoGUID'].toString();
+    EnderecoGuid = json['EnderecoGuid'].toString();
     UsuEmail = json['UsuEmail'].toString();
     UsuGuid = json['UsuGuid'].toString();
     EnderecoCEP = json['EnderecoCEP'].toString();
@@ -33,7 +33,7 @@ class Enderecos {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['EnderecoGUID'] = this.EnderecoGuid;
+    data['EnderecoGuid'] = this.EnderecoGuid;
     data['UsuEmail'] = this.UsuEmail;
     data['UsuGuid'] = this.UsuGuid;
     data['EnderecoCEP'] = this.EnderecoCEP;

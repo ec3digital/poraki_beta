@@ -79,6 +79,7 @@ class AddressController extends GetxController {
       // txtEnderecoTipo.text = enderecoSingle.enderecoTipo.toString();
       // txtCEP.text = enderecoSingle.enderecoCEP.toString();
 
+      print('bindEndereco endGuid: ' + endGuid);
       final end = _login.listaEnderecos
           .where((end) => end.EnderecoGuid == endGuid)
           .first;
@@ -178,11 +179,9 @@ class AddressController extends GetxController {
 
     //TODO: pegar o id do endereço
     String getId = '';
-    await fbInstance!.collection("akienderecos").doc(_login.usuGuid).collection("Enderecos").where('EnderecoGuid', isEqualTo: endereco.EnderecoGuid).get().then((ss) => getId = ss.docs.first.id);
+    await fbInstance!.collection("akienderecos").doc(_login.usuGuid).collection("Enderecos").where('EnderecoGuid', isEqualTo: enderecoSingle!.EnderecoGuid).get().then((ss) => getId = ss.docs.first.id);
     await fbInstance!.collection("akienderecos").doc(_login.usuGuid).collection("Enderecos").doc(getId).set(endereco.toJson());
     
-    print('getId: ' + getId);
-
     // //endereco.EnderecoUltData = DateTime.now().toString();
     // var resp = await repo.putAddress(endereco);
     //
@@ -210,7 +209,7 @@ class AddressController extends GetxController {
     // // await carregaUsuario();
   }
 
-  Future<void> apagaEndereco(Enderecos endereco) async {
+  Future<void> apagaEndereco(Enderecos? endereco) async {
 
 //     final docRef = fbInstance!.collection("appointments").doc("FpS9NDSdMD2GeE9GL3i2");
 //
@@ -223,10 +222,8 @@ class AddressController extends GetxController {
 
     String getId = '';
     final objEndereco = { 'EnderecoAtual': true };
-    await fbInstance!.collection("akienderecos").doc(_login.usuGuid).collection("Enderecos").where('EnderecoGuid', isEqualTo: endereco.EnderecoGuid).get().then((ss) => getId = ss.docs.first.id);
+    await fbInstance!.collection("akienderecos").doc(_login.usuGuid).collection("Enderecos").where('EnderecoGuid', isEqualTo: enderecoSingle!.EnderecoGuid).get().then((ss) => getId = ss.docs.first.id);
     await fbInstance!.collection("akienderecos").doc(_login.usuGuid).collection("Enderecos").doc(getId).delete();
-
-    print('getId: ' + getId);
 
     // endereco.EnderecoTipo = 'Inativo';
     // var resp = await repo.putAddress(endereco);
@@ -243,12 +240,13 @@ class AddressController extends GetxController {
   Future<void> tornarEnderecoAtual(String enderecoGuid) async {
 
     String getId = '';
+    // print('tornarEnderecoAtual enderecoGuid: ' + enderecoGuid);
+    // print('usuGuid: ' + _login.usuGuid.toString());
+    await fbInstance!.collection("akienderecos").doc(_login.usuGuid).collection("Enderecos").where('EnderecoGuid', isNotEqualTo: enderecoSingle!.EnderecoGuid).get().then((ss) => ss.docs.forEach((doc) { alteraFBEnderecoNAtual(doc.id); }));
+    await fbInstance!.collection("akienderecos").doc(_login.usuGuid).collection("Enderecos").where('EnderecoGuid', isEqualTo: enderecoSingle!.EnderecoGuid).get().then((ss) => ss.docs.forEach((doc) => getId = doc.id.toString()));
     final objEndereco = { 'EnderecoAtual': true };
-    await fbInstance!.collection("akienderecos").doc(_login.usuGuid).collection("Enderecos").where('EnderecoGuid', isNotEqualTo: enderecoGuid).get().then((ss) => ss.docs.forEach((doc) { alteraFBEnderecoNAtual(doc.id); }));
-    await fbInstance!.collection("akienderecos").doc(_login.usuGuid).collection("Enderecos").where('EnderecoGuid', isEqualTo: enderecoGuid).get().then((ss) => getId = ss.docs.first.id);
     await fbInstance!.collection("akienderecos").doc(_login.usuGuid).collection("Enderecos").doc(getId).update(objEndereco);
-
-    print('getId: ' + getId);
+    await _login.loadAddressData();
 
     // print('tornarEnderecoAtual');
     // var resp = await repo.putCurrentAddress(enderecoGuid);
@@ -266,7 +264,7 @@ class AddressController extends GetxController {
   }
 
   Future<void> alteraFBEnderecoNAtual(String docId) async {
-    final objEndereco = { 'EnderecoAtual': true };
+    final objEndereco = { 'EnderecoAtual': false };
     await fbInstance!.collection("akienderecos").doc(_login.usuGuid).collection("Enderecos").doc(docId).update(objEndereco);
   }
 

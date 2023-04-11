@@ -2288,7 +2288,7 @@ class _MOfferPage extends State<MOfferPage> {
           .replaceAll(',', '.'));
 
     var offerToSend = new Oferta(
-        0,
+        null,
         widget.categSelecionada.categoriaChave,
         usuGuid,
         widget.mofferController.txtTitulo.text,

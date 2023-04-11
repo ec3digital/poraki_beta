@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -24,6 +25,7 @@ class LoginController extends GetxController {
   final formKey = GlobalKey<FormState>();
   final LoginRepository loginRepository = LoginRepository();
   late FirebaseFirestore? fbInstance;
+  final FirebaseAuth? auth = FirebaseAuth.instance;
   //final AddressController addressController = Get.find();
 
   get obscurePassword => _obscurePassword;
@@ -96,7 +98,7 @@ class LoginController extends GetxController {
   // carrega endereços do usuario
   Future<void> loadAddressData() async {
     listaEnderecos.clear();
-    await fbInstance!.collection("akienderecos").doc("eyCv21RfaURoMn0SUndCg6LPyJP2").collection("Enderecos").get().then((value) => value.docs.forEach((element) { listaEnderecos.add(Enderecos.fromJson(element.data())); }));
+    await fbInstance!.collection("akienderecos").doc(auth!.currentUser!.uid).collection("Enderecos").get().then((value) => value.docs.forEach((element) { listaEnderecos.add(Enderecos.fromJson(element.data())); }));
 
     // var tempEnderecos =
     // await fbPorakiService().getListFromFirebase("akienderecos", "eyCv21RfaURoMn0SUndCg6LPyJP2");
@@ -118,7 +120,7 @@ class LoginController extends GetxController {
   // carrega lojas do usuario
   Future<void> loadStoresData() async {
     listLojas.clear();
-    await fbInstance!.collection("akilojas").doc("eyCv21RfaURoMn0SUndCg6LPyJP2").collection("Lojas").get().then((value) => value.docs.forEach((element) { listLojas.add(Lojas.fromJson(element.data())); }));
+    await fbInstance!.collection("akilojas").doc(auth!.currentUser!.uid).collection("Lojas").get().then((value) => value.docs.forEach((element) { listLojas.add(Lojas.fromJson(element.data())); }));
   }
 
   Future<void> getCategories() async {

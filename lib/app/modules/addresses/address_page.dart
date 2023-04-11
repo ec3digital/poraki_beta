@@ -21,6 +21,8 @@ class AddressPage extends StatelessWidget {
           as List<Map<String, String>>;
       _endGuid =
           args.first.values.first.toString(); //['enderecoGuid'].toString();
+
+      // print('AddressPage _endGuid: ' + _endGuid);
     } catch (e) {}
 
     return Scaffold(

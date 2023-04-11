@@ -35,7 +35,7 @@ class _AddressBodyState extends State<AddressBody> {
   var tipoSel = "Casa";
 
   Future<void> tornarEndAtual(String enderecoGuid) async {
-    await salvar(enderecoGuid);
+    // await salvar(enderecoGuid);
     await widget._controller.tornarEnderecoAtual(enderecoGuid);
   }
 
@@ -108,13 +108,22 @@ class _AddressBodyState extends State<AddressBody> {
             as List<Map<String, String?>>;
         widget._endGuid =
             args[0].values.first.toString(); // .first.values.first.toString();
+
         print('_endGuid: ' + widget._endGuid);
-      } catch (e) { print (e.toString()); }
+      } catch (e) {
+        print(e.toString());
+      }
 
       await widget._controller.bindEndereco(widget._endGuid);
+
+      // print('widget.enderecoGuid: ' + widget.enderecoGuid);
+
       tipoSel = (widget._endGuid == ''
           ? 'Casa'
-          : widget._loginController.listaEnderecos.where((end) => end.EnderecoGuid == widget._endGuid).first.EnderecoTipo)!;
+          : widget._loginController.listaEnderecos
+              .where((end) => end.EnderecoGuid == widget._endGuid)
+              .first
+              .EnderecoTipo)!;
       widget.load = false;
     }
   }
@@ -122,7 +131,8 @@ class _AddressBodyState extends State<AddressBody> {
   @override
   Widget build(BuildContext context) {
     // bool isLoading = false;
-    Color textColor = widget._loginController.colorFromHex(widget._loginController.listCore
+    Color textColor = widget._loginController.colorFromHex(widget
+        ._loginController.listCore
         .where((coreItem) => coreItem.coreChave == 'textDark')
         .first
         .coreValor
@@ -143,14 +153,12 @@ class _AddressBodyState extends State<AddressBody> {
                   child: AppBar(
                     // elevation: 0,
                     centerTitle: false,
-                    backgroundColor: widget._loginController.colorFromHex(
-                        widget._loginController
-                            .listCore
-                            .where(
-                                (coreItem) => coreItem.coreChave == 'backLight')
-                            .first
-                            .coreValor
-                            .toString()),
+                    backgroundColor: widget._loginController.colorFromHex(widget
+                        ._loginController.listCore
+                        .where((coreItem) => coreItem.coreChave == 'backLight')
+                        .first
+                        .coreValor
+                        .toString()),
                     title: Text(
                       'Endereço',
                       style: TextStyle(fontSize: 25, color: textColor),
@@ -329,12 +337,13 @@ class _AddressBodyState extends State<AddressBody> {
                           onPressed: () {
                             // salva e define como endereço atual
                             //salvar(widget._endGuid);
+
+                            // Get.defaultDialog(
+                            //     title: "Aviso",
+                            //     middleText: "Definido como endereço atual");
+
                             tornarEndAtual(widget._endGuid).then((value) =>
                                 Get.offAndToNamed(AppRoutes.addresses));
-
-                            Get.defaultDialog(
-                                title: "Aviso",
-                                middleText: "Definido como endereço atual");
 
                             // final snackBar = SnackBar(
                             //     backgroundColor: widget._loginController
@@ -361,6 +370,33 @@ class _AddressBodyState extends State<AddressBody> {
                               widget._loginController.listCore
                                   .where((coreItem) =>
                                       coreItem.coreChave == 'backLight')
+                                  .first
+                                  .coreValor
+                                  .toString()),
+                        ),
+                        ButtonOffer(
+                          onPressed: () async {
+                            await widget._controller
+                                .apagaEndereco(
+                                    widget._controller.enderecoSingle)
+                                .then((value) {
+                              Get.offAndToNamed(AppRoutes.addresses);
+
+                            });
+                            await widget._loginController.loadAddressData();
+
+                            Get.offAndToNamed(AppRoutes.addresses);
+
+                            Get.defaultDialog(
+                                title: "Aviso",
+                                middleText: "Endereço removido do Poraki !");
+                          },
+                          colorText: textDark,
+                          text: 'Apagar endereço',
+                          colorButton: widget._loginController.colorFromHex(
+                              widget._loginController.listCore
+                                  .where((coreItem) =>
+                                      coreItem.coreChave == 'textLight')
                                   .first
                                   .coreValor
                                   .toString()),

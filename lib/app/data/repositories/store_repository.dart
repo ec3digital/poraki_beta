@@ -43,9 +43,7 @@ class StoreRepository extends GetConnect {
   }
 
   Future<String> postStore(Lojas loja) async {
-    print('postStore');
-
-    var retAdd = await _loginController.fbInstance!.collection("akienderecos").doc(_loginController.usuGuid).collection("Enderecos").add(loja.toJson());
+    var retAdd = await _loginController.fbInstance!.collection("akilojas").doc(_loginController.usuGuid).collection("Lojas").add(loja.toJson());
 
     print(retAdd.id);
     return retAdd.id;
@@ -64,11 +62,9 @@ class StoreRepository extends GetConnect {
   }
 
   Future<String> putStore(Lojas loja) async {
-    print('putStore');
-
     String getId = '';
-    await _loginController.fbInstance!.collection("akilojas").doc(_loginController.usuGuid).collection("Lojas").where('LojaGuid', isEqualTo: loja.LojaGUID).get().then((ss) => getId = ss.docs.first.id);
-    await _loginController.fbInstance!.collection("akienderecos").doc(_loginController.usuGuid).collection("Enderecos").doc(getId).set(loja.toJson());
+    await _loginController.fbInstance!.collection("akilojas").doc(_loginController.usuGuid).collection("Lojas").where('LojaGUID', isEqualTo: loja.LojaGUID).get().then((ss) => getId = ss.docs.first.id);
+    await _loginController.fbInstance!.collection("akilojas").doc(_loginController.usuGuid).collection("Lojas").doc(getId).set(loja.toJson());
 
     return getId;
 
@@ -81,6 +77,12 @@ class StoreRepository extends GetConnect {
     //
     // print(response.body);
     // return response.body;
+  }
+
+  Future<void> deleteStore(Lojas loja) async {
+    String getId = '';
+    await _loginController.fbInstance!.collection("akilojas").doc(_loginController.usuGuid).collection("Lojas").where('LojaGUID', isEqualTo: loja.LojaGUID).get().then((ss) => getId = ss.docs.first.id);
+    await _loginController.fbInstance!.collection("akilojas").doc(_loginController.usuGuid).collection("Lojas").doc(getId).delete();
   }
 
   // Future<void> inactiveStore(String lojaGuid) async {

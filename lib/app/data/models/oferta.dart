@@ -1,5 +1,5 @@
 class Oferta {
-  int? OfertaID;
+  String? OfertaID;
   String? CategoriaChave;
   String? OfertaFKID;
   String? OfertaTitulo;
@@ -173,7 +173,7 @@ class Oferta {
         json['OfertaDetalhe'] == 'null' ? '' : json['OfertaDetalhe'];
     OfertaID = json['OfertaID'].toString() == 'null'
         ? null
-        : int.parse(json['OfertaID'].toString());
+        : json['OfertaID'].toString();
     OfertaDispoDesde =
         json['OfertaDispoDesde'] == 'null' ? '' : json['OfertaDispoDesde'];
     OfertaImgPath =

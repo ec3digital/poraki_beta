@@ -95,14 +95,14 @@ class MofferController extends GetxController {
   }
 
   Future<void> getMoffers(String sellerGuid) async {
-    print('getMoffers / sellerGuid = ' + sellerGuid);
+    // print('getMoffers / sellerGuid = ' + sellerGuid);
     try {
       changeLoading(true);
       moffers = await offerRepository.getOfferBySellerGuid(sellerGuid);
       // print('getMoffers result - ' + moffers.toString());
     } catch (e) {
       changeLoading(false);
-      // print('Erro no getMOffers() controller ${e.toString()}');
+      print('Erro no getMOffers() controller ${e.toString()}');
     } finally {
       changeLoading(false);
     }
