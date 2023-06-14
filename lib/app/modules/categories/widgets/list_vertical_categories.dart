@@ -27,74 +27,85 @@ class ListVerticalCategories extends StatelessWidget {
 
     Widget _buildRow(
         int idx, String categoryName, String chave, String iconcode) {
-      return ListTile(
-        leading: Icon(IconData(int.parse(iconcode),
-            fontFamily:
-                'MaterialIcons')), //Icon(IconData(int.parse(iconcode), fontFamily: 'MaterialIcons')),
-        onTap: () {
-          OffersController offersController = Get.find();
-          Future.wait(
-              [offersController.getOfferByCEPCategory(chave.toString())]);
+      return Column(children: [
+        ListTile(
+          leading: Icon(IconData(int.parse(iconcode),
+              fontFamily:
+                  'MaterialIcons')), //Icon(IconData(int.parse(iconcode), fontFamily: 'MaterialIcons')),
+          onTap: () {
+            OffersController offersController = Get.find();
+            Future.wait(
+                [offersController.getOfferByCEPCategory(chave.toString())]);
 
-          Get.toNamed(AppRoutes.offers, arguments: [
-            {'listName': null},
-            {'limit': 24},
-            {'category': chave.toString()},
-            {'title': 'Categorias'},
-            {'ofertaGuid': null}
-          ]);
-        },
-        title: Text(
-          categoryName,
-          // style: _biggerFont,
+            Get.toNamed(AppRoutes.offers, arguments: [
+              {'listName': null},
+              {'limit': 24},
+              {'category': chave.toString()},
+              {'title': 'Categorias'},
+              {'ofertaGuid': null}
+            ]);
+          },
+          title: Text(
+            categoryName,
+            // style: _biggerFont,
+          ),
+          //trailing: Icon(IconData(int.parse(iconcode), fontFamily: 'MaterialIcons'))
         ),
-        //trailing: Icon(IconData(int.parse(iconcode), fontFamily: 'MaterialIcons'))
-      );
+        const SizedBox(height: 3)
+      ]);
     }
 
     return GetBuilder<CategoriesController>(builder: (_) {
-      var h = MediaQuery.of(context).size.height;
+      //var h = MediaQuery.of(context).size.height;
 
-      return LimitedBox(
-          maxHeight: h + 250,
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //mainAxisSize: MainAxisSize.min,
+        children: [
+          const SizedBox(height: 15),
+          Center(
+              child: Text(
+            "Categorias",
+            style: TextStyle(fontSize: 24),
+          )),
+          const SizedBox(height: 5),
+          //maxHeight: h + 250,
           // height: Get.height * 50, // * 0.14,
           //height: MediaQuery.of(context).size.height,
           //constraints: BoxConstraints(maxHeight: h, minHeight: 56.0),
-          child: Column(
-            children: [ Flexible(
-            child: ListView.builder(
-              shrinkWrap: true,
-              //physics: const NeverScrollableScrollPhysics(),
-              scrollDirection: Axis.vertical,
-              padding: const EdgeInsets.all(6.0),
-              itemCount: categoriasAll.length,
-              itemBuilder: (BuildContext context, int index) {
-                //if (index.isOdd) return const Divider();
-                //index = index ~/ 2 + 1;
-                Categorias categories = categoriasAll[index];
+          Expanded(
+              child: Container(
+                  child: ListView.builder(
+            scrollDirection: Axis.vertical,
+            shrinkWrap: true,
+            padding: const EdgeInsets.all(6.0),
+            itemCount: categoriasAll.length,
+            itemBuilder: (BuildContext context, int index) {
+              Categorias categories = categoriasAll[index];
 
-                return Container(
-                    padding: const EdgeInsets.all(2),
-                    margin: const EdgeInsets.all(5),
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: backColor,
-                      ),
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
+              return Container(
+                  padding: const EdgeInsets.all(2),
+                  margin: const EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                    border: Border.all(
                       color: backColor,
                     ),
-                    //color: backColor,
-                    child: _buildRow(
-                        index,
-                        categories.categoriaNome.toString(),
-                        categories.categoriaChave.toString(),
-                        categories.iconcode.toString()));
-              },
-            )),
-              const SizedBox(height: 20),],
-          ),
-      )
-      ;
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                    color: backColor,
+                  ),
+                  //color: backColor,
+                  child: _buildRow(
+                      index,
+                      categories.categoriaNome.toString(),
+                      categories.categoriaChave.toString(),
+                      categories.iconcode.toString()));
+            },
+          ))),
+          //const SizedBox(height: 20),
+        ],
+      );
     });
   }
 }

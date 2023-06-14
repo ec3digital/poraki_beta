@@ -115,8 +115,9 @@ class OfferRepository extends GetConnect {
   }
 
   Future<List<Oferta>> getOfferBySellerGuid(String SellerGuid) async {
-    // print('getOfferBySellerGuid ' + SellerGuid);
+    print('getOfferBySellerGuid ' + SellerGuid);
     String url = '${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiMoffer').first.coreValor.toString()}/' + SellerGuid;
+    print('url moffer: ' + url);
     var response = await get(url, headers: Constants.headers);
     //print(response.body.toString());
     if (response.hasError) throw 'Ocorreu um erro em getOfferBySellerGuid()';
@@ -152,6 +153,14 @@ class OfferRepository extends GetConnect {
     return (response.body['Ofertas'] as List)
         .map((oferta) => ProdutoOferta.fromJson(oferta))
         .toList();
+  }
+
+  Future<void> deleteOfferByGuidFromApi(String offerGuid) async {
+    print('getOfferByGuidFromApi');
+    String url = Constants.baseUrl + 'ofertainativ/' + offerGuid;
+    var response = await put(url, '', headers: Constants.headers);
+    if (response.hasError) throw 'Ocorreu um erro em deleteOfferByGuidFromApi()';
+    else print(response.body);
   }
 
 }

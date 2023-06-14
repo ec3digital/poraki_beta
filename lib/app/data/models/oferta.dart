@@ -166,8 +166,8 @@ class Oferta {
 
 
   Oferta.fromJson(Map<String, dynamic> json) {
-    CategoriaChave =
-        json['CategoriaChave'] == 'null' ? '' : json['CategoriaChave'];
+    //print('json ofertas: ' + json.toString());
+    CategoriaChave = json['CategoriaChave'].toString();
     OfertaCEP = json['OfertaCEP'] == 'null' ? '' : json['OfertaCEP'];
     OfertaDetalhe =
         json['OfertaDetalhe'] == 'null' ? '' : json['OfertaDetalhe'];
@@ -237,67 +237,69 @@ class Oferta {
 
   Map<String, dynamic> toJsonPost() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['CategoriaChave'] = this.CategoriaChave;
-    data['OfertaCEP'] = this.OfertaCEP;
-    data['OfertaDetalhe'] = this.OfertaDetalhe;
-    data['OfertaDispoDesde'] = this.OfertaDispoDesde;
+    data['CategoriaChave'] = this.CategoriaChave.toString();
+    data['OfertaCEP'] = this.OfertaCEP.toString();
+    data['OfertaDetalhe'] = this.OfertaDetalhe.toString();
+    // data['OfertaDispoDesde'] = this.OfertaDispoDesde;
     //data['OfertaID'] = this.OfertaID.toString();
     //data['OfertaImgPath'] = this.OfertaImgPath;
     data['OfertaPreco'] = this.OfertaPreco.toString();
-    data['OfertaTitulo'] = this.OfertaTitulo;
-    data['OfertaFKID'] = this.OfertaFKID;
+    data['OfertaTitulo'] = this.OfertaTitulo.toString();
+    data['OfertaFKID'] = this.OfertaFKID.toString();
     //data['OfertaDesativID'] = this.OfertaDesativID.toString();
     //data['OfertaDesativAdminID'] = this.OfertaDesativAdminID.toString();
     //data['OfertaDesativEm'] = this.OfertaDesativEm;
-    data['OfertaDispoTipo'] = this.OfertaDispoTipo.toString();
-    data['OfertaDispoAte'] = this.OfertaDispoAte;
+    //data['OfertaDispoTipo'] = '1'; // this.OfertaDispoTipo.toString();
+    // data['OfertaDispoAte'] = this.OfertaDispoAte;
     //data['OfertaPontoMenos'] = this.OfertaPontoMenos.toString();
     //data['OfertaPontoMenos'] = this.OfertaPontoMenos.toString();
     //data['OfertaQtdVendida'] = this.OfertaQtdVendida.toString();
-    data['OfertaPrazoEntregaMinutos'] = this.OfertaPrazoEntregaMinutos.toString();
+    // data['OfertaPrazoEntregaMinutos'] = this.OfertaPrazoEntregaMinutos.toString();
     //data['LojaID'] = this.LojaID.toString();
-    data['OfertaGUID'] = this.OfertaGUID;
-    data['OfertaQtdDispo'] = this.OfertaQtdDispo.toString();
-    data['OfertaQtdMaxVenda'] = this.OfertaQtdMaxVenda.toString();
-    data['OfertaQtdAviso'] = this.OfertaQtdAviso.toString();
-    data['OfertaPeso'] = this.OfertaPeso.toString();
-    data['OfertaPesoUnidade'] = this.OfertaPesoUnidade;
-    data['OfertaDiasValidade'] = this.OfertaDiasValidade.toString();
-    data['OfertaPrecoMin'] = this.OfertaPrecoMin.toString();
-    data['OfertaMostraAval'] = this.OfertaMostraAval.toString();
+    // data['OfertaGUID'] = this.OfertaGUID;
+    data['OfertaQtdDispo'] = '1'; // this.OfertaQtdDispo.toString();
+    // data['OfertaQtdMaxVenda'] = this.OfertaQtdMaxVenda.toString();
+    // data['OfertaQtdAviso'] = this.OfertaQtdAviso.toString();
+    // data['OfertaPeso'] = this.OfertaPeso.toString();
+    // data['OfertaPeso'] = 0.00;
+    // data['OfertaPesoUnidade'] = this.OfertaPesoUnidade;
+    data['OfertaDiasValidade'] = '0'; // this.OfertaDiasValidade.toString();
+    // data['OfertaPrecoMin'] = this.OfertaPrecoMin.toString();
+    data['OfertaMostraAval'] = 'false'; // this.OfertaMostraAval.toString();
     data['OfertaAceitaAuto'] = this.OfertaAceitaAuto.toString();
     data['OfertaAceitaEncomenda'] = this.OfertaAceitaEncomenda.toString();
-    data['OfertaAceitaProposta'] = this.OfertaAceitaProposta.toString();
-    data['OfertaTempoEntrega'] = this.OfertaTempoEntrega.toString();
-    data['OfertaTempoEntregaUnidade'] = this.OfertaTempoEntregaUnidade;
-    data['OfertaFormaFechamento'] = this.OfertaFormaFechamento;
+    data['OfertaAceitaProposta'] = 'false'; // this.OfertaAceitaProposta.toString();
+    // data['OfertaTempoEntrega'] = this.OfertaTempoEntrega.toString();
+    // data['OfertaTempoEntregaUnidade'] = this.OfertaTempoEntregaUnidade;
+    data['OfertaFormaFechamento'] = this.OfertaFormaFechamento.toString();
     //data['OfertaAgenteEntrega'] = this.OfertaAgenteEntrega;
     // data['OfertaAgenteEntregaNome'] = this.OfertaAgenteEntregaNome;
     // data['OfertaAgenteEntregaID'] = this.OfertaAgenteEntregaID;
-    data['OfertaMarcaRevenda'] = OfertaMarcaRevenda;
-    data['OfertaCores'] = this.OfertaCores;
-    data['OfertaTamanhos'] = this.OfertaTamanhos;
+    data['OfertaMarcaRevenda'] = this.OfertaMarcaRevenda.toString();
+    data['OfertaCores'] = this.OfertaCores.toString();
+    data['OfertaTamanhos'] = this.OfertaTamanhos.toString();
     data['Oferta24hs'] = this.Oferta24hs.toString();
-    data['OfertaDistanciaKm'] = this.OfertaDistanciaKm.toString();
-    data['OfertaSinal'] = this.OfertaSinal.toString();
-    data['OfertaEncomendasAPartirDe'] = this.OfertaEncomendasAPartirDe;
-    data['OfertaEntregasAPartirDe'] = this.OfertaEntregasAPartirDe;
-    data['OfertaCodigoAlt'] = this.OfertaCodigoAlt;
-    data['ValorEntregaAte1'] = this.ValorEntregaAte1.toString();
-    data['ValorEntregaAte2'] = this.ValorEntregaAte2.toString();
-    data['ValorEntregaMaisDe2'] = this.ValorEntregaMaisDe2.toString();
+    data['OfertaDistanciaKm'] = '0'; // this.OfertaDistanciaKm.toString();
+    data['OfertaSinal'] = '0.00'; // this.OfertaSinal.toString();
+    // data['OfertaEncomendasAPartirDe'] = this.OfertaEncomendasAPartirDe;
+    // data['OfertaEntregasAPartirDe'] = this.OfertaEntregasAPartirDe;
+    data['OfertaCodigoAlt'] = this.OfertaCodigoAlt.toString();
+    data['ValorEntregaAte1'] = '0.00'; // this.ValorEntregaAte1.toString();
+    data['ValorEntregaAte2'] = '0.00'; // this.ValorEntregaAte2.toString();
+    data['ValorEntregaMaisDe2'] = '0.00'; // this.ValorEntregaMaisDe2.toString();
 
-    data['OfertaSemQtd'] = this.OfertaSemQtd.toString();
-    data['OfertaSinalTipo'] = this.OfertaSinalTipo.toString();
-    data['OfertaPrecoAPartir'] = this.OfertaPrecoAPartir.toString();
-    data['OfertaPrecoCombinar'] = this.OfertaPrecoCombinar.toString();
-    data['SegDispo'] = this.SegDispo.toString();
-    data['TerDispo'] = this.TerDispo.toString();
-    data['QuaDispo'] = this.QuaDispo.toString();
-    data['QuiDispo'] = this.QuiDispo.toString();
-    data['SexDispo'] = this.SexDispo.toString();
-    data['SabDispo'] = this.SabDispo.toString();
-    data['DomDispo'] = this.DomDispo.toString();
+    // data['OfertaSemQtd'] = this.OfertaSemQtd.toString();
+    data['OfertaSemQtd'] = 'true';
+    // data['OfertaSinalTipo'] = this.OfertaSinalTipo.toString();
+    data['OfertaPrecoAPartir'] = 'false'; // this.OfertaPrecoAPartir.toString();
+    data['OfertaPrecoCombinar'] = 'false'; // this.OfertaPrecoCombinar.toString();
+    data['SegDispo'] = 'true'; // this.SegDispo.toString();
+    data['TerDispo'] = 'true'; // this.TerDispo.toString();
+    data['QuaDispo'] = 'true'; // this.QuaDispo.toString();
+    data['QuiDispo'] = 'true'; // this.QuiDispo.toString();
+    data['SexDispo'] = 'true'; // this.SexDispo.toString();
+    data['SabDispo'] = 'true'; // this.SabDispo.toString();
+    data['DomDispo'] = 'true'; // this.DomDispo.toString();
     data['SegDas'] = this.SegDas.toString();
     data['SegAs'] = this.SegAs.toString();
     data['TerDas'] = this.TerDas.toString();
@@ -312,7 +314,8 @@ class Oferta {
     data['SabAs'] = this.SabAs.toString();
     data['DomDas'] = this.DomDas.toString();
     data['DomAs'] = this.DomAs.toString();
-    data['OfertaMostraReview'] = this.OfertaMostraReview.toString();
+    data['OfertaSomenteEncomenda'] = 'false';
+    // data['OfertaMostraReview'] = this.OfertaMostraReview.toString();
     return data;
   }
 
@@ -326,7 +329,7 @@ class Oferta {
     data['OfertaCodigoAlt'] = this.OfertaCodigoAlt;
     data['OfertaCores'] = this.OfertaCores;
     data['OfertaDetalhe'] = this.OfertaDetalhe;
-    data['OfertaDiasValidade'] = this.OfertaDiasValidade.toString();
+    data['OfertaDiasValidade'] = 0; // this.OfertaDiasValidade.toString();
     data['OfertaDispoAte'] = this.OfertaDispoAte;
     data['OfertaDispoDesde'] = this.OfertaDispoAte;
     data['OfertaDispoTipo'] = this.OfertaDispoTipo.toString();
@@ -340,7 +343,7 @@ class Oferta {
     data['OfertaPreco'] = this.OfertaPreco.toString();
     data['OfertaPrecoMin'] = this.OfertaPrecoMin.toString();
     data['OfertaQtdAviso'] = this.OfertaQtdAviso.toString();
-    data['OfertaQtdDispo'] = this.OfertaQtdDispo.toString();
+    data['OfertaQtdDispo'] = 0; // this.OfertaQtdDispo.toString();
     data['OfertaQtdMaxVenda'] = this.OfertaQtdMaxVenda.toString();
     data['OfertaSinal'] = this.OfertaSinal.toString();
     data['OfertaTamanhos'] = this.OfertaTamanhos;

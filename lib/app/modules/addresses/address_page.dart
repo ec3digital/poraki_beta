@@ -12,8 +12,8 @@ class AddressPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    HomeController controller = Get.find();
-    LoginController _loginController = Get.find();
+    final HomeController controller = Get.find();
+    final LoginController _loginController = Get.find();
 
     String _endGuid = '';
     try {

@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:poraki/app/modules/auth/login/login_controller.dart';
+import 'package:poraki/app/routes/app_routes.dart';
 //import 'package:poraki/app/routes/app_routes.dart';
 import 'package:poraki/app/services/fbporaki_service.dart';
 import '../home_controller.dart';
@@ -13,7 +14,6 @@ import 'list_horizontal_categories_home.dart';
 
 class BodyHome extends StatelessWidget {
   final HomeController _controller = Get.put(HomeController());
-
 
   Future<String> pegaGamefication() async {
     return await fbPorakiService()
@@ -79,16 +79,31 @@ class BodyHome extends StatelessWidget {
                   const SizedBox(height: 5),
                   Padding(
                       padding: const EdgeInsets.all(5.0),
-                      child: Text(
-                          'Mostrando ofertas próximas à ' +
-                               _loginController.listaEnderecos
-                                  .where((end) => end.EnderecoAtual)
-                                  .first
-                                  .EnderecoLogra
-                                  .toString(),
-                          style:
-                          TextStyle(
-                              fontSize: 14, fontStyle: FontStyle.italic))),
+                      child: Column(
+                        children: [
+                          Text(
+                              'Mostrando ofertas próximas à ' +
+                                  _loginController.listaEnderecos
+                                      .where((end) => end.EnderecoAtual)
+                                      .first
+                                      .EnderecoLogra
+                                      .toString(),
+                              style: TextStyle(
+                                  fontSize: 14, fontStyle: FontStyle.italic)),
+                          const SizedBox(height: 5),
+                          GestureDetector(
+                            onTap: () => Get.toNamed(AppRoutes.locals),
+                            child: Text(
+                              "Clique aqui para mudar de região",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 15,
+                              ),
+                              textAlign: TextAlign.right,
+                            ),
+                          ),
+                        ],
+                      )),
                   //const SizedBox(height: 5),
                   GetBuilder<HomeController>(
                     builder: (_) {
@@ -100,7 +115,7 @@ class BodyHome extends StatelessWidget {
                           cardListOffers: _controller.offersToday!,
                           widgetTitle: _loginController.listCore
                               .where((coreItem) =>
-                          coreItem.coreChave == 'textCard1')
+                                  coreItem.coreChave == 'textCard1')
                               .first
                               .coreValor
                               .toString(),
@@ -118,7 +133,7 @@ class BodyHome extends StatelessWidget {
                         return CardOffertsDayHome(
                           widgetTitle: _loginController.listCore
                               .where((coreItem) =>
-                          coreItem.coreChave == 'textCard2')
+                                  coreItem.coreChave == 'textCard2')
                               .first
                               .coreValor
                               .toString(),
@@ -137,7 +152,7 @@ class BodyHome extends StatelessWidget {
                         return CardOffertsDayHome(
                           widgetTitle: _loginController.listCore
                               .where((coreItem) =>
-                          coreItem.coreChave == 'textCard3')
+                                  coreItem.coreChave == 'textCard3')
                               .first
                               .coreValor
                               .toString(),
@@ -156,7 +171,7 @@ class BodyHome extends StatelessWidget {
                         return CardOffertsDayHome(
                           widgetTitle: _loginController.listCore
                               .where((coreItem) =>
-                          coreItem.coreChave == 'textCard4')
+                                  coreItem.coreChave == 'textCard4')
                               .first
                               .coreValor
                               .toString(),
@@ -178,7 +193,6 @@ class BodyHome extends StatelessWidget {
               ),
             ),
           );
-        }
-    );
+        });
   }
 }

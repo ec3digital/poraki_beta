@@ -74,24 +74,7 @@ class _AccountBodyState extends State<AccountBody> {
                       // key: controller.formKey,
                       child: ListView(children: [
                         Text(_missingFields ? "Ops, existem informações faltantes na sua conta": ""),
-                        ButtonOffer(
-                            colorText: _loginController.colorFromHex(
-                                _loginController.listCore
-                                    .where((coreItem) =>
-                                        coreItem.coreChave == 'textLight')
-                                    .first
-                                    .coreValor
-                                    .toString()),
-                            text: 'Salvar',
-                            colorButton: _loginController.colorFromHex(
-                                _loginController.listCore
-                                    .where((coreItem) =>
-                                        coreItem.coreChave == 'iconColor')
-                                    .first
-                                    .coreValor
-                                    .toString()),
-                            onPressed: () =>
-                                Get.toNamed(AppRoutes.accountValidation)),
+
                         TextFormField(
                           // validator: (value) {
                           //   if (value!.length < 4) {
@@ -475,6 +458,24 @@ class _AccountBodyState extends State<AccountBody> {
                                   .coreValor
                                   .toString()),
                         ),
+                        ButtonOffer(
+                            colorText: _loginController.colorFromHex(
+                                _loginController.listCore
+                                    .where((coreItem) =>
+                                coreItem.coreChave == 'textLight')
+                                    .first
+                                    .coreValor
+                                    .toString()),
+                            text: 'Cancelar conta',
+                            colorButton: _loginController.colorFromHex(
+                                _loginController.listCore
+                                    .where((coreItem) =>
+                                coreItem.coreChave == 'iconColor')
+                                    .first
+                                    .coreValor
+                                    .toString()),
+                            onPressed: () =>
+                                Get.toNamed(AppRoutes.accountValidation)),
                         // )
                       ])
                       // ],

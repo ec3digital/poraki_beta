@@ -29,9 +29,21 @@ class ListAddresses extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     LoginController _loginController = Get.find();
+    final Color colorText = _loginController.colorFromHex(_loginController
+        .listCore
+        .where((coreItem) => coreItem.coreChave == 'textDark')
+        .first
+        .coreValor
+        .toString());
+    final Color backColor = _loginController.colorFromHex(_loginController
+        .listCore
+        .where((coreItem) => coreItem.coreChave == 'backLight')
+        .first
+        .coreValor
+        .toString());
 
     Widget _buildRow(Enderecos endereco) {
-      return Column(children: [
+      return
         ListTile(
           leading: retIcon(endereco.EnderecoTipo.toString(), endereco.EnderecoAtual),
           onTap: () {
@@ -56,11 +68,7 @@ class ListAddresses extends StatelessWidget {
             ],
           ),
           //trailing: Icon(IconData(int.parse(iconcode), fontFamily: 'MaterialIcons'))
-        ),
-        const SizedBox(height: 5),
-        const Divider(),
-        const SizedBox(height: 5),
-      ]);
+        );
     }
 
     return SingleChildScrollView(

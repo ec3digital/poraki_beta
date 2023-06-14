@@ -12,19 +12,21 @@ class BodyCategories extends StatelessWidget {
   Widget build(BuildContext context) {
     //final args = ModalRoute.of(context)!.settings.arguments as OffersArgs;
     //print('chave: ' + chave);
+    return GradientHeaderHome(
+            child: ListVerticalCategories());
 
-    return SingleChildScrollView(
-      child: GradientHeaderHome(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            const SizedBox(height: 15),
-            Center(child: Text("Categorias",style: TextStyle(fontSize: 24),)),
-            const SizedBox(height: 5),
-            ListVerticalCategories()
-          ],
-        ),
-      ),
-    );
+    // return SingleChildScrollView(
+    //   child: GradientHeaderHome(
+    //     child: Column(
+    //       mainAxisAlignment: MainAxisAlignment.start,
+    //       children: [
+    //         const SizedBox(height: 15),
+    //         Center(child: Text("Categorias",style: TextStyle(fontSize: 24),)),
+    //         const SizedBox(height: 5),
+    //         ListVerticalCategories()
+    //       ],
+    //     ),
+    //   ),
+    // );
   }
 }

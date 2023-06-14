@@ -23,6 +23,7 @@ import '../modules/days_offers/days_offers_page.dart';
 import '../modules/days_offers/show_day_offer/show_day_offer_page.dart';
 import '../modules/days_offers/show_day_offer/widgets/view_search_product.dart';
 import '../modules/home/home_page.dart';
+import '../modules/locals/local_pick_page.dart';
 import '../modules/shopping_cart/shopping_cart_page.dart';
 import '../modules/stores/store_validation.dart';
 import 'app_routes.dart';
@@ -139,6 +140,9 @@ class AppPages {
       name: AppRoutes.termos,
       page: () => TermosPage(),
     ),
-
+    GetPage(
+      name: AppRoutes.locals,
+      page: () => LocalPickPage(),
+    ),
   ];
 }

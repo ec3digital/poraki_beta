@@ -39,95 +39,6 @@ class _AddressBodyState extends State<AddressBody> {
     await widget._controller.tornarEnderecoAtual(enderecoGuid);
   }
 
-  Future<void> salvar(String enderecoGuid) async {
-    final LoginController _loginController = Get.find();
-
-    var end = new Enderecos(
-        enderecoGuid == '' ? Uuid().v4() : enderecoGuid,
-        _loginController.usuEmail,
-        _loginController.usuGuid,
-        widget._controller.txtCEP.text.removeAllWhitespace,
-        widget._controller.txtEnderecoLogra.text.trimRight(),
-        widget._controller.txtEnderecoNumero.text.trimRight(),
-        widget._controller.txtEnderecoCompl?.text.trimRight(),
-        tipoSel,
-        false,
-        Timestamp.fromDate(DateTime.now()).toDate(),
-        null,
-        null,
-        null);
-
-    //DateTime.now().toString());
-    if (enderecoGuid == '')
-      await widget._controller.adicionaEndereco(end);
-    else
-      await widget._controller.atualizaEndereco(end);
-
-    await _loginController.loadAddressData();
-  }
-
-  Future<bool> buscaCep() async {
-    CepApiBrasil cepApi = await CepApiBrasilRepository()
-        .getCepApiBrasil(widget._controller.txtCEP.text.trimLeft().trimRight());
-
-    //await Future.delayed(const Duration(seconds: 2));
-
-    widget._controller.txtEnderecoLogra.text = cepApi.street!;
-    if (widget._controller.txtEnderecoLogra.text.isNotEmpty)
-      FocusScope.of(context).requestFocus(txtEnderecoNroFocus);
-
-    return true;
-  }
-
-  Color textDark = Colors.black;
-  List<DropdownMenuItem<String>> dropDownMenuItems = [];
-  var tipos = ["Casa", "Trabalho", "Estudo", "Outros"];
-
-  Future<void> bind() async {
-    if (widget.load) {
-      print('bind()');
-
-      dropDownMenuItems = tipos
-          .map(
-            (String value) => DropdownMenuItem<String>(
-              value: value,
-              child: Text(value),
-            ),
-          )
-          .toList();
-
-      textDark = widget._loginController.colorFromHex(widget
-          ._loginController.listCore
-          .where((coreItem) => coreItem.coreChave == 'textDark')
-          .first
-          .coreValor
-          .toString());
-
-      try {
-        var args = ModalRoute.of(context)?.settings.arguments
-            as List<Map<String, String?>>;
-        widget._endGuid =
-            args[0].values.first.toString(); // .first.values.first.toString();
-
-        print('_endGuid: ' + widget._endGuid);
-      } catch (e) {
-        print(e.toString());
-      }
-
-      await widget._controller.bindEndereco(widget._endGuid);
-
-      // print('widget.enderecoGuid: ' + widget.enderecoGuid);
-
-      tipoSel = (widget._endGuid == ''
-          ? 'Casa'
-          : widget._loginController.listaEnderecos
-              .where((end) => end.EnderecoGuid == widget._endGuid)
-              .first
-              .EnderecoTipo)!;
-      widget.load = false;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     // bool isLoading = false;
@@ -378,11 +289,8 @@ class _AddressBodyState extends State<AddressBody> {
                           onPressed: () async {
                             await widget._controller
                                 .apagaEndereco(
-                                    widget._controller.enderecoSingle)
-                                .then((value) {
-                              Get.offAndToNamed(AppRoutes.addresses);
+                                    widget._controller.enderecoSingle);
 
-                            });
                             await widget._loginController.loadAddressData();
 
                             Get.offAndToNamed(AppRoutes.addresses);
@@ -408,4 +316,94 @@ class _AddressBodyState extends State<AddressBody> {
           }
         });
   }
+
+  Future<void> salvar(String enderecoGuid) async {
+    final LoginController _loginController = Get.find();
+
+    var end = new Enderecos(
+        enderecoGuid == '' ? Uuid().v4() : enderecoGuid,
+        _loginController.usuEmail,
+        _loginController.usuGuid,
+        widget._controller.txtCEP.text.removeAllWhitespace,
+        widget._controller.txtEnderecoLogra.text.trimRight(),
+        widget._controller.txtEnderecoNumero.text.trimRight(),
+        widget._controller.txtEnderecoCompl?.text.trimRight(),
+        tipoSel,
+        false,
+        Timestamp.fromDate(DateTime.now()).toDate(),
+        null,
+        null,
+        null);
+
+    //DateTime.now().toString());
+    if (enderecoGuid == '')
+      await widget._controller.adicionaEndereco(end);
+    else
+      await widget._controller.atualizaEndereco(end);
+
+    await _loginController.loadAddressData();
+  }
+
+  Future<bool> buscaCep() async {
+    CepApiBrasil cepApi = await CepApiBrasilRepository()
+        .getCepApiBrasil(widget._controller.txtCEP.text.trimLeft().trimRight());
+
+    //await Future.delayed(const Duration(seconds: 2));
+
+    widget._controller.txtEnderecoLogra.text = cepApi.street!;
+    if (widget._controller.txtEnderecoLogra.text.isNotEmpty)
+      FocusScope.of(context).requestFocus(txtEnderecoNroFocus);
+
+    return true;
+  }
+
+  Color textDark = Colors.black;
+  List<DropdownMenuItem<String>> dropDownMenuItems = [];
+  var tipos = ["Casa", "Trabalho", "Estudo", "Outros"];
+
+  Future<void> bind() async {
+    if (widget.load) {
+      print('bind()');
+
+      dropDownMenuItems = tipos
+          .map(
+            (String value) => DropdownMenuItem<String>(
+          value: value,
+          child: Text(value),
+        ),
+      )
+          .toList();
+
+      textDark = widget._loginController.colorFromHex(widget
+          ._loginController.listCore
+          .where((coreItem) => coreItem.coreChave == 'textDark')
+          .first
+          .coreValor
+          .toString());
+
+      try {
+        var args = ModalRoute.of(context)?.settings.arguments
+        as List<Map<String, String?>>;
+        widget._endGuid =
+            args[0].values.first.toString(); // .first.values.first.toString();
+
+        print('_endGuid: ' + widget._endGuid);
+      } catch (e) {
+        print(e.toString());
+      }
+
+      await widget._controller.bindEndereco(widget._endGuid);
+
+      // print('widget.enderecoGuid: ' + widget.enderecoGuid);
+
+      tipoSel = (widget._endGuid == ''
+          ? 'Casa'
+          : widget._loginController.listaEnderecos
+          .where((end) => end.EnderecoGuid == widget._endGuid)
+          .first
+          .EnderecoTipo)!;
+      widget.load = false;
+    }
+  }
+
 }

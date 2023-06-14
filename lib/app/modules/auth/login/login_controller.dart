@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:poraki/app/data/models/enderecos.dart';
 import 'package:poraki/app/data/models/lojas.dart';
 import 'package:poraki/app/data/models/ofertafav.dart';
+import 'package:poraki/app/data/models/revendas.dart';
 import 'package:poraki/app/data/models/sql/sqlCore.dart';
 import 'package:poraki/app/data/repositories/address_repository.dart';
 import 'package:poraki/app/data/repositories/offerfav_repository.dart';
@@ -40,6 +41,8 @@ class LoginController extends GetxController {
   List<Lojas> listLojas = [];
   List<OfertasFavs> ofertasFavs = [];
   List<Categorias> listaCategorias = [];
+  List<Revendas> listaRevendas = [];
+  List<String> listaRevendasNomes = [];
   bool _obscurePassword = false;
   bool refreshOfertasFavs = false;
   String? usuCep;
@@ -98,7 +101,14 @@ class LoginController extends GetxController {
   // carrega endereços do usuario
   Future<void> loadAddressData() async {
     listaEnderecos.clear();
-    await fbInstance!.collection("akienderecos").doc(auth!.currentUser!.uid).collection("Enderecos").get().then((value) => value.docs.forEach((element) { listaEnderecos.add(Enderecos.fromJson(element.data())); }));
+    await fbInstance!
+        .collection("akienderecos")
+        .doc(auth!.currentUser!.uid)
+        .collection("Enderecos")
+        .get()
+        .then((value) => value.docs.forEach((element) {
+              listaEnderecos.add(Enderecos.fromJson(element.data()));
+            }));
 
     // var tempEnderecos =
     // await fbPorakiService().getListFromFirebase("akienderecos", "eyCv21RfaURoMn0SUndCg6LPyJP2");
@@ -120,12 +130,52 @@ class LoginController extends GetxController {
   // carrega lojas do usuario
   Future<void> loadStoresData() async {
     listLojas.clear();
-    await fbInstance!.collection("akilojas").doc(auth!.currentUser!.uid).collection("Lojas").get().then((value) => value.docs.forEach((element) { listLojas.add(Lojas.fromJson(element.data())); }));
+    await fbInstance!
+        .collection("akilojas")
+        .doc(auth!.currentUser!.uid)
+        .collection("Lojas")
+        .get()
+        .then((value) => value.docs.forEach((element) {
+              listLojas.add(Lojas.fromJson(element.data()));
+            }));
   }
 
   Future<void> getCategories() async {
     listaCategorias.clear();
-    await fbInstance!.collection("akicategs").doc("Categorias").collection("lista").get().then((value) => value.docs.forEach((element) { listaCategorias.add(Categorias.fromJson(element.data())); }));
+    await fbInstance!
+        .collection("akicategs")
+        .doc("Categorias")
+        .collection("lista")
+        .get()
+        .then((value) => value.docs.forEach((element) {
+              listaCategorias.add(Categorias.fromJson(element.data()));
+            }));
+  }
+
+  Future<void> getBrands() async {
+    listaRevendas.clear();
+    listaRevendasNomes.clear();
+
+    print('getBrands');
+    //await fbInstance!.collection("akicategs").doc("Categorias").collection("lista").get().then((value) => value.docs.forEach((element) { listaCategorias.add(Categorias.fromJson(element.data())); }));
+
+    await fbInstance!
+        .collection("akirevendas")
+        .doc("WY8Min9Tn7phgZV11n0V")
+        .get()
+        .then((value) {
+      value.data()!.values.toList().forEach((element) {
+        List<dynamic> lista = element;
+        lista.sort();
+        lista.forEach((ee) {
+          listaRevendas.add(new Revendas(ee.toString(), ee.toString()));
+          listaRevendasNomes.add(ee.toString());
+        });
+      });
+    });
+
+    listaRevendas.add(new Revendas('selecione', 'selecione'));
+    listaRevendasNomes.add('selecione');
   }
 
   Future<void> loadOffersFavs() async {
@@ -247,8 +297,8 @@ class LoginController extends GetxController {
       print('banner: ' + value);
       listBanners.add(value);
     });
-    var tempBannersCep = await fbPorakiService().getListFromFirebase(
-        "akibanners", usuCep!.substring(0, 3));
+    var tempBannersCep = await fbPorakiService()
+        .getListFromFirebase("akibanners", usuCep!.substring(0, 3));
     tempBannersCep.forEach((key, value) {
       listBanners.add(value);
     });
@@ -277,7 +327,6 @@ class LoginController extends GetxController {
     // redireciona para a home de ofertas
     // Get.toNamed(AppRoutes.offer);
     Get.toNamed(AppRoutes.categories);
-
 
     // } else {
     //   print("invalido");

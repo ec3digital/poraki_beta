@@ -155,5 +155,31 @@ class MofferController extends GetxController {
     update();
   }
 
+  Future<void> apagaMoffer(String OfertaGuid) async {
+    print('apagaMoffer / OfertaGuid = ' + OfertaGuid);
+    try {
+      changeLoading(true);
+      await offerRepository.deleteOfferByGuidFromApi(OfertaGuid);
+      // print('getMoffers result - ' + moffers.toString());
+    } catch (e) {
+      changeLoading(false);
+      // print('Erro no getMOffers() controller ${e.toString()}');
+    } finally {
+      changeLoading(false);
+    }
+
+    // endereco.EnderecoTipo = 'Inativo';
+    // var resp = await repo.putAddress(endereco);
+    //
+    // var sqlEnd = new sqlEndereco(endereco.EnderecoGuid.toString(), endereco.UsuEmail.toString(), endereco.UsuGuid.toString(), endereco.EnderecoCEP.toString(),
+    //     endereco.EnderecoLogra.toString(), endereco.EnderecoNumero.toString(), endereco.EnderecoCompl, endereco.EnderecoTipo.toString(), endereco.EnderecoAtual,
+    //     DateTime.now().toString(), endereco.EnderecoLat, endereco.EnderecoLong);
+    //
+    // if (resp.isNotEmpty)
+    //   await sqlPorakiAddressService().deleteEndereco(endereco.EnderecoGuid.toString());
+    // // await carregaUsuario();
+  }
+
+
 
 }

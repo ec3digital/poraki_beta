@@ -30,6 +30,7 @@ class _PorakiSplash extends State<PorakiSplash> {
       //await _loginController.loadOffersFavs();
       await _loginController.loadAddressData();
       await _loginController.getListBannersFromFBCloud();
+      await _loginController.getBrands();
       Get.toNamed(AppRoutes.home);
     });
   }

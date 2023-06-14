@@ -40,7 +40,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-
+// print('login build');
     _passwordInputController.text = 'jazz0612';
     // _mailInputController.text = 'test';
     return FutureBuilder(

@@ -10,6 +10,8 @@ import 'package:poraki/app/modules/moffers/moffer_controller.dart';
 import 'package:poraki/app/modules/offers/widgets/button_offer.dart';
 import 'package:poraki/app/routes/app_routes.dart';
 
+import '../../home/widgets/gradient_header_home.dart';
+
 class ListMoffers extends StatefulWidget {
   ListMoffers({
     Key? key,
@@ -54,9 +56,9 @@ class _ListMoffersState extends State<ListMoffers> {
   @override
   Widget build(BuildContext context) {
     listStores = _loginController.listLojas;
-    final Color backDark = _loginController.colorFromHex(_loginController
+    final Color colorText = _loginController.colorFromHex(_loginController
         .listCore
-        .where((coreItem) => coreItem.coreChave == 'backDark')
+        .where((coreItem) => coreItem.coreChave == 'textDark')
         .first
         .coreValor
         .toString());
@@ -68,53 +70,36 @@ class _ListMoffersState extends State<ListMoffers> {
         .toString());
 
     Widget _buildRow(Oferta moferta) {
-      // print(moferta.OfertaTitulo);
-      // print(endereco.enderecoCEP +
-      //     ' atual: ' +
-      //     endereco.enderecoAtual.toString());
       return Column(children: [
-        Container(
-          padding: const EdgeInsets.all(8), margin: const EdgeInsets.all(5),
-          decoration: BoxDecoration(
-            border: Border.all(
-              color: backColor,
+        ListTile(
+            leading: CachedNetworkImage(
+              imageUrl: _loginController.listCore
+                      .where((coreItem) => coreItem.coreChave == 'imgpath')
+                      .first
+                      .coreValor
+                      .toString() +
+                  moferta.OfertaID.toString() +
+                  _loginController.listCore
+                      .where(
+                          (coreItem) => coreItem.coreChave == 'imgpathsuffix')
+                      .first
+                      .coreValor
+                      .toString(),
+              progressIndicatorBuilder: (context, url, downloadProgress) =>
+                  CircularProgressIndicator(value: downloadProgress.progress),
+              errorWidget: (context, url, error) =>
+                  Icon(Icons.local_offer_outlined),
+              height: 110,
             ),
-            borderRadius: BorderRadius.all(Radius.circular(8)),
-            color: backColor,
-          ),
-          //color: backColor,
-          child: ListTile(
-              leading: CachedNetworkImage(
-                imageUrl: _loginController.listCore
-                        .where((coreItem) => coreItem.coreChave == 'imgpath')
-                        .first
-                        .coreValor
-                        .toString() +
-                    moferta.OfertaID.toString() +
-                    _loginController.listCore
-                        .where(
-                            (coreItem) => coreItem.coreChave == 'imgpathsuffix')
-                        .first
-                        .coreValor
-                        .toString(),
-                progressIndicatorBuilder: (context, url, downloadProgress) =>
-                    CircularProgressIndicator(value: downloadProgress.progress),
-                errorWidget: (context, url, error) =>
-                    Icon(Icons.local_offer_outlined),
-                height: 110,
-              ),
-              onTap: () => Get.toNamed(AppRoutes.mOffer),
-              title: Text(moferta.OfertaTitulo.toString()),
-              subtitle: Text(moferta.OfertaDetalhe.toString()),
-              trailing: Text(
-                  'R\$ ${moferta.OfertaPreco?.toStringAsFixed(2).replaceAll(',', '').replaceAll('.', ',') ?? ''}')),
-          //trailing: Icon(IconData(int.parse(iconcode), fontFamily: 'MaterialIcons'))
-          //),
-          // const SizedBox(height: 3),
-          // const Divider(),
-          // const SizedBox(height: 3),
-        ) //const Divider(),
-        // const SizedBox(height: 3),
+            onTap: () {
+              mofferController.singleOffer = moferta;
+              Get.toNamed(AppRoutes.mOffer);
+            },
+            title: Text(moferta.OfertaTitulo.toString()),
+            subtitle: Text(moferta.OfertaDetalhe.toString()),
+            trailing: Text(
+                'R\$ ${moferta.OfertaPreco?.toStringAsFixed(2).replaceAll(',', '').replaceAll('.', ',') ?? ''}')),
+        const SizedBox(height: 3),
       ]);
     }
 
@@ -122,197 +107,214 @@ class _ListMoffersState extends State<ListMoffers> {
         future: loadObjs(load),
         builder: (context, futuro) {
           if (futuro.connectionState == ConnectionState.waiting) {
-            return Center(
-                child: CircularProgressIndicator()); //Text('carrinho vazio'));
+            return Center(child: CircularProgressIndicator());
           } else {
-            return Container(
-              child: GetBuilder<MofferController>(builder: (context) {
-                return SingleChildScrollView(
-                    child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                      SizedBox(height: 20),
-                      Center(
-                          child: Text(
-                        "Minhas Ofertas",
-                        style: TextStyle(fontSize: 24),
-                      )),
-                      SizedBox(height: 20),
-                      ButtonOffer(
-                        onPressed: () {
-                          Get.toNamed(AppRoutes.mOffer);
-                        },
-                        colorText: _loginController.colorFromHex(
-                            _loginController.listCore
-                                .where((coreItem) =>
-                                    coreItem.coreChave == 'textLight')
-                                .first
-                                .coreValor
-                                .toString()),
-                        text: 'Nova oferta',
-                        colorButton: _loginController.colorFromHex(
-                            _loginController.listCore
-                                .where((coreItem) =>
-                                    coreItem.coreChave == 'textDark')
-                                .first
-                                .coreValor
-                                .toString()),
-                      ),
-                      SizedBox(height: 20),
-                      ListTile(
-                        leading: Text('Somente da loja: '),
-                        trailing: DropdownButton<Lojas>(
-                          items: listStores.map((Lojas loja) {
-                            return DropdownMenuItem<Lojas>(
-                              value: loja,
-                              child: Text(loja.LojaNome.toString()),
-                            );
-                          }).toList(),
-                          value: selStore,
-                          onChanged: (Lojas? newValue) {
-                            setState(() {
-                              load = false;
-                              selStore = newValue!;
-                            });
-                          },
-                        ),
-                      ),
-                      SizedBox(height: 20),
-                      if (mofferController.moffers.length == 0)
-                        Container(
-                            height: Get.height * 0.6,
-                            child: Center(
-                                child: Text("Ops, nada poraki ainda... ;-)")))
-                      else
-                        Scrollbar(
-                          //scrollbarOrientation: ScrollbarOrientation.bottom,
-                          child: ListView.builder(
-                            scrollDirection: Axis.vertical,
-                            shrinkWrap: true,
-                            //scrollDirection: Axis.vertical,
-                            // padding: const EdgeInsets.all(16.0),
-                            itemCount: mofferController.moffers.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              return _buildRow(mofferController.moffers[index]);
-                            },
-                          ),
+            return Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  // Column(
+                  //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //     children: [
+                  const SizedBox(height: 10),
+                  Center(
+                      child: Text(
+                    "Minhas Ofertas",
+                    style: TextStyle(fontSize: 24),
+                  )),
+                  const SizedBox(height: 5),
+                  ButtonOffer(
+                    onPressed: () {
+                      //mofferController.singleOffer = new Oferta(null, null, _loginController.usuGuid, '', '', 0, null, null, null, null, null, _loginController.usuCep, null, null, 0, 0, 0, null, null, null, 0, 0, 0, 0, null, 0, 0, false, true, false, false, false, null, null, null, null, null, null, null, null, null, true, 0, null, null, null, null, 0, 0, 0, true, null, false, false, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, false, true, false, true, false, true);
+                      mofferController.singleOffer = null;
+                      Get.toNamed(AppRoutes.mOffer);
+                    },
+                    colorText: _loginController.colorFromHex(_loginController
+                        .listCore
+                        .where((coreItem) => coreItem.coreChave == 'textLight')
+                        .first
+                        .coreValor
+                        .toString()),
+                    text: 'Nova oferta',
+                    colorButton: _loginController.colorFromHex(_loginController
+                        .listCore
+                        .where((coreItem) => coreItem.coreChave == 'textDark')
+                        .first
+                        .coreValor
+                        .toString()),
+                  ),
+                  const SizedBox(height: 5),
+                  ListTile(
+                    title: Text('Loja: '),
+                    trailing: DropdownButton<Lojas>(
+                      items: listStores.map((Lojas loja) {
+                        return DropdownMenuItem<Lojas>(
+                          value: loja,
+                          child: Text(loja.LojaNome.toString()),
+                        );
+                      }).toList(),
+                      value: selStore,
+                      onChanged: (Lojas? newValue) {
+                        setState(() {
+                          load = false;
+                          selStore = newValue!;
+                        });
+                      },
+                    ),
+                  ),
+                  SizedBox(height: 5),
+                  if (mofferController.moffers.length == 0)
+                    Container(
+                        height: Get.height * 0.6,
+                        child: Center(
+                            child: Text("Ops, nada poraki ainda... ;-)")))
+                  else
+                    //Expanded(flex: 0, child:
+                    Expanded(
+                        child: Container(
+                      //height: 200, // MediaQuery.of(context).size.height,
+                      child: ListView.builder(
+                          scrollDirection: Axis.vertical,
+                          shrinkWrap: true,
+                          padding: const EdgeInsets.all(6.0),
+                          itemCount: mofferController.moffers.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return Container(
+                                padding: const EdgeInsets.all(8),
+                                margin: const EdgeInsets.all(5),
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: backColor,
+                                  ),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10)),
+                                  color: backColor,
+                                ),
+                                child:
+                                    _buildRow(mofferController.moffers[index]));
+                          }),
+                    )
+                        //)
                         )
 
-                      // GridView.builder(
-                      //   shrinkWrap: true,
-                      //   scrollDirection: Axis.vertical,
-                      //   physics: const NeverScrollableScrollPhysics(),
-                      //   gridDelegate:
-                      //       SliverGridDelegateWithFixedCrossAxisCount(
-                      //     crossAxisCount: 2,
-                      //   ),
-                      //   itemCount: mofferController.moffers.length,
-                      //   itemBuilder: (BuildContext context, int index) {
-                      //     Oferta _oferta = mofferController.moffers[index];
-                      //     return InkWell(
-                      //       onTap: () {
-                      //         Get.toNamed(AppRoutes.mOffer, arguments: [
-                      //           {'offer': _oferta}
-                      //         ]);
-                      //         print('offer arg send: ');
-                      //         print(_oferta.OfertaTitulo.toString());
-                      //       },
-                      //       // arguments: _oferta.OfertaID.toString()),
-                      //       child: Container(
-                      //         padding: EdgeInsets.only(
-                      //             top: 3, right: 5, left: 5),
-                      //         child: Card(
-                      //           elevation: 2,
-                      //           child: Column(
-                      //             children: [
-                      //               Container(
-                      //                 height: 80,
-                      //                 margin: EdgeInsets.only(top: 4),
-                      //                 child: CachedNetworkImage(
-                      //                   imageUrl:
-                      //                       'https://firebasestorage.googleapis.com/v0/b/ec3digrepo.appspot.com/o/ofertas%2F' +
-                      //                           _oferta.OfertaGUID
-                      //                               .toString() +
-                      //                           '.jpg?alt=media',
-                      //                   progressIndicatorBuilder: (context,
-                      //                           url, downloadProgress) =>
-                      //                       CircularProgressIndicator(
-                      //                           value: downloadProgress
-                      //                               .progress),
-                      //                   errorWidget:
-                      //                       (context, url, error) => Icon(
-                      //                           Icons.local_offer_outlined),
-                      //                   height: 50,
-                      //                 ),
-                      //
-                      //                 // child: FadeInImage.assetNetwork(
-                      //                 //   placeholder:
-                      //                 //       'assets/images/pholder.png',
-                      //                 //   image:
-                      //                 //       'https://firebasestorage.googleapis.com/v0/b/ec3digrepo.appspot.com/o/ofertas%2F' +
-                      //                 //           _oferta.OfertaGUID
-                      //                 //               .toString() +
-                      //                 //           '.jpg?alt=media',
-                      //                 //   imageErrorBuilder: (context, url,
-                      //                 //           error) =>
-                      //                 //       new Icon(
-                      //                 //           Icons.local_offer_outlined),
-                      //                 //   height: 50,
-                      //                 // ),
-                      //               ),
-                      //               Container(
-                      //                 margin: EdgeInsets.only(top: 4),
-                      //                 child: AutoSizeText(
-                      //                   _oferta.OfertaTitulo ?? '',
-                      //                   textAlign: TextAlign.center,
-                      //                   style: TextStyle(
-                      //                       fontWeight: FontWeight.w700,
-                      //                       fontSize: 14,
-                      //                       color: _loginController
-                      //                           .colorFromHex(
-                      //                               _loginController
-                      //                                   .listCore
-                      //                                   .where((coreItem) =>
-                      //                                       coreItem
-                      //                                           .coreChave ==
-                      //                                       'textDark')
-                      //                                   .first
-                      //                                   .coreValor
-                      //                                   .toString())),
-                      //                   maxLines: 2,
-                      //                 ),
-                      //               ),
-                      //               const SizedBox(height: 15),
-                      //               Container(
-                      //                 child: Text(
-                      //                   'R\$ ${_oferta.OfertaPreco?.toStringAsFixed(2).replaceAll('.', ',') ?? ''}',
-                      //                   textAlign: TextAlign.center,
-                      //                   style: TextStyle(
-                      //                     fontWeight: FontWeight.w700,
-                      //                     fontSize: 14,
-                      //                     color: _loginController
-                      //                         .colorFromHex(_loginController
-                      //                             .listCore
-                      //                             .where((coreItem) =>
-                      //                                 coreItem.coreChave ==
-                      //                                 'backDark')
-                      //                             .first
-                      //                             .coreValor
-                      //                             .toString()),
-                      //                   ),
-                      //                 ),
-                      //               ),
-                      //             ],
-                      //           ),
-                      //         ),
-                      //       ),
-                      //     );
-                      //   },
-                      // )
-                    ]));
-                // ));
-              }),
-            );
+                  // GridView.builder(
+                  //   shrinkWrap: true,
+                  //   scrollDirection: Axis.vertical,
+                  //   physics: const NeverScrollableScrollPhysics(),
+                  //   gridDelegate:
+                  //       SliverGridDelegateWithFixedCrossAxisCount(
+                  //     crossAxisCount: 2,
+                  //   ),
+                  //   itemCount: mofferController.moffers.length,
+                  //   itemBuilder: (BuildContext context, int index) {
+                  //     Oferta _oferta = mofferController.moffers[index];
+                  //     return InkWell(
+                  //       onTap: () {
+                  //         Get.toNamed(AppRoutes.mOffer, arguments: [
+                  //           {'offer': _oferta}
+                  //         ]);
+                  //         print('offer arg send: ');
+                  //         print(_oferta.OfertaTitulo.toString());
+                  //       },
+                  //       // arguments: _oferta.OfertaID.toString()),
+                  //       child: Container(
+                  //         padding: EdgeInsets.only(
+                  //             top: 3, right: 5, left: 5),
+                  //         child: Card(
+                  //           elevation: 2,
+                  //           child: Column(
+                  //             children: [
+                  //               Container(
+                  //                 height: 80,
+                  //                 margin: EdgeInsets.only(top: 4),
+                  //                 child: CachedNetworkImage(
+                  //                   imageUrl:
+                  //                       'https://firebasestorage.googleapis.com/v0/b/ec3digrepo.appspot.com/o/ofertas%2F' +
+                  //                           _oferta.OfertaGUID
+                  //                               .toString() +
+                  //                           '.jpg?alt=media',
+                  //                   progressIndicatorBuilder: (context,
+                  //                           url, downloadProgress) =>
+                  //                       CircularProgressIndicator(
+                  //                           value: downloadProgress
+                  //                               .progress),
+                  //                   errorWidget:
+                  //                       (context, url, error) => Icon(
+                  //                           Icons.local_offer_outlined),
+                  //                   height: 50,
+                  //                 ),
+                  //
+                  //                 // child: FadeInImage.assetNetwork(
+                  //                 //   placeholder:
+                  //                 //       'assets/images/pholder.png',
+                  //                 //   image:
+                  //                 //       'https://firebasestorage.googleapis.com/v0/b/ec3digrepo.appspot.com/o/ofertas%2F' +
+                  //                 //           _oferta.OfertaGUID
+                  //                 //               .toString() +
+                  //                 //           '.jpg?alt=media',
+                  //                 //   imageErrorBuilder: (context, url,
+                  //                 //           error) =>
+                  //                 //       new Icon(
+                  //                 //           Icons.local_offer_outlined),
+                  //                 //   height: 50,
+                  //                 // ),
+                  //               ),
+                  //               Container(
+                  //                 margin: EdgeInsets.only(top: 4),
+                  //                 child: AutoSizeText(
+                  //                   _oferta.OfertaTitulo ?? '',
+                  //                   textAlign: TextAlign.center,
+                  //                   style: TextStyle(
+                  //                       fontWeight: FontWeight.w700,
+                  //                       fontSize: 14,
+                  //                       color: _loginController
+                  //                           .colorFromHex(
+                  //                               _loginController
+                  //                                   .listCore
+                  //                                   .where((coreItem) =>
+                  //                                       coreItem
+                  //                                           .coreChave ==
+                  //                                       'textDark')
+                  //                                   .first
+                  //                                   .coreValor
+                  //                                   .toString())),
+                  //                   maxLines: 2,
+                  //                 ),
+                  //               ),
+                  //               const SizedBox(height: 15),
+                  //               Container(
+                  //                 child: Text(
+                  //                   'R\$ ${_oferta.OfertaPreco?.toStringAsFixed(2).replaceAll('.', ',') ?? ''}',
+                  //                   textAlign: TextAlign.center,
+                  //                   style: TextStyle(
+                  //                     fontWeight: FontWeight.w700,
+                  //                     fontSize: 14,
+                  //                     color: _loginController
+                  //                         .colorFromHex(_loginController
+                  //                             .listCore
+                  //                             .where((coreItem) =>
+                  //                                 coreItem.coreChave ==
+                  //                                 'backDark')
+                  //                             .first
+                  //                             .coreValor
+                  //                             .toString()),
+                  //                   ),
+                  //                 ),
+                  //               ),
+                  //             ],
+                  //           ),
+                  //         ),
+                  //       ),
+                  //     );
+                  //   },
+                  // )
+                ]
+                //),
+                //    ]
+                );
+            // ));
+            //},
+            //);
           }
         });
   }

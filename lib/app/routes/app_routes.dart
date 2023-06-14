@@ -31,4 +31,5 @@ abstract class AppRoutes {
   static const accountValidation = '/account-validation';
   static const storeValidation = '/store-validation';
   static const termos = '/termos';
+  static const locals = '/locals';
 }

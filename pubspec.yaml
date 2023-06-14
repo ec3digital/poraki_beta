@@ -67,6 +67,7 @@ dependencies:
   whatsapp_unilink: ^2.1.0
   url_launcher: ^6.1.10
   uuid: ^3.0.7
+  pull_to_refresh: ^2.0.0
 
 
 dev_dependencies:

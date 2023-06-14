@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
 import '../../data/models/categorias.dart';
 import '../../data/repositories/categories_repository.dart';
+import '../auth/login/login_controller.dart';
 
 class CategoriesController extends GetxController {
   CategoriesRepository categoriesRepository = CategoriesRepository();
@@ -10,13 +11,19 @@ class CategoriesController extends GetxController {
   List<String>? listaCategoriasNomes = [];
   bool isLoading = false;
   late Categorias categSelected;
+  final LoginController _loginController = Get.find();
 
   //get categ => null;
 
   @override
   void onInit() async {
-    await getAllCategoriesFb();
-    await getCategoriesNamesFb();
+    if(_loginController.listaCategorias.isEmpty) {
+      await getAllCategoriesFb();
+      await getCategoriesNamesFb();
+    }
+
+    _loginController.listaCategorias.forEach((categ) { categorias.add(categ); });
+
     super.onInit();
   }
 
@@ -51,17 +58,21 @@ class CategoriesController extends GetxController {
     update();
   }
 
-  Categorias? selecionaCategoriaPorNome(String categName) {
+  Future<Categorias?> selecionaCategoriaPorNome(String categName) async {
+    print('selecionaCategoriaPorNome: $categName');
     if (listaCategoriasNomes!.isEmpty) {
-      return null;
-    } else {
+      print('listaCategoriasNomes vazia');
+      final CategoriesController categoriesController = Get.find();
+      await categoriesController.getCategoriesNamesFb();
+    }
+      print('procura categoria: $categName');
       return categorias
           .where((categ) => categ.categoriaNome == categName)
           .first;
-    }
   }
 
   Categorias? selecionaCategoriaPorChave(String categKey) {
+    print('categKey: ' + categKey);
     if (categorias.isEmpty) {
       return null;
     } else {

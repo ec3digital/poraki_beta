@@ -258,7 +258,7 @@ class BodyOffer extends StatelessWidget {
                     // colorText: darkText,
 
                     // text: 'Adicionar ao carrinho',
-                    text: 'Solicitar via Whatsapp', isWhatsapp: true,
+                    text: 'Pedir por Whatsapp', isWhatsapp: true,
 
                     colorText: _loginController.colorFromHex(_loginController
                         .listCore
@@ -330,14 +330,14 @@ class BodyOffer extends StatelessWidget {
                                   .toString()),
                           const Divider(),
                         ]),
-                      if (produtoOferta.ofertaCores!.toString() != 'null')
+                      if (produtoOferta.ofertaCores != null && produtoOferta.ofertaCores!.toString() != 'null')
                         Column(children: [
                           const SizedBox(height: 10),
                           Text(
                               'Cores: ' + produtoOferta.ofertaCores.toString()),
                           const Divider(),
                         ]),
-                      if (produtoOferta.ofertaTamanhos.toString() != 'null')
+                      if (produtoOferta.ofertaTamanhos != null && produtoOferta.ofertaTamanhos!.toString() != 'null')
                         Column(children: [
                           const SizedBox(height: 10),
                           Text('Tamanhos: ' +
