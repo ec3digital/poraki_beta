@@ -26,7 +26,6 @@ class CardCategories extends StatelessWidget {
             color: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'iconColor').first.coreValor.toString()),
             shape: CircleBorder(),
             child: Container(
-              //color: Colors.grey,
               height: Get.height * 0.07,
               width: Get.width * 0.14,
               child: IconButton(icon: Icon(iconData), color: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'textLight').first.coreValor.toString()),
@@ -38,7 +37,7 @@ class CardCategories extends StatelessWidget {
                     {'listName': null},
                     {'limit': 24},
                     {'category': chave.toString()},
-                    {'title': 'Categorias'},
+                    {'title': text.toString()},
                     {'ofertaGuid': null}
                   ]);
                 }

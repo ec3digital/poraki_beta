@@ -23,7 +23,7 @@ import '../../../routes/app_routes.dart';
 class LoginController extends GetxController {
   final TextEditingController mailInputController = TextEditingController();
   final TextEditingController passwordInputController = TextEditingController();
-  final formKey = GlobalKey<FormState>();
+  // final formKey = Get.key; // GlobalKey<FormState>();
   final LoginRepository loginRepository = LoginRepository();
   late FirebaseFirestore? fbInstance;
   final FirebaseAuth? auth = FirebaseAuth.instance;
@@ -199,7 +199,7 @@ class LoginController extends GetxController {
     listCoreTemp = await sqlPorakiCoreService().buscaTodosValores();
 
     var coreFBcep = await fbPorakiService()
-        .getListFromFirebase("akicore", cloudId.toString());
+        .getListFromFirebase("akicore", "057"); // cloudId.toString());
     listCoreCep = await sqlPorakiCoreService().buscaTodosValoresCep();
     if (coreFBcep.isNotEmpty) {
       // reseta tabela core local cep

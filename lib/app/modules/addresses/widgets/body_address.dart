@@ -30,7 +30,7 @@ class AddressBody extends StatefulWidget {
 
 class _AddressBodyState extends State<AddressBody> {
   final FocusNode txtEnderecoNroFocus = new FocusNode();
-  final _form = GlobalKey<FormState>();
+  // final _form = GlobalKey<FormState>();
   TiposEnd tiposEnd = TiposEnd.Casa;
   var tipoSel = "Casa";
 
@@ -83,7 +83,7 @@ class _AddressBodyState extends State<AddressBody> {
                         child: Padding(
                   padding: const EdgeInsets.all(15.0),
                   child: Form(
-                      key: _form,
+                      // key: widget._loginController.formKey,
                       child: ListView(children: [
                         const SizedBox(
                           height: 20,

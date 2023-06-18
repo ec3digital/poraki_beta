@@ -61,7 +61,7 @@ class _BodyMoffer extends State<BodyMoffer> {
   var _descriptionFocusNode = FocusNode();
   var _imageURLFocusNode = FocusNode();
   var _imageURLController = TextEditingController();
-  var _form = GlobalKey<FormState>();
+  // var _form = GlobalKey<FormState>();
 
   bool _isLoading = false;
   bool _load = true;
@@ -295,7 +295,7 @@ class _BodyMoffer extends State<BodyMoffer> {
                   child: Padding(
                     padding: const EdgeInsets.all(15.0),
                     child: Form(
-                      key: _form,
+                      // key: _form,
                       child: ListView(
                         children: [
                           const SizedBox(height: 20),

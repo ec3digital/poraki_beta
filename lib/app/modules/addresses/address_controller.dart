@@ -24,7 +24,7 @@ class AddressController extends GetxController {
 
   // AddressRepository addressRepository = AddressRepository();
   bool isLoading = false;
-  final formKey = GlobalKey<FormState>();
+  // final formKey = GlobalKey<FormState>();
 
   //List<Enderecos> listaEnderecos = [];
   //late sqlEndereco enderecoSingle;

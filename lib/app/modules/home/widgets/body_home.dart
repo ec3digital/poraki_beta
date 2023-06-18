@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:poraki/app/modules/auth/login/login_controller.dart';
 import 'package:poraki/app/routes/app_routes.dart';
 //import 'package:poraki/app/routes/app_routes.dart';
-import 'package:poraki/app/services/fbporaki_service.dart';
+// import 'package:poraki/app/services/fbporaki_service.dart';
 import '../home_controller.dart';
 import 'card_banner_alone_home.dart';
 import 'card_offerts_day_home.dart';
@@ -16,8 +16,9 @@ class BodyHome extends StatelessWidget {
   final HomeController _controller = Get.put(HomeController());
 
   Future<String> pegaGamefication() async {
-    return await fbPorakiService()
-        .getValueFromFirebase("akigame", "consumidor", "politica");
+    return '';
+    // return await fbPorakiService()
+    //     .getValueFromFirebase("akigame", "consumidor", "politica");
   }
 
   @override
@@ -32,11 +33,11 @@ class BodyHome extends StatelessWidget {
 
     LoginController _loginController = Get.find();
 
-    return FutureBuilder(
-        future: pegaGamefication(),
-        builder: (context, futuro) {
-          textoVizinho = ''; // futuro.data.toString();
-          print('textoVizinho: ' + textoVizinho);
+    // return FutureBuilder(
+    //     future: pegaGamefication(),
+    //     builder: (context, futuro) {
+    //       textoVizinho = ''; // futuro.data.toString();
+    //       print('textoVizinho: ' + textoVizinho);
           return SingleChildScrollView(
             child: GradientHeaderHome(
               child: Column(
@@ -81,16 +82,16 @@ class BodyHome extends StatelessWidget {
                       padding: const EdgeInsets.all(5.0),
                       child: Column(
                         children: [
-                          Text(
-                              'Mostrando ofertas próximas à ' +
-                                  _loginController.listaEnderecos
-                                      .where((end) => end.EnderecoAtual)
-                                      .first
-                                      .EnderecoLogra
-                                      .toString(),
-                              style: TextStyle(
-                                  fontSize: 14, fontStyle: FontStyle.italic)),
-                          const SizedBox(height: 5),
+                          // Text(
+                          //     'Mostrando ofertas próximas à ' +
+                          //         _loginController.listaEnderecos
+                          //             .where((end) => end.EnderecoAtual)
+                          //             .first
+                          //             .EnderecoLogra
+                          //             .toString(),
+                          //     style: TextStyle(
+                          //         fontSize: 14, fontStyle: FontStyle.italic)),
+                          // const SizedBox(height: 5),
                           GestureDetector(
                             onTap: () => Get.toNamed(AppRoutes.locals),
                             child: Text(
@@ -193,6 +194,6 @@ class BodyHome extends StatelessWidget {
               ),
             ),
           );
-        });
+        //});
   }
 }

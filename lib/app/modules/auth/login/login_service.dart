@@ -26,14 +26,12 @@ class LoginService {
       ),
     );
 
-    print(response.body);
+    // print(response.body);
   }
 
-  Future<String> loginWithEmailAndPassword(
-      String email, String password) async {
-    // late Map<String, User?>? retErro;// = [] as Map<String, User?>?;
+  Future<String> loginWithEmailAndPassword(String email, String password, String? displayName) async {
+    print('loginWithEmailAndPassword');
     try {
-      // Sign in the user on firebase with provided username and password
       await auth.FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
 
@@ -45,10 +43,13 @@ class LoginService {
         _loginController.usuEmail = currentUserObject.email;
 
         var u = currentUserObject;
-        // print('usuario fb uid: ' + u.uid.toString());
-        // print('usuario fb email:' + u.email.toString());
+        print('usuario fb uid: ' + u.uid.toString());
+        print('usuario fb email:' + u.email.toString());
         print('usuario fb display name: ' + u.displayName.toString());
-        print('usuario fb token: ' + u.refreshToken.toString());
+        print('usuario fb phone#: ' + u.phoneNumber.toString());
+        // print('usuario fb token: ' + u.refreshToken.toString());
+
+        if(displayName != null) u.updateDisplayName(displayName);
 
         return 'OK';
       }
@@ -65,9 +66,10 @@ class LoginService {
       if ((exception).code == 'too-many-requests')
         return 'Usuário bloqueado temporariamente';
 
+      print(exception.toString() + '$s');
       return 'Ops, ocorreu um erro inesperado. Por favor tente novamente';
     } catch (e, s) {
-      //print(e.toString() + '$s');
+      print(e.toString() + '$s');
       return 'Ocorreu um erro, por favor tente novamente.';
     }
 

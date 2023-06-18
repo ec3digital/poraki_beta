@@ -21,6 +21,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     Get.lazyPut(() => OffersController());
     return Scaffold(
+      // key: Get.key,
       appBar: PreferredSize(
         preferredSize: Size(double.maxFinite, 55),
         child: AppBarHome(controller: controller),

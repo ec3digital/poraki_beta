@@ -34,7 +34,7 @@ class _StoreBodyState extends State<StoreBody> {
   bool valAceitaPoraki10 = false;
   DateTime valDataCupomDe = new DateTime.now();
   DateTime valDataCupomAte = new DateTime.now();
-  final _form = GlobalKey<FormState>();
+  // final _form = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext buildContext) {
@@ -84,7 +84,7 @@ class _StoreBodyState extends State<StoreBody> {
                     child: Padding(
               padding: const EdgeInsets.all(15.0),
               child: Form(
-                  key: _form,
+                  // key: _loginController.formKey,
                   // key: controller.formKey,
                   child: ListView(children: [
                     const SizedBox(

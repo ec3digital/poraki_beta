@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:poraki/app/routes/app_routes.dart';
 import 'package:poraki/app/theme/app_theme.dart';
-
+import 'package:poraki/app/util/alerta.dart';
 import '../sign_up_controller.dart';
 import 'signup_form.dart';
 
-class SignupBody extends StatelessWidget {
+class SignupBody extends StatefulWidget {
   final SignUpController controller;
 
   SignupBody({
@@ -12,6 +14,11 @@ class SignupBody extends StatelessWidget {
     required this.controller,
   }) : super(key: key);
 
+  @override
+  State<SignupBody> createState() => _SignupBodyState();
+}
+
+class _SignupBodyState extends State<SignupBody> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -25,10 +32,7 @@ class SignupBody extends StatelessWidget {
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
-          colors: [
-            AppColors.primaryBackground,
-            AppColors.secondaryBackground
-          ],
+          colors: [AppColors.primaryBackground, AppColors.secondaryBackground],
         ),
       ),
       child: SingleChildScrollView(
@@ -44,12 +48,19 @@ class SignupBody extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const SizedBox(height: 20,),
+            const SizedBox(
+              height: 20,
+            ),
             Padding(padding: EdgeInsets.only(bottom: 10)),
-            FormSignup(controller: controller),
+            FormSignup(controller: widget.controller),
             MaterialButton(
-              onPressed: () {
-                controller.doSignUp();
+              onPressed: () async {
+                var ret = await widget.controller.doSignUp();
+                if (ret == 'OK') {
+                  Get.toNamed(AppRoutes.locals);
+                } else {
+                  Alerta(context, ret.toString());
+                }
               },
               child: Text("Casdastrar"),
               color: AppColors.secondaryColorButton,

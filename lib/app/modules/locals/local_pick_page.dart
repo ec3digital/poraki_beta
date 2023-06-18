@@ -74,7 +74,7 @@ class _LocalPickPageState extends State<LocalPickPage> {
                               _loginController.cloudId = newValue!.substring(0,3);
                               localSel = newValue;
                             });
-                            Get.toNamed(AppRoutes.home);
+                            Get.toNamed(AppRoutes.porakiSplash);
                           },
                         ),
                       ],

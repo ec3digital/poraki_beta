@@ -22,7 +22,7 @@ class AccountBody extends StatefulWidget {
 }
 
 class _AccountBodyState extends State<AccountBody> {
-  final _form = GlobalKey<FormState>();
+  // final _form = GlobalKey<FormState>();
   bool _missingFields = false;
 
   @override
@@ -70,7 +70,7 @@ class _AccountBodyState extends State<AccountBody> {
                         child: Padding(
                   padding: const EdgeInsets.all(15.0),
                   child: Form(
-                      key: _form,
+                      // key: _form,
                       // key: controller.formKey,
                       child: ListView(children: [
                         Text(_missingFields ? "Ops, existem informações faltantes na sua conta": ""),

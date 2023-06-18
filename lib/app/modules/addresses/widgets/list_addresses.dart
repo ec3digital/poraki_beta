@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:poraki/app/data/models/enderecos.dart';
-import 'package:poraki/app/data/models/sql/sqlEndereco.dart';
 import 'package:poraki/app/modules/addresses/address_controller.dart';
 import 'package:poraki/app/modules/auth/login/login_controller.dart';
 import 'package:poraki/app/modules/home/widgets/gradient_header_home.dart';
@@ -29,12 +28,6 @@ class ListAddresses extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     LoginController _loginController = Get.find();
-    final Color colorText = _loginController.colorFromHex(_loginController
-        .listCore
-        .where((coreItem) => coreItem.coreChave == 'textDark')
-        .first
-        .coreValor
-        .toString());
     final Color backColor = _loginController.colorFromHex(_loginController
         .listCore
         .where((coreItem) => coreItem.coreChave == 'backLight')
@@ -43,32 +36,33 @@ class ListAddresses extends StatelessWidget {
         .toString());
 
     Widget _buildRow(Enderecos endereco) {
-      return
-        ListTile(
-          leading: retIcon(endereco.EnderecoTipo.toString(), endereco.EnderecoAtual),
-          onTap: () {
-            controller.enderecoSingle = endereco;
-            Get.toNamed(AppRoutes.address, arguments: [
-              {'enderecoGuid': endereco.EnderecoGuid}
-            ]);
-          },
-          title: Text(
-            endereco.EnderecoCEP.toString(),
-          ),
-          subtitle:
-              Text(endereco.EnderecoLogra.toString() + ', ' + endereco.EnderecoNumero.toString()),
-          trailing: Column(
-            children: [
-              Text(endereco.EnderecoTipo.toString()),
-              if (endereco.EnderecoAtual)
-                Icon(
-                  Icons.star,
-                  color: Colors.amber,
-                )
-            ],
-          ),
-          //trailing: Icon(IconData(int.parse(iconcode), fontFamily: 'MaterialIcons'))
-        );
+      return ListTile(
+        leading:
+            retIcon(endereco.EnderecoTipo.toString(), endereco.EnderecoAtual),
+        onTap: () {
+          controller.enderecoSingle = endereco;
+          Get.toNamed(AppRoutes.address, arguments: [
+            {'enderecoGuid': endereco.EnderecoGuid}
+          ]);
+        },
+        title: Text(
+          endereco.EnderecoCEP.toString(),
+        ),
+        subtitle: Text(endereco.EnderecoLogra.toString() +
+            ', ' +
+            endereco.EnderecoNumero.toString()),
+        trailing: Column(
+          children: [
+            Text(endereco.EnderecoTipo.toString()),
+            if (endereco.EnderecoAtual)
+              Icon(
+                Icons.star,
+                color: Colors.amber,
+              )
+          ],
+        ),
+        //trailing: Icon(IconData(int.parse(iconcode), fontFamily: 'MaterialIcons'))
+      );
     }
 
     return SingleChildScrollView(
@@ -107,12 +101,20 @@ class ListAddresses extends StatelessWidget {
               child: ListView.builder(
                 scrollDirection: Axis.vertical,
                 shrinkWrap: true,
+                padding: const EdgeInsets.all(6.0),
                 itemCount: _loginController.listaEnderecos.length,
                 itemBuilder: (BuildContext context, int index) {
-                  //if (index.isOdd) return const Divider();
-                  //index = index ~/ 2 + 1;
-                  var endereco = _loginController.listaEnderecos[index];
-                  return _buildRow(endereco);
+                  return Container(
+                      padding: const EdgeInsets.all(8),
+                      margin: const EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: backColor,
+                        ),
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                        color: backColor,
+                      ),
+                      child: _buildRow(_loginController.listaEnderecos[index]));
                 },
               ),
             )

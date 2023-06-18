@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:poraki/app/data/models/sql/sqlUsuario.dart';
+import 'package:poraki/app/modules/auth/login/login_service.dart';
 // import 'package:shared_preferences/shared_preferences.dart';
 // import 'package:extended_masked_text/extended_masked_text.dart';
 import '../../../data/models/login_model.dart';
@@ -22,11 +23,16 @@ class SignUpController extends GetxController {
   TextEditingController phoneInputController = TextEditingController();
 
   bool showPassword = false;
-  final formKey = GlobalKey<FormState>();
+  late String _userUID;
+  // final formKey = Get.key; // GlobalKey<FormState>();
 
-  signUp(String email, String password) async {
+  Future<String> signUp(
+      String email, String password, String displayName) async {
+    print(Uri.parse(AppRoutes.signUpGoogle).toString());
+
+    // try {} on auth.FirebaseAuthException catch (exception, s) { {}
     http.Response response = await http.post(
-      Uri.parse(AppRoutes.signIn),
+      Uri.parse(AppRoutes.signUpGoogle),
       body: json.encode(
         {
           "email": email,
@@ -35,25 +41,46 @@ class SignUpController extends GetxController {
         },
       ),
     );
-    print(response.body);
+
+    var resp = response.body;
+
+    if (resp.contains('idToken')) {
+      var loginResp = await LoginService()
+          .loginWithEmailAndPassword(email, password, displayName);
+
+      print(loginResp);
+
+      if (loginResp == 'OK') {
+        //TODO: cadastrar na colecao akiusuarios, sendo o documento o User UID
+
+        // salva usuário no sqlLocal, para ser recuperado depois qunado logar novamente
+        LoginModel newUser = LoginModel(
+          name: nameInputController.text,
+          mail: mailInputController.text,
+          password: passwordInputController.text,
+          keepOn: true,
+        );
+        _saveUser(newUser);
+      }
+
+      return loginResp;
+    } else {
+      print(resp.toString());
+      return 'Erro tentando registrar novo usuário no aplicativo';
+    }
   }
 
-  void doSignUp() {
-    if (formKey.currentState!.validate()) {
-      SignUpController().signUp(
-        mailInputController.text,
-        passwordInputController.text,
-      );
-    } else {
-      print("invalido");
-    }
-    LoginModel newUser = LoginModel(
-      name: nameInputController.text,
-      mail: mailInputController.text,
-      password: passwordInputController.text,
-      keepOn: true,
-    );
-    _saveUser(newUser);
+  Future<String> doSignUp() async {
+    // if (formKey.currentState!.validate()) {
+      return await SignUpController().signUp(
+          mailInputController.text.trim(),
+          passwordInputController.text.trim(),
+          nameInputController.text.trim() +
+              ' ' +
+              surnameInputController.text.trim());
+    // } else {
+    //   return '';
+    // }
   }
 
   void changeShowPassword(bool newValue) {
@@ -64,7 +91,7 @@ class SignUpController extends GetxController {
   // ignore: unused_element
   void _saveUser(LoginModel user) async {
     //TODO: criar usuario no Firebase e pegar o ID
-    var uid = 'eyCv21RfaURoMn0SUndCg6LPyJP2';
+    //var uid = 'eyCv21RfaURoMn0SUndCg6LPyJP2';
 
     var sqlSvc = new sqlPorakiLoginService();
     var newUser = new sqlUsuarios(
@@ -81,13 +108,5 @@ class SignUpController extends GetxController {
         DateTime.now().toString(),
         '1.00');
     sqlSvc.insertUsuario(newUser);
-
-    // SharedPreferences prefs = await SharedPreferences.getInstance();
-    // prefs.setString(
-    //   PreferencesKeys.activeUser,
-    //   json.encode(user.toJson()),
-    // );
-
-    Get.toNamed(AppRoutes.offer);
   }
 }

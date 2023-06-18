@@ -12,8 +12,8 @@ class AppWidget extends StatelessWidget {
     return GetMaterialApp(
       title: 'PorAki',
       getPages: AppPages.routes,
-      theme: AppTheme.light(),
-      themeMode: ThemeMode.light,
+      // theme: AppTheme.light(),
+      // themeMode: ThemeMode.light,
       initialRoute: AppRoutes.porakiSplash,
       debugShowCheckedModeBanner: false,
       defaultTransition: Transition.noTransition,

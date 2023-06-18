@@ -29,7 +29,7 @@ class StoreValidation extends StatefulWidget {
 }
 
 class _StoreValidationState extends State<StoreValidation> {
-  final _form = GlobalKey<FormState>();
+  // final _form = GlobalKey<FormState>();
   File? imageCNPJ;
   File? imageAddress;
 

@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:poraki/app/data/models/noticias.dart';
 import 'package:poraki/app/modules/auth/login/login_controller.dart';
-import 'package:poraki/app/modules/home/widgets/gradient_header_home.dart';
 import 'package:poraki/app/modules/news/news_controller.dart';
 import 'package:poraki/app/modules/home/home_controller.dart';
 
 class NewsListPage extends StatelessWidget {
-  final HomeController controller = Get.find(); // Get.put(HomeController());
+  final HomeController controller = Get.find();
   NewsListPage({Key? key}) : super(key: key);
 
   @override
@@ -67,10 +65,10 @@ class NewsListPage extends StatelessWidget {
           if (futuro.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
           } else {
-            return SingleChildScrollView(
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
+            return Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
                   const SizedBox(height: 10),
                   Center(
                       child: Text(
@@ -84,15 +82,14 @@ class NewsListPage extends StatelessWidget {
                             child: Text(
                                 "Ops, nenhuma novidade poraki agora... ;-)")))
                   else
-                    Container(
-                      height: MediaQuery.of(context).size.height,
+                    Expanded(
+                        child: Container(
                       child: ListView.builder(
                           scrollDirection: Axis.vertical,
+                          shrinkWrap: true,
                           padding: const EdgeInsets.all(6.0),
                           itemCount: _newsController.noticias.length,
                           itemBuilder: (BuildContext context, int index) {
-                            Noticia news = _newsController.noticias[index];
-
                             return Container(
                                 padding: const EdgeInsets.all(8),
                                 margin: const EdgeInsets.all(5),
@@ -100,14 +97,13 @@ class NewsListPage extends StatelessWidget {
                                   border: Border.all(
                                     color: backColor,
                                   ),
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10)),
+                                  borderRadius: BorderRadius.all(Radius.circular(10)),
                                   color: backColor,
                                 ),
-                                child: _buildRow(news));
+                                child: _buildRow(_newsController.noticias[index]));
                           }),
-                    )
-                ])
+                    ))
+                ]
                 //)
                 );
           }

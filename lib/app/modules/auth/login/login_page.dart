@@ -32,17 +32,16 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController _passwordInputController = TextEditingController();
   bool isLoading = false;
   bool _obscurePassword = false;
-  final _formKey = GlobalKey<FormState>();
+  // final _formKey = GlobalKey<FormState>();
   List<Map<String, dynamic>>? listUser;
+  final LoginController _loginController = Get.put(LoginController());
 
   String tempLoginResult =
       'OK'; // = futuro.data as List<Map<String, dynamic>>?;
 
   @override
   Widget build(BuildContext context) {
-// print('login build');
     _passwordInputController.text = 'jazz0612';
-    // _mailInputController.text = 'test';
     return FutureBuilder(
         future: buscaSqlUserData(),
         builder: (context, futuro) {
@@ -56,7 +55,10 @@ class _LoginPageState extends State<LoginPage> {
 
             return Scaffold(
               body: Container(
-                height: MediaQuery.of(context).size.height,
+                height: MediaQuery
+                    .of(context)
+                    .size
+                    .height,
                 padding: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
@@ -74,12 +76,15 @@ class _LoginPageState extends State<LoginPage> {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 1, vertical: 2),
-                          child:  FadeInImage.assetNetwork(
-                                  height: 110,imageCacheHeight: 110,placeholderCacheHeight: 110,
-                                  placeholder: 'assets/images/poraki250.png',
-                                  image:
-                                      'http://ec3.digital/wp-content/uploads/2023/03/poraki_pqn.png')),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 1, vertical: 2),
+                          child: FadeInImage.assetNetwork(
+                              height: 110,
+                              imageCacheHeight: 110,
+                              placeholderCacheHeight: 110,
+                              placeholder: 'assets/images/poraki250.png',
+                              image:
+                              'http://ec3.digital/wp-content/uploads/2023/03/poraki_pqn.png')),
                       Text(
                         "Entrar",
                         textAlign: TextAlign.center,
@@ -90,7 +95,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                       Form(
-                        key: _formKey,
+                        // key: _loginController.formKey,
                         child: Column(
                           children: [
                             TextFormField(
@@ -204,7 +209,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       ElevatedButton(
                         onPressed: () async {
-                          if (!isLoading && _formKey.currentState!.validate())
+                          if (!isLoading) // && _loginController.formKey.currentState!.validate())
                             tempLoginResult = await _doLogin(context);
 
                           setState(() {
@@ -219,7 +224,7 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                             );
                           } else {
-                            print(tempLoginResult);
+                            // print(tempLoginResult);
                             Alerta(context, tempLoginResult);
                           }
 
@@ -229,18 +234,18 @@ class _LoginPageState extends State<LoginPage> {
                         },
                         child: (isLoading)
                             ? const SizedBox(
-                                width: 16,
-                                height: 16,
-                                child: CircularProgressIndicator(
-                                  color: Colors.white,
-                                  strokeWidth: 1.5,
-                                ))
+                            width: 16,
+                            height: 16,
+                            child: CircularProgressIndicator(
+                              color: Colors.white,
+                              strokeWidth: 1.5,
+                            ))
                             : const Text(
-                                "Login",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                ),
-                              ),
+                          "Login",
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
                         style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.all<Color>(
                             Color(0xFF116530),
@@ -276,11 +281,9 @@ class _LoginPageState extends State<LoginPage> {
                             );
                           },
                           child: Text("Cadastre-se"),
-                          //color: Color(0xFFA3EBB1),
-                          //shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50),
-                          ),
                         ),
-                     // ),
+                      ),
+                      // ),
                       Padding(
                         padding: EdgeInsets.only(bottom: 10),
                       ),
@@ -294,7 +297,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<String> _doLogin(BuildContext context) async {
-    if (_formKey.currentState!.validate()) {
+    // if (_loginController.formKey.currentState!.validate()) {
       // //add email address to the shared prefs
       // PorAkiPrefs.savePrefStr("userEmail", _mailInputController.text);
       //
@@ -308,90 +311,15 @@ class _LoginPageState extends State<LoginPage> {
       // LoginService().login(_mailInputController.text, _passwordInputController.text);
 
       var loginResult = await LoginService().loginWithEmailAndPassword(
-          _mailInputController.text, _passwordInputController.text);
+          _mailInputController.text.trim(), _passwordInputController.text.trim(), null);
 
       //TODO: tratar a resposta do login
 
-      // // salva usuario no hive, cria instancia do hive e abre a box
-      // // new hivePorakiUserService().SetUserEmail(_mailInputController.text.trim());
-      // // recupera os dados do SQLite e joga no Hive para facilitar as buscas no app
-      // listUser = await buscaSqlUserData();
-      // for(var u in listUser!) //{
-      //   listUser!.forEach((element) {
-      //     // hivePorakiUserService().SetUserName(element["usuNome"].toString());
-      //     // hivePorakiUserService().SetLastLogin(DateTime.now().toString());
-      //     // hivePorakiUserService().SetUserCep(element["usuCEP"].toString());
-      //     // // hivePorakiUserService().SetUserCep('05735-030');
-      //     // hivePorakiUserService().SetUserUID('eyCv21RfaURoMn0SUndCg6LPyJP2');
-      //   });
 
       return loginResult;
-    } else {
-      print("Tentativa inválida");
-    }
-    return 'Erro';
+    // } else {
+    //   print("Tentativa inválida");
+    // }
+    // return 'Erro';
   }
-
-  // Alerta(BuildContext context, String msg)
-  // {
-  //   // configura o button
-  //   Widget okButton = ElevatedButton(
-  //     child: Text("OK"),
-  //     onPressed: () { Navigator.of(context).pop(); },
-  //   );
-  //   // configura o  AlertDialog
-  //   AlertDialog alerta = AlertDialog(
-  //     title: Text("Alerta"),
-  //     content: Text(msg),
-  //     actions: [
-  //       okButton,
-  //     ],
-  //   );
-  //   // exibe o dialog
-  //   showDialog(
-  //     context: context,
-  //     builder: (BuildContext context) {
-  //       return alerta;
-  //     },
-  //   );
-  // }
-
-// Future<LoginModel> _getSavedUser() async {
-//   SharedPreferences prefs = await SharedPreferences.getInstance();
-//   String jsonUser = prefs.getString(PreferencesKeys.activeUser);
-//   print(jsonUser);
-
-//   Map<String, dynamic> mapUser = json.decode(jsonUser);
-//   LoginModel user = LoginModel.fromJson(mapUser);
-//   return user;
-// }
 }
-
-// import 'package:flutter/material.dart';
-// import 'package:get/get_navigation/src/root/get_material_app.dart';
-// import 'package:poraki/app/routes/app_pages.dart';
-// import 'package:poraki/app/routes/app_routes.dart';
-// import 'package:poraki/app/theme/app_theme.dart';
-//
-// import 'widgets/body_login.dart';
-//
-// // class LoginPage extends StatelessWidget {
-// //   @override
-// //   Widget build(BuildContext context) {
-// //     return Scaffold(body: BodyLogin());
-// //   }
-// // }
-//
-// class LoginPage extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return GetMaterialApp(
-//       title: 'PorAki',
-//       // getPages: AppPages.routes,
-//       // theme: AppTheme.light(),
-//       themeMode: ThemeMode.light,
-//       initialRoute: AppRoutes.login,
-//       debugShowCheckedModeBanner: false,
-//     );
-//   }
-// }

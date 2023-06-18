@@ -41,7 +41,7 @@ class ListVerticalCategories extends StatelessWidget {
               {'listName': null},
               {'limit': 24},
               {'category': chave.toString()},
-              {'title': 'Categorias'},
+              {'title': categoryName},
               {'ofertaGuid': null}
             ]);
           },

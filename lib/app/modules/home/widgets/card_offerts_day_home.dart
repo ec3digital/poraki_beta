@@ -220,8 +220,9 @@ class CardOffertsDayHome extends StatelessWidget {
                                         SizedBox(height: 5),
                                         Text(
                                             'R\$ ${double.parse(cardListOffers[itemIndex].ofertaPreco.toString()).toStringAsFixed(2).replaceAll(',', '').replaceAll('.', ',')}',
-                                            style: Get.textTheme.headline1!
-                                                .copyWith(
+                                            style: TextStyle(
+                                              fontSize: 22,
+                                              fontWeight: FontWeight.bold,
                                               color: _loginController
                                                   .colorFromHex(_loginController
                                                       .listCore

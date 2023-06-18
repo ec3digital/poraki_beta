@@ -16,12 +16,12 @@ class FormSignup extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Form(
-      key: controller.formKey,
+      // key: controller.formKey,
       child: Column(
         children: [
           TextFormField(
             validator: (value) {
-              if (value!.length < 4) {
+              if (value!.length < 3) {
                 return "Digite um nome maior";
               }
               return null;
@@ -44,8 +44,8 @@ class FormSignup extends StatelessWidget {
           const SizedBox(height: 20,),
           TextFormField(
             validator: (value) {
-              if (value!.length < 10) {
-                return "Digite um nome maior";
+              if (value!.length < 3) {
+                return "Digite um sobrenome maior";
               }
               return null;
             },
@@ -74,7 +74,7 @@ class FormSignup extends StatelessWidget {
             inputFormatters: [FilteringTextInputFormatter.digitsOnly,CpfInputFormatter(), ],
             controller: controller.cpfInputController,
             autofocus: true,
-            onChanged: (cpf) { if (!CNPJValidator.isValid(cpf)) { Get.defaultDialog(title: "CPF Inválido", middleText: "Por favor informe um CPF válido" ); }  {} } ,
+            // onChanged: (cpf) { if (!CNPJValidator.isValid(cpf)) { Get.defaultDialog(title: "CPF Inválido", middleText: "Por favor informe um CPF válido" ); }  {} } ,
             style: TextStyle(color: Colors.white),
             decoration: InputDecoration(
               border: OutlineInputBorder(),
@@ -139,7 +139,7 @@ class FormSignup extends StatelessWidget {
           const SizedBox(height: 20,),
           TextFormField(
             validator: (value) {
-              if (value!.length != 8) {
+              if (value!.length < 8) {
                 return "Digite um CEP válido";
               }
               return null;

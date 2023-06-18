@@ -27,7 +27,7 @@ class AccountValidation extends StatefulWidget {
 }
 
 class _AccountValidationState extends State<AccountValidation> {
-  final _form = GlobalKey<FormState>();
+  // final _form = GlobalKey<FormState>();
   File? image;
 
   @override

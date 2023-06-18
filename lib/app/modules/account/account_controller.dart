@@ -27,7 +27,7 @@ class AccountController extends GetxController {
 
   // final LoginRepository loginRepository = LoginRepository();
   bool showPassword = false;
-  final formKey = GlobalKey<FormState>();
+  // final formKey = GlobalKey<FormState>();
 
   @override
   void onInit() async {

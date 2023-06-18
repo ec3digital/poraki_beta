@@ -12,25 +12,25 @@ class PorakiSplash extends StatefulWidget {
 }
 
 class _PorakiSplash extends State<PorakiSplash> {
-  //late String textSplash = '...';
-
   @override
   void initState() {
     super.initState();
-    Timer(Duration(seconds: 0), () async {
-      //textSplash = await fbPorakiService().getValueFromFirebase("akisplash", "splash", "texto");
-      //print('splash texto: ' + textSplash);
-      final LoginController _loginController = Get.find(); //.put(LoginController());
+    final LoginController _loginController = Get.find();
 
-      await _loginController.getCloudId();
+    Timer(Duration(seconds: 0), () async {
       await _loginController.runCore();
-      await _loginController.loadUserData();
-      await _loginController.getCategories();
-      await _loginController.loadStoresData();
-      //await _loginController.loadOffersFavs();
-      await _loginController.loadAddressData();
-      await _loginController.getListBannersFromFBCloud();
-      await _loginController.getBrands();
+
+      await Future.wait([
+        _loginController.getCloudId(),
+        _loginController.loadUserData(),
+        _loginController.getCategories(),
+        _loginController.loadStoresData(),
+        // _loginController.loadOffersFavs();
+        _loginController.loadAddressData(),
+        _loginController.getListBannersFromFBCloud(),
+        _loginController.getBrands(),
+      ]);
+
       Get.toNamed(AppRoutes.home);
     });
   }
@@ -45,32 +45,29 @@ class _PorakiSplash extends State<PorakiSplash> {
     String? textoSplash = '...';
     return FutureBuilder(
         future: pegaTextoSplash(),
-    builder: (context, futuro) {
-      textoSplash = (futuro.data ?? '...') as String?;
-      return Container(
-          width: MediaQuery
-              .of(context)
-              .size
-              .width * 0.9,
-          color: AppColors.secondaryBackground,
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                const SizedBox(height: 40),
-                FadeInImage.assetNetwork(
-                    placeholder: 'assets/images/poraki250.png',
-                    image:
-                    'https://firebasestorage.googleapis.com/v0/b/ec3digrepo.appspot.com/o/App%2Fporaki-splash.png?alt=media'),
-                CircularProgressIndicator(),
-                const SizedBox(height: 40),
-                Text(textoSplash.toString().replaceAll('\\n', '\n'),
-                    style: TextStyle(
-                        fontFamily: 'Montserrat',
-                        fontSize: 16,
-                        color: AppColors.darkText)),
-                const SizedBox(height: 180),
-              ]));
-    });
+        builder: (context, futuro) {
+          textoSplash = (futuro.data ?? '...') as String?;
+          return Container(
+              width: MediaQuery.of(context).size.width * 0.9,
+              color: AppColors.secondaryBackground,
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    const SizedBox(height: 40),
+                    FadeInImage.assetNetwork(
+                        placeholder: 'assets/images/poraki250.png',
+                        image:
+                            'https://firebasestorage.googleapis.com/v0/b/ec3digrepo.appspot.com/o/App%2Fporaki-splash.png?alt=media'),
+                    CircularProgressIndicator(),
+                    const SizedBox(height: 40),
+                    Text(textoSplash.toString().replaceAll('\\n', '\n'),
+                        style: TextStyle(
+                            fontFamily: 'Montserrat',
+                            fontSize: 16,
+                            color: AppColors.darkText)),
+                    const SizedBox(height: 180),
+                  ]));
+        });
   }
 }
