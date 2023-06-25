@@ -26,7 +26,7 @@ class _PorakiSplash extends State<PorakiSplash> {
         _loginController.getCategories(),
         _loginController.loadStoresData(),
         // _loginController.loadOffersFavs();
-        _loginController.loadAddressData(),
+        // _loginController.loadAddressData(),
         _loginController.getListBannersFromFBCloud(),
         _loginController.getBrands(),
       ]);

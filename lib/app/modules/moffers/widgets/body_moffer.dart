@@ -2241,15 +2241,13 @@ class _BodyMoffer extends State<BodyMoffer> {
                                         _mofferController.singleOffer!
                                             .OfertaGUID
                                             .toString());
-                                    await _loginController
-                                        .loadAddressData();
-
-                                    Get.offAndToNamed(AppRoutes.mOffers);
 
                                     Get.defaultDialog(
                                         title: "Aviso",
                                         middleText:
-                                        "Endereço removido do Poraki !");
+                                        "Oferta removida");
+
+                                    Get.offAndToNamed(AppRoutes.mOffers);
                                   },
                                   colorText: _loginController
                                       .colorFromHex(_loginController.listCore

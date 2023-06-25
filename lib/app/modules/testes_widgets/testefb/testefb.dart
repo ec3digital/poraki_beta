@@ -104,8 +104,8 @@ class _TesteFb extends State<TesteFb> {
     }
     print('_addUsuario antes');
     _fbInstance = FirebaseFirestore.instance;
-    var user = new Usuario(whatsapp: '123456', email: 'fulano@email.com', cpf: '11111111', cep: '05735030',sobrenome: 'da Silva',nome: 'Fulano');
-    await _fbInstance.collection('akiusuarios').doc().set(user.toFirestore()).then((value) => print('_addUsuario depois'));
+    var user = new Usuario(whatsapp: '123456', email: 'fulano@email.com', cpf: '11111111', cep: '05735030',apelido: 'da Silva',nome: 'Fulano');
+    //await _fbInstance.collection('akiusuarios').doc().set(user.toFirestore()).then((value) => print('_addUsuario depois'));
   }
 
   void _addOferta() async {

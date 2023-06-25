@@ -7,7 +7,7 @@ class NewsRepository extends GetConnect {
   LoginController _loginController = Get.find();
 
   Future<List<Noticia>> getAllNews() async {
-    var url = '${Constants.baseUrl}' + '/noticias/' + _loginController.usuCep.toString().substring(0,3); //'${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiLojasPorVendedor').first.coreValor.toString()}/' + usuguid,
+    var url = '${Constants.baseUrl}' + '/noticias/' + _loginController.cloudId.toString(); //'${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiLojasPorVendedor').first.coreValor.toString()}/' + usuguid,
     var response = await get(
         url,
         headers: Constants.headers);

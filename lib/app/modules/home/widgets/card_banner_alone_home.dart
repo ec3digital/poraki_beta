@@ -28,7 +28,7 @@ class _CardBannerAloneHomeState extends State<CardBannerAloneHome> {
     // print('avisoApp: ' + avisoApp.toString());
 
     var tempAvisosCep = await fbPorakiService().getListFromFirebase(
-        "akiavisos", _loginController.usuCep!.substring(0, 3));
+        "akiavisos", _loginController.cloudId.toString());
     tempAvisosCep.forEach((key, value) {
       avisoCep = value; // + ' (' + key + ')';
     });

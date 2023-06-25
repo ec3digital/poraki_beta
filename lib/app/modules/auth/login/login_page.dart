@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:poraki/app/app_widget.dart';
+import 'package:poraki/app/data/models/login_model.dart';
+import 'package:poraki/app/data/models/sql/sqlUsuario.dart';
+import 'package:poraki/app/modules/locals/local_pick_page.dart';
+import 'package:poraki/app/poraki-splash.dart';
+import 'package:poraki/app/routes/app_routes.dart';
 import 'package:poraki/app/services/sqlite/sqlporaki_core_service.dart';
 import 'package:poraki/app/theme/app_theme.dart';
 import 'package:poraki/app/modules/auth/sign_up/sign_up_page.dart';
@@ -16,7 +20,6 @@ class LoginPage extends StatefulWidget {
 
 Future<List<Map<String, dynamic>>> buscaSqlUserData() async {
   // var termos = await fbPorakiService().getValueFromFirebase('akitermos', 'termos', 'ptbr');
-  // print('termos new: ' + termos.toString());
 
   //aproveita e carrega os dados de sqlCore
   // verifica tabela core local
@@ -32,16 +35,16 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController _passwordInputController = TextEditingController();
   bool isLoading = false;
   bool _obscurePassword = false;
+  var _loginSvc = new LoginService();
   // final _formKey = GlobalKey<FormState>();
   List<Map<String, dynamic>>? listUser;
   final LoginController _loginController = Get.put(LoginController());
-
-  String tempLoginResult =
-      'OK'; // = futuro.data as List<Map<String, dynamic>>?;
+  String tempLoginResult = 'OK';
 
   @override
   Widget build(BuildContext context) {
     _passwordInputController.text = 'jazz0612';
+
     return FutureBuilder(
         future: buscaSqlUserData(),
         builder: (context, futuro) {
@@ -51,6 +54,7 @@ class _LoginPageState extends State<LoginPage> {
             listUser = futuro.data as List<Map<String, dynamic>>?;
             listUser!.forEach((element) {
               _mailInputController.text = element["usuEmail"].toString();
+              _loginController.usuCep = element["usuRegiao"].toString();
             });
 
             return Scaffold(
@@ -100,13 +104,6 @@ class _LoginPageState extends State<LoginPage> {
                           children: [
                             TextFormField(
                               validator: (value) {
-                                // RegExp regex = new RegExp(
-                                //     r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$');
-                                // if (value!.isEmpty || !regex.hasMatch(value))
-                                //   return 'Favor informar um endereço de e-mail correto';
-                                // else
-                                //   return null;
-
                                 if (value!.length < 5) {
                                   return "Esse e-mail parece curto demais";
                                 } else if (!value.contains("@")) {
@@ -117,6 +114,7 @@ class _LoginPageState extends State<LoginPage> {
                               controller: _mailInputController,
                               autofocus: _mailInputController.text.isEmpty,
                               style: TextStyle(color: Colors.white),
+                              keyboardType: TextInputType.emailAddress,
                               autofillHints: [AutofillHints.email],
                               decoration: InputDecoration(
                                 labelText: "E-mail",
@@ -178,7 +176,7 @@ class _LoginPageState extends State<LoginPage> {
                         padding: EdgeInsets.only(bottom: 6),
                       ),
                       GestureDetector(
-                        onTap: () {},
+                        onTap: () { Get.toNamed(AppRoutes.forgotPw); },
                         child: Text(
                           "Esqueceu a senha?",
                           style: TextStyle(
@@ -220,7 +218,7 @@ class _LoginPageState extends State<LoginPage> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => AppWidget(),
+                                builder: (context) => _loginController.usuCep == '' ? LocalPickPage() : PorakiSplash(),
                               ),
                             );
                           } else {
@@ -228,9 +226,9 @@ class _LoginPageState extends State<LoginPage> {
                             Alerta(context, tempLoginResult);
                           }
 
-                          setState(() {
-                            isLoading = tempLoginResult == 'OK' ? true : false;
-                          });
+                          // setState(() {
+                          //   isLoading = tempLoginResult == 'OK' ? true : false;
+                          // });
                         },
                         child: (isLoading)
                             ? const SizedBox(
@@ -281,6 +279,16 @@ class _LoginPageState extends State<LoginPage> {
                             );
                           },
                           child: Text("Cadastre-se"),
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all<Color>(
+                              Colors.blue,
+                            ),
+                            shape: MaterialStateProperty.all<OutlinedBorder>(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(50),
+                              ),
+                            ),
+                          ),
                         ),
                       ),
                       // ),
@@ -310,10 +318,13 @@ class _LoginPageState extends State<LoginPage> {
       //
       // LoginService().login(_mailInputController.text, _passwordInputController.text);
 
-      var loginResult = await LoginService().loginWithEmailAndPassword(
+
+      var loginResult = await _loginSvc.loginWithEmailAndPassword(
           _mailInputController.text.trim(), _passwordInputController.text.trim(), null);
 
+      print('loginResult $loginResult');
       //TODO: tratar a resposta do login
+      if(loginResult == "OK") _saveUser();
 
 
       return loginResult;
@@ -321,5 +332,27 @@ class _LoginPageState extends State<LoginPage> {
     //   print("Tentativa inválida");
     // }
     // return 'Erro';
+  }
+
+  void _saveUser() async {
+    _loginController.usuEmail = _mailInputController.text.removeAllWhitespace;
+    _loginController.usuNome = _loginSvc.CurrentUserObject!.displayName.toString();
+    _loginController.usuGuid = _loginSvc.CurrentUserObject!.uid.toString();
+
+    var sqlSvc = new sqlPorakiLoginService();
+    var newUser = new sqlUsuarios(
+        _mailInputController.text.removeAllWhitespace,
+        '',
+        // '',
+        // '','',
+        // '',
+        // '',
+        // '',
+        // '',
+        // DateTime.now().toString(),
+        // DateTime.now().toString(),
+        // '1.00'
+    );
+    sqlSvc.insertUsuario(newUser);
   }
 }

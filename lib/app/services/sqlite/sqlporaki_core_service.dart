@@ -161,7 +161,7 @@ class sqlPorakiCoreService {
       await db.execute(_createTable);
       print('verificaTabela - tabela core construída');
       await valoresIniciais();
-      print('verificaTabela - valor iniciais criados');
+      print('verificaTabela - valores iniciais criados');
     }
   }
 

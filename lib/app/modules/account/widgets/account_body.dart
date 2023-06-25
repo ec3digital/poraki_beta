@@ -2,7 +2,6 @@ import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:poraki/app/data/models/sql/sqlUsuario.dart';
 import 'package:poraki/app/modules/account/account_controller.dart';
 import 'package:poraki/app/modules/auth/login/login_controller.dart';
 import 'package:poraki/app/modules/home/widgets/gradient_header_home.dart';
@@ -15,8 +14,6 @@ class AccountBody extends StatefulWidget {
     // required this.controller,
   }) : super(key: key);
 
-  final AccountController _controller = Get.put(AccountController());
-
   @override
   _AccountBodyState createState() => _AccountBodyState();
 }
@@ -24,6 +21,7 @@ class AccountBody extends StatefulWidget {
 class _AccountBodyState extends State<AccountBody> {
   // final _form = GlobalKey<FormState>();
   bool _missingFields = false;
+  final AccountController _accountController = Get.put(AccountController());
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +33,7 @@ class _AccountBodyState extends State<AccountBody> {
         .toString());
 
     return FutureBuilder(
-        future: widget._controller.carregaUsuario(),
+        future: _accountController.carregaUsuario(),
         builder: (context, futuro) {
           if (futuro.connectionState == ConnectionState.waiting) {
             return Center(
@@ -76,22 +74,24 @@ class _AccountBodyState extends State<AccountBody> {
                         Text(_missingFields ? "Ops, existem informações faltantes na sua conta": ""),
 
                         TextFormField(
-                          // validator: (value) {
-                          //   if (value!.length < 4) {
-                          //     return "Digite um nome maior";
-                          //   }
-                          //   return null;
-                          // },
-                          controller: widget._controller.txtNome,
+                          validator: (value) {
+                            if (value!.length < 3) {
+                              return "Digite um nome correto";
+                            }
+                            return null;
+                          },
+                          controller: _accountController.txtNome,
+                          keyboardType: TextInputType.name,
                           autofocus: true,
-                          style: TextStyle(color: textDark),
+                          style: TextStyle(color: Colors.white),
+                          autofillHints: [AutofillHints.name],
                           decoration: InputDecoration(
                             border: OutlineInputBorder(),
-                            labelText: "Nome",
-                            labelStyle: TextStyle(color: textDark),
+                            labelText: "Nome Completo",
+                            labelStyle: TextStyle(color: Colors.white),
                             prefixIcon: Icon(
                               Icons.person,
-                              color: textDark,
+                              color: Colors.white,
                             ),
                           ),
                         ),
@@ -99,22 +99,24 @@ class _AccountBodyState extends State<AccountBody> {
                           height: 20,
                         ),
                         TextFormField(
-                          // validator: (value) {
-                          //   if (value!.length < 10) {
-                          //     return "Digite um nome maior";
-                          //   }
-                          //   return null;
-                          // },
-                          controller: widget._controller.txtSobreNome,
+                          validator: (value) {
+                            if (value!.length < 3) {
+                              return "Digite um apelido maior";
+                            }
+                            return null;
+                          },
+                          controller: _accountController.txtApelido,
                           autofocus: true,
-                          style: TextStyle(color: textDark),
+                          style: TextStyle(color: Colors.white),
+                          keyboardType: TextInputType.name,
+                          autofillHints: [AutofillHints.nickname],
                           decoration: InputDecoration(
                             border: OutlineInputBorder(),
-                            labelText: "Sobrenome",
-                            labelStyle: TextStyle(color: textDark),
+                            labelText: "Apelido",
+                            labelStyle: TextStyle(color: Colors.white),
                             prefixIcon: Icon(
                               Icons.person,
-                              color: textDark,
+                              color: Colors.white,
                             ),
                           ),
                         ),
@@ -128,34 +130,23 @@ class _AccountBodyState extends State<AccountBody> {
                           //   }
                           //   return null;
                           // },
-
                           inputFormatters: [
                             FilteringTextInputFormatter.digitsOnly,
                             CpfInputFormatter(),
                           ],
-                          controller: widget._controller.txtCPF,
+                          readOnly: true,
+                          controller: _accountController.txtCPF,
                           keyboardType: TextInputType.number,
                           autofocus: true,
-                          onChanged: (cpf) {
-                            if (!CNPJValidator.isValid(cpf)) {
-                              _missingFields = true;
-                              Get.defaultDialog(
-                                  title: "CPF Inválido",
-                                  middleText:
-                                      "Por favor informe um CPF válido");
-                            } else
-                            { if(widget._controller.txtCEP.text.isEmpty) setState(() {
-                              _missingFields = true;
-                            }); }
-                          },
-                          style: TextStyle(color: textDark),
+                          // onChanged: (cpf) { if (!CNPJValidator.isValid(cpf)) { Get.defaultDialog(title: "CPF Inválido", middleText: "Por favor informe um CPF válido" ); }  {} } ,
+                          style: TextStyle(color: Colors.black, fontStyle: FontStyle.italic),
                           decoration: InputDecoration(
                             border: OutlineInputBorder(),
                             labelText: "CPF",
-                            labelStyle: TextStyle(color: textDark),
+                            labelStyle: TextStyle(color: Colors.black, fontStyle: FontStyle.italic),
                             prefixIcon: Icon(
                               Icons.assignment_ind,
-                              color: textDark,
+                              color: Colors.black,
                             ),
                           ),
                         ),
@@ -174,51 +165,18 @@ class _AccountBodyState extends State<AccountBody> {
                             FilteringTextInputFormatter.digitsOnly,
                             TelefoneInputFormatter(),
                           ],
-                          controller: widget._controller.txtTelefone,
+                          controller: _accountController.txtTelefone,
                           keyboardType: TextInputType.phone,
+                          autofillHints: [AutofillHints.telephoneNumber],
                           autofocus: true,
-                          onChanged: (tel) {
-                            if(widget._controller.txtTelefone.text.isEmpty) setState(() {
-                                _missingFields = true;
-                              });
-                            },
-                          style: TextStyle(color: textDark),
+                          style: TextStyle(color: Colors.white),
                           decoration: InputDecoration(
                             border: OutlineInputBorder(),
-                            labelText: "Telefone Celular",
-                            labelStyle: TextStyle(color: textDark),
+                            labelText: "Telefone Celular / Whatsapp",
+                            labelStyle: TextStyle(color: Colors.white),
                             prefixIcon: Icon(
                               Icons.phone,
-                              color: textDark,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        TextFormField(
-                          // validator: (value) {
-                          //   if (value!.length < 5) {
-                          //     return "Esse e-mail parece curto demais";
-                          //   } else if (!value.contains("@")) {
-                          //     return "Esse e-mail está meio estranho, não?";
-                          //   }
-                          //   return null;
-                          // },
-                          readOnly: true,
-                          controller: widget._controller.txtEmail,
-                          keyboardType: TextInputType.emailAddress,
-                          autofocus: true,
-                          style: TextStyle(color: textDark),
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: "E-mail",
-                            labelStyle: TextStyle(
-                              color: textDark,
-                            ),
-                            prefixIcon: Icon(
-                              Icons.mail_outline,
-                              color: textDark,
+                              color: Colors.white,
                             ),
                           ),
                         ),
@@ -227,7 +185,37 @@ class _AccountBodyState extends State<AccountBody> {
                         ),
                         TextFormField(
                           validator: (value) {
-                            if (value!.length != 8) {
+                            RegExp regex = new RegExp(
+                                r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$');
+                            if (value!.isEmpty || !regex.hasMatch(value))
+                              return 'Favor informar um endereço de e-mail correto';
+                            else
+                              return null;
+                          },
+                          readOnly: true,
+                          controller: _accountController.txtEmail,
+                          autofocus: true,
+                          style: TextStyle(color: Colors.white),
+                          keyboardType: TextInputType.emailAddress,
+                          autofillHints: [AutofillHints.email],
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: "E-mail",
+                            labelStyle: TextStyle(
+                              color: Colors.white,
+                            ),
+                            prefixIcon: Icon(
+                              Icons.mail_outline,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        TextFormField(
+                          validator: (value) {
+                            if (value!.length < 8) {
                               return "Digite um CEP válido";
                             }
                             return null;
@@ -236,53 +224,52 @@ class _AccountBodyState extends State<AccountBody> {
                             FilteringTextInputFormatter.digitsOnly,
                             CepInputFormatter(),
                           ],
-                          controller: widget._controller.txtCEP,
+                          controller: _accountController.txtCEP,
                           keyboardType: TextInputType.number,
+                          autofillHints: [AutofillHints.postalCode],
                           autofocus: true,
-                          onChanged: (cep) {
-                            if(widget._controller.txtCEP.text.isEmpty) setState(() {
-                              _missingFields = true;
-                            });
-                          },
-                          style: TextStyle(color: textDark),
+                          style: TextStyle(color: Colors.white),
                           decoration: InputDecoration(
+                            filled: true,
                             border: OutlineInputBorder(),
                             labelText: "CEP",
-                            labelStyle: TextStyle(color: textDark),
+                            labelStyle: TextStyle(color: Colors.white),
                             prefixIcon: Icon(
                               Icons.map,
-                              color: Colors.brown,
+                              color: Colors.white,
                             ),
                           ),
                         ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        TextFormField(
-                          validator: (value) {
-                            if (value!.length != 10) {
-                              return "Digite uma data de nascimento válida";
-                            }
-                            return null;
-                          },
-                          inputFormatters: [
-                            FilteringTextInputFormatter.digitsOnly,
-                            DataInputFormatter(),
-                          ],
-                          controller: widget._controller.txtDtNasc,
-                          keyboardType: TextInputType.datetime,
-                          autofocus: true,
-                          style: TextStyle(color: textDark),
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: "Data de Nascimento",
-                            labelStyle: TextStyle(color: textDark),
-                            prefixIcon: Icon(
-                              Icons.event,
-                              color: textDark,
-                            ),
-                          ),
-                        ),
+
+                        // const SizedBox(
+                        //   height: 20,
+                        // ),
+                        // TextFormField(
+                        //   validator: (value) {
+                        //     if (value!.length != 10) {
+                        //       return "Digite uma data de nascimento válida";
+                        //     }
+                        //     return null;
+                        //   },
+                        //   inputFormatters: [
+                        //     FilteringTextInputFormatter.digitsOnly,
+                        //     DataInputFormatter(),
+                        //   ],
+                        //   controller: widget._controller.txtDtNasc,
+                        //   keyboardType: TextInputType.datetime,
+                        //   autofocus: true,
+                        //   style: TextStyle(color: textDark),
+                        //   decoration: InputDecoration(
+                        //     border: OutlineInputBorder(),
+                        //     labelText: "Data de Nascimento",
+                        //     labelStyle: TextStyle(color: textDark),
+                        //     prefixIcon: Icon(
+                        //       Icons.event,
+                        //       color: textDark,
+                        //     ),
+                        //   ),
+                        // ),
+
                         Padding(
                           padding: EdgeInsets.only(
                             bottom: 15,
@@ -381,31 +368,35 @@ class _AccountBodyState extends State<AccountBody> {
                         // ],
 
                         ButtonOffer(
-                          onPressed: () {
+                          onPressed: () async {
+                            await _accountController.atualizaUsuario();
+
                             // salva os dados do usuário
-                            widget._controller.atualizaUsuario(new sqlUsuarios(
-                                widget._controller.txtEmail.text
-                                    .removeAllWhitespace,
-                                widget._controller.txtNome.text.trimRight(),
-                                widget._controller.txtSobreNome.text
-                                    .trimRight(),
-                                widget._controller.txtCPF.text
-                                    .removeAllWhitespace,
-                                widget._controller.txtTelefone.text
-                                    .removeAllWhitespace,
-                                widget._controller.txtCEP.text
-                                    .removeAllWhitespace,
-                                widget._controller.txtEndereco.text
-                                    .trimRight()
-                                    .trimLeft(),
-                                widget._controller.txtNumero.text
-                                  ..trimRight().trimLeft(),
-                                widget._controller.txtCompl.text
-                                    .trimRight()
-                                    .trimLeft(),
-                                null,
-                                null,
-                                null));
+                            // widget._controller.atualizaUsuario(
+                            //     new sqlUsuarios(
+                            //     widget._controller.txtEmail.text
+                            //         .removeAllWhitespace,
+                            //     widget._controller.txtNome.text.trimRight(),
+                            //     widget._controller.txtSobreNome.text
+                            //         .trimRight(),
+                            //     widget._controller.txtCPF.text
+                            //         .removeAllWhitespace,
+                            //     widget._controller.txtTelefone.text
+                            //         .removeAllWhitespace,
+                            //     widget._controller.txtCEP.text
+                            //         .removeAllWhitespace,
+                            //     widget._controller.txtEndereco.text
+                            //         .trimRight()
+                            //         .trimLeft(),
+                            //     widget._controller.txtNumero.text
+                            //       ..trimRight().trimLeft(),
+                            //     widget._controller.txtCompl.text
+                            //         .trimRight()
+                            //         .trimLeft(),
+                            //     null,
+                            //     null,
+                            //     null
+                            //     ));
 
                             Get.defaultDialog(
                                 title: "Aviso",
@@ -446,7 +437,7 @@ class _AccountBodyState extends State<AccountBody> {
                         ),
                         ButtonOffer(
                           onPressed: () {
-                            // redireciona pra tela de alterar senha
+                            Get.toNamed(AppRoutes.updatePw);
                           },
                           colorText: textDark,
                           text: 'Mudar senha',

@@ -32,4 +32,6 @@ abstract class AppRoutes {
   static const storeValidation = '/store-validation';
   static const termos = '/termos';
   static const locals = '/locals';
+  static const forgotPw = '/forgotPw';
+  static const updatePw = '/updatePw';
 }

@@ -3,35 +3,32 @@ import 'package:sqflite/sqflite.dart';
 import '../../data/models/sql/sqlUsuario.dart';
 
 class sqlPorakiLoginService {
-
   // vai ser chamado apenas na tela de Login
   Future<void> openCreateDB() async {
     String dbPath = join(await getDatabasesPath(), 'poraki');
-    var db = await openDatabase(dbPath,
-    version: 1,
-    onCreate: (db, v) {
-      db.execute(_createTableUsuarios);
-      db.execute(_createTableCategories);
-      db.execute(_createTableCarrinho);
-      db.execute(_createTablePedidos);
-      db.execute(_createTablePedidoItens);
-      db.execute(_createTablePedidoMsgs);
-      db.execute(_createTableEnderecos);
+    var db = await openDatabase(dbPath, version: 1, onCreate: (db, v) {
+
+      // db.execute(_createTableCategories);
+      // db.execute(_createTableCarrinho);
+      // db.execute(_createTablePedidos);
+      // db.execute(_createTablePedidoItens);
+      // db.execute(_createTablePedidoMsgs);
+      // db.execute(_createTableEnderecos);
     });
 
     var usu = await buscaUsuDados();
-    if (usu.isEmpty)
-      await insertUsuarioDefault();
+    if (usu.isEmpty) await insertUsuarioDefault();
 
     await db.close();
   }
 
-  Future<List<Map<String,dynamic>>> buscaUsuDados() async {
-    String path = join( await getDatabasesPath(), 'poraki');
+  Future<List<Map<String, dynamic>>> buscaUsuDados() async {
+    String path = join(await getDatabasesPath(), 'poraki');
     Database db = await openDatabase(
-        path,
-        version: 1,
+      path,
+      version: 1,
     );
+    await db.execute(_createTableUsuarios);
 
     //await db.execute("DROP TABLE Pedidos");
     //await db.execute(_createTablePedidos);
@@ -46,10 +43,10 @@ class sqlPorakiLoginService {
   }
 
   Future<void> doSpecial() async {
-    String dbPath = join(await getDatabasesPath(), 'poraki');
-    var db = await openDatabase(dbPath, version: 1);
-    await db.execute("DROP TABLE carrinho");
-    await db.execute(_createTableCarrinho);
+    // String dbPath = join(await getDatabasesPath(), 'poraki');
+    // var db = await openDatabase(dbPath, version: 1);
+    // await db.execute("DROP TABLE carrinho");
+    // await db.execute(_createTableCarrinho);
   }
 
   Future<void> deleteUsuario() async {
@@ -59,19 +56,20 @@ class sqlPorakiLoginService {
 
     await db.close();
   }
-
-  Future<void> reinsertUsuario(sqlUsuarios usuario) async {
-    String dbPath = join(await getDatabasesPath(), 'poraki');
-    var db = await openDatabase(dbPath, version: 1);
-    await db.insert('usuarios', usuario.toMapBasic());
-
-    await db.close();
-  }
+  //
+  // Future<void> reinsertUsuario(sqlUsuarios usuario) async {
+  //   String dbPath = join(await getDatabasesPath(), 'poraki');
+  //   var db = await openDatabase(dbPath, version: 1);
+  //   await db.insert('usuarios', usuario.toMapBasic());
+  //
+  //   await db.close();
+  // }
 
   Future<void> insertUsuarioDefault() async {
     String dbPath = join(await getDatabasesPath(), 'poraki');
     var db = await openDatabase(dbPath, version: 1);
-    sqlUsuarios usuarios = new sqlUsuarios("seuMelhorEmail@dominio.com",".",".",".",".","05735-030",".",".",".",".","","1.0");
+    // sqlUsuarios usuarios = new sqlUsuarios("seuMelhorEmail@dominio.com", ".",".", ".", ".", "05735-030", ".", ".", ".", ".", "", "1.0");
+    sqlUsuarios usuarios = new sqlUsuarios("seuMelhorEmail@dominio.com","05735-030");
 
     await db.insert('usuarios', usuarios.toMap());
 
@@ -79,6 +77,7 @@ class sqlPorakiLoginService {
   }
 
   Future<void> insertUsuario(sqlUsuarios usuario) async {
+    await deleteUsuario();
     String dbPath = join(await getDatabasesPath(), 'poraki');
     var db = await openDatabase(dbPath, version: 1);
     //sqlUsuarios usuarios = new sqlUsuarios("seuMelhorEmail@dominio.com",".",".",".",".","05735-030",".",".",".",".","","1.0");
@@ -88,11 +87,21 @@ class sqlPorakiLoginService {
     await db.close();
   }
 
-  Future<void> updateUsuario(sqlUsuarios usuario) async {
+  // Future<void> updateUsuario(sqlUsuarios usuario) async {
+  //   String dbPath = join(await getDatabasesPath(), 'poraki');
+  //   var db = await openDatabase(dbPath, version: 1);
+  //
+  //   await db.update('usuarios', usuario.toMap(),
+  //       where: "usuEmail = ?", whereArgs: [usuario.usuEmail]);
+  //
+  //   await db.close();
+  // }
+
+  Future<void> updateUsuarioCEP(String cep, String email) async {
     String dbPath = join(await getDatabasesPath(), 'poraki');
     var db = await openDatabase(dbPath, version: 1);
 
-    await db.update('usuarios', usuario.toMap(), where: "usuEmail = ?", whereArgs: [usuario.usuEmail]);
+    await db.execute("UPDATE usuarios SET usuRegiao = '$cep' WHERE usuEmail='$email'");
 
     await db.close();
   }
@@ -106,28 +115,7 @@ class sqlPorakiLoginService {
   final String _createTableUsuarios = '''
     CREATE TABLE IF NOT EXISTS usuarios (
     usuEmail TEXT PRIMARY KEY,
-    usuNome TEXT,
-    usuSobreNome TEXT,
-    usuCPF TEXT,
-    usuTelefone TEXT,
-    usuCEP TEXT,
-    usuEndereco TEXT,
-    usuNumero TEXT,
-    usuCompl TEXT,
-    usuLastLogin TEXT,
-    usuTermosEm TEXT,
-    usuVersao TEXT
-    );
-  ''';
-
-  // cria no sucesso do login
-  final String _createTableCategories = '''
-    CREATE TABLE IF NOT EXISTS categorias (
-    categoriaChave TEXT PRIMARY KEY,
-    categoriaNome TEXT,
-    secao TEXT,
-    mostraBarra INT,
-    iconCode INT
+    usuRegiao TEXT
     );
   ''';
 
@@ -150,121 +138,150 @@ class sqlPorakiLoginService {
   ''';
 
 
-  // cria no momento da criação do usuario
-  final String _createTableUsuarioConfig = '''
-    CREATE TABLE IF NOT EXISTS usuariocfg (
-    usuEmail TEXT,
-    configChave TEXT,
-    configValor TEXT,
-    configAtiv INT
-    );
-  ''';
+// //cria na tela de login
+  // final String _createTableUsuarios = '''
+  //   CREATE TABLE IF NOT EXISTS usuarios (
+  //   usuEmail TEXT PRIMARY KEY,
+  //   usuNome TEXT,
+  //   usuSobreNome TEXT,
+  //   usuCPF TEXT,
+  //   usuTelefone TEXT,
+  //   usuCEP TEXT,
+  //   usuEndereco TEXT,
+  //   usuNumero TEXT,
+  //   usuCompl TEXT,
+  //   usuLastLogin TEXT,
+  //   usuTermosEm TEXT,
+  //   usuVersao TEXT
+  //   );
+  // ''';
 
-  // cria quando entra no app - Wave 2 (trazer o script direto da API)
-  final String _createTableDiconario = '''
-    CREATE TABLE IF NOT EXISTS dicionario (
-    dicValor TEXT,
-    dicChave TEXT,
-    dicTela TEXT
-    );
-  ''';
+  // // cria no sucesso do login
+  // final String _createTableCategories = '''
+  //   CREATE TABLE IF NOT EXISTS categorias (
+  //   categoriaChave TEXT PRIMARY KEY,
+  //   categoriaNome TEXT,
+  //   secao TEXT,
+  //   mostraBarra INT,
+  //   iconCode INT
+  //   );
+  // ''';
 
-  // cria no momento da criação do usuario
-  final String _createTableVendFav = '''
-    CREATE TABLE IF NOT EXISTS vendfavs (
-    vendGuid TEXT,
-    vendNome TEXT
-    );
-  ''';
-
-  // cria no momento da criação do usuario
-  final String _createTableVendedor = '''
-    CREATE TABLE IF NOT EXISTS vendedor (
-    vendGuid TEXT,
-    vendNome TEXT,
-    vendCEP TEXT
-    );
-  ''';
-
-  // cria no momento da criação do usuario
-  final String _createTableLojasFav = '''
-    CREATE TABLE IF NOT EXISTS lojasfavs (
-    lojaGUID TEXT,
-    lojaNome TEXT
-    );
-  ''';
-
-  // somente depois de fechada, enquanto aberta, somente da API
-  final String _createTablePedidos = '''
-    CREATE TABLE IF NOT EXISTS Pedidos (
-    pedidoGUID TEXT,
-    pedidoVendedorGUID TEXT,
-    pedidoVendedorEmail TEXT,
-    pedidoEm TEXT,
-    pedidoValorTotal TEXT,
-    pedidoFormaPagto TEXT,
-    pedidoCancelada INT,
-    pedidoPagtoEm TEXT,
-    pedidoPessoaNome TEXT,
-    pedidoPessoaEmail TEXT,
-    pedidoUsuGUID TEXT,
-    pedidoAval INT,
-    pedidoAvalEm TEXT,
-    pedidoMoeda TEXT,
-    pedidoCEP TEXT,
-    pedidoEndereco TEXT,
-    pedidoNumero TEXT,
-    pedidoCompl TEXT,
-    pedidoAutoriza TEXT,
-    pedidoInstituicao TEXT,
-    pedidoEntregaPrevista TEXT,
-    pedidoEntregaRealizadaEm TEXT,
-    pedidoEntregaPorUsuEmail TEXT,
-    pedidoEntregaPorUsuNome TEXT,
-    pedidoEntregaDetalhe TEXT,
-    pedidoDetalhe TEXT,
-    pedidoRecebidoPor TEXT,
-    pedidoLojaId TEXT
-    );
-  ''';
-
-  // somente depois de fechada, enquanto aberta, somente da API
-  final String _createTablePedidoItens = '''
-    CREATE TABLE IF NOT EXISTS pedidoitens (
-    pedidoItemGUID INT,
-    pedidoGUID TEXT,
-    ofertaGUID TEXT,
-    ofertaTitulo TEXT,
-    ofertaCEP TEXT,
-    ofertaVendedorGuid TEXT,
-    ofertaPreco REAL,
-    ofertaQtd INT,
-    ofertaTotal REAL,
-    ofertaImgPath TEXT,
-    categoriaChave TEXT,
-    ofertaDetalhe TEXT,
-    ofertaCanceladaEm TEXT,
-    ofertaCanceladaPorNome TEXT,
-    ofertaCanceladaPorEmail TEXT,
-    ofertaEntregaCodigo TEXT,
-    ofertaEntregueEm TEXT,
-    ofertaEntreguePorNome TEXT,
-    ofertaEntreguePorEmail TEXT,
-    ofertaPrevisaoEntrega TEXT,
-    ofertaLojaID TEXT
-    );
-  ''';
-
-  // somente depois de encerrado
-  final String _createTablePedidoMsgs = '''
-    CREATE TABLE IF NOT EXISTS pedidoMsgs (
-    pedidoGUID TEXT,
-    NomeVendedor TEXT,
-    NomeComprador TEXT,
-    Mensagem TEXT,
-    MensagemEm TEXT
-    );
-  ''';
+  // // cria no momento da criação do usuario
+  // final String _createTableUsuarioConfig = '''
+  //   CREATE TABLE IF NOT EXISTS usuariocfg (
+  //   usuEmail TEXT,
+  //   configChave TEXT,
+  //   configValor TEXT,
+  //   configAtiv INT
+  //   );
+  // ''';
+  //
+  // // cria quando entra no app - Wave 2 (trazer o script direto da API)
+  // final String _createTableDiconario = '''
+  //   CREATE TABLE IF NOT EXISTS dicionario (
+  //   dicValor TEXT,
+  //   dicChave TEXT,
+  //   dicTela TEXT
+  //   );
+  // ''';
+  //
+  // // cria no momento da criação do usuario
+  // final String _createTableVendFav = '''
+  //   CREATE TABLE IF NOT EXISTS vendfavs (
+  //   vendGuid TEXT,
+  //   vendNome TEXT
+  //   );
+  // ''';
+  //
+  // // cria no momento da criação do usuario
+  // final String _createTableVendedor = '''
+  //   CREATE TABLE IF NOT EXISTS vendedor (
+  //   vendGuid TEXT,
+  //   vendNome TEXT,
+  //   vendCEP TEXT
+  //   );
+  // ''';
+  //
+  // // cria no momento da criação do usuario
+  // final String _createTableLojasFav = '''
+  //   CREATE TABLE IF NOT EXISTS lojasfavs (
+  //   lojaGUID TEXT,
+  //   lojaNome TEXT
+  //   );
+  // ''';
+  //
+  // // somente depois de fechada, enquanto aberta, somente da API
+  // final String _createTablePedidos = '''
+  //   CREATE TABLE IF NOT EXISTS Pedidos (
+  //   pedidoGUID TEXT,
+  //   pedidoVendedorGUID TEXT,
+  //   pedidoVendedorEmail TEXT,
+  //   pedidoEm TEXT,
+  //   pedidoValorTotal TEXT,
+  //   pedidoFormaPagto TEXT,
+  //   pedidoCancelada INT,
+  //   pedidoPagtoEm TEXT,
+  //   pedidoPessoaNome TEXT,
+  //   pedidoPessoaEmail TEXT,
+  //   pedidoUsuGUID TEXT,
+  //   pedidoAval INT,
+  //   pedidoAvalEm TEXT,
+  //   pedidoMoeda TEXT,
+  //   pedidoCEP TEXT,
+  //   pedidoEndereco TEXT,
+  //   pedidoNumero TEXT,
+  //   pedidoCompl TEXT,
+  //   pedidoAutoriza TEXT,
+  //   pedidoInstituicao TEXT,
+  //   pedidoEntregaPrevista TEXT,
+  //   pedidoEntregaRealizadaEm TEXT,
+  //   pedidoEntregaPorUsuEmail TEXT,
+  //   pedidoEntregaPorUsuNome TEXT,
+  //   pedidoEntregaDetalhe TEXT,
+  //   pedidoDetalhe TEXT,
+  //   pedidoRecebidoPor TEXT,
+  //   pedidoLojaId TEXT
+  //   );
+  // ''';
+  //
+  // // somente depois de fechada, enquanto aberta, somente da API
+  // final String _createTablePedidoItens = '''
+  //   CREATE TABLE IF NOT EXISTS pedidoitens (
+  //   pedidoItemGUID INT,
+  //   pedidoGUID TEXT,
+  //   ofertaGUID TEXT,
+  //   ofertaTitulo TEXT,
+  //   ofertaCEP TEXT,
+  //   ofertaVendedorGuid TEXT,
+  //   ofertaPreco REAL,
+  //   ofertaQtd INT,
+  //   ofertaTotal REAL,
+  //   ofertaImgPath TEXT,
+  //   categoriaChave TEXT,
+  //   ofertaDetalhe TEXT,
+  //   ofertaCanceladaEm TEXT,
+  //   ofertaCanceladaPorNome TEXT,
+  //   ofertaCanceladaPorEmail TEXT,
+  //   ofertaEntregaCodigo TEXT,
+  //   ofertaEntregueEm TEXT,
+  //   ofertaEntreguePorNome TEXT,
+  //   ofertaEntreguePorEmail TEXT,
+  //   ofertaPrevisaoEntrega TEXT,
+  //   ofertaLojaID TEXT
+  //   );
+  // ''';
+  //
+  // // somente depois de encerrado
+  // final String _createTablePedidoMsgs = '''
+  //   CREATE TABLE IF NOT EXISTS pedidoMsgs (
+  //   pedidoGUID TEXT,
+  //   NomeVendedor TEXT,
+  //   NomeComprador TEXT,
+  //   Mensagem TEXT,
+  //   MensagemEm TEXT
+  //   );
+  // ''';
 
   // // somente depois de fechada, enquanto aberta, somente da API
   // final String _createTablecompras = '''
@@ -316,44 +333,43 @@ class sqlPorakiLoginService {
   //   );
   // ''';
 
-  // cria no momento de acesso ao menu anúncios
-  // mofertaDispoDesde poderá ser nullada pra alterar disponibilidade
-  final String _createTableMOfertas = '''
-    CREATE TABLE IF NOT EXISTS mofertas (
-    mofertaId INT,
-    mofertaTitulo TEXT,
-    mofertaDetalhe TEXT,
-    mofertaDispoDesde TEXT,
-    mofertaCEP TEXT,
-    mofertaPreco REAL,
-    mofertaQtd INT,
-    mofertaImgPath TEXT,
-    mcategoriaChave TEXT,
-    mofertaCancelada INT,
-    mofertaDispoAte TEXT,
-    mofertaTempoDeEntrega
-    );
-  ''';
-
-
-  // Tipos de Endereços: Home / Work / School / Others
-  final String _createTableEnderecos = '''
-    CREATE TABLE IF NOT EXISTS enderecos (
-    enderecoGuid TEXT,
-    usuEmail TEXT,
-    usuGuid TEXT,
-    enderecoCEP TEXT,
-    enderecoLogra TEXT,
-    enderecoNumero TEXT,
-    enderecoCompl TEXT,
-    enderecoTipo TEXT,
-    enderecoAtual TEXT,
-    enderecoUltData TEXT
-    enderecoDesde TEXT,
-    enderecoLatitude TEXT,
-    enderecoLongitude TEXT
-    );
-  ''';
+  // // cria no momento de acesso ao menu anúncios
+  // // mofertaDispoDesde poderá ser nullada pra alterar disponibilidade
+  // final String _createTableMOfertas = '''
+  //   CREATE TABLE IF NOT EXISTS mofertas (
+  //   mofertaId INT,
+  //   mofertaTitulo TEXT,
+  //   mofertaDetalhe TEXT,
+  //   mofertaDispoDesde TEXT,
+  //   mofertaCEP TEXT,
+  //   mofertaPreco REAL,
+  //   mofertaQtd INT,
+  //   mofertaImgPath TEXT,
+  //   mcategoriaChave TEXT,
+  //   mofertaCancelada INT,
+  //   mofertaDispoAte TEXT,
+  //   mofertaTempoDeEntrega
+  //   );
+  // ''';
+  //
+  // // Tipos de Endereços: Home / Work / School / Others
+  // final String _createTableEnderecos = '''
+  //   CREATE TABLE IF NOT EXISTS enderecos (
+  //   enderecoGuid TEXT,
+  //   usuEmail TEXT,
+  //   usuGuid TEXT,
+  //   enderecoCEP TEXT,
+  //   enderecoLogra TEXT,
+  //   enderecoNumero TEXT,
+  //   enderecoCompl TEXT,
+  //   enderecoTipo TEXT,
+  //   enderecoAtual TEXT,
+  //   enderecoUltData TEXT
+  //   enderecoDesde TEXT,
+  //   enderecoLatitude TEXT,
+  //   enderecoLongitude TEXT
+  //   );
+  // ''';
 
   // tempo de Entrega igual ao Jira
 // caracteristicas separado por ;
@@ -376,7 +392,4 @@ class sqlPorakiLoginService {
 // valor do orçamento
 // opcao de pagar sinal pra encomenda
 // para aceitar pagamentos ou se for lojinha, tem q passar por avaliacao civil
-
-
-
 }

@@ -177,7 +177,6 @@ class AddressController extends GetxController {
   Future<void> atualizaEndereco(Enderecos endereco) async {
     //var obj = fbInstance!.collection("akienderecos").doc(_login.usuGuid).collection("Enderecos").get().then((value) => value.docs.where((end) => end.)
 
-    //TODO: pegar o id do endereço
     String getId = '';
     await fbInstance!.collection("akienderecos").doc(_login.usuGuid).collection("Enderecos").where('EnderecoGuid', isEqualTo: enderecoSingle!.EnderecoGuid).get().then((ss) => getId = ss.docs.first.id);
     await fbInstance!.collection("akienderecos").doc(_login.usuGuid).collection("Enderecos").doc(getId).set(endereco.toJson());

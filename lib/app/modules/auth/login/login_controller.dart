@@ -8,14 +8,9 @@ import 'package:poraki/app/data/models/lojas.dart';
 import 'package:poraki/app/data/models/ofertafav.dart';
 import 'package:poraki/app/data/models/revendas.dart';
 import 'package:poraki/app/data/models/sql/sqlCore.dart';
-import 'package:poraki/app/data/repositories/address_repository.dart';
 import 'package:poraki/app/data/repositories/offerfav_repository.dart';
-import 'package:poraki/app/data/repositories/store_repository.dart';
-import 'package:poraki/app/modules/addresses/address_controller.dart';
 import 'package:poraki/app/services/fbporaki_service.dart';
-import 'package:poraki/app/services/sqlite/sqlporaki_address_service.dart';
 import 'package:poraki/app/services/sqlite/sqlporaki_core_service.dart';
-import 'package:poraki/app/services/sqlite/sqlporaki_login_service.dart';
 import '../../../data/models/categorias.dart';
 import '../../../data/repositories/login_repository.dart';
 import '../../../routes/app_routes.dart';
@@ -27,8 +22,6 @@ class LoginController extends GetxController {
   final LoginRepository loginRepository = LoginRepository();
   late FirebaseFirestore? fbInstance;
   final FirebaseAuth? auth = FirebaseAuth.instance;
-  //final AddressController addressController = Get.find();
-
   get obscurePassword => _obscurePassword;
 
   //TODO: pegar os banners do firebase
@@ -78,53 +71,26 @@ class LoginController extends GetxController {
   // carrega dados do usuario
   Future<void> loadUserData() async {
     print('loadUserData');
-    usuGuid = 'eyCv21RfaURoMn0SUndCg6LPyJP2';
-    // usuEmail = 'danilojazz@gmail.com';
+    usuGuid = auth!.currentUser!.uid.toString();
+    usuEmail = auth!.currentUser!.email.toString();
+    usuNome = auth!.currentUser!.displayName.toString();
 
     //pega o cep local
-    await _getCep();
-
-    //apaga todos os ceps da tabela local e baixa tudo de novo da nuvem
-    // await sqlPorakiAddressService().deleteEnderecos();
-    // await sqlPorakiAddressService().buscaEnderecos(false);
-
-    //pega o nome do usuario
-    List<Map<String, dynamic>>? listUser;
-    var sqlSvc = new sqlPorakiLoginService();
-    listUser = await sqlSvc.buscaUsuDados();
-    for (var u in listUser) //{
-      listUser.forEach((element) {
-        usuNome = element["usuNome"].toString();
-      });
+    //await _getCep();
   }
 
   // carrega endereços do usuario
   Future<void> loadAddressData() async {
-    listaEnderecos.clear();
-    await fbInstance!
-        .collection("akienderecos")
-        .doc(auth!.currentUser!.uid)
-        .collection("Enderecos")
-        .get()
-        .then((value) => value.docs.forEach((element) {
-              listaEnderecos.add(Enderecos.fromJson(element.data()));
-            }));
-
-    // var tempEnderecos =
-    // await fbPorakiService().getListFromFirebase("akienderecos", "eyCv21RfaURoMn0SUndCg6LPyJP2");
-    // tempEnderecos.forEach((key, value) {
-    //   print('endereço: ' + value);
-    //   listEnderecos.add(value);
-    // });
-
-    // print(tempEnderecos.values);
-
-    // var addressSvc = new AddressRepository();
-    // listEnderecos = await addressSvc.getAllAddresses();
-    // // for (var u in listUser) //{
-    // //   listUser.forEach((element) {
-    // //     usuNome = element["usuNome"].toString();
-    // //   });
+    //TODO: voltar esse codigo quando colocar endereços
+    // listaEnderecos.clear();
+    // await fbInstance!
+    //     .collection("akienderecos")
+    //     .doc(auth!.currentUser!.uid)
+    //     .collection("Enderecos")
+    //     .get()
+    //     .then((value) => value.docs.forEach((element) {
+    //           listaEnderecos.add(Enderecos.fromJson(element.data()));
+    //         }));
   }
 
   // carrega lojas do usuario
@@ -155,9 +121,6 @@ class LoginController extends GetxController {
   Future<void> getBrands() async {
     listaRevendas.clear();
     listaRevendasNomes.clear();
-
-    print('getBrands');
-    //await fbInstance!.collection("akicategs").doc("Categorias").collection("lista").get().then((value) => value.docs.forEach((element) { listaCategorias.add(Categorias.fromJson(element.data())); }));
 
     await fbInstance!
         .collection("akirevendas")
@@ -209,36 +172,8 @@ class LoginController extends GetxController {
       // insere os valores iniciais cep
       await sqlPorakiCoreService().valoresIniciaisCep();
 
-      // pega os valores da tabela local
-      var coreSqlCep = listCoreCep;
-
-      // //faz o iteracao da tabela local contra a nuvem pra nao causar erro caso haja mais chaves na nuvem
-      // coreSqlCep.forEach((coreItem) {
-      //   print('coreSqlCep: ' + coreItem.toString());
-      //   coreFBcep.forEach((key, value) {
-      //     print('coreFBcep key: ' + key.toString() + ' / coreFBcep value: ' + value.toString());
-      //
-      //     //   print(key);
-      //     //   var coreSqlUpdate =
-      //     //       coreSqlCep.where((coreItem) => coreItem.coreChave == key).first;
-      //     //   if (coreSqlUpdate.coreValor != value) {
-      //     //     coreSqlUpdate.coreValor = value.toString();
-      //     //     sqlPorakiCoreService().atualizaCoreCep(coreSqlUpdate);
-      //     //   }
-      //     var coreFBcepTemp = coreFB.entries
-      //         .where((element) => element.key == coreItem.coreChave)
-      //         .first;
-      //     if (coreItem.coreValor != coreFBcepTemp.value) {
-      //       coreItem.coreValor = coreFBcepTemp.value;
-      //
-      //       sqlPorakiCoreService().atualizaCoreCep(coreItem);
-      //     }
-      //   });
-      // });
-
       // atualiza lista de params core
       listCoreCep = await sqlPorakiCoreService().buscaTodosValoresCep();
-      // print('listCoreCep final qtd: ' + listCoreCep.length.toString());
     }
 
     // se chegaram dados da nuvem
@@ -250,24 +185,6 @@ class LoginController extends GetxController {
       await sqlPorakiCoreService().verificaTabela();
       // insere os valores iniciais
       await sqlPorakiCoreService().valoresIniciais();
-
-      // pega os valores da tabela local
-      var coreSql = listCoreTemp;
-      // print('coreSql new qtd: ' + coreSql.length.toString());
-
-      // //faz o iteracao da tabela local contra a nuvem pra nao causar erro caso haja mais chaves na nuvem
-      // coreSql.forEach((coreItem) {
-      //   // print('coreItem: ' + coreItem.coreChave);
-      //   var coreFBtemp = coreFB.entries
-      //       .where((element) => element.key == coreItem.coreChave)
-      //       .first;
-      //   if (coreItem.coreValor != coreFBtemp.value) {
-      //     coreItem.coreValor = coreFBtemp.value;
-      //     print('coreItem atualizado: ' + coreItem.coreChave);
-      //
-      //     sqlPorakiCoreService().atualizaCore(coreItem);
-      //   }
-      // });
 
       // atualiza lista de params core
       listCore = await sqlPorakiCoreService().buscaTodosValores();
@@ -289,8 +206,6 @@ class LoginController extends GetxController {
   }
 
   Future<void> getListBannersFromFBCloud() async {
-    // LoginController loginController = Get.find();
-
     var tempBannersApp =
         await fbPorakiService().getListFromFirebase("akibanners", "core");
     tempBannersApp.forEach((key, value) {
@@ -298,7 +213,7 @@ class LoginController extends GetxController {
       listBanners.add(value);
     });
     var tempBannersCep = await fbPorakiService()
-        .getListFromFirebase("akibanners", usuCep!.substring(0, 3));
+        .getListFromFirebase("akibanners", cloudId.toString());
     tempBannersCep.forEach((key, value) {
       listBanners.add(value);
     });
@@ -306,34 +221,9 @@ class LoginController extends GetxController {
 
   // valida o login
   void doLogin(BuildContext context) async {
-    // if (formKey.currentState!.validate()) {
-    //   loginRepository.userLogin(
-    //     LoginModel(
-    //       mail: mailInputController.text.removeAllWhitespace,
-    //       password: passwordInputController.text.removeAllWhitespace,
-    //       keepOn: false,
-    //       name: '',
-    //     ),
-    //   );
-
-    // salva usuario no hive, cria instancia do hive e abre a box
-    //new hivePorakiUserService().SetUserEmail(mailInputController.text.removeAllWhitespace);
-
-    // await loadUserData();
-    // await runCore();
-    // await loadOffersFavs();
-    // await loadStoresData();
-
-    // redireciona para a home de ofertas
-    // Get.toNamed(AppRoutes.offer);
     Get.toNamed(AppRoutes.categories);
 
-    // } else {
-    //   print("invalido");
-    // }
-
-    //compara qtd de pedidos fechados com a nuvem e atualiza se for o caso
-
     //executa comandos na base local
+
   }
 }

@@ -3,6 +3,8 @@ import 'package:poraki/app/modules/account/account_page.dart';
 import 'package:poraki/app/modules/account/account_validation.dart';
 import 'package:poraki/app/modules/addresses/address_page.dart';
 import 'package:poraki/app/modules/addresses/addresses_list_page.dart';
+import 'package:poraki/app/modules/auth/pw/forgot_pw_page.dart';
+import 'package:poraki/app/modules/auth/pw/update_pw_page.dart';
 import 'package:poraki/app/modules/auth/termos_page.dart';
 import 'package:poraki/app/modules/categories/categories_page.dart';
 import 'package:poraki/app/modules/chats/chatList_page.dart';
@@ -144,5 +146,14 @@ class AppPages {
       name: AppRoutes.locals,
       page: () => LocalPickPage(),
     ),
+    GetPage(
+      name: AppRoutes.updatePw,
+      page: () => UpdatePwPage(),
+    ),
+    GetPage(
+      name: AppRoutes.forgotPw,
+      page: () => ForgotPwPage(),
+    ),
+
   ];
 }

@@ -1,18 +1,22 @@
 class Usuario {
   final String? nome;
-  final String? sobrenome;
+  final String? apelido;
   final String? cpf;
   final String? email;
   final String? whatsapp;
   final String? cep;
+  final bool? cpfValidado;
+  final DateTime? dataNascimento;
 
   Usuario(
       {this.nome,
-      this.sobrenome,
+      this.apelido,
       this.cpf,
       this.email,
       this.whatsapp,
-      this.cep});
+      this.cep,
+      this.cpfValidado,
+      this.dataNascimento});
 
   // factory Usuario.fromFirestore(
   //     DocumentSnapshot<Map<String, dynamic>> snapshot,
@@ -24,23 +28,33 @@ class Usuario {
   //   );
   // }
 
-  factory Usuario.fromJson(Map<String, dynamic> elem){
+  factory Usuario.fromJson(Map<String, dynamic> elem) {
     return Usuario(
-      nome: elem['Nome'],
-      sobrenome: elem['Sobrenome'],
-      cep:  elem['CEP'],
-      cpf:  elem['CPF'],
-      email:  elem['Email'],
-      whatsapp:  elem['Whatsapp']
-    );
+        nome: elem['Nome'],
+        apelido: elem['Apelido'],
+        cep: elem['CEP'],
+        cpf: elem['CPF'],
+        email: elem['Email'],
+        whatsapp: elem['Whatsapp'],
+        cpfValidado: elem['cpfValidado'].toString() == 'true' ? true : false);
   }
 
-  Map<String, dynamic> toFirestore() {
+  Map<String, dynamic> toJsonAdd() {
     return {
       if (nome != null) "Nome": nome,
-      if (sobrenome != null) "Sobrenome": sobrenome,
+      if (apelido != null) "Apelido": apelido,
       if (cpf != null) "CPF": cpf,
       if (email != null) "Email": email,
+      if (whatsapp != null) "Whatsapp": whatsapp,
+      if (cep != null) "CEP": cep,
+      "cpfValidado": 'false'
+    };
+  }
+
+  Map<String, dynamic> toJsonUpdate() {
+    return {
+      if (nome != null) "Nome": nome,
+      if (apelido != null) "Apelido": apelido,
       if (whatsapp != null) "Whatsapp": whatsapp,
       if (cep != null) "CEP": cep,
     };

@@ -24,7 +24,7 @@ class _SignupBodyState extends State<SignupBody> {
     return Container(
       padding: EdgeInsets.symmetric(
         vertical: 50,
-        horizontal: 50,
+        horizontal: 20,
       ),
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height,
@@ -51,23 +51,9 @@ class _SignupBodyState extends State<SignupBody> {
             const SizedBox(
               height: 20,
             ),
-            Padding(padding: EdgeInsets.only(bottom: 10)),
+            Padding(padding: EdgeInsets.only(bottom: 4)),
             FormSignup(controller: widget.controller),
-            MaterialButton(
-              onPressed: () async {
-                var ret = await widget.controller.doSignUp();
-                if (ret == 'OK') {
-                  Get.toNamed(AppRoutes.locals);
-                } else {
-                  Alerta(context, ret.toString());
-                }
-              },
-              child: Text("Casdastrar"),
-              color: AppColors.secondaryColorButton,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(50),
-              ),
-            ),
+
           ],
         ),
       ),

@@ -14,11 +14,11 @@ class InitialBindings implements Bindings {
   @override
   void dependencies() {
     // Get.lazyPut(() => OrderController());
-    Get.put(() => CategoriesController());
-    Get.put(() => AddressController());
-    //Get.lazyPut(() => OffersController());
-    Get.put(() => StoreController());
+    // Get.put(() => CategoriesController());
+    // Get.put(() => AddressController());
+    // Get.put(() => StoreController());
 
+//Get.lazyPut(() => OffersController());
     // Get.lazyPut(() => ShoppingCartController());
 
     //Get.lazyPut(() => BrandsController());

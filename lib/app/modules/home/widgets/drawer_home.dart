@@ -1,4 +1,5 @@
 import 'package:badges/badges.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 // import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -6,7 +7,6 @@ import 'package:poraki/app/modules/auth/login/login_controller.dart';
 import 'package:poraki/app/modules/offers/offers_controller.dart';
 import 'package:poraki/app/routes/app_routes.dart';
 import 'package:poraki/app/services/sqlite/sqlporaki_login_service.dart';
-import 'package:poraki/app/shared/porakiprefs.dart';
 
 class DrawerHome extends StatefulWidget {
   final int index;
@@ -54,6 +54,7 @@ class _DrawerHomeState extends State<DrawerHome> {
         .first
         .coreValor
         .toString());
+    final FirebaseAuth? auth = FirebaseAuth.instance;
 
     // TODO: remover daqui e pegar direto do login Controller
     return FutureBuilder(
@@ -76,7 +77,7 @@ class _DrawerHomeState extends State<DrawerHome> {
                             decoration: BoxDecoration(color: darkBack),
                             margin: EdgeInsets.all(0.0),
                             child: Column(children: [
-                              Center(child: Text(_login.usuNome.toString())),
+                              Center(child: Text(auth!.currentUser!.displayName.toString())),
                               Center(child: Text(_login.usuCep.toString())),
                             ]))),
 
@@ -131,12 +132,14 @@ class _DrawerHomeState extends State<DrawerHome> {
                         ]);
                       },
                     ),
-                    RowCategoriesDrawerHome(
-                      text: 'Meus endereços',
-                      // isSelected: index == 6,
-                      icon: Icons.map,
-                      onTap: () => Get.toNamed(AppRoutes.addresses),
-                    ),
+
+                    // RowCategoriesDrawerHome(
+                    //   text: 'Meus endereços',
+                    //   // isSelected: index == 6,
+                    //   icon: Icons.map,
+                    //   onTap: () => Get.toNamed(AppRoutes.addresses),
+                    // ),
+
                     // RowCategoriesDrawerHome(
                     //     text: 'Minhas compras',
                     //     // isSelected: index == 2,

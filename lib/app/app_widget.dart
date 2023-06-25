@@ -18,7 +18,8 @@ class AppWidget extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       defaultTransition: Transition.noTransition,
       transitionDuration: Duration(seconds: 0),
-      initialBinding: InitialBindings(),
+      // initialBinding: InitialBindings(),
+      // useInheritedMediaQuery: true,
     );
   }
 }
