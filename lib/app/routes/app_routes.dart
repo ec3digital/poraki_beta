@@ -34,4 +34,6 @@ abstract class AppRoutes {
   static const locals = '/locals';
   static const forgotPw = '/forgotPw';
   static const updatePw = '/updatePw';
+  static const accountCancel = '/account-cancel';
+  static const accountBye = '/accountBy';
 }

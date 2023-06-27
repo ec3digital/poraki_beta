@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import 'package:poraki/app/modules/account/account_bye_page.dart';
+import 'package:poraki/app/modules/account/account_cancel_page.dart';
 import 'package:poraki/app/modules/account/account_page.dart';
 import 'package:poraki/app/modules/account/account_validation.dart';
 import 'package:poraki/app/modules/addresses/address_page.dart';
@@ -154,6 +156,13 @@ class AppPages {
       name: AppRoutes.forgotPw,
       page: () => ForgotPwPage(),
     ),
-
+    GetPage(
+      name: AppRoutes.accountCancel,
+      page: () => AccountCancelPage(),
+    ),
+    GetPage(
+      name: AppRoutes.accountBye,
+      page: () => AccountByePage(),
+    ),
   ];
 }

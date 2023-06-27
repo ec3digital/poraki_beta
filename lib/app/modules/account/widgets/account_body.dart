@@ -466,7 +466,7 @@ class _AccountBodyState extends State<AccountBody> {
                                     .coreValor
                                     .toString()),
                             onPressed: () =>
-                                Get.toNamed(AppRoutes.accountValidation)),
+                                Get.toNamed(AppRoutes.accountCancel)),
                         // )
                       ])
                       // ],

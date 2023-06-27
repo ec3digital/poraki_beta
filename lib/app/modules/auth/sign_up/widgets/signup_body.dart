@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:poraki/app/routes/app_routes.dart';
 import 'package:poraki/app/theme/app_theme.dart';
-import 'package:poraki/app/util/alerta.dart';
 import '../sign_up_controller.dart';
 import 'signup_form.dart';
 
