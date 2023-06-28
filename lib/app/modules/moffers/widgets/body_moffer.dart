@@ -14,78 +14,59 @@ import 'package:poraki/app/data/models/oferta.dart';
 import 'package:poraki/app/modules/auth/login/login_controller.dart';
 import 'package:poraki/app/modules/categories/categories_controller.dart';
 import 'package:poraki/app/modules/home/widgets/gradient_header_home.dart';
-import 'package:poraki/app/modules/moffers/brands_controller.dart';
 import 'package:poraki/app/modules/moffers/moffer_controller.dart';
-import 'package:poraki/app/modules/moffers/partners_controller.dart';
 import 'package:poraki/app/modules/offers/widgets/button_offer.dart';
 import 'package:poraki/app/shared/constants/constants.dart';
 import 'package:poraki/app/routes/app_routes.dart';
 
-import '../brands_controller.dart';
-
 class BodyMoffer extends StatefulWidget {
-
   BodyMoffer({Key? key, required this.offer}) : super(key: key);
-
-  //final String? _offerGuid;
   final Oferta? offer;
-  
-  //Get.put(MofferController());
-
-  // Function? addProduct;
+  //final String? _offerGuid;
 
   @override
   _BodyMoffer createState() => _BodyMoffer();
 }
-
 
 class _BodyMoffer extends State<BodyMoffer> {
   File? image;
   List<String> _listaCategoriasNomes = [];
   final CategoriesController _categoriesController = Get.put(CategoriesController()); // .find();
   final MofferController _mofferController = Get.find();
-  // final BrandsController _brandsController = Get.put(BrandsController());
-  // final PartnersController partnersController = Get.find();
-  // final LoginController loginController = Get.find();
-  // final MofferController _mofferController = Get.put(MofferController());
-
-  // final String tipo = 'G';
   var _categSelecionada = new Categorias();
   var _imgcloud = '';
   var _offerGuid = '';
   var _imgEdited = false;
-  //var _editMode = false;
-  bool _isEditing = false;
-
   var _priceFocusNode = FocusNode();
   var _descriptionFocusNode = FocusNode();
   var _imageURLFocusNode = FocusNode();
   var _imageURLController = TextEditingController();
+  bool _isEditing = false;
   // var _form = GlobalKey<FormState>();
 
   bool _isLoading = false;
   bool _load = true;
+  var _revendaSel = 'selecione';
+  var _categoriaSel = '';
+
+  // var _listaRevendas = ['selecione'];
   //Categorias? catogoria;
   // var listaCategs = ['selecione']; // pegar da API
   // var _listaTempoEntregaTipo = ['selecione', 'minutos', 'horas', 'dias'];
   // var listaFormaFechamento = ['selecione'];
   // var listaFormaEntrega = ['selecione', 'vendedor', 'comprador'];
-  var _listaRevendas = ['selecione'];
   // var listaFormaEntrega2 = ['selecione', 'vendedor', 'comprador'];
-  // var listaParceiros = ['selecione']; //TODO: pegar da API
+  // var listaParceiros = ['selecione'];
   // var _valueSel;
   //late String categSel = 'selecione';
   // var tempoEntregaTipoSel = 'selecione';
   // var agenteEntregaSel = 'selecione';
   // var formaFechSel = 'selecione';
-  var _revendaSel = 'selecione';
   // var parceiroSel = 'escolha o parceiro';
   // var materialSel = 'selecione';
   // var voltagemSel = 'selecione';
-  var _categoriaSel = '';
   // var _labelEntrega = 'Entrega';
   // var _labelValidade = 'Validade';
-
   // bool _valAceitaEntregaComprador = false;
   // bool _valAceitaEntregaParceiro = false;
   // bool _valAceitaEntregaVendedor = false;
@@ -161,13 +142,12 @@ class _BodyMoffer extends State<BodyMoffer> {
   // late TextFormField txtfPesoPorcao;
   // late TextFormField txtfCEP;
   // late TextFormField txtfPreco;
-  //
+
 
   @override
   void initState() {
     print('initState moffer');
     _imageURLFocusNode.addListener(_updateImageUrl);
-
 
     //   if(_brandsController.revendas.length == 0){
     //     _brandsController.revendas.forEach((rev) {
@@ -183,7 +163,6 @@ class _BodyMoffer extends State<BodyMoffer> {
     //   listaParceiros.add(part.ParceiroEntregaNome.toString());
     // });
     // print('lista parceiros: ' + listaParceiros.length.toString());
-
 
     //final LoginController loginController = Get.find();
     _mofferController.txtCEP.text =
@@ -299,7 +278,6 @@ class _BodyMoffer extends State<BodyMoffer> {
                       child: ListView(
                         children: [
                           const SizedBox(height: 20),
-
                           Text('Categoria'),
                           DropdownButton<String>(
                             items: _listaCategoriasNomes
@@ -328,7 +306,6 @@ class _BodyMoffer extends State<BodyMoffer> {
                               }
                             },
                           ),
-
 
                           //
                           // ListTile(

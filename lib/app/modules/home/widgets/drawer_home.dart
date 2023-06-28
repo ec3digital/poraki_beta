@@ -190,7 +190,7 @@ class _DrawerHomeState extends State<DrawerHome> {
                       // isSelected: index == 9,
                       onTap: () {
                         Get.deleteAll(force: true);
-                        _runSpecialCmds();
+                        // _runSpecialCmds();
                         Get.offAllNamed(AppRoutes.signIn);
                       },
                       icon: Icons.arrow_back,

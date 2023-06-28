@@ -48,7 +48,7 @@ class ListOffers extends StatelessWidget {
                         .first
                         .coreValor
                         .toString() +
-                    oferta.ofertaID.toString() +
+                    oferta.ofertaGUID.toString() +
                     _loginController.listCore
                         .where(
                             (coreItem) => coreItem.coreChave == 'imgpathsuffix')
