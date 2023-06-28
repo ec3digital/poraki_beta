@@ -77,8 +77,14 @@ class _DrawerHomeState extends State<DrawerHome> {
                             decoration: BoxDecoration(color: darkBack),
                             margin: EdgeInsets.all(0.0),
                             child: Column(children: [
-                              Center(child: Text(auth!.currentUser!.displayName.toString())),
-                              Center(child: Text(_login.usuCep.toString())),
+                              Center(
+                                  child: Text(
+                                auth!.currentUser!.displayName.toString(),
+                                style: TextStyle(fontSize: 18),
+                              )),
+                              const SizedBox(height: 8),
+                              Center(child: Text(_login.usuCep.toString(),
+                                style: TextStyle(fontSize: 14),)),
                             ]))),
 
                     RowCategoriesDrawerHome(
@@ -262,38 +268,38 @@ class RowCategoriesDrawerHome extends StatelessWidget {
       );
     } else {
       return ListTile(
-          style: ListTileStyle.list,
-          onTap: onTap,
-          tileColor: _loginController.colorFromHex(_loginController.listCore
-              .where((coreItem) => coreItem.coreChave == 'backLight')
-              .first
-              .coreValor
-              .toString()),
-          minLeadingWidth: (Get.width * 0.3) * 0.01,
-          title: Text(
-            text,
-            style: TextStyle(
-              fontSize: 16, //fontWeight: FontWeight.bold,
-              // height: 0.1,
-              // fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-              color: _loginController.colorFromHex(_loginController.listCore
-                  .where((coreItem) => coreItem.coreChave == 'textDark')
-                  .first
-                  .coreValor
-                  .toString()),
-            ),
+        style: ListTileStyle.list,
+        onTap: onTap,
+        tileColor: _loginController.colorFromHex(_loginController.listCore
+            .where((coreItem) => coreItem.coreChave == 'backLight')
+            .first
+            .coreValor
+            .toString()),
+        minLeadingWidth: (Get.width * 0.3) * 0.01,
+        title: Text(
+          text,
+          style: TextStyle(
+            fontSize: 16, //fontWeight: FontWeight.bold,
+            // height: 0.1,
+            // fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+            color: _loginController.colorFromHex(_loginController.listCore
+                .where((coreItem) => coreItem.coreChave == 'textDark')
+                .first
+                .coreValor
+                .toString()),
           ),
-          // leading: Badge(
-          //     badgeContent: Text('3'),
-          //     child: Icon(
-          //       icon,
-          //       color: _loginController.colorFromHex(_loginController.listCore
-          //           .where((coreItem) => coreItem.coreChave == 'textDark')
-          //           .first
-          //           .coreValor
-          //           .toString()),
-          //       size: 20,
-          //     ))
+        ),
+        // leading: Badge(
+        //     badgeContent: Text('3'),
+        //     child: Icon(
+        //       icon,
+        //       color: _loginController.colorFromHex(_loginController.listCore
+        //           .where((coreItem) => coreItem.coreChave == 'textDark')
+        //           .first
+        //           .coreValor
+        //           .toString()),
+        //       size: 20,
+        //     ))
       );
     }
   }

@@ -222,6 +222,10 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                             );
                           } else {
+                            setState(() {
+                              isLoading = false;
+                            });
+
                             // print(tempLoginResult);
                             Alerta(context, tempLoginResult);
                           }
