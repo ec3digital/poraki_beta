@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import 'package:poraki/app/data/models/enderecos.dart';
 import 'package:poraki/app/data/models/lojas.dart';
 import 'package:poraki/app/data/models/ofertafav.dart';
-import 'package:poraki/app/data/models/revendas.dart';
+import 'package:poraki/app/data/models/produto_oferta.dart';
 import 'package:poraki/app/data/models/sql/sqlCore.dart';
 import 'package:poraki/app/data/repositories/offerfav_repository.dart';
 import 'package:poraki/app/services/fbporaki_service.dart';
@@ -24,7 +24,6 @@ class LoginController extends GetxController {
   final FirebaseAuth? auth = FirebaseAuth.instance;
   get obscurePassword => _obscurePassword;
 
-  //TODO: pegar os banners do firebase
   List<String> listBanners = [
     'http://poraki-assets.ec3.digital/wp-content/uploads/2021/11/PORAKI-Banner-sm_default1.jpg',
   ];
@@ -32,9 +31,10 @@ class LoginController extends GetxController {
   List<sqlCore> listCoreCep = [];
   List<Enderecos> listaEnderecos = [];
   List<Lojas> listLojas = [];
-  List<OfertasFavs> ofertasFavs = [];
+  //List<OfertasFavs> ofertasFavs = [];
+  List<ProdutoOferta> ofertasFavs = [];
   List<Categorias> listaCategorias = [];
-  List<Revendas> listaRevendas = [];
+  // List<Revendas> listaRevendas = [];
   List<String> listaRevendasNomes = [];
   bool _obscurePassword = false;
   bool refreshOfertasFavs = false;
@@ -42,7 +42,7 @@ class LoginController extends GetxController {
   String? usuNome;
   String? usuEmail;
   String? usuGuid;
-  String? cloudId;
+  String cloudId = "057";
   // TODO: implementar baseUrl + headers por CEP
   // String? baseUrl;
   // Map<String, String>? headers;
@@ -119,7 +119,7 @@ class LoginController extends GetxController {
   }
 
   Future<void> getBrands() async {
-    listaRevendas.clear();
+    // listaRevendas.clear();
     listaRevendasNomes.clear();
 
     await fbInstance!
@@ -131,13 +131,13 @@ class LoginController extends GetxController {
         List<dynamic> lista = element;
         lista.sort();
         lista.forEach((ee) {
-          listaRevendas.add(new Revendas(ee.toString(), ee.toString()));
+          // listaRevendas.add(new Revendas(ee.toString(), ee.toString()));
           listaRevendasNomes.add(ee.toString());
         });
       });
     });
 
-    listaRevendas.add(new Revendas('selecione', 'selecione'));
+    // listaRevendas.add(new Revendas('selecione', 'selecione'));
     listaRevendasNomes.add('selecione');
   }
 
@@ -145,12 +145,14 @@ class LoginController extends GetxController {
     print('entrou no loadOffersFavs()');
     var offerfavRepository = new OfferfavRepository();
 
-    if (refreshOfertasFavs) {
-      refreshOfertasFavs = false;
-      await offerfavRepository.updateCollection(ofertasFavs);
-    }
-    // ofertasFavs.clear();
-    ofertasFavs = await offerfavRepository.getAll();
+    // if (refreshOfertasFavs) {
+    //   refreshOfertasFavs = false;
+      //await offerfavRepository.updateCollection(ofertasFavs);
+    // }
+    // // ofertasFavs.clear();
+
+    // ofertasFavs = await offerfavRepository.getAll();
+    //ofertasFavs = await offer
     print('qt ofertasFavs: ' + ofertasFavs.length.toString());
   }
 
@@ -161,8 +163,8 @@ class LoginController extends GetxController {
     var coreFB = await fbPorakiService().getListFromFirebase("akicore", "core");
     listCoreTemp = await sqlPorakiCoreService().buscaTodosValores();
 
-    var coreFBcep = await fbPorakiService()
-        .getListFromFirebase("akicore", "057"); // cloudId.toString());
+    // var coreFBcep = await fbPorakiService().getListFromFirebase("akicore", "057"); // cloudId.toString());
+    var coreFBcep = await fbPorakiService().getListFromFirebase("akicore", cloudId.toString());
     listCoreCep = await sqlPorakiCoreService().buscaTodosValoresCep();
     if (coreFBcep.isNotEmpty) {
       // reseta tabela core local cep

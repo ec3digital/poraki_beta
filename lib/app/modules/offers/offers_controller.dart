@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:poraki/app/data/models/oferta.dart';
+import 'package:poraki/app/modules/auth/login/login_controller.dart';
 import '../../data/models/produto_oferta.dart';
 import '../../data/repositories/offer_repository.dart';
 
@@ -48,7 +49,7 @@ class OffersController extends GetxController {
 
         if (this.listName == 'bestsellers') await getBestSellerOffers(limit);
 
-        if (this.listName == 'favsoffers') await getBestSellerOffers(limit);
+        if (this.listName == 'favsoffers') await getOffersFavsByUser(limit); // getBestSellerOffers(limit);
       }
       else {
         if (this.category == null && this.title == null &&
@@ -242,16 +243,18 @@ class OffersController extends GetxController {
   }
 
   Future<void> getOffersFavsByUser(int limit) async {
-    try {
-      changeLoading(true);
-      print('entrou no getOffersFavsByUser');
-      offers = await offerRepository.getFavsOffers(limit);
-      this.refresh();
-    } catch (e) {
-      print('Erro no getOffersFavsByUser() controller ${e.toString()}');
-    } finally {
-      changeLoading(false);
-    }
+    LoginController _loginController = Get.find();
+    offers = _loginController.ofertasFavs;
+    // try {
+    //   changeLoading(true);
+    //   print('entrou no getOffersFavsByUser');
+    //   offers = await offerRepository.getFavsOffers(limit);
+    //   this.refresh();
+    // } catch (e) {
+    //   print('Erro no getOffersFavsByUser() controller ${e.toString()}');
+    // } finally {
+    //   changeLoading(false);
+    // }
   }
 
   Future<void> getOfferById(int ofertaId) async {

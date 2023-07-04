@@ -21,17 +21,17 @@ class Lojas {
   Lojas.fromJson(Map<String, dynamic> json) {
     LojaAtivaDesde = DateTime.now(); // json['LojaAtivaDesde'];
     //LojaTemplateChave = json['LojaTemplateChave'];
-    LojaNome = json['LojaNome'].toString();
-    LojaCEP = json['LojaCEP'].toString();
-    LojaSlogan = json['LojaSlogan'].toString();
+    LojaNome = json['LojaNome'].toString().trim();
+    LojaCEP = json['LojaCEP'].toString().trim();
+    LojaSlogan = json['LojaSlogan'].toString().trim();
     LojaGUID = json['LojaGUID'].toString();
-    VendedorID = json['VendedorID'].toString();
-    LojaCNPJ = json['LojaCNPJ'].toString();
-    LojaRazao = json['LojaRazao'].toString();
-    Categorias = json['Categorias'].toString();
-    LojaLogra = json['LojaLogra'].toString();
-    LojaNumero = json['LojaNumero'].toString();
-    LojaCompl = json['LojaCompl'].toString();
+    VendedorID = json['VendedorID'].toString().trim();
+    LojaCNPJ = json['LojaCNPJ'].toString().trim();
+    LojaRazao = json['LojaRazao'].toString().trim();
+    Categorias = json['Categorias'].toString().trim();
+    LojaLogra = json['LojaLogra'].toString().trim();
+    LojaNumero = json['LojaNumero'].toString().trim();
+    LojaCompl = json['LojaCompl'].toString().trim();
   }
 
   // Lojas.listFromJson(List<Map<String, dynamic>> json) {
@@ -57,17 +57,17 @@ class Lojas {
 
     //data['LojaAtivaDesde'] = this.LojaAtivaDesde;
     //data['LojaTemplateChave'] = this.LojaTemplateChave;
-    data['LojaNome'] = this.LojaNome;
-    data['LojaCEP'] = this.LojaCEP;
-    data['LojaSlogan'] = this.LojaSlogan;
+    data['LojaNome'] = this.LojaNome.toString().trim();
+    data['LojaCEP'] = this.LojaCEP.toString().trim();
+    data['LojaSlogan'] = this.LojaSlogan.toString().trim();
 
-    data['LojaCNPJ'] = this.LojaCNPJ;
-    data['LojaRazao'] = this.LojaRazao;
+    data['LojaCNPJ'] = this.LojaCNPJ.toString().trim();
+    data['LojaRazao'] = this.LojaRazao.toString().trim();
     //data['Categorias'] = this.Categorias;
     //data['LojaConfigs'] = this.LojaConfigs;
-    data['LojaLogra'] = this.LojaLogra;
-    data['LojaNumero'] = this.LojaNumero;
-    data['LojaCompl'] = this.LojaCompl;
+    data['LojaLogra'] = this.LojaLogra.toString().trim();
+    data['LojaNumero'] = this.LojaNumero.toString().trim();
+    data['LojaCompl'] = this.LojaCompl.toString().trim();
 
     //if(this.LojaGUID != null) {
       data['LojaGUID'] = this.LojaGUID;

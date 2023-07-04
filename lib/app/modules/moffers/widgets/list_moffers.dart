@@ -125,8 +125,8 @@ class _ListMoffersState extends State<ListMoffers> {
                   const SizedBox(height: 5),
                   ButtonOffer(
                     onPressed: () {
-                      //mofferController.singleOffer = new Oferta(null, null, _loginController.usuGuid, '', '', 0, null, null, null, null, null, _loginController.usuCep, null, null, 0, 0, 0, null, null, null, 0, 0, 0, 0, null, 0, 0, false, true, false, false, false, null, null, null, null, null, null, null, null, null, true, 0, null, null, null, null, 0, 0, 0, true, null, false, false, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, false, true, false, true, false, true);
                       mofferController.singleOffer = null;
+                      mofferController.lojaGuid = selStore == null ? '' : selStore!.LojaGUID.toString();
                       Get.toNamed(AppRoutes.mOffer);
                     },
                     colorText: _loginController.colorFromHex(_loginController

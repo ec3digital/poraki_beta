@@ -114,8 +114,8 @@ class _BodyMoffer extends State<BodyMoffer> {
   // bool showTxtTempoEntrega = false;
   bool showTxtCores = false;
   bool showTxtTamanhos = false;
-  bool showTxtPesoPorcao = false;
-  bool showTxtPesoPorcaoUn = false;
+  // bool showTxtPesoPorcao = false;
+  // bool showTxtPesoPorcaoUn = false;
   bool showTxtSabor = false;
   bool showTxtValidade = false;
   bool showTxtValorSinalOrc = false;
@@ -189,7 +189,7 @@ class _BodyMoffer extends State<BodyMoffer> {
     // _mofferController.txtValorSinalOrc.text = '0.00';
     _mofferController.txtValidade.text = '0';
     // _mofferController.txtPesoPorcao.text = '0.00';
-    _mofferController.txtPesoPorcaoUn.text = '';
+    // _mofferController.txtPesoPorcaoUn.text = '';
     _mofferController.txtDescricao.text = '';
     _mofferController.txtDetalhes.text = '';
     _mofferController.txtTamanhos.text = '';
@@ -2343,93 +2343,100 @@ class _BodyMoffer extends State<BodyMoffer> {
     assert(valPreco is double);
     print(valPreco.runtimeType);
 
-    var offerToSend = new Oferta(
-      null,
-      _categSelecionada.categoriaChave,
-      usuGuid,
-      _mofferController.txtTitulo.text,
-      _mofferController.txtDetalhes.text,
-      //double.parse(_mofferController.txtPreco.text.replaceAll('.', '').replaceAll(',', '.')),
-      valPreco,
-      null,
-      null,
-      null,
-      '',
-      1,
-      _mofferController.txtCEP.text.replaceAll('-', ''),
-      null,
-      null,
-      0,
-      0,
-      0,
-      0,
-      null,
-      _mofferController.mofferGuid == null
-          ? null
-          : _mofferController.mofferGuid.toString(),
-      0, // int.parse(_mofferController.txtQtdDispo.text),
-      0, // int.parse(_mofferController.txtQtdMaxPorVenda.text),
-      0, // int.parse(_mofferController.txtQtdAviso.text),
-      0.00, //double.parse(_mofferController.txtPesoPorcao.text),
-      _mofferController.txtPesoPorcaoUn.text,
-      0, //  int.parse(_mofferController.txtValidade.text),
-      0.00, //double.parse(_mofferController.txtValorMin.text),
-      false, // valMostraReview,
-      false, // valAceiteAuto,
-      false, // valAceitaEncomenda,
-      false, // valSomenteEncomenda,
-      false, // valAceitaProposta,
-      0, //int.parse(_mofferController.txtTempoEntrega.text), //int.parse(_mofferController.txtTempoEntrega.text),
-      '', //tempoEntregaTipoSel,
-      '', //formaFechto,
-      '', //agenteEntregaSel,
-      '',
-      '',
-      //_mofferController.txtMarca.text,
-      _revendaSel,
-      _mofferController.txtCores.text,
-      _mofferController.txtTamanhos.text,
-      true, //val24hs,
-      0, //int.parse(_mofferController.txtCepDistancia.text),
-      0.00, // double.parse(_mofferController.txtValorSinalOrc.text),
-      _mofferController.valEncomendasAPartir.toString(),
-      _mofferController.valEntregasAPartir.toString(),
-      _mofferController.txtCodigoAlt.text,
-      0.00, // double.parse(_mofferController.txtValorTaxa1km.text),
-      0.00, // double.parse(_mofferController.txtValorTaxa2km.text),
-      0.00, // double.parse(_mofferController.txtValorTaxaMaisQue2km.text),
-      true, // valQtd,
-      _valSinalPercentual ? "P" : "V",
-      false, // valPrecoInicial,
-      false, // valPrecoCombinar,
-      false, // valSeg,
-      false, // _valTer,
-      false, // _valQua,
-      false, // _valQui,
-      false, // _valSex,
-      false, // _valSab,
-      false, // _valDom,
-      _mofferController.valSegDas,
-      _mofferController.valSegAs,
-      _mofferController.valTerDas,
-      _mofferController.valTerAs,
-      _mofferController.valQuaDas,
-      _mofferController.valQuaAs,
-      _mofferController.valQuiDas,
-      _mofferController.valQuiAs,
-      _mofferController.valSexDas,
-      _mofferController.valSexAs,
-      _mofferController.valSabDas,
-      _mofferController.valSabAs,
-      _mofferController.valDomDas,
-      _mofferController.valDomAs,
-      false, // null,
-      false, // null,
-      false, // null,
-      false, // null,
-      false, // null,
-      false, // null
-    );
+    // var offerToSend = new Oferta(
+    //   null,
+    //   _categSelecionada.categoriaChave,
+    //   usuGuid,
+    //   _mofferController.txtTitulo.text,
+    //   _mofferController.txtDetalhes.text,
+    //   //double.parse(_mofferController.txtPreco.text.replaceAll('.', '').replaceAll(',', '.')),
+    //   valPreco,
+    //   null,
+    //   null,
+    //   null,
+    //   '',
+    //   1,
+    //   _mofferController.txtCEP.text.replaceAll('-', ''),
+    //   null,
+    //   null,
+    //   0,
+    //   0,
+    //   0,
+    //   0,
+    //   null,
+    //   _mofferController.mofferGuid == null
+    //       ? null
+    //       : _mofferController.mofferGuid.toString(),
+    //   0, // int.parse(_mofferController.txtQtdDispo.text),
+    //   0, // int.parse(_mofferController.txtQtdMaxPorVenda.text),
+    //   0, // int.parse(_mofferController.txtQtdAviso.text),
+    //   0.00, //double.parse(_mofferController.txtPesoPorcao.text),
+    //   // _mofferController.txtPesoPorcaoUn.text,
+    //   0, //  int.parse(_mofferController.txtValidade.text),
+    //   0.00, //double.parse(_mofferController.txtValorMin.text),
+    //   false, // valMostraReview,
+    //   false, // valAceiteAuto,
+    //   false, // valAceitaEncomenda,
+    //   false, // valSomenteEncomenda,
+    //   false, // valAceitaProposta,
+    //   0, //int.parse(_mofferController.txtTempoEntrega.text), //int.parse(_mofferController.txtTempoEntrega.text),
+    //   '', //tempoEntregaTipoSel,
+    //   '', //formaFechto,
+    //   '', //agenteEntregaSel,
+    //   '',
+    //   '',
+    //   //_mofferController.txtMarca.text,
+    //   _revendaSel,
+    //   _mofferController.txtCores.text,
+    //   _mofferController.txtTamanhos.text,
+    //   true, //val24hs,
+    //   0, //int.parse(_mofferController.txtCepDistancia.text),
+    //   0.00, // double.parse(_mofferController.txtValorSinalOrc.text),
+    //   _mofferController.valEncomendasAPartir.toString(),
+    //   _mofferController.valEntregasAPartir.toString(),
+    //   _mofferController.txtCodigoAlt.text,
+    //   0.00, // double.parse(_mofferController.txtValorTaxa1km.text),
+    //   0.00, // double.parse(_mofferController.txtValorTaxa2km.text),
+    //   0.00, // double.parse(_mofferController.txtValorTaxaMaisQue2km.text),
+    //   true, // valQtd,
+    //   _valSinalPercentual ? "P" : "V",
+    //   false, // valPrecoInicial,
+    //   false, // valPrecoCombinar,
+    //   false, // valSeg,
+    //   false, // _valTer,
+    //   false, // _valQua,
+    //   false, // _valQui,
+    //   false, // _valSex,
+    //   false, // _valSab,
+    //   false, // _valDom,
+    //   _mofferController.valSegDas,
+    //   _mofferController.valSegAs,
+    //   _mofferController.valTerDas,
+    //   _mofferController.valTerAs,
+    //   _mofferController.valQuaDas,
+    //   _mofferController.valQuaAs,
+    //   _mofferController.valQuiDas,
+    //   _mofferController.valQuiAs,
+    //   _mofferController.valSexDas,
+    //   _mofferController.valSexAs,
+    //   _mofferController.valSabDas,
+    //   _mofferController.valSabAs,
+    //   _mofferController.valDomDas,
+    //   _mofferController.valDomAs,
+    //   false, // null,
+    //   false, // null,
+    //   false, // null,
+    //   false, // null,
+    //   false, // null,
+    //   false, // null
+    // );
+
+    var offerToSend = new Oferta(null, _categSelecionada.categoriaChave, usuGuid, _mofferController.txtTitulo.text, _mofferController.txtDetalhes.text, valPreco, null, null, null, null, null,
+        _mofferController.txtCEP.text.replaceAll('-', ''), null, null, _mofferController.mofferGuid.toString().isEmpty ? null : _mofferController.mofferGuid.toString(),
+        _valAceitaEncomenda, _valSomenteEncomenda, _revendaSel, _val24hs, _mofferController.valEncomendasAPartir.toString(), _mofferController.valEntregasAPartir.toString(), _valPrecoCombinar,
+        _valSeg, _valTer, _valQua, _valQui, _valSex, _valSab, _valDom, _mofferController.valSegDas, _mofferController.valSegAs, _mofferController.valTerDas, _mofferController.valTerAs, _mofferController.valQuaDas,
+        _mofferController.valQuaAs, _mofferController.valQuiDas, _mofferController.valQuiAs, _mofferController.valSexDas, _mofferController.valSexAs, _mofferController.valSabDas, _mofferController.valSabAs,
+        _mofferController.valDomDas, _mofferController.valDomAs, _mofferController.mofferGuid.toString().isEmpty ? false : true, true);
 
     // Uri url = Uri.https("ec3digrepo-default-rtdb.firebaseio.com", "/words.json");
     print(offerToSend.toJsonPost());
@@ -2495,8 +2502,8 @@ class _BodyMoffer extends State<BodyMoffer> {
       // showTxtTempoEntrega = false;
       showTxtCores = false;
       showTxtTamanhos = false;
-      showTxtPesoPorcao = false;
-      showTxtPesoPorcaoUn = false;
+      // showTxtPesoPorcao = false;
+      // showTxtPesoPorcaoUn = false;
       showTxtValidade = false;
       showTxtValorSinalOrc = false;
       // showTxtEntregaTaxas = false;
@@ -2535,8 +2542,8 @@ class _BodyMoffer extends State<BodyMoffer> {
       // showTxtTempoEntrega = false;
       showTxtCores = false;
       showTxtTamanhos = false;
-      showTxtPesoPorcao = false;
-      showTxtPesoPorcaoUn = false;
+      // showTxtPesoPorcao = false;
+      // showTxtPesoPorcaoUn = false;
       showTxtValidade = true;
       showTxtValorSinalOrc = true;
       // showTxtEntregaTaxas = false;
@@ -2569,8 +2576,8 @@ class _BodyMoffer extends State<BodyMoffer> {
       // showTxtTempoEntrega = true;
       showTxtCores = true;
       showTxtTamanhos = true;
-      showTxtPesoPorcao = false;
-      showTxtPesoPorcaoUn = false;
+      // showTxtPesoPorcao = false;
+      // showTxtPesoPorcaoUn = false;
       showTxtValidade = false;
       showTxtValorSinalOrc = false;
       // showTxtEntregaTaxas = true;
@@ -2603,8 +2610,8 @@ class _BodyMoffer extends State<BodyMoffer> {
       // showTxtTempoEntrega = true;
       showTxtCores = true;
       showTxtTamanhos = true;
-      showTxtPesoPorcao = false;
-      showTxtPesoPorcaoUn = false;
+      // showTxtPesoPorcao = false;
+      // showTxtPesoPorcaoUn = false;
       showTxtValidade = false;
       showTxtValorSinalOrc = false;
       // showTxtEntregaTaxas = false;
@@ -2637,8 +2644,8 @@ class _BodyMoffer extends State<BodyMoffer> {
       // showTxtTempoEntrega = true;
       showTxtCores = true;
       showTxtTamanhos = true;
-      showTxtPesoPorcao = true;
-      showTxtPesoPorcaoUn = true;
+      // showTxtPesoPorcao = true;
+      // showTxtPesoPorcaoUn = true;
       showTxtValidade = false;
       showTxtValorSinalOrc = false;
       // showTxtEntregaTaxas = true;
@@ -2672,8 +2679,8 @@ class _BodyMoffer extends State<BodyMoffer> {
       // showTxtTempoEntrega = true;
       showTxtCores = false;
       showTxtTamanhos = false;
-      showTxtPesoPorcao = true;
-      showTxtPesoPorcaoUn = true;
+      // showTxtPesoPorcao = true;
+      // showTxtPesoPorcaoUn = true;
       showTxtValidade = true;
       showTxtValorSinalOrc = false;
       // showTxtEntregaTaxas = true;
@@ -2707,8 +2714,8 @@ class _BodyMoffer extends State<BodyMoffer> {
       // showTxtTempoEntrega = true;
       showTxtCores = true;
       showTxtTamanhos = true;
-      showTxtPesoPorcao = true;
-      showTxtPesoPorcaoUn = true;
+      // showTxtPesoPorcao = true;
+      // showTxtPesoPorcaoUn = true;
       showTxtValidade = false;
       showTxtValorSinalOrc = false;
       // showTxtEntregaTaxas = true;
@@ -2741,8 +2748,8 @@ class _BodyMoffer extends State<BodyMoffer> {
       // showTxtTempoEntrega = true;
       showTxtCores = true;
       showTxtTamanhos = true;
-      showTxtPesoPorcao = false;
-      showTxtPesoPorcaoUn = false;
+      // showTxtPesoPorcao = false;
+      // showTxtPesoPorcaoUn = false;
       showTxtValidade = false;
       showTxtValorSinalOrc = false;
       // showTxtEntregaTaxas = true;
@@ -2885,21 +2892,21 @@ class _BodyMoffer extends State<BodyMoffer> {
         //     DateTime.parse(oferta.OfertaEntregasAPartirDe.toString());
 
         _mofferController.txtCodigoAlt.text =
-        oferta.OfertaCodigoAlt! == 'null'
-            ? ''
-            : oferta.OfertaCodigoAlt.toString();
-        oferta.OfertaDistanciaKm == null
-            ? '0'
-            : oferta.OfertaDistanciaKm.toString();
+        // oferta.OfertaCodigoAlt! == 'null'
+        //     ? ''
+        //     : oferta.OfertaCodigoAlt.toString();
+        // oferta.OfertaDistanciaKm == null
+        //     ? '0'
+        //     : oferta.OfertaDistanciaKm.toString();
         //_mofferController.txtEntregaAs.text = oferta.Ate.toString();
         _mofferController.txtValorSinalOrc.text =
-        oferta.OfertaSinal == null ? '0' : oferta.OfertaSinal.toString();
-        _mofferController.txtValidade.text =
-        oferta.OfertaDiasValidade == null
-            ? '0'
-            : oferta.OfertaDiasValidade.toString();
-        _mofferController.txtPesoPorcao.text =
-        oferta.OfertaPeso == null ? '0' : oferta.OfertaPeso.toString();
+        // oferta.OfertaSinal == null ? '0' : oferta.OfertaSinal.toString();
+        // _mofferController.txtValidade.text =
+        // oferta.OfertaDiasValidade == null
+        //     ? '0'
+        //     : oferta.OfertaDiasValidade.toString();
+        // _mofferController.txtPesoPorcao.text =
+        // oferta.OfertaPeso == null ? '0' : oferta.OfertaPeso.toString();
         //_mofferController.txtPesoPorcaoUn.text =oferta.OfertaPesoUnidade == 'null' ? '' :  oferta.OfertaPesoUnidade.toString();
         _mofferController.txtDescricao.text =
         oferta.OfertaDetalhe! == 'null'
@@ -2909,15 +2916,15 @@ class _BodyMoffer extends State<BodyMoffer> {
         oferta.OfertaDetalhe! == 'null'
             ? ''
             : oferta.OfertaDetalhe.toString();
-        _mofferController.txtTamanhos.text =
-        oferta.OfertaTamanhos! == 'null'
-            ? ''
-            : oferta.OfertaTamanhos.toString();
-        _mofferController.txtCores.text =
-        oferta.OfertaCores! == 'null' ? '' : oferta.OfertaCores.toString();
-        _mofferController.txtValorMin.text = oferta.OfertaPrecoMin == null
-            ? '0'
-            : oferta.OfertaPrecoMin.toString();
+        // _mofferController.txtTamanhos.text =
+        // oferta.OfertaTamanhos! == 'null'
+        //     ? ''
+        //     : oferta.OfertaTamanhos.toString();
+        // _mofferController.txtCores.text =
+        // oferta.OfertaCores! == 'null' ? '' : oferta.OfertaCores.toString();
+        // _mofferController.txtValorMin.text = oferta.OfertaPrecoMin == null
+        //     ? '0'
+        //     : oferta.OfertaPrecoMin.toString();
         // _mofferController.txtMarca.text =
         //     oferta.OfertaMarcaRevenda! == 'null'
         //         ? ''
@@ -2928,24 +2935,24 @@ class _BodyMoffer extends State<BodyMoffer> {
         print('oferta.OfertaMarcaRevenda: ' + oferta.OfertaMarcaRevenda.toString());
         _revendaSel = oferta.OfertaMarcaRevenda.toString() == 'null' ? '' : oferta.OfertaMarcaRevenda.toString();
 
-        _mofferController.txtQtdMaxPorVenda.text =
-        oferta.OfertaQtdMaxVenda == null
-            ? '0'
-            : oferta.OfertaQtdMaxVenda.toString();
-        _mofferController.txtQtdDispo.text = oferta.OfertaQtdDispo == null
-            ? '0'
-            : oferta.OfertaQtdDispo.toString();
-        _mofferController.txtQtdAviso.text = oferta.OfertaQtdAviso == null
-            ? '0'
-            : oferta.OfertaQtdAviso.toString();
+        // _mofferController.txtQtdMaxPorVenda.text =
+        // oferta.OfertaQtdMaxVenda == null
+        //     ? '0'
+        //     : oferta.OfertaQtdMaxVenda.toString();
+        // _mofferController.txtQtdDispo.text = oferta.OfertaQtdDispo == null
+        //     ? '0'
+        //     : oferta.OfertaQtdDispo.toString();
+        // _mofferController.txtQtdAviso.text = oferta.OfertaQtdAviso == null
+        //     ? '0'
+        //     : oferta.OfertaQtdAviso.toString();
 
         print('preco 2: ' + oferta.OfertaPreco.toString());
         _mofferController.txtPreco.text =
         oferta.OfertaPreco == null ? '0.00' : oferta.OfertaPreco.toString();
         _mofferController.txtTempoEntrega.text =
-        oferta.OfertaTempoEntrega == null
-            ? '0'
-            : oferta.OfertaTempoEntrega.toString();
+        // oferta.OfertaTempoEntrega == null
+        //     ? '0'
+        //     : oferta.OfertaTempoEntrega.toString();
 
         _offerGuid = _mofferController.mofferGuid!;
 

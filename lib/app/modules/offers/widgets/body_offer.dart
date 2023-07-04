@@ -150,7 +150,7 @@ class BodyOffer extends StatelessWidget {
                   const SizedBox(height: 20),
                   ListPicsOffer(
                       imagesList: offersImages,
-                      offerGuid: produtoOferta.ofertaGUID.toString()),
+                      offer: produtoOferta),
                   // const SizedBox(height: 2),
                   Center(
                     child: Text(

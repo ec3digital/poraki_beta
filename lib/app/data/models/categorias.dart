@@ -17,15 +17,15 @@ class Categorias {
     // print('Categorias.fromJson');
     // print(json['CategoriaNome'].toString());
     // print(json.toString());
-    categoriaNome = json['CategoriaNome'].toString();
-    categoriaChave = json['CategoriaChave'].toString();
-    secao = json['Secao'].toString();
-    iconcode = json['iconcode'].toString();
+    categoriaNome = json['CategoriaNome'].toString().trim();
+    categoriaChave = json['CategoriaChave'].toString().trim();
+    secao = json['Secao'].toString().trim();
+    iconcode = json['iconcode'].toString().trim();
     categoriaNomeLista = json['CategoriaNomeLista'];
-    categoriaRevisao = json['CategoriaRevisao'].toString() == 'true' ? true : false;
-    categoriaFormasEntrega = json['CategoriaFormasEntrega'].toString();
-    categoriaFormasFechto = json['CategoriaFormasFechto'].toString();
-    mostraBarra = json['MostraBarra'].toString() == 'true' ?  true : false;
+    categoriaRevisao = json['CategoriaRevisao'].toString().trim() == 'true' ? true : false;
+    categoriaFormasEntrega = json['CategoriaFormasEntrega'].toString().trim();
+    categoriaFormasFechto = json['CategoriaFormasFechto'].toString().trim();
+    mostraBarra = json['MostraBarra'].toString().trim() == 'true' ?  true : false;
     // ordem = int.parse(json['ordem']);
   }
 

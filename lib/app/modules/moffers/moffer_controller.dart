@@ -79,6 +79,7 @@ class MofferController extends GetxController {
   // final MaskedTextController   txtEntregasAPartir   = MaskedTextController(mask: '00/00/0000');
 
   late String? mofferGuid = '';
+  late String? lojaGuid = '';
   late Oferta? singleOffer;
   bool isLoading = false;
   List<Oferta> moffers = [];

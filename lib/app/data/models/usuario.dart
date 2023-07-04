@@ -30,33 +30,33 @@ class Usuario {
 
   factory Usuario.fromJson(Map<String, dynamic> elem) {
     return Usuario(
-        nome: elem['Nome'],
-        apelido: elem['Apelido'],
-        cep: elem['CEP'],
-        cpf: elem['CPF'],
-        email: elem['Email'],
-        whatsapp: elem['Whatsapp'],
-        cpfValidado: elem['cpfValidado'].toString() == 'true' ? true : false);
+        nome: elem['Nome'].toString().trim(),
+        apelido: elem['Apelido'].toString().trim(),
+        cep: elem['CEP'].toString().trim(),
+        cpf: elem['CPF'].toString().trim(),
+        email: elem['Email'].toString().trim(),
+        whatsapp: elem['Whatsapp'].toString().trim(),
+        cpfValidado: elem['cpfValidado'].toString().trim() == 'true' ? true : false);
   }
 
   Map<String, dynamic> toJsonAdd() {
     return {
-      if (nome != null) "Nome": nome,
-      if (apelido != null) "Apelido": apelido,
-      if (cpf != null) "CPF": cpf,
-      if (email != null) "Email": email,
-      if (whatsapp != null) "Whatsapp": whatsapp,
-      if (cep != null) "CEP": cep,
+      if (nome != null) "Nome": nome.toString().trim(),
+      if (apelido != null) "Apelido": apelido.toString().trim(),
+      if (cpf != null) "CPF": cpf.toString().trim(),
+      if (email != null) "Email": email.toString().trim(),
+      if (whatsapp != null) "Whatsapp": whatsapp.toString().trim(),
+      if (cep != null) "CEP": cep.toString().trim(),
       "cpfValidado": 'false'
     };
   }
 
   Map<String, dynamic> toJsonUpdate() {
     return {
-      if (nome != null) "Nome": nome,
-      if (apelido != null) "Apelido": apelido,
-      if (whatsapp != null) "Whatsapp": whatsapp,
-      if (cep != null) "CEP": cep,
+      if (nome != null) "Nome": nome.toString().trim(),
+      if (apelido != null) "Apelido": apelido.toString().trim(),
+      if (whatsapp != null) "Whatsapp": whatsapp.toString().trim(),
+      if (cep != null) "CEP": cep.toString().trim(),
     };
   }
 }

@@ -109,15 +109,15 @@ class _TesteFb extends State<TesteFb> {
   }
 
   void _addOferta() async {
-    FirebaseFirestore? _fbInstance;
-    if (Firebase.apps.isEmpty) {
-      await Firebase.initializeApp();
-    }
-    print('_addOferta antes');
-    _fbInstance = FirebaseFirestore.instance;
-    var offer = new Oferta(null, 'CONGELADOS', 'eyCv21RfaURoMn0SUndCg6LPyJP2', 'Nhoque', 'Batata', 20, null, null, null, null, 1, '05735-030', null, null, 0, 0, 0, 50, null, '1231321321', 0, 0, 0, 0, 'KG', 10, 0, false, false, true, false, false, 50, 'minutos', 'whatsapp', null, null, null, null, null, null, false, 5, null, null, null, null, null, null, null, true, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, false, false, false, false, false, true);
-
-    await _fbInstance.collection('akiofertas').doc('057').collection('ofertas').add(offer.toJsonPost()); // .set(offer.toJsonPost()).then((value) => print('_addOferta depois'));
+    // FirebaseFirestore? _fbInstance;
+    // if (Firebase.apps.isEmpty) {
+    //   await Firebase.initializeApp();
+    // }
+    // print('_addOferta antes');
+    // _fbInstance = FirebaseFirestore.instance;
+    // var offer = new Oferta(null, 'CONGELADOS', 'eyCv21RfaURoMn0SUndCg6LPyJP2', 'Nhoque', 'Batata', 20, null, null, null, null, 1, '05735-030', null, null, 0, 0, 0, 50, null, '1231321321', 0, 0, 0, 0, 'KG', 10, 0, false, false, true, false, false, 50, 'minutos', 'whatsapp', null, null, null, null, null, null, false, 5, null, null, null, null, null, null, null, true, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, false, false, false, false, false, true);
+    //
+    // await _fbInstance.collection('akiofertas').doc('057').collection('ofertas').add(offer.toJsonPost()); // .set(offer.toJsonPost()).then((value) => print('_addOferta depois'));
   }
 
   void _addStringToBack() {

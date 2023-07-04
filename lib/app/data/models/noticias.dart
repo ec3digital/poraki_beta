@@ -19,11 +19,11 @@ class Noticia {
 
   Noticia.fromJson(Map<String, dynamic> json) {
     NoticiaID = int.parse(json['NoticiaID'].toString());
-    NoticiaFonte = json['NoticiaFonte'].toString();
-    NoticiaTexto = json['NoticiaTexto'].toString();
-    NoticiaTitulo = json['NoticiaTitulo'].toString();
+    NoticiaFonte = json['NoticiaFonte'].toString().trim();
+    NoticiaTexto = json['NoticiaTexto'].toString().trim();
+    NoticiaTitulo = json['NoticiaTitulo'].toString().trim();
     // NoticiaUID = json['NoticiaUID'];
-    NoticiaPor = json['NoticiaPor'].toString();
+    NoticiaPor = json['NoticiaPor'].toString().trim();
     // NoticiaAte = json['NoticiaAte'];
     // NoticiaDesde = Timestamp.fromDate(DateTime.parse(json['NoticiaDesde']));
     // NoticiaCEP = json['NoticiaCEP'];

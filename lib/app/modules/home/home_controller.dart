@@ -53,6 +53,8 @@ class HomeController extends GetxController {
     try {
       changeLoading(true);
       bestoffers = await offerRepository.getBestOffers(limit);
+      LoginController _loginController = Get.find();
+      _loginController.ofertasFavs = bestoffers!;
     } catch (e) {
       print('Erro no getBestOffers() controller ${e.toString()}');
     } finally {

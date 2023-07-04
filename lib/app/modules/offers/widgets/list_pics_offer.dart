@@ -2,17 +2,22 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:poraki/app/data/models/ofertafav.dart';
+import 'package:poraki/app/data/models/produto_oferta.dart';
 import 'package:poraki/app/modules/auth/login/login_controller.dart';
+import 'package:poraki/app/modules/offers/offers_controller.dart';
+import 'package:poraki/app/modules/offers/offersfav_controller.dart';
+import 'package:poraki/app/routes/app_routes.dart';
 //import '../offersfav_controller.dart';
 
 class ListPicsOffer extends StatefulWidget {
   List<String> imagesList = [];
-  final String offerGuid;
+  // final String offerGuid;
+  final ProdutoOferta offer;
 
   ListPicsOffer({
     Key? key,
     required this.imagesList,
-    required this.offerGuid,
+    required this.offer,
   }) : super(key: key);
 
   @override
@@ -21,7 +26,7 @@ class ListPicsOffer extends StatefulWidget {
 
 class _ListPicsOfferState extends State<ListPicsOffer> {
   final LoginController _loginController = Get.find();
-  //final OffersFavController _offersFavController = Get.put(OffersFavController()); //.find();
+  final OffersController _offersController = Get.find();
   late Color backColor;
   late Color textColor;
   //late OfertasFavs ofertaFav;
@@ -44,16 +49,7 @@ class _ListPicsOfferState extends State<ListPicsOffer> {
 
   @override
   Widget build(BuildContext context) {
-    print('fav usuGuid: ' + _loginController.usuGuid.toString());
-    var ofertaFav = new OfertasFavs(widget.offerGuid.toString(),
-        _loginController.usuGuid.toString(), false, false);
-    print('qtd fav de novo: ' + _loginController.ofertasFavs.length.toString());
-    bool favorited = _loginController.ofertasFavs
-            .where((ofav) => ofav.OfertaGUID == widget.offerGuid)
-            .isNotEmpty
-        ? true
-        : false;
-    print('fav : ' + widget.offerGuid + ' / ' + favorited.toString());
+    bool favorited = _loginController.ofertasFavs.where((ofertaFav) => ofertaFav.ofertaGUID == widget.offer.ofertaGUID).isNotEmpty;
 
     var icon = favorited
         ? Icon(Icons.favorite, color: textColor)
@@ -111,17 +107,24 @@ class _ListPicsOfferState extends State<ListPicsOffer> {
                 //OffersFavController _offersFavController = Get.put(OffersFavController());
                 //_loginController.refreshOfertasFavs = true;
                 if (favorited) {
-                  _loginController.ofertasFavs.removeWhere(
-                      (ofFav) => ofFav.OfertaGUID == ofertaFav.OfertaGUID);
+                  _loginController.ofertasFavs.removeWhere((ofertaFav) => ofertaFav.ofertaGUID == widget.offer.ofertaGUID);
                   //await _offersFavController.removeObj(ofertaFav);
                 } else {
-                  _loginController.ofertasFavs.add(ofertaFav);
+                  _loginController.ofertasFavs.add(widget.offer);
                   //await _offersFavController.addObj(ofertaFav);
                 }
 
                 setState(() {
                   favorited = !favorited;
                 });
+
+                Get.offAndToNamed(AppRoutes.offers, arguments: [
+                  {'listName': 'favsoffers'},
+                  {'limit': 24},
+                  {'category': null},
+                  {'title': 'Favoritas'},
+                  {'ofertaGuid': null}
+                ]);
               },
               child: icon,
             ),
