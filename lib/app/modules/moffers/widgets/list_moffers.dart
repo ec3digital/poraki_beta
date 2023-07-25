@@ -56,12 +56,12 @@ class _ListMoffersState extends State<ListMoffers> {
   @override
   Widget build(BuildContext context) {
     listStores = _loginController.listLojas;
-    final Color colorText = _loginController.colorFromHex(_loginController
-        .listCore
-        .where((coreItem) => coreItem.coreChave == 'textDark')
-        .first
-        .coreValor
-        .toString());
+    // final Color colorText = _loginController.colorFromHex(_loginController
+    //     .listCore
+    //     .where((coreItem) => coreItem.coreChave == 'textDark')
+    //     .first
+    //     .coreValor
+    //     .toString());
     final Color backColor = _loginController.colorFromHex(_loginController
         .listCore
         .where((coreItem) => coreItem.coreChave == 'backLight')
@@ -71,14 +71,24 @@ class _ListMoffersState extends State<ListMoffers> {
 
     Widget _buildRow(Oferta moferta) {
       return Column(children: [
-        ListTile(
+      Container(
+      padding: const EdgeInsets.all(2), margin: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+      border: Border.all(
+      color: backColor,
+      ),
+      borderRadius: BorderRadius.all(Radius.circular(8)),
+      color: backColor,
+      ),
+      child:
+      ListTile(
             leading: CachedNetworkImage(
               imageUrl: _loginController.listCore
                       .where((coreItem) => coreItem.coreChave == 'imgpath')
                       .first
                       .coreValor
                       .toString() +
-                  moferta.OfertaID.toString() +
+                  moferta.OfertaImgPath.toString() +
                   _loginController.listCore
                       .where(
                           (coreItem) => coreItem.coreChave == 'imgpathsuffix')
@@ -98,8 +108,8 @@ class _ListMoffersState extends State<ListMoffers> {
             title: Text(moferta.OfertaTitulo.toString()),
             subtitle: Text(moferta.OfertaDetalhe.toString()),
             trailing: Text(
-                'R\$ ${moferta.OfertaPreco?.toStringAsFixed(2).replaceAll(',', '').replaceAll('.', ',') ?? ''}')),
-        const SizedBox(height: 3),
+                'R\$ ${moferta.OfertaPreco?.toStringAsFixed(2).replaceAll(',', '').replaceAll('.', ',') ?? ''}')))
+        //const SizedBox(height: 3),
       ]);
     }
 
@@ -109,11 +119,11 @@ class _ListMoffersState extends State<ListMoffers> {
           if (futuro.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
           } else {
-            return Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  // Column(
+            return Expanded(
+                child: Container(
+                    //color: backDark,
+                    child: Column(children: [
+                      // Column(
                   //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   //     children: [
                   const SizedBox(height: 10),
@@ -126,6 +136,7 @@ class _ListMoffersState extends State<ListMoffers> {
                   ButtonOffer(
                     onPressed: () {
                       mofferController.singleOffer = null;
+                      // mofferController.txtCEP.text = _loginController.usuCep.toString();
                       mofferController.lojaGuid = selStore == null ? '' : selStore!.LojaGUID.toString();
                       Get.toNamed(AppRoutes.mOffer);
                     },
@@ -173,7 +184,8 @@ class _ListMoffersState extends State<ListMoffers> {
                     Expanded(
                         child: Container(
                       //height: 200, // MediaQuery.of(context).size.height,
-                      child: ListView.builder(
+                      child: Scrollbar(
+          child: ListView.builder(
                           scrollDirection: Axis.vertical,
                           shrinkWrap: true,
                           padding: const EdgeInsets.all(6.0),
@@ -308,10 +320,10 @@ class _ListMoffersState extends State<ListMoffers> {
                   //     );
                   //   },
                   // )
-                ]
+                    )]
                 //),
                 //    ]
-                );
+                )));
             // ));
             //},
             //);

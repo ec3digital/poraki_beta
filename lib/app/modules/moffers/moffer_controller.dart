@@ -10,7 +10,7 @@ import '../../data/repositories/categories_repository.dart';
 import '../auth/login/login_controller.dart';
 
 class MofferController extends GetxController {
-
+  final LoginController _loginController = Get.find();
   final TextEditingController   txtTitulo               = TextEditingController();
   final TextEditingController   txtDescricao            = TextEditingController();
   final TextEditingController   txtQtdDispo             = TextEditingController();
@@ -84,10 +84,17 @@ class MofferController extends GetxController {
   bool isLoading = false;
   List<Oferta> moffers = [];
   OfferRepository offerRepository = OfferRepository();
-  LoginController _loginController = Get.find();
 
-  MofferController();
 
+
+  //MofferController();
+
+
+  @override
+  void onInit() async {
+    // txtCEP.text = _loginController.usuCep.toString();
+    super.onInit();
+  }
 
   @override
   void onClose() {

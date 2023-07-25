@@ -26,7 +26,9 @@ class MoffersPage extends StatelessWidget {
         .first
         .coreValor
         .toString()),
-      body:  ListMoffers(),
+      body:  Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [ListMoffers()]),
       drawer: DrawerHome(0),
     );
   }

@@ -135,10 +135,10 @@ class ProdutoOferta {
     ofertaGUID = json['OfertaGUID'].toString();
     categoriaChave = json['CategoriaChave'].toString();
     ofertaCEP = json['OfertaCEP'].toString();
-    ofertaDetalhe = json['OfertaDetalhe'].toString();
+    ofertaDetalhe = json['OfertaDetalhe'].toString() == 'null' ? '' : json['OfertaDetalhe'].toString();
     //ofertaDispoDesde = json['OfertaDispoDesde'];
     ofertaID = json['OfertaID'].toString();
-    //ofertaImgPath = json['OfertaImgPath'];
+    ofertaImgPath = json['OfertaImgPath'].toString();
     ofertaPreco = double.parse(json['OfertaPreco'].toString());
     ofertaTitulo = json['OfertaTitulo'].toString();
     ofertaFKID = json['OfertaFKID'].toString();
@@ -247,7 +247,7 @@ class ProdutoOferta {
     data['OfertaDetalhe'] = this.ofertaDetalhe;
     data['OfertaDispoDesde'] = this.ofertaDispoDesde;
     data['OfertaID'] = this.ofertaID.toString();
-    data['OfertaImgPath'] = this.ofertaImgPath;
+    data['OfertaImgPath'] = this.ofertaImgPath.toString();
     data['OfertaPreco'] = this.ofertaPreco.toString();
     data['OfertaTitulo'] = this.ofertaTitulo;
     data['OfertaFKID'] = this.ofertaFKID;

@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:poraki/app/data/models/produto_oferta.dart';
@@ -33,7 +32,7 @@ class BodyShowDayOffer extends StatelessWidget {
             List<String> offersImages = [];
             offersImages.add(
                 'https://firebasestorage.googleapis.com/v0/b/ec3digrepo.appspot.com/o/ofertas%2F' +
-                    _product!.ofertaID.toString() +
+                    _product!.ofertaImgPath.toString() +
                     '.jpg?alt=media');
 
             return SingleChildScrollView(

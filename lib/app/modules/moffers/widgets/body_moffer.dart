@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -18,6 +17,7 @@ import 'package:poraki/app/modules/moffers/moffer_controller.dart';
 import 'package:poraki/app/modules/offers/widgets/button_offer.dart';
 import 'package:poraki/app/shared/constants/constants.dart';
 import 'package:poraki/app/routes/app_routes.dart';
+import 'package:uuid/uuid.dart';
 
 class BodyMoffer extends StatefulWidget {
   BodyMoffer({Key? key, required this.offer}) : super(key: key);
@@ -35,13 +35,13 @@ class _BodyMoffer extends State<BodyMoffer> {
   final MofferController _mofferController = Get.find();
   var _categSelecionada = new Categorias();
   var _imgcloud = '';
-  var _offerGuid = '';
+  // var _offerGuid = '';
   var _imgEdited = false;
   var _priceFocusNode = FocusNode();
   var _descriptionFocusNode = FocusNode();
   var _imageURLFocusNode = FocusNode();
   var _imageURLController = TextEditingController();
-  bool _isEditing = false;
+  // bool _isEditing = false;
   // var _form = GlobalKey<FormState>();
 
   bool _isLoading = false;
@@ -87,7 +87,7 @@ class _BodyMoffer extends State<BodyMoffer> {
   bool _valSab = false;
   bool _valDom = false;
   // bool _valQtd = false;
-  bool _valSinalPercentual = false;
+  // bool _valSinalPercentual = false;
   bool _valPrecoCombinar = false;
   // bool _valPrecoInicial = false;
 
@@ -165,8 +165,8 @@ class _BodyMoffer extends State<BodyMoffer> {
     // print('lista parceiros: ' + listaParceiros.length.toString());
 
     //final LoginController loginController = Get.find();
-    _mofferController.txtCEP.text =
-        _loginController.usuCep.toString();
+
+    Future.delayed(Duration.zero,() => _mofferController.txtCEP.text = _loginController.usuCep.toString());
 
     // if(_loginController.listaCategorias.length == 0)
     //   {
@@ -194,14 +194,15 @@ class _BodyMoffer extends State<BodyMoffer> {
     _mofferController.txtDetalhes.text = '';
     _mofferController.txtTamanhos.text = '';
     _mofferController.txtCores.text = '';
-    // _mofferController.txtPreco.text = '0.00';
+    _mofferController.txtPreco.text = '0,00';
+    // _mofferController.txtCEP.text = '05735-030';
     // _mofferController.txtValorMin.text = '0.00';
     // _mofferController.txtMarca.text = '';
     _mofferController.txtQtdMaxPorVenda.text = '0';
     _mofferController.txtQtdDispo.text = '0';
     _mofferController.txtQtdAviso.text = '0';
 
-    if (_mofferController.singleOffer == null) _manageCampos();
+    // if (_mofferController.singleOffer == null) _manageCampos();
 
     //_manageCampos();
 
@@ -235,6 +236,7 @@ class _BodyMoffer extends State<BodyMoffer> {
 
     if(_mofferController.singleOffer != null) carregaObj();
 
+    // if (_mofferController.txtCEP.text == '') _mofferController.txtCEP.text = _loginController.usuCep.toString();
 
     // return FutureBuilder(
     //     future: carregaObj(),
@@ -349,7 +351,7 @@ class _BodyMoffer extends State<BodyMoffer> {
 
                           const SizedBox(height: 20),
 
-                          if (showCamposBasicos)
+                          if (showCamposBasicos && _categoriaSel.isNotEmpty)
                             Column(
                               children: <Widget>[
                                 TextFormField(
@@ -411,7 +413,7 @@ class _BodyMoffer extends State<BodyMoffer> {
                               ],
                             ),
 
-                          if (showPreco && !_valPrecoCombinar)
+                          if (showPreco && !_valPrecoCombinar && _categoriaSel.isNotEmpty)
                             Column(
                               children: <Widget>[
                                 // Row(
@@ -672,23 +674,25 @@ class _BodyMoffer extends State<BodyMoffer> {
                           //         keyboardType: TextInputType.number),
                           //   ]),
                           //
-                          // if (showTxtCep)
-                          //   Column(children: <Widget>[
-                          //     const SizedBox(height: 20),
-                          //     TextFormField(
-                          //       inputFormatters: [
-                          //         FilteringTextInputFormatter.digitsOnly,
-                          //         CepInputFormatter(),
-                          //       ],
-                          //       controller: _mofferController.txtCEP,
-                          //       decoration: InputDecoration(
-                          //         labelText: 'Cep da oferta',
-                          //         fillColor: Colors.redAccent.shade100,
-                          //         border: OutlineInputBorder(),
-                          //       ),
-                          //       keyboardType: TextInputType.number,
-                          //     ),
-                          //   ]),
+                          if (showTxtCep && _categoriaSel.isNotEmpty)
+                            Column(children: <Widget>[
+                              const SizedBox(height: 20),
+                              TextFormField(
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.digitsOnly,
+                                  CepInputFormatter(),
+                                ],
+
+                               // initialValue: _loginController.usuCep!.toString(),
+                                controller: _mofferController.txtCEP,
+                                decoration: InputDecoration(
+                                  labelText: 'Cep da oferta',
+                                  fillColor: Colors.redAccent.shade100,
+                                  border: OutlineInputBorder(),
+                                ),
+                                keyboardType: TextInputType.number,
+                              ),
+                            ]),
                           //
                           // if (showTxtOfertaCepDistancia &&
                           //     showCamposBasicos)
@@ -720,7 +724,7 @@ class _BodyMoffer extends State<BodyMoffer> {
                           // //         keyboardType: TextInputType.text),
                           // //   ]),
 
-                          if (showTxtMarca)
+                          if (showTxtMarca && _categoriaSel.isNotEmpty)
                             Column(
                               children: <Widget>[
                                 const Divider(),
@@ -801,7 +805,7 @@ class _BodyMoffer extends State<BodyMoffer> {
                           //     keyboardType: TextInputType.number),
                           // SizedBox(height: 20),
 
-                          if (showCamposBasicos)
+                          if (showCamposBasicos && _categoriaSel.isNotEmpty)
                             Column(children: <Widget>[
                               const SizedBox(height: 20),
                               TextFormField(
@@ -832,7 +836,7 @@ class _BodyMoffer extends State<BodyMoffer> {
                           //   //   ],
                           //   // ),
 
-                          if (showDispoImediata) // && !show24hs)
+                          if (showDispoImediata && _categoriaSel.isNotEmpty) // && !show24hs)
                             // Row(
                             //   children: <Widget>[
                             //     const SizedBox(height: 20),
@@ -855,7 +859,7 @@ class _BodyMoffer extends State<BodyMoffer> {
                               // ],
                            // ),
 
-                          if (showDispoImediata && !_valDispoImediata)
+                          if (showDispoImediata && !_valDispoImediata && _categoriaSel.isNotEmpty)
                             Column(children: <Widget>[
                               // Row(children: <Widget>[
                               //   const SizedBox(height: 20),
@@ -2262,16 +2266,16 @@ class _BodyMoffer extends State<BodyMoffer> {
 
       final imageTemp = File(foto.path);
 
-      setState(() => this.image = imageTemp);
+      setState(() { this.image = imageTemp; _imgEdited = true; });
 
-      _imgEdited = true;
+
     } on PlatformException catch (e) {
       print('erro tentando abrir album de fotos: $e');
     }
   }
 
   Future<void> uploadFoto(File? foto, String usuGuid) async {
-    await _saveForm(usuGuid);
+    var imgGuid = await _saveForm(usuGuid);
 
     if (_imgEdited && foto != null) {
       await Firebase.initializeApp();
@@ -2280,7 +2284,7 @@ class _BodyMoffer extends State<BodyMoffer> {
       Reference ref = FirebaseStorage.instance
           .ref()
           .child("ofertas")
-          .child(_offerGuid + '.jpg');
+          .child(imgGuid + '.jpg');
 
       await ref.putFile(image!);
       //var downloadURL = await ref.getDownloadURL();
@@ -2318,7 +2322,7 @@ class _BodyMoffer extends State<BodyMoffer> {
         (endWithPng || endWithJpg || endWithJpeg);
   }
 
-  Future<void> _saveForm(String usuGuid) async {
+  Future<String> _saveForm(String usuGuid) async {
     print('usuGuid: ' + usuGuid);
 
     // var formaFechto = '';
@@ -2337,11 +2341,11 @@ class _BodyMoffer extends State<BodyMoffer> {
     if (_categSelecionada.categoriaChave != 'DOACAO')
       valPreco =
           double.parse(_mofferController.txtPreco.text.removeAllWhitespace
-          // .replaceFirst('.', '')
+           .replaceFirst('.', '')
               .replaceFirst(',', '.'));
 
-    assert(valPreco is double);
-    print(valPreco.runtimeType);
+    // assert(valPreco is double);
+    // print(valPreco.runtimeType);
 
     // var offerToSend = new Oferta(
     //   null,
@@ -2431,17 +2435,22 @@ class _BodyMoffer extends State<BodyMoffer> {
     //   false, // null
     // );
 
-    var offerToSend = new Oferta(null, _categSelecionada.categoriaChave, usuGuid, _mofferController.txtTitulo.text, _mofferController.txtDetalhes.text, valPreco, null, null, null, null, null,
-        _mofferController.txtCEP.text.replaceAll('-', ''), null, null, _mofferController.mofferGuid.toString().isEmpty ? null : _mofferController.mofferGuid.toString(),
+    var offerGuid = Uuid().v4();
+    var offerToSend = new Oferta(null, _categSelecionada.categoriaChave, usuGuid, _mofferController.txtTitulo.text, _mofferController.txtDetalhes.text, valPreco, null, null, null, _mofferController.singleOffer!.OfertaImgPath.toString().isEmpty ? offerGuid : _mofferController.singleOffer!.OfertaImgPath.toString(),
+        null, _loginController.cloudId, null, null, _mofferController.mofferGuid.toString().isEmpty ? offerGuid : _mofferController.mofferGuid.toString(),
         _valAceitaEncomenda, _valSomenteEncomenda, _revendaSel, _val24hs, _mofferController.valEncomendasAPartir.toString(), _mofferController.valEntregasAPartir.toString(), _valPrecoCombinar,
         _valSeg, _valTer, _valQua, _valQui, _valSex, _valSab, _valDom, _mofferController.valSegDas, _mofferController.valSegAs, _mofferController.valTerDas, _mofferController.valTerAs, _mofferController.valQuaDas,
         _mofferController.valQuaAs, _mofferController.valQuiDas, _mofferController.valQuiAs, _mofferController.valSexDas, _mofferController.valSexAs, _mofferController.valSabDas, _mofferController.valSabAs,
         _mofferController.valDomDas, _mofferController.valDomAs, _mofferController.mofferGuid.toString().isEmpty ? false : true, true);
 
     // Uri url = Uri.https("ec3digrepo-default-rtdb.firebaseio.com", "/words.json");
-    print(offerToSend.toJsonPost());
+
 
     if (_mofferController.mofferGuid.toString() == '') {
+      _mofferController.mofferGuid = offerGuid;
+      var jsonPost = offerToSend.toJsonPost().toString().replaceAll('null', '""');
+      print(jsonPost);
+
       var response = await post(
         Uri.parse('${Constants.baseUrl}moffer'),
         headers: Constants.headers,
@@ -2456,7 +2465,9 @@ class _BodyMoffer extends State<BodyMoffer> {
       // _offerGuid = strGuid;
       // print('guid: ' + strGuid);
     } else {
-      print(offerToSend.toJsonPut());
+      var jsonPut = offerToSend.toJsonPut().toString().replaceAll('null', '""');
+      print(jsonPut);
+      print('${Constants.baseUrl}moffer');
       var response = await put(
         Uri.parse('${Constants.baseUrl}moffer'),
         headers: Constants.headers,
@@ -2470,6 +2481,8 @@ class _BodyMoffer extends State<BodyMoffer> {
 
       // print('guid: ' + strGuid);
     }
+
+    return _mofferController.singleOffer!.OfertaImgPath.toString();
   }
 
   // somente para testes - em producao virá a partir do Firebase
@@ -2832,17 +2845,17 @@ class _BodyMoffer extends State<BodyMoffer> {
       print('_load: true');
 
       if (_mofferController.singleOffer != null) {
-        print('singleOffer');
+        print('singleOffer not null');
         Oferta? oferta = _mofferController.singleOffer;
 
-        _isEditing = true;
+        // _isEditing = true;
         _imgcloud =
             _loginController.listCore
                 .where((coreItem) => coreItem.coreChave == 'imgpath')
                 .first
                 .coreValor
                 .toString() +
-                oferta!.OfertaID.toString() +
+                oferta!.OfertaImgPath.toString() +
                 _loginController.listCore
                     .where(
                         (coreItem) => coreItem.coreChave == 'imgpathsuffix')
@@ -2948,13 +2961,13 @@ class _BodyMoffer extends State<BodyMoffer> {
 
         print('preco 2: ' + oferta.OfertaPreco.toString());
         _mofferController.txtPreco.text =
-        oferta.OfertaPreco == null ? '0.00' : oferta.OfertaPreco.toString();
+        oferta.OfertaPreco == null ? '0,00' : oferta.OfertaPreco.toString();
         _mofferController.txtTempoEntrega.text =
         // oferta.OfertaTempoEntrega == null
         //     ? '0'
         //     : oferta.OfertaTempoEntrega.toString();
 
-        _offerGuid = _mofferController.mofferGuid!;
+        // _offerGuid = _mofferController.mofferGuid!;
 
         _mofferController.valSegDas = oferta.SegDas.toString();
         _mofferController.valSegAs = oferta.SegAs.toString();
@@ -2973,8 +2986,13 @@ class _BodyMoffer extends State<BodyMoffer> {
 
         _manageCampos();
       } else {
-        _isEditing = false;
+        print('singleOffer null');
+        // _isEditing = false;
+        _mofferController.txtPreco.text = "0,00";
+        // _mofferController.txtCEP.text = _loginController.cloudId.toString(); //.usuCep.toString().trim().substring(0,3);
       }
+
+      // if (_mofferController.txtCEP.text == '') _mofferController.txtCEP.text = _loginController.usuCep.toString();
     }
   }
 

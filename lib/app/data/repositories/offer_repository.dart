@@ -21,7 +21,7 @@ class OfferRepository extends GetConnect {
   Future<List<ProdutoOferta>> getDayOfferByCEP(int limit) async {
     String url = '${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiOfertas').first.coreValor.toString()}/' + _loginController.cloudId.toString() + '%25/' + limit.toString();
     var response = await get(url, headers: Constants.headers);
-    if (response.hasError) throw 'Ocorreu um erro em getDayOfferByCEP() ${response.body}';
+    if (response.hasError) throw 'Ocorreu um erro em getDayOfferByCEP() url: $url / resp: ${response.body}';
     return (response.body['Ofertas'] as List)
         .map((oferta) => ProdutoOferta.fromJson(oferta))
         .toList();
@@ -122,10 +122,13 @@ class OfferRepository extends GetConnect {
     //print(response.body.toString());
     if (response.hasError) throw 'Ocorreu um erro em getOfferBySellerGuid()';
 
-    //print(response.body['Ofertas']);
-    listOffers = (response.body['Ofertas'] as List)
+    var jsonResult = response.body['Ofertas'];
+    // print(jsonResult);
+    listOffers = (jsonResult as List)
         .map((oferta) => Oferta.fromJson(oferta))
         .toList();
+
+
     return listOffers;
   }
 

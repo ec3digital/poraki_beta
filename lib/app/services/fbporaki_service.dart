@@ -63,6 +63,7 @@ class fbPorakiService {
   }
 
   Future<Map<String, dynamic>> getListFromFirebase(String col, String doc) async {
+    print('getListFromFirebase ${doc}');
     await _iniFirebase();
     CollectionReference coll = _fbInstance!.collection(col);
     DocumentSnapshot snapshot = await coll.doc(doc).get();

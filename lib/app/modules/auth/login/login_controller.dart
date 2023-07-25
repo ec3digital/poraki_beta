@@ -164,7 +164,8 @@ class LoginController extends GetxController {
     listCoreTemp = await sqlPorakiCoreService().buscaTodosValores();
 
     // var coreFBcep = await fbPorakiService().getListFromFirebase("akicore", "057"); // cloudId.toString());
-    var coreFBcep = await fbPorakiService().getListFromFirebase("akicore", cloudId.toString());
+    var stringCloud = cloudId.isEmpty ? "057" : cloudId.substring(0,3);
+    var coreFBcep = await fbPorakiService().getListFromFirebase("akicore", stringCloud);
     listCoreCep = await sqlPorakiCoreService().buscaTodosValoresCep();
     if (coreFBcep.isNotEmpty) {
       // reseta tabela core local cep

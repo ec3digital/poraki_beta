@@ -53,7 +53,7 @@ class BodyOffer extends StatelessWidget {
           List<String> offersImages = [];
           offersImages.add(
               'https://firebasestorage.googleapis.com/v0/b/ec3digrepo.appspot.com/o/ofertas%2F' +
-                  produtoOferta.ofertaGUID.toString() +
+                  produtoOferta.ofertaImgPath.toString() +
                   '.jpg?alt=media');
 
           var detail2 = '';

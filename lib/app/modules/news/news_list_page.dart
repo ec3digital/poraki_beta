@@ -80,7 +80,7 @@ class NewsListPage extends StatelessWidget {
                     Container(
                         child: Center(
                             child: Text(
-                                "Ops, nenhuma novidade poraki agora... ;-)")))
+                                "Ops, nenhuma novidade poraki agora... ;-)", style: TextStyle(fontSize: 16))))
                   else
                     Expanded(
                         child: Container(

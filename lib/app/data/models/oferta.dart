@@ -168,30 +168,26 @@ class Oferta {
   Oferta.fromJson(Map<String, dynamic> json) {
     //print('json ofertas: ' + json.toString());
     CategoriaChave = json['CategoriaChave'].toString().trim();
-    OfertaCEP = json['OfertaCEP'] == 'null' ? '' : json['OfertaCEP'].trim();
+    OfertaCEP = json['OfertaCEP'].toString() == 'null' ? '' : json['OfertaCEP'].toString().trim();
     OfertaDetalhe =
-        json['OfertaDetalhe'] == 'null' ? '' : json['OfertaDetalhe'].trim();
+        json['OfertaDetalhe'].toString() == 'null' ? '' : json['OfertaDetalhe'].toString().trim();
     OfertaID = json['OfertaID'].toString() == 'null'
         ? null
         : json['OfertaID'].toString().trim();
     OfertaDispoDesde =
-        json['OfertaDispoDesde'] == 'null' ? '' : json['OfertaDispoDesde'].trim();
+        json['OfertaDispoDesde'].toString() == 'null' ? '' : json['OfertaDispoDesde'].toString().trim();
     OfertaImgPath =
-        json['OfertaImgPath'] == 'null' ? '' : json['OfertaImgPath'].trim();
-    OfertaPreco = json['OfertaPreco'] == null
+        json['OfertaImgPath'].toString() == 'null' ? '' : json['OfertaImgPath'].toString().trim();
+    OfertaPreco = json['OfertaPreco'].toString() == 'null'
         ? 0.0
-        : double.parse(json['OfertaPreco'].toString());
-    OfertaTitulo = json['OfertaTitulo'] == null ? '' : json['OfertaTitulo'].trim();
-    OfertaFKID = json['OfertaFKID'] == null ? '' : json['OfertaFKID'].trim();
-    OfertaDesativID = json['OfertaDesativID'] == null
-        ? null
-        : int.parse(json['OfertaDesativID'].toString().trim());
-    OfertaDesativAdminID = json['OfertaDesativAdminID'] == null
-        ? null
-        : int.parse(json['OfertaDesativAdminID'].toString().trim());
-    OfertaDesativEm = json['OfertaDesativEm'].toString().trim();
+        : double.parse(json['OfertaPreco'].toString().trim());
+    OfertaTitulo = json['OfertaTitulo'].toString() == 'null' ? '' : json['OfertaTitulo'].toString().trim();
+    OfertaFKID = json['OfertaFKID'].toString() == 'null' ? '' : json['OfertaFKID'].toString().trim();
+    //OfertaDesativID = json['OfertaDesativID'] == null ? null : int.parse(json['OfertaDesativID'].toString().trim());
+    // OfertaDesativAdminID = json['OfertaDesativAdminID'] == null ? null : int.parse(json['OfertaDesativAdminID'].toString().trim());
+    // OfertaDesativEm = json['OfertaDesativEm'].toString().trim();
     // OfertaDispoTipo = int.parse(json['OfertaDispoTipo'].toString());
-    OfertaDispoAte = json['OfertaDispoAte'].toString().trim();
+    // OfertaDispoAte = json['OfertaDispoAte'].toString().trim();
     // OfertaPontoMenos = int.parse(json['OfertaPontoMenos'].toString());
     // OfertaPontoMenos = int.parse(json['OfertaPontoMenos'].toString());
     // OfertaQtdVendida = int.parse(json['OfertaQtdVendida'].toString());
@@ -228,8 +224,8 @@ class Oferta {
     // OfertaAceitaEntregaComprador = json['OfertaAceitaEntregaComprador'].toString().trim() == 'true' ? true : false;
     // OfertaAceitaEntregaParceiro = json['OfertaAceitaEntregaParceiro'].toString().trim() == 'true' ? true : false;
     // OfertaAceitaEntregaVendedor = json['OfertaAceitaEntregaVendedor'].toString().trim() == 'true' ? true : false;
-    OfertaRevisao = json['OfertaRevisao'].toString().trim() == 'true' ? true : false;
-    OfertaMostra = json['OfertaMostra'].toString().trim() == 'true' ? true : false;
+    // OfertaRevisao = json['OfertaRevisao'].toString().trim() == 'true' ? true : false;
+    // OfertaMostra = json['OfertaMostra'].toString().trim() == 'true' ? true : false;
     // ValorEntregaAte1 = double.parse(json['ValorEntregaAte1'].toString());
     // ValorEntregaAte2 = double.parse(json['ValorEntregaAte2'].toString());
     // ValorEntregaMaisDe2 = double.parse(json['ValorEntregaMaisDe2'].toString());
@@ -242,7 +238,7 @@ class Oferta {
     data['OfertaDetalhe'] = this.OfertaDetalhe.toString().trim();
     // data['OfertaDispoDesde'] = this.OfertaDispoDesde;
     //data['OfertaID'] = this.OfertaID.toString();
-    //data['OfertaImgPath'] = this.OfertaImgPath;
+    data['OfertaImgPath'] = this.OfertaImgPath.toString().trim();
     data['OfertaPreco'] = this.OfertaPreco.toString().trim();
     data['OfertaTitulo'] = this.OfertaTitulo.toString().trim();
     data['OfertaFKID'] = this.OfertaFKID.toString().trim();
@@ -263,7 +259,7 @@ class Oferta {
     // data['OfertaPeso'] = this.OfertaPeso.toString();
     // data['OfertaPeso'] = 0.00;
     // data['OfertaPesoUnidade'] = this.OfertaPesoUnidade;
-    // data['OfertaDiasValidade'] = '0'; // this.OfertaDiasValidade.toString();
+    // data['OfertaDiasValidade'] = 0; // this.OfertaDiasValidade.toString();
     // data['OfertaPrecoMin'] = this.OfertaPrecoMin.toString();
     // data['OfertaMostraAval'] = 'false'; // this.OfertaMostraAval.toString();
     // data['OfertaAceitaAuto'] = this.OfertaAceitaAuto.toString().trim();
@@ -321,8 +317,11 @@ class Oferta {
 
   Map<String, dynamic> toJsonPut() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    print("ofertaGuid: ${this.OfertaGUID}");
+    print("CategoriaChave: ${this.CategoriaChave}");
+
     data['OfertaGUID'] = this.OfertaGUID;
-    data['CategoriaChave'] = this.CategoriaChave.toString().trim();
+    data['CategoriaChave'] = this.CategoriaChave; //.toString().trim();
     // data['OfertaAgenteEntrega'] = this.OfertaAgenteEntrega.toString().trim();
     // data['OfertaAgenteEntregaNome'] = this.OfertaAgenteEntregaNome.toString().trim();
     data['OfertaCEP'] = this.OfertaCEP.toString().trim();
@@ -330,9 +329,9 @@ class Oferta {
     // data['OfertaCores'] = this.OfertaCores.toString().trim();
     data['OfertaDetalhe'] = this.OfertaDetalhe.toString().trim();
     // data['OfertaDiasValidade'] = 0; // this.OfertaDiasValidade.toString();
-    data['OfertaDispoAte'] = this.OfertaDispoAte;
-    data['OfertaDispoDesde'] = this.OfertaDispoDesde;
-    data['OfertaDispoTipo'] = this.OfertaDispoTipo.toString().trim();
+    // data['OfertaDispoAte'] = this.OfertaDispoAte;
+    // data['OfertaDispoDesde'] = this.OfertaDispoDesde;
+    // data['OfertaDispoTipo'] = this.OfertaDispoTipo.toString().trim();
     // data['OfertaDistanciaKm'] = this.OfertaDistanciaKm.toString().trim();
     // data['OfertaEncomendasAPartirDe'] = this.OfertaEncomendasAPartirDe;
     // data['OfertaEntregasAPartirDe'] = this.OfertaEntregasAPartirDe;
@@ -356,6 +355,7 @@ class Oferta {
     // data['OfertaMostraAval'] = this.OfertaMostraAval.toString().trim();
     data['OfertaAceitaEncomenda'] = this.OfertaAceitaEncomenda.toString().trim();
     // data['OfertaAceitaProposta'] = this.OfertaAceitaProposta.toString().trim();
+    // data['OfertaAceitaProposta'] = "false";
     data['Oferta24hs'] = this.Oferta24hs.toString().trim();
     data['OfertaFKID'] = this.OfertaFKID;
     // data['OfertaSemQtd'] = this.OfertaSemQtd.toString().trim();

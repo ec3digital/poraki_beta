@@ -176,7 +176,7 @@ class CardOffertsDayHome extends StatelessWidget {
                                                 .coreValor
                                                 .toString() +
                                             cardListOffers[itemIndex]
-                                                .ofertaID
+                                                .ofertaImgPath
                                                 .toString() +
                                             _loginController.listCore
                                                 .where((coreItem) =>
