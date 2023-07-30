@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:poraki/app/data/models/qtdcategorias.dart';
 import 'package:poraki/app/modules/auth/login/login_controller.dart';
 import 'package:poraki/app/modules/offers/offers_controller.dart';
 import 'package:poraki/app/routes/app_routes.dart';
@@ -16,6 +17,7 @@ class ListVerticalCategories extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final LoginController _loginController = Get.find();
+    final CategoriesController _categoriesController = Get.put(CategoriesController());
     final Color backColor = _loginController.colorFromHex(_loginController
         .listCore
         .where((coreItem) => coreItem.coreChave == 'backLight')
@@ -26,7 +28,7 @@ class ListVerticalCategories extends StatelessWidget {
         _loginController.listaCategorias.toList(); //.sort((o1,o2) => o1.or);
 
     Widget _buildRow(
-        int idx, String categoryName, String chave, String iconcode) {
+        int idx, String categoryName, String chave, String iconcode, int? qtd) {
       return Column(children: [
         ListTile(
           leading: Icon(IconData(int.parse(iconcode),
@@ -45,8 +47,8 @@ class ListVerticalCategories extends StatelessWidget {
               {'ofertaGuid': null}
             ]);
           },
-          title: Text(
-            categoryName,
+          title: Text(qtd! > 0 ?
+            '$categoryName ($qtd)' : categoryName,
             // style: _biggerFont,
           ),
           //trailing: Icon(IconData(int.parse(iconcode), fontFamily: 'MaterialIcons'))
@@ -84,6 +86,10 @@ class ListVerticalCategories extends StatelessWidget {
             itemCount: categoriasAll.length,
             itemBuilder: (BuildContext context, int index) {
               Categorias categories = categoriasAll[index];
+              _categoriesController.qtdCategs.forEach((element) {print('${element.CategoriaChave} (${element.qtd})');});
+              qtdcategorias? qtdCateg;
+              try { qtdCateg = _categoriesController.qtdCategs.where((ctg) => ctg.CategoriaChave == categories.categoriaChave).first; } catch (exception) {}
+
 
               return Container(
                   padding: const EdgeInsets.all(2),
@@ -100,7 +106,9 @@ class ListVerticalCategories extends StatelessWidget {
                       index,
                       categories.categoriaNome.toString(),
                       categories.categoriaChave.toString(),
-                      categories.iconcode.toString()));
+                      categories.iconcode.toString(),
+                      qtdCateg == null ? 0 : qtdCateg.qtd
+                  ));
             },
           ))),
           //const SizedBox(height: 20),

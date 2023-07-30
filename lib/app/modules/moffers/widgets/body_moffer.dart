@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:poraki/app/data/models/categorias.dart';
+import 'package:poraki/app/data/models/lojas.dart';
 import 'package:poraki/app/data/models/oferta.dart';
 import 'package:poraki/app/modules/auth/login/login_controller.dart';
 import 'package:poraki/app/modules/categories/categories_controller.dart';
@@ -48,6 +49,8 @@ class _BodyMoffer extends State<BodyMoffer> {
   bool _load = true;
   var _revendaSel = 'selecione';
   var _categoriaSel = '';
+  List<Lojas> listStores = [];
+  Lojas? selStore;
 
   // var _listaRevendas = ['selecione'];
   //Categorias? catogoria;
@@ -234,6 +237,8 @@ class _BodyMoffer extends State<BodyMoffer> {
         .coreValor
         .toString());
 
+    listStores = _loginController.listLojas;
+
     if(_mofferController.singleOffer != null) carregaObj();
 
     // if (_mofferController.txtCEP.text == '') _mofferController.txtCEP.text = _loginController.usuCep.toString();
@@ -279,7 +284,25 @@ class _BodyMoffer extends State<BodyMoffer> {
                       // key: _form,
                       child: ListView(
                         children: [
-                          const SizedBox(height: 20),
+                          const SizedBox(height: 10),
+                          ListTile(
+                            title: Text('Loja: '),
+                            trailing: DropdownButton<Lojas>(
+                              items: listStores.map((Lojas loja) {
+                                return DropdownMenuItem<Lojas>(
+                                  value: loja,
+                                  child: Text(loja.LojaNome.toString()),
+                                );
+                              }).toList(),
+                              value: selStore,
+                              onChanged: (Lojas? newValue) {
+                                setState(() {
+                                  selStore = newValue!;
+                                });
+                              },
+                            ),
+                          ),
+                          const SizedBox(height: 10),
                           Text('Categoria'),
                           DropdownButton<String>(
                             items: _listaCategoriasNomes
@@ -2437,7 +2460,7 @@ class _BodyMoffer extends State<BodyMoffer> {
 
     var offerGuid = Uuid().v4();
     var offerToSend = new Oferta(null, _categSelecionada.categoriaChave, usuGuid, _mofferController.txtTitulo.text, _mofferController.txtDetalhes.text, valPreco, null, null, null, _mofferController.singleOffer!.OfertaImgPath.toString().isEmpty ? offerGuid : _mofferController.singleOffer!.OfertaImgPath.toString(),
-        null, _loginController.cloudId, null, null, _mofferController.mofferGuid.toString().isEmpty ? offerGuid : _mofferController.mofferGuid.toString(),
+        null, _loginController.cloudId, null, null, selStore == null ? '' : selStore!.LojaGUID.toString(), _mofferController.mofferGuid.toString().isEmpty ? offerGuid : _mofferController.mofferGuid.toString(),
         _valAceitaEncomenda, _valSomenteEncomenda, _revendaSel, _val24hs, _mofferController.valEncomendasAPartir.toString(), _mofferController.valEntregasAPartir.toString(), _valPrecoCombinar,
         _valSeg, _valTer, _valQua, _valQui, _valSex, _valSab, _valDom, _mofferController.valSegDas, _mofferController.valSegAs, _mofferController.valTerDas, _mofferController.valTerAs, _mofferController.valQuaDas,
         _mofferController.valQuaAs, _mofferController.valQuiDas, _mofferController.valQuiAs, _mofferController.valSexDas, _mofferController.valSexAs, _mofferController.valSabDas, _mofferController.valSabAs,

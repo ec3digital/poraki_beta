@@ -31,9 +31,29 @@ class ListOffers extends StatelessWidget {
         .toString());
 
     Widget _buildRow(ProdutoOferta oferta) {
+      // List<ProdutoOferta>? listOffer = offersController.offers;
+      // print('qtd: ${listOffer.isEmpty}');
+      // // ignore: unnecessary_null_comparison
+      // String _lojaID = listOffer == null ? '' : listOffer.first.lojaID.toString();
+
+      // if(_lojaID != "")
+      //   const SizedBox(height: 5),
+      // CachedNetworkImage(
+      // imageUrl: 'https://firebasestorage.googleapis.com/v0/b/ec3digrepo.appspot.com/o/lojas%2F$_lojaID.jpg?alt=media',
+      // height: 250,
+      // progressIndicatorBuilder:
+      // (context, url, downloadProgress) =>
+      // CircularProgressIndicator(
+      // value: downloadProgress.progress),
+      // errorWidget: (context, url, error) =>
+      // Icon(Icons.local_offer_outlined),
+      // ),
+      // const SizedBox(height: 5),
+
       return Column(children: [
         Container(
-          padding: const EdgeInsets.all(2), margin: const EdgeInsets.all(10),
+          padding: const EdgeInsets.all(2),
+          margin: const EdgeInsets.all(10),
           decoration: BoxDecoration(
             border: Border.all(
               color: backColor,
@@ -71,31 +91,33 @@ class ListOffers extends StatelessWidget {
     }
 
     return Expanded(
-      child: Container(
-        color: backDark,
-        child: Column(children: [const SizedBox(height: 20), GetBuilder<OffersController>(builder: (context) {
-          if (offersController.isLoading) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          } else {
-            if (offersController.offers.length == 0)
-              return Container(
-                  child: Center(child: Text("Ops, ainda não temos nada por aqui... ;-)")));
-            else
-              return Scrollbar(
-                child: ListView.builder(
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  itemCount: offersController.offers.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return _buildRow(offersController.offers[index]);
-                  },
-                ),
-              );
-          }
-        }),],)
-      ),
-    );
+        child: Container(
+            color: backDark,
+            child: Column(children: [
+              const SizedBox(height: 20),
+              GetBuilder<OffersController>(builder: (context) {
+                if (offersController.isLoading) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                } else {
+                  if (offersController.offers.length == 0)
+                    return Container(
+                        child: Center(
+                            child: Text(
+                                "Ops, ainda não temos nada por aqui... ;-)")));
+                  else
+                    return Scrollbar(
+                        child: ListView.builder(
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      itemCount: offersController.offers.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return _buildRow(offersController.offers[index]);
+                      },
+                    ));
+                }
+              })
+            ])));
   }
 }

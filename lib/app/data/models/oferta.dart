@@ -17,7 +17,7 @@ class Oferta {
   // int? OfertaPontoMenos;
   // int? OfertaQtdVendida;
   // int? OfertaPrazoEntregaMinutos;
-  // int? LojaID;
+  String? LojaID;
   String? OfertaGUID;
   // int? OfertaQtdDispo;
   // int? OfertaQtdMaxVenda;
@@ -100,7 +100,7 @@ class Oferta {
       // this.OfertaPontoMenos,
       // this.OfertaQtdVendida,
       // this.OfertaPrazoEntregaMinutos,
-      // this.LojaID,
+      this.LojaID,
       this.OfertaGUID,
       // this.OfertaQtdDispo,
       // this.OfertaQtdMaxVenda,
@@ -192,8 +192,8 @@ class Oferta {
     // OfertaPontoMenos = int.parse(json['OfertaPontoMenos'].toString());
     // OfertaQtdVendida = int.parse(json['OfertaQtdVendida'].toString());
     // OfertaPrazoEntregaMinutos = json['OfertaPrazoEntregaMinutos'].toString() == 'null' ? 0 : int.parse(json['OfertaPrazoEntregaMinutos'].toString());
-    // LojaID = int.parse(json['LojaID'].toString());
-    OfertaGUID = json['OfertaGUID'].toString().trim();
+    LojaID = json['LojaID'].toString();
+    OfertaGUID = json['OfertaGUID'].toString();
     // OfertaQtdDispo = int.parse(json['OfertaQtdDispo'].toString());
     // OfertaQtdMaxVenda = int.parse(json['OfertaQtdMaxVenda'].toString());
     // OfertaQtdAviso = int.parse(json['OfertaQtdAviso'].toString());
@@ -251,7 +251,7 @@ class Oferta {
     //data['OfertaPontoMenos'] = this.OfertaPontoMenos.toString();
     //data['OfertaQtdVendida'] = this.OfertaQtdVendida.toString();
     // data['OfertaPrazoEntregaMinutos'] = this.OfertaPrazoEntregaMinutos.toString();
-    //data['LojaID'] = this.LojaID.toString();
+    data['LojaID'] = this.LojaID.toString();
     // data['OfertaGUID'] = this.OfertaGUID;
     // data['OfertaQtdDispo'] = '1'; // this.OfertaQtdDispo.toString();
     // data['OfertaQtdMaxVenda'] = this.OfertaQtdMaxVenda.toString();
@@ -388,7 +388,7 @@ class Oferta {
     //data['OfertaPontoMenos'] = this.OfertaPontoMenos.toString();
     //data['OfertaPontoMenos'] = this.OfertaPontoMenos.toString();
     //data['OfertaQtdVendida'] = this.OfertaQtdVendida.toString();
-    // data['LojaID'] = this.LojaID.toString().trim();
+    data['LojaID'] = this.LojaID.toString().trim();
     // data['OfertaAceitaAuto'] = this.OfertaAceitaAuto.toString().trim();
     // data['OfertaMostraReview'] = this.OfertaMostraReview.toString().trim();
     return data;

@@ -80,6 +80,8 @@ class MofferController extends GetxController {
 
   late String? mofferGuid = '';
   late String? lojaGuid = '';
+  // late String? lojaNome = '';
+  // late Lojas? loja;
   late Oferta? singleOffer;
   bool isLoading = false;
   List<Oferta> moffers = [];

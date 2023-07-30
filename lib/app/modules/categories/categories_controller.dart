@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
+import 'package:poraki/app/data/models/qtdcategorias.dart';
 import '../../data/models/categorias.dart';
 import '../../data/repositories/categories_repository.dart';
 import '../auth/login/login_controller.dart';
@@ -8,6 +9,7 @@ import '../auth/login/login_controller.dart';
 class CategoriesController extends GetxController {
   CategoriesRepository categoriesRepository = CategoriesRepository();
   List<Categorias> categorias = [];
+  List<qtdcategorias> qtdCategs = [];
   List<String>? listaCategoriasNomes = [];
   bool isLoading = false;
   late Categorias categSelected;
@@ -20,7 +22,10 @@ class CategoriesController extends GetxController {
     if(_loginController.listaCategorias.isEmpty) {
       await getAllCategoriesFb();
       await getCategoriesNamesFb();
+
     }
+
+    await getQtyCategs();
 
     _loginController.listaCategorias.forEach((categ) { categorias.add(categ); });
 
@@ -138,4 +143,23 @@ class CategoriesController extends GetxController {
       changeLoading(false);
     }
   }
+
+Future<void> getQtyCategs() async {
+    print('passou no getQtyCategs');
+    // LoginController _loginController = Get.find();
+    // offers = _loginController.ofertasFavs;
+    // var categRepo
+
+    try {
+      changeLoading(true);
+      qtdCategs.clear();
+      qtdCategs = await categoriesRepository.getQtdCategorias();
+      this.refresh();
+    } catch (e) {
+      print('Erro no getQtyCategs() controller ${e.toString()}');
+    } finally {
+      changeLoading(false);
+    }
+  }
+
 }

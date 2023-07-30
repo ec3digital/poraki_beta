@@ -1,10 +1,10 @@
 import 'package:get/get.dart';
-import 'package:poraki/app/modules/auth/login/login_controller.dart';
+import 'package:poraki/app/data/models/qtdcategorias.dart';
 import '../../shared/constants/constants.dart';
 import '../models/categorias.dart';
 
 class CategoriesRepository extends GetConnect {
-  LoginController _loginController = Get.find();
+  // LoginController _loginController = Get.find();
   // String url = '${Constants.baseUrl}categorias';
   // String urlBarra = '${Constants.baseUrl}categoriasbarra';
   //
@@ -26,4 +26,15 @@ class CategoriesRepository extends GetConnect {
   //       .map((categorias) => Categorias.fromJson(categorias))
   //       .toList();
   // }
+
+  Future<List<qtdcategorias>> getQtdCategorias() async {
+    // var response = await get('${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiCategoriasBarra').first.coreValor.toString()}', headers: Constants.headers);
+
+    String url = Constants.baseUrl + 'qtdcategorias/';
+    var response = await get(url, headers: Constants.headers);
+    if (response.hasError) throw 'Ocorreu um erro em CategoriesRepository().getQtdCategorias()';
+    return (response.body['qtdcategorias'] as List)
+        .map((qtdcateg) => qtdcategorias.fromJson(qtdcateg))
+        .toList();
+  }
 }
