@@ -165,9 +165,14 @@ class _ListShoppingCartState extends State<ListShoppingCart> {
                                                 .listShoppingCart[index].sellerId.toString())
                                       ]);
 
-                                      Get.toNamed(AppRoutes.offers, arguments: [
+
+                                      Get.offAndToNamed(AppRoutes.offers, arguments: [
+                                        {'listName': null},
+                                        {'limit': 24},
                                         {'category': null},
-                                        {'title': null}
+                                        {'title': 'Vendedor'},
+                                        {'ofertaGuid': null},
+                                        {'storeId': ''}
                                       ]);
                                     },
                                     //}//TODO: falta fazer fkid

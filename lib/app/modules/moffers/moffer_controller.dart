@@ -118,19 +118,19 @@ class MofferController extends GetxController {
     }
   }
 
-  Future<void> getMoffersByStore(String storeGuid) async {
-    print('getMoffersByStore / storeGuid = ' + storeGuid);
-    try {
-      changeLoading(true);
-      moffers = await offerRepository.getOfferByStoreGuid(storeGuid);
-      // print('getMoffers result - ' + moffers.toString());
-    } catch (e) {
-      changeLoading(false);
-      // print('Erro no getMOffers() controller ${e.toString()}');
-    } finally {
-      changeLoading(false);
-    }
-  }
+  // Future<void> getMoffersByStore(String storeGuid) async {
+  //   print('getMoffersByStore / storeGuid = ' + storeGuid);
+  //   try {
+  //     changeLoading(true);
+  //     moffers = await offerRepository.getOfferByStoreGuid(storeGuid);
+  //     // print('getMoffers result - ' + moffers.toString());
+  //   } catch (e) {
+  //     changeLoading(false);
+  //     // print('Erro no getMOffers() controller ${e.toString()}');
+  //   } finally {
+  //     changeLoading(false);
+  //   }
+  // }
 
   Future<List<Lojas>> getStores(String sellerGuid) async {
     //List<Lojas> retLojas = [];

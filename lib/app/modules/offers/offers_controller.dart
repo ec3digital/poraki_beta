@@ -12,6 +12,8 @@ class OffersController extends GetxController {
   String? category;
   String? title;
   String? listName;
+  String? storeId;
+  String? fkId;
   //String? ofertaGuid;
   int limit = 24;
 
@@ -27,6 +29,8 @@ class OffersController extends GetxController {
       this.limit = Get.arguments[1]['limit'];
       this.category = Get.arguments[2]['category'];
       this.title = Get.arguments[3]['title'];
+      this.storeId = Get.arguments[4]['storeId'];
+      this.fkId = Get.arguments[5]['fkId'];
 
       print('ln: ' + this.listName.toString() + ' / l: ' + this.limit.toString() + ' / c: ' + this.category.toString() + ' / t: ' + this.title.toString());
 
@@ -53,29 +57,40 @@ class OffersController extends GetxController {
       }
       else {
         if (this.category == null && this.title == null &&
-            this.listName == null) {
+            this.listName == null && this.storeId == null && this.fkId == null) {
           await getOffers(24);
         }
 
         if (this.category == null && this.title == null &&
-            this.listName == null) {
+            this.listName == null && this.storeId == null && this.fkId == null) {
           await getDayOfferByCEP(24);
         }
 
         if (this.category != null && this.title == null &&
-            this.listName == null) {
+            this.listName == null && this.storeId == null && this.fkId == null) {
           //await getOfferByCEPCategory(this.category!);
         }
 
         if (this.category == null && this.title == null &&
-            this.listName == null) {
+            this.listName == null && this.storeId == null && this.fkId == null) {
           await getOfferByCEPCategoryTitle(this.category!, this.title!);
         }
 
         if (this.category == null && this.title != null &&
-            this.listName == null) {
+            this.listName == null && this.storeId == null && this.fkId == null) {
           await getOfferByCEPTitle(this.title!);
         }
+
+        if (this.category == null && this.title == null &&
+            this.listName == null && this.storeId != null && this.fkId == null) {
+          await getOffersByStore(this.storeId!);
+        }
+
+        if (this.category == null && this.title == null &&
+            this.listName == null && this.storeId == null && this.fkId != null) {
+          await getOffersBySeller(this.fkId!);
+        }
+
       }
     }
     this.refresh();
@@ -237,6 +252,19 @@ class OffersController extends GetxController {
       this.refresh();
     } catch (e) {
       print('Erro no getOffersBySeller() controller ${e.toString()}');
+    } finally {
+      changeLoading(false);
+    }
+  }
+
+  Future<void> getOffersByStore(String storeId) async {
+    try {
+      changeLoading(true);
+      print('entrou no getOffersByStore');
+      offers = await offerRepository.getOfferByStoreGuid(storeId);
+      this.refresh();
+    } catch (e) {
+      print('Erro no getOffersByStore() controller ${e.toString()}');
     } finally {
       changeLoading(false);
     }

@@ -49,6 +49,7 @@ class BodyOffer extends StatelessWidget {
             child: CircularProgressIndicator(),
           );
         } else {
+          print('lojaID: ${produtoOferta.lojaID}');
           //ProdutoOferta _product = offersController.offers.where((p) => p.ofertaID == this.offerId).first;
           List<String> offersImages = [];
           offersImages.add(
@@ -148,9 +149,7 @@ class BodyOffer extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  ListPicsOffer(
-                      imagesList: offersImages,
-                      offer: produtoOferta),
+                  ListPicsOffer(imagesList: offersImages, offer: produtoOferta),
                   // const SizedBox(height: 2),
                   Center(
                     child: Text(
@@ -228,7 +227,9 @@ class BodyOffer extends StatelessWidget {
                       //   );
                       // }
 
-                      var androidUrl = "Olá, vi sua oferta no Poraki e tenho interesse em saber mais sobre isso: " + produtoOferta.ofertaTitulo.toString();
+                      var androidUrl =
+                          "Olá, vi sua oferta no Poraki e tenho interesse em saber mais sobre isso: " +
+                              produtoOferta.ofertaTitulo.toString();
                       final link = WhatsAppUnilink(
                         phoneNumber: '+5511997267192',
                         text: androidUrl,
@@ -309,17 +310,17 @@ class BodyOffer extends StatelessWidget {
                                   ),
                                   const SizedBox(height: 5)
                                 ])),
-                      if (produtoOferta.ofertaSinal != null)
-                        Column(
-                          children: [
-                            const SizedBox(height: 10),
-                            Text('Sinal de ' +
-                                produtoOferta.ofertaSinal.toString() +
-                                ' ' +
-                                produtoOferta.ofertaSinalTipo.toString()),
-                            const Divider(),
-                          ],
-                        ),
+                      // if (produtoOferta.ofertaSinal != null)
+                      //   Column(
+                      //     children: [
+                      //       const SizedBox(height: 10),
+                      //       Text('Sinal de ' +
+                      //           produtoOferta.ofertaSinal.toString() +
+                      //           ' ' +
+                      //           produtoOferta.ofertaSinalTipo.toString()),
+                      //       const Divider(),
+                      //     ],
+                      //   ),
                       if (produtoOferta.ofertaTempoEntrega.toString() != '0')
                         Column(children: [
                           const SizedBox(height: 10),
@@ -330,20 +331,58 @@ class BodyOffer extends StatelessWidget {
                                   .toString()),
                           const Divider(),
                         ]),
-                      if (produtoOferta.ofertaCores != null && produtoOferta.ofertaCores!.toString() != 'null')
+                      if (produtoOferta.ofertaCores != null &&
+                          produtoOferta.ofertaCores!.toString() != 'null')
                         Column(children: [
                           const SizedBox(height: 10),
                           Text(
                               'Cores: ' + produtoOferta.ofertaCores.toString()),
                           const Divider(),
                         ]),
-                      if (produtoOferta.ofertaTamanhos != null && produtoOferta.ofertaTamanhos!.toString() != 'null')
+                      if (produtoOferta.ofertaTamanhos != null &&
+                          produtoOferta.ofertaTamanhos!.toString() != 'null')
                         Column(children: [
                           const SizedBox(height: 10),
                           Text('Tamanhos: ' +
                               produtoOferta.ofertaTamanhos.toString()),
                           const Divider(),
                         ]),
+
+                      const SizedBox(height: 10),
+                      GestureDetector(
+                      onTap: () {
+                        OffersController offersController =
+                        Get.find();
+
+                        if(produtoOferta.lojaID.toString().length > 5)
+                          Future.wait([offersController.getOffersByStore(produtoOferta.lojaID.toString())]);
+                        else
+                          Future.wait([offersController.getOffersBySeller(produtoOferta.ofertaFKID.toString())]);
+
+                        Get.offAndToNamed(AppRoutes.offers, arguments: [
+                          {'listName': null},
+                          {'limit': 24},
+                          {'category': null},
+                          {'title': produtoOferta.lojaID.toString().length > 5 ? 'Loja' : 'Vendedor'},
+                          {'ofertaGuid': null},
+                          {'storeId': produtoOferta.lojaID.toString().length > 5 ? produtoOferta.lojaID.toString() : null},
+                          {'fkId': produtoOferta.ofertaFKID.toString().length > 5 ? produtoOferta.ofertaFKID.toString() : null}
+                        ]);
+                      },
+                      //}
+                        // TODO: falta fazer fkid
+                      child: Text('Ver outros produtos ' + (produtoOferta.lojaID.toString().length > 5 ? 'da loja' : 'do vendedor'),
+                          style: TextStyle(
+                              fontSize: 16,
+                              color: _loginController.colorFromHex(
+                                  _loginController.listCore
+                                      .where((coreItem) =>
+                                          coreItem.coreChave == 'textDark')
+                                      .first
+                                      .coreValor
+                                      .toString()))),
+                    ),
+
                     ],
                   )),
                   // SizedBox(height: 10),

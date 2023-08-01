@@ -103,12 +103,33 @@ class OfferRepository extends GetConnect {
         .toList();
   }
 
+  Future<List<ProdutoOferta>> getOffersByStore(int limit) async {
+    // String url = '${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiMelhoresOfertas').first.coreValor.toString()}/' + _loginController.usuCep.toString().substring(0,3) + '%25/' + limit.toString();
+    String url = 'https://poraki.hasura.app/api/rest/ofertasporloja/' + _loginController.usuGuid.toString();
+    var response = await get(url, headers: Constants.headers);
+    if (response.hasError) throw 'Ocorreu um erro em getOffersByStore()';
+    return (response.body['Ofertas'] as List)
+        .map((oferta) => ProdutoOferta.fromJson(oferta))
+        .toList();
+  }
+
   Future<List<ProdutoOferta>> getOffersBySeller(String SellerGuid) async {
     print('getOffersBySeller ' + SellerGuid);
     String url = '${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiMoffer').first.coreValor.toString()}/' + SellerGuid;
     var response = await get(url, headers: Constants.headers);
     //print(response.body.toString());
     if (response.hasError) throw 'Ocorreu um erro em getOfferBySellerGuid()';
+    return (response.body['Ofertas'] as List)
+        .map((oferta) => ProdutoOferta.fromJson(oferta))
+        .toList();
+  }
+
+  Future<List<ProdutoOferta>> getOfferByStoreGuid(String StoreGuid) async {
+    print('getOfferByStoreGuid ' + StoreGuid);
+    String url = '${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiMoffersStore').first.coreValor.toString()}/' + StoreGuid;
+    var response = await get(url, headers: Constants.headers);
+    //print(response.body.toString());
+    if (response.hasError) throw 'Ocorreu um erro em getOfferByStoreGuid()';
     return (response.body['Ofertas'] as List)
         .map((oferta) => ProdutoOferta.fromJson(oferta))
         .toList();
@@ -128,19 +149,6 @@ class OfferRepository extends GetConnect {
         .map((oferta) => Oferta.fromJson(oferta))
         .toList();
 
-
-    return listOffers;
-  }
-
-  Future<List<Oferta>> getOfferByStoreGuid(String StoreGuid) async {
-    print('getOfferByStoreGuid ' + StoreGuid);
-    String url = '${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiMoffersStore').first.coreValor.toString()}/' + StoreGuid;
-    var response = await get(url, headers: Constants.headers);
-    //print(response.body.toString());
-    if (response.hasError) throw 'Ocorreu um erro em getOfferByStoreGuid()';
-    listOffers = (response.body['Ofertas'] as List)
-        .map((oferta) => Oferta.fromJson(oferta))
-        .toList();
     return listOffers;
   }
 
