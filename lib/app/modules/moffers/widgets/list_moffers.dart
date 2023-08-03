@@ -74,18 +74,23 @@ class _ListMoffersState extends State<ListMoffers> {
         .first
         .coreValor
         .toString());
+    final Color soldBackColor = Colors.grey.shade300;
 
     Widget _buildRow(Oferta moferta) {
       return Column(children: [
         Container(
-            padding: const EdgeInsets.all(2),
-            margin: const EdgeInsets.all(4),
+            // padding: const EdgeInsets.all(2),
+            // margin: const EdgeInsets.all(4),
             decoration: BoxDecoration(
               border: Border.all(
-                color: backColor,
+                color: moferta.OfertaDispoAte.toString().length > 4
+                    ? soldBackColor
+                    : backColor,
               ),
               borderRadius: BorderRadius.all(Radius.circular(8)),
-              color: backColor,
+              color: moferta.OfertaDispoAte.toString().length > 4
+                  ? soldBackColor
+                  : backColor,
             ),
             child: ListTile(
                 leading: CachedNetworkImage(
@@ -112,7 +117,18 @@ class _ListMoffersState extends State<ListMoffers> {
                   mofferController.singleOffer = moferta;
                   Get.toNamed(AppRoutes.mOffer);
                 },
-                title: Text('(Vendido) ' + moferta.OfertaTitulo.toString(), style: TextStyle(color: moferta.OfertaDispoAte.toString().length > 4 ? Colors.redAccent : textDarkColor),),
+                title: Text(
+                  moferta.OfertaDispoAte.toString().length > 4
+                      ? '(Vendido) ' + moferta.OfertaTitulo.toString()
+                      : moferta.OfertaTitulo.toString(),
+                  style: TextStyle(
+                      decoration: moferta.OfertaDispoAte.toString().length > 4
+                          ? TextDecoration.lineThrough
+                          : TextDecoration.none,
+                      color: moferta.OfertaDispoAte.toString().length > 4
+                          ? Colors.redAccent
+                          : textDarkColor),
+                ),
                 subtitle: Text(moferta.OfertaDetalhe.toString()),
                 trailing: Text(
                     'R\$ ${moferta.OfertaPreco?.toStringAsFixed(2).replaceAll(',', '').replaceAll('.', ',') ?? ''}')))
@@ -199,15 +215,15 @@ class _ListMoffersState extends State<ListMoffers> {
                       itemCount: mofferController.moffers.length,
                       itemBuilder: (BuildContext context, int index) {
                         return Container(
-                            padding: const EdgeInsets.all(8),
-                            margin: const EdgeInsets.all(5),
+                            padding: const EdgeInsets.all(3),
+                            margin: const EdgeInsets.all(2),
                             decoration: BoxDecoration(
                               border: Border.all(
-                                color: backColor,
+                                color: Colors.transparent,
                               ),
                               borderRadius:
                                   BorderRadius.all(Radius.circular(10)),
-                              color: backColor,
+                              color: Colors.transparent,
                             ),
                             child: _buildRow(mofferController.moffers[index]));
                       }),
