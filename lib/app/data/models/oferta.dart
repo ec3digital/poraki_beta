@@ -187,7 +187,7 @@ class Oferta {
     // OfertaDesativAdminID = json['OfertaDesativAdminID'] == null ? null : int.parse(json['OfertaDesativAdminID'].toString().trim());
     // OfertaDesativEm = json['OfertaDesativEm'].toString().trim();
     // OfertaDispoTipo = int.parse(json['OfertaDispoTipo'].toString());
-    // OfertaDispoAte = json['OfertaDispoAte'].toString().trim();
+    OfertaDispoAte = json['OfertaDispoAte'].toString().trim();
     // OfertaPontoMenos = int.parse(json['OfertaPontoMenos'].toString());
     // OfertaPontoMenos = int.parse(json['OfertaPontoMenos'].toString());
     // OfertaQtdVendida = int.parse(json['OfertaQtdVendida'].toString());

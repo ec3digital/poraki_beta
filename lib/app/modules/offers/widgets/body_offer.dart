@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 //import 'package:open_whatsapp/open_whatsapp.dart';
 import 'package:get/get.dart';
+import 'package:poraki/app/data/models/lojas.dart';
 import 'package:poraki/app/data/models/sql/sqlCarrinho.dart';
+import 'package:poraki/app/data/repositories/store_repository.dart';
 import 'package:poraki/app/modules/auth/login/login_controller.dart';
 import 'package:poraki/app/modules/offers/widgets/button_offer.dart';
 import 'package:poraki/app/modules/offers/widgets/detail_offer.dart';
+import 'package:poraki/app/modules/stores/store_controller.dart';
 import 'package:poraki/app/routes/app_routes.dart';
 import 'package:poraki/app/services/sqlite/sqlporaki_cart_service.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -321,16 +324,17 @@ class BodyOffer extends StatelessWidget {
                       //       const Divider(),
                       //     ],
                       //   ),
-                      if (produtoOferta.ofertaTempoEntrega.toString() != '0')
-                        Column(children: [
-                          const SizedBox(height: 10),
-                          Text('Tempo de Entrega: ' +
-                              produtoOferta.ofertaTempoEntrega.toString() +
-                              ' ' +
-                              produtoOferta.ofertaTempoEntregaUnidade
-                                  .toString()),
-                          const Divider(),
-                        ]),
+
+                      // if (produtoOferta.ofertaTempoEntrega.toString() != '0')
+                      //   Column(children: [
+                      //     const SizedBox(height: 10),
+                      //     Text('Tempo de Entrega: ' +
+                      //         produtoOferta.ofertaTempoEntrega.toString() +
+                      //         ' ' +
+                      //         produtoOferta.ofertaTempoEntregaUnidade
+                      //             .toString()),
+                      //     const Divider(),
+                      //   ]),
                       if (produtoOferta.ofertaCores != null &&
                           produtoOferta.ofertaCores!.toString() != 'null')
                         Column(children: [
@@ -350,39 +354,68 @@ class BodyOffer extends StatelessWidget {
 
                       const SizedBox(height: 10),
                       GestureDetector(
-                      onTap: () {
-                        OffersController offersController =
-                        Get.find();
+                        onTap: () {
+                          OffersController offersController = Get.find();
 
-                        if(produtoOferta.lojaID.toString().length > 5)
-                          Future.wait([offersController.getOffersByStore(produtoOferta.lojaID.toString())]);
-                        else
-                          Future.wait([offersController.getOffersBySeller(produtoOferta.ofertaFKID.toString())]);
+                          Lojas? loja = null;
+                          if (produtoOferta.lojaID.toString().length > 5) {
+                            StoreController storeController = Get.put(StoreController());
 
-                        Get.offAndToNamed(AppRoutes.offers, arguments: [
-                          {'listName': null},
-                          {'limit': 24},
-                          {'category': null},
-                          {'title': produtoOferta.lojaID.toString().length > 5 ? 'Loja' : 'Vendedor'},
-                          {'ofertaGuid': null},
-                          {'storeId': produtoOferta.lojaID.toString().length > 5 ? produtoOferta.lojaID.toString() : null},
-                          {'fkId': produtoOferta.ofertaFKID.toString().length > 5 ? produtoOferta.ofertaFKID.toString() : null}
-                        ]);
-                      },
-                      //}
-                        // TODO: falta fazer fkid
-                      child: Text('Ver outros produtos ' + (produtoOferta.lojaID.toString().length > 5 ? 'da loja' : 'do vendedor'),
-                          style: TextStyle(
-                              fontSize: 16,
-                              color: _loginController.colorFromHex(
-                                  _loginController.listCore
-                                      .where((coreItem) =>
-                                          coreItem.coreChave == 'textDark')
-                                      .first
-                                      .coreValor
-                                      .toString()))),
-                    ),
 
+
+                            Future.wait([
+                              offersController.getOffersByStore(
+                                  produtoOferta.lojaID.toString())
+                            ]);
+
+                            //Future.wait([loja = storeController.retornaLoja(produtoOferta.lojaID.toString()] as Lojas?);
+                          } else {
+                            Future.wait([
+                              offersController.getOffersBySeller(
+                                  produtoOferta.ofertaFKID.toString())
+                            ]);
+                          }
+
+                          Get.offAndToNamed(AppRoutes.offers, arguments: [
+                            {'listName': null},
+                            {'limit': 24},
+                            {'category': null},
+                            {
+                              'title':
+                                  produtoOferta.lojaID.toString().length > 5
+                                      ? 'Loja X' // loja!.LojaNome
+                                      : 'Vendedor'
+                            },
+                            {'ofertaGuid': null},
+                            {
+                              'storeId':
+                                  produtoOferta.lojaID.toString().length > 5
+                                      ? produtoOferta.lojaID.toString()
+                                      : null
+                            },
+                            {
+                              'fkId':
+                                  produtoOferta.ofertaFKID.toString().length > 5
+                                      ? produtoOferta.ofertaFKID.toString()
+                                      : null
+                            }
+                          ]);
+                        },
+                        child: Text(
+                            'Ver outros produtos ' +
+                                (produtoOferta.lojaID.toString().length > 5
+                                    ? 'da loja'
+                                    : 'do vendedor'),
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: _loginController.colorFromHex(
+                                    _loginController.listCore
+                                        .where((coreItem) =>
+                                            coreItem.coreChave == 'textDark')
+                                        .first
+                                        .coreValor
+                                        .toString()))),
+                      ),
                     ],
                   )),
                   // SizedBox(height: 10),

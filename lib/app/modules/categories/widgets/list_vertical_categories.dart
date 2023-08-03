@@ -44,13 +44,15 @@ class ListVerticalCategories extends StatelessWidget {
               {'limit': 24},
               {'category': chave.toString()},
               {'title': categoryName},
-              {'ofertaGuid': null}
+              {'ofertaGuid': null},
+              {'storeId': null},
+              {'fkId': null}
             ]);
           },
-          title: Text(qtd! > 0 ?
-            '$categoryName ($qtd)' : categoryName,
-            // style: _biggerFont,
-          ),
+          title: Row(children: [Text(categoryName + ' '),
+            if(qtd! > 0)
+              Badge(label: Text(qtd.toString()), textColor: Colors.white, backgroundColor: Colors.redAccent,),],)
+              // Chip(label: Text(qtd.toString()),labelStyle: TextStyle(color: Colors.white) , backgroundColor: Colors.redAccent,),],)
           //trailing: Icon(IconData(int.parse(iconcode), fontFamily: 'MaterialIcons'))
         ),
         const SizedBox(height: 3)
@@ -86,7 +88,7 @@ class ListVerticalCategories extends StatelessWidget {
             itemCount: categoriasAll.length,
             itemBuilder: (BuildContext context, int index) {
               Categorias categories = categoriasAll[index];
-              _categoriesController.qtdCategs.forEach((element) {print('${element.CategoriaChave} (${element.qtd})');});
+              // _categoriesController.qtdCategs.forEach((element) {print('${element.CategoriaChave} (${element.qtd})');});
               qtdcategorias? qtdCateg;
               try { qtdCateg = _categoriesController.qtdCategs.where((ctg) => ctg.CategoriaChave == categories.categoriaChave).first; } catch (exception) {}
 

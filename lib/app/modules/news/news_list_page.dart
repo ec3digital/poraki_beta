@@ -62,7 +62,7 @@ class NewsListPage extends StatelessWidget {
     return FutureBuilder(
         future: pegaNoticias(),
         builder: (context, futuro) {
-          if (futuro.connectionState == ConnectionState.waiting) {
+          if (futuro.connectionState != ConnectionState.done) {
             return Center(child: CircularProgressIndicator());
           } else {
             return Column(

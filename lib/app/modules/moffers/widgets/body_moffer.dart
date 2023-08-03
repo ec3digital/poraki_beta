@@ -2241,6 +2241,38 @@ class _BodyMoffer extends State<BodyMoffer> {
                               if (_mofferController.singleOffer != null)
                                 ButtonOffer(
                                   onPressed: () async {
+                                    await _mofferController.markOfferSold(
+                                        _mofferController.singleOffer!
+                                            .OfertaGUID
+                                            .toString());
+
+                                    Get.defaultDialog(
+                                        title: "Aviso",
+                                        middleText:
+                                        "Vendido!");
+
+                                    Get.offAndToNamed(AppRoutes.mOffers);
+                                  },
+                                  colorText: _loginController
+                                      .colorFromHex(_loginController.listCore
+                                      .where((coreItem) =>
+                                  coreItem.coreChave ==
+                                      'textLight')
+                                      .first
+                                      .coreValor
+                                      .toString()),
+                                  text: 'Marcar Vendido',
+                                  colorButton: _loginController
+                                      .colorFromHex(_loginController.listCore
+                                      .where((coreItem) =>
+                                  coreItem.coreChave ==
+                                      'textDark')
+                                      .first
+                                      .coreValor
+                                      .toString()),
+                                ),
+                                ButtonOffer(
+                                  onPressed: () async {
                                     await _mofferController.apagaMoffer(
                                         _mofferController.singleOffer!
                                             .OfertaGUID
@@ -2271,6 +2303,7 @@ class _BodyMoffer extends State<BodyMoffer> {
                                       .coreValor
                                       .toString()),
                                 ),
+
                             ])
                         ],
                       ),

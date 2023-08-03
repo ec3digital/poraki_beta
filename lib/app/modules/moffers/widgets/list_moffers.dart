@@ -68,12 +68,18 @@ class _ListMoffersState extends State<ListMoffers> {
         .first
         .coreValor
         .toString());
+    final Color textDarkColor = _loginController.colorFromHex(_loginController
+        .listCore
+        .where((coreItem) => coreItem.coreChave == 'textDark')
+        .first
+        .coreValor
+        .toString());
 
     Widget _buildRow(Oferta moferta) {
       return Column(children: [
         Container(
             padding: const EdgeInsets.all(2),
-            margin: const EdgeInsets.all(10),
+            margin: const EdgeInsets.all(4),
             decoration: BoxDecoration(
               border: Border.all(
                 color: backColor,
@@ -106,7 +112,7 @@ class _ListMoffersState extends State<ListMoffers> {
                   mofferController.singleOffer = moferta;
                   Get.toNamed(AppRoutes.mOffer);
                 },
-                title: Text(moferta.OfertaTitulo.toString()),
+                title: Text('(Vendido) ' + moferta.OfertaTitulo.toString(), style: TextStyle(color: moferta.OfertaDispoAte.toString().length > 4 ? Colors.redAccent : textDarkColor),),
                 subtitle: Text(moferta.OfertaDetalhe.toString()),
                 trailing: Text(
                     'R\$ ${moferta.OfertaPreco?.toStringAsFixed(2).replaceAll(',', '').replaceAll('.', ',') ?? ''}')))

@@ -155,4 +155,11 @@ class StoreController extends GetxController {
       await _login.loadStoresData();
     }
   }
+
+  Future<Lojas> retornaLoja(String lojaGuid) async {
+    return await storeRepo.getStore(lojaGuid);
+  }
+
+
+
 }

@@ -190,6 +190,19 @@ class MofferController extends GetxController {
     // // await carregaUsuario();
   }
 
+  Future<void> markOfferSold(String? ofertaGuid) async {
+    try {
+      changeLoading(true);
+      print('entrou no markOfferSold $ofertaGuid');
+      await offerRepository.markOfferAsSold(ofertaGuid.toString());
+      this.refresh();
+    } catch (e) {
+      print('Erro no markOfferSold() controller ${e.toString()}');
+    } finally {
+      changeLoading(false);
+    }
+  }
+
 
 
 }

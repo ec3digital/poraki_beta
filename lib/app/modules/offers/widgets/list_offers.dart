@@ -92,32 +92,37 @@ class ListOffers extends StatelessWidget {
 
     return Expanded(
         child: Container(
-            color: backDark,
-            child: Column(children: [
-              const SizedBox(height: 20),
-              GetBuilder<OffersController>(builder: (context) {
-                if (offersController.isLoading) {
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
-                } else {
-                  if (offersController.offers.length == 0)
-                    return Container(
-                        child: Center(
-                            child: Text(
-                                "Ops, ainda não temos nada por aqui... ;-)")));
-                  else
-                    return Scrollbar(
-                        child: ListView.builder(
-                      scrollDirection: Axis.vertical,
-                      shrinkWrap: true,
-                      itemCount: offersController.offers.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return _buildRow(offersController.offers[index]);
-                      },
-                    ));
-                }
-              })
-            ])));
+            //     color: backDark,
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+          const SizedBox(height: 10),
+          GetBuilder<OffersController>(builder: (context) {
+            if (offersController.isLoading) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            } else {
+              if (offersController.offers.length == 0)
+                return Container(
+                    child: Center(
+                        child:
+                            Text("Ops, ainda não temos nada por aqui... ;-)")));
+              else
+                return Expanded(
+                    child: Container(
+                        child: Scrollbar(
+                            child: ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  itemCount: offersController.offers.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return _buildRow(offersController.offers[index]);
+                  },
+                ))));
+            }
+          })
+        ])));
   }
 }

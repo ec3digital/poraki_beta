@@ -298,4 +298,5 @@ class OffersController extends GetxController {
       changeLoading(false);
     }
   }
+
 }

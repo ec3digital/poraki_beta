@@ -167,10 +167,18 @@ class OfferRepository extends GetConnect {
   }
 
   Future<void> deleteOfferByGuidFromApi(String offerGuid) async {
-    print('getOfferByGuidFromApi');
+    print('deleteOfferByGuidFromApi');
     String url = Constants.baseUrl + 'ofertainativ/' + offerGuid;
     var response = await put(url, '', headers: Constants.headers);
     if (response.hasError) throw 'Ocorreu um erro em deleteOfferByGuidFromApi()';
+    else print(response.body);
+  }
+
+  Future<void> markOfferAsSold(String offerGuid) async {
+    print('markOfferAsSold');
+    String url = Constants.baseUrl + 'ofertavendida/' + offerGuid;
+    var response = await put(url, '', headers: Constants.headers);
+    if (response.hasError) throw 'Ocorreu um erro em markOfferAsSold() $offerGuid';
     else print(response.body);
   }
 
