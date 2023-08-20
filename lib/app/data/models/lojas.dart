@@ -15,8 +15,9 @@ class Lojas {
   String? LojaLogra;
   String? LojaNumero;
   String? LojaCompl;
+  String? LojaWhatsapp;
 
-  Lojas(this.LojaAtivaDesde, this.LojaTemplateChave, this.LojaNome, this.LojaCEP, this.LojaSlogan, this.LojaGUID, this.VendedorID, this.LojaCNPJ, this.LojaRazao, this.Categorias, this.LojaConfigs, this.LojaLogra, this.LojaNumero, this.LojaCompl);
+  Lojas(this.LojaAtivaDesde, this.LojaTemplateChave, this.LojaNome, this.LojaCEP, this.LojaSlogan, this.LojaGUID, this.VendedorID, this.LojaCNPJ, this.LojaRazao, this.Categorias, this.LojaConfigs, this.LojaLogra, this.LojaNumero, this.LojaCompl, this.LojaWhatsapp);
 
   Lojas.fromJson(Map<String, dynamic> json) {
     LojaAtivaDesde = DateTime.now(); // json['LojaAtivaDesde'];
@@ -32,6 +33,7 @@ class Lojas {
     LojaLogra = json['LojaLogra'].toString().trim();
     LojaNumero = json['LojaNumero'].toString().trim();
     LojaCompl = json['LojaCompl'].toString().trim();
+    LojaWhatsapp = json['LojaWhatsapp'].toString().trim();
   }
 
   // Lojas.listFromJson(List<Map<String, dynamic>> json) {
@@ -68,6 +70,7 @@ class Lojas {
     data['LojaLogra'] = this.LojaLogra.toString().trim();
     data['LojaNumero'] = this.LojaNumero.toString().trim();
     data['LojaCompl'] = this.LojaCompl.toString().trim();
+    data['LojaWhatsapp'] = this.LojaWhatsapp.toString().trim();
 
     //if(this.LojaGUID != null) {
       data['LojaGUID'] = this.LojaGUID;

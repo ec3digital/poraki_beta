@@ -48,7 +48,7 @@ class ListProductsDayOffers extends StatelessWidget {
                             margin: EdgeInsets.only(top: 4),
 
                             child: CachedNetworkImage(
-                              imageUrl: 'https://firebasestorage.googleapis.com/v0/b/ec3digrepo.appspot.com/o/ofertas%2F' + _product.ofertaImgPath.toString() + '.jpg?alt=media',
+                              imageUrl: 'https://firebasestorage.googleapis.com/v0/b/ec3digrepo.appspot.com/o/ofertas%2F' + _product.ofertaGUID.toString() + '.jpg?alt=media',
                               progressIndicatorBuilder: (context, url, downloadProgress) =>
                                   CircularProgressIndicator(value: downloadProgress.progress),
                               errorWidget: (context, url, error) => Icon(Icons.local_offer_outlined),

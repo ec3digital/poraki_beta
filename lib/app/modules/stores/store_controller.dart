@@ -4,6 +4,7 @@ import 'package:extended_masked_text/extended_masked_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:poraki/app/data/models/lojas.dart';
+import 'package:poraki/app/data/repositories/offer_repository.dart';
 import 'package:poraki/app/data/repositories/store_repository.dart';
 import 'package:poraki/app/modules/auth/login/login_controller.dart';
 import 'package:uuid/uuid.dart';
@@ -25,6 +26,7 @@ class StoreController extends GetxController {
   final TextEditingController txtLojaRazao = TextEditingController();
   final TextEditingController txtOutroCupom = TextEditingController();
   final TextEditingController txtPercCupom = TextEditingController();
+  final TextEditingController txtLojaWhatsapp = TextEditingController();
 
   String? lojaGuid;
   //List<Lojas> lojas = [];
@@ -74,6 +76,7 @@ class StoreController extends GetxController {
       txtLojaLogra.text = loja!.LojaLogra.toString();
       txtLojaNumero.text = loja!.LojaNumero.toString();
       txtLojaCompl?.text = loja!.LojaCompl.toString();
+      txtLojaWhatsapp.text = loja!.LojaWhatsapp.toString();
       //txtOutroCupom.text = loja!
     } catch (e) {
       print('Erro no carregaLoja() controller ${e.toString()}');
@@ -96,6 +99,7 @@ class StoreController extends GetxController {
         loja!.LojaNumero == null ? "" : loja!.LojaNumero.toString();
     txtLojaCompl?.text =
         loja!.LojaCompl == null ? "" : loja!.LojaCompl.toString();
+    txtLojaWhatsapp.text = loja!.LojaWhatsapp.toString();
   }
 
   void emptyLoja() {
@@ -110,6 +114,7 @@ class StoreController extends GetxController {
     txtLojaCompl?.text = "";
     txtOutroCupom.text = "";
     txtPercCupom.text = "";
+    txtLojaWhatsapp.text = "";
     this.refresh();
   }
 
@@ -131,7 +136,9 @@ class StoreController extends GetxController {
         '', // loja!.LojaConfigs,
         txtLojaLogra.text.trimRight(),
         txtLojaNumero.text.trimRight(),
-        txtLojaCompl!.text.trimRight());
+        txtLojaCompl!.text.trimRight(),
+      txtLojaWhatsapp.text.trimRight(),
+    );
 
     if (persistLoja.LojaGUID == null) {
       persistLoja.LojaGUID = Uuid().v4();
@@ -153,13 +160,15 @@ class StoreController extends GetxController {
     if(loja != null) {
       await storeRepo.deleteStore(loja);
       await _login.loadStoresData();
+
+      // desativa as ofertas da Loja
+      var offerRepo = new OfferRepository();
+      await offerRepo.deleteOfferByStore(loja.LojaGUID.toString());
     }
   }
 
   Future<Lojas> retornaLoja(String lojaGuid) async {
     return await storeRepo.getStore(lojaGuid);
   }
-
-
 
 }

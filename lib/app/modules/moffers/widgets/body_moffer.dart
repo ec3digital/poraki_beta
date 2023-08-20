@@ -32,7 +32,8 @@ class BodyMoffer extends StatefulWidget {
 class _BodyMoffer extends State<BodyMoffer> {
   File? image;
   List<String> _listaCategoriasNomes = [];
-  final CategoriesController _categoriesController = Get.put(CategoriesController()); // .find();
+  final CategoriesController _categoriesController =
+      Get.put(CategoriesController()); // .find();
   final MofferController _mofferController = Get.find();
   var _categSelecionada = new Categorias();
   var _imgcloud = '';
@@ -135,7 +136,6 @@ class _BodyMoffer extends State<BodyMoffer> {
   late Color? textColor;
   late Color? iconColor;
 
-
   // // formatters
   // late TextFormField txtfValorSinalOrc;
   // late TextFormField txtfValorMin;
@@ -145,7 +145,6 @@ class _BodyMoffer extends State<BodyMoffer> {
   // late TextFormField txtfPesoPorcao;
   // late TextFormField txtfCEP;
   // late TextFormField txtfPreco;
-
 
   @override
   void initState() {
@@ -169,7 +168,10 @@ class _BodyMoffer extends State<BodyMoffer> {
 
     //final LoginController loginController = Get.find();
 
-    Future.delayed(Duration.zero,() => _mofferController.txtCEP.text = _loginController.usuCep.toString());
+    Future.delayed(
+        Duration.zero,
+        () =>
+            _mofferController.txtCEP.text = _loginController.usuCep.toString());
 
     // if(_loginController.listaCategorias.length == 0)
     //   {
@@ -181,7 +183,6 @@ class _BodyMoffer extends State<BodyMoffer> {
     });
 
     //_listaCategoriasNomes.add('selecione');
-
 
     _mofferController.txtTitulo.text = '';
     // _mofferController.txtValorTaxa1km.text = '0.00';
@@ -239,7 +240,7 @@ class _BodyMoffer extends State<BodyMoffer> {
 
     listStores = _loginController.listLojas;
 
-    if(_mofferController.singleOffer != null) carregaObj();
+    if (_mofferController.singleOffer != null) carregaObj();
 
     // if (_mofferController.txtCEP.text == '') _mofferController.txtCEP.text = _loginController.usuCep.toString();
 
@@ -255,2063 +256,2061 @@ class _BodyMoffer extends State<BodyMoffer> {
     //         // } else if (futuro.hasError) {
     //         //   return Center(child: Text(futuro.error.toString()));
     //       } else {
-            return Scaffold(
-              appBar: PreferredSize(
-                preferredSize: Size(double.maxFinite, 55),
-                child: AppBar(
-                  elevation: 0,
-                  centerTitle: false,
-                  backgroundColor: _loginController.colorFromHex(_loginController.listCore
-                      .where((coreItem) => coreItem.coreChave == 'backLight')
-                      .first
-                      .coreValor
-                      .toString()),
-                  title: Text(
-                    'Minha oferta',
-                    style: TextStyle(fontSize: 25, color: textColor),
-                  ),
-                ),
-              ),
-              //drawer: DrawerHome(0),
-              body: _isLoading
-                  ? Center(
-                child: CircularProgressIndicator(),
-              )
-                  : GradientHeaderHome(
-                  child: Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: Form(
-                      // key: _form,
-                      child: ListView(
-                        children: [
-                          const SizedBox(height: 10),
-                          ListTile(
-                            title: Text('Loja: '),
-                            trailing: DropdownButton<Lojas>(
-                              items: listStores.map((Lojas loja) {
-                                return DropdownMenuItem<Lojas>(
-                                  value: loja,
-                                  child: Text(loja.LojaNome.toString()),
-                                );
-                              }).toList(),
-                              value: selStore,
-                              onChanged: (Lojas? newValue) {
-                                setState(() {
-                                  selStore = newValue!;
-                                });
-                              },
-                            ),
-                          ),
-                          const SizedBox(height: 10),
-                          Text('Categoria'),
-                          DropdownButton<String>(
-                            items: _listaCategoriasNomes
-                                .map((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(value),
-                              );
-                            }).toList(),
-                            value: _categoriaSel == ''
-                                ? null
-                                : _categoriaSel,
-                            onChanged: (String? newValue) async {
-                              print('_categSelecionada: ' + newValue!);
-                              if (newValue.isNotEmpty) {
-                                _categoriaSel =
-                                    newValue.toString();
-                                _categSelecionada = await _categoriesController
-                                    .selecionaCategoriaPorNome(
-                                    newValue.toString())
-                                as Categorias;
+    return Scaffold(
+      appBar: PreferredSize(
+        preferredSize: Size(double.maxFinite, 55),
+        child: AppBar(
+          elevation: 0,
+          centerTitle: false,
+          backgroundColor: _loginController.colorFromHex(_loginController
+              .listCore
+              .where((coreItem) => coreItem.coreChave == 'backLight')
+              .first
+              .coreValor
+              .toString()),
+          title: Text(
+            'Minha oferta',
+            style: TextStyle(fontSize: 25, color: textColor),
+          ),
+        ),
+      ),
+      //drawer: DrawerHome(0),
+      body: _isLoading
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : GradientHeaderHome(
+              child: Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Form(
+                // key: _form,
+                child: ListView(
+                  children: [
+                    const SizedBox(height: 10),
+                    ListTile(
+                      title: Text('Loja: '),
+                      trailing: DropdownButton<Lojas>(
+                        items: listStores.map((Lojas loja) {
+                          return DropdownMenuItem<Lojas>(
+                            value: loja,
+                            child: Text(loja.LojaNome.toString()),
+                          );
+                        }).toList(),
+                        value: selStore,
+                        onChanged: (Lojas? newValue) {
+                          setState(() {
+                            selStore = newValue!;
+                          });
+                        },
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Text('Categoria'),
+                    DropdownButton<String>(
+                      items: _listaCategoriasNomes.map((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                      value: _categoriaSel == '' ? null : _categoriaSel,
+                      onChanged: (String? newValue) async {
+                        print('_categSelecionada: ' + newValue!);
+                        if (newValue.isNotEmpty) {
+                          _categoriaSel = newValue.toString();
+                          _categSelecionada = await _categoriesController
+                              .selecionaCategoriaPorNome(
+                                  newValue.toString()) as Categorias;
 
-                                setState(() {
-                                  _manageCampos();
-                                });
-                              }
+                          setState(() {
+                            _manageCampos();
+                          });
+                        }
+                      },
+                    ),
+
+                    //
+                    // ListTile(
+                    //   leading: Text('Categoria'),
+                    //   trailing: ModalRoute.of(context)
+                    //               ?.settings
+                    //               .arguments ==
+                    //           null
+                    //       ? DropdownButton<String>(
+                    //           items: _listaCategoriasNomes
+                    //               .map((String value) {
+                    //             return DropdownMenuItem<String>(
+                    //               value: value,
+                    //               child: Text(value),
+                    //             );
+                    //           }).toList(),
+                    //           value: _categoriaSel == ''
+                    //               ? null
+                    //               : _categoriaSel,
+                    //           onChanged: (String? newValue) async {
+                    //             print('_categSelecionada: ' + newValue!);
+                    //             if (newValue.isNotEmpty) {
+                    //               _categoriaSel =
+                    //                   newValue.toString();
+                    //               _categSelecionada = await widget
+                    //                       ._categoriesController
+                    //                       .selecionaCategoriaPorNome(
+                    //                           newValue.toString())
+                    //                   as Categorias;
+                    //
+                    //               setState(() {
+                    //                 _manageCampos();
+                    //               });
+                    //             }
+                    //
+                    //
+                    //           },
+                    //         )
+                    //       : Text(_categoriaSel.toString()),
+                    // ),
+
+                    const SizedBox(height: 20),
+
+                    if (showCamposBasicos && _categoriaSel.isNotEmpty)
+                      Column(
+                        children: <Widget>[
+                          TextFormField(
+                            controller: _mofferController.txtTitulo,
+                            decoration: InputDecoration(
+                                labelText: 'Titulo',
+                                border: OutlineInputBorder(),
+                                filled: true),
+                            // textInputAction: TextInputAction.next,
+                            // onFieldSubmitted: (_) {
+                            //   FocusScope.of(context)
+                            //       .requestFocus(_priceFocusNode);
+                            // },
+                            validator: (value) {
+                              bool isValid =
+                                  value.toString().trimRight().length < 3;
+                              if (isValid) return 'Informe um titulo valido';
+                              return null;
+                            },
+                          ),
+                          const SizedBox(height: 20),
+                          TextFormField(
+                            controller: _mofferController.txtDescricao,
+                            decoration: InputDecoration(
+                              labelText: 'Descrição',
+                              border: OutlineInputBorder(),
+                            ),
+                            maxLines: 3,
+                            keyboardType: TextInputType.multiline,
+                          ),
+                          CheckboxListTile(
+                            controlAffinity: ListTileControlAffinity.leading,
+                            title: Text('Preco à combinar'),
+                            value: _valPrecoCombinar,
+                            onChanged: (val) {
+                              setState(() {
+                                _valPrecoCombinar = val!;
+                              });
+                            },
+                          ),
+                          // Row(
+                          //   children: <Widget>[
+                          //     Checkbox(
+                          //       value: _valPrecoCombinar,
+                          //       onChanged: (val) {
+                          //         setState(() {
+                          //           _valPrecoCombinar = val!;
+                          //         });
+                          //       },
+                          //       activeColor: Colors.blue,
+                          //     ),
+                          //     const SizedBox(width: 20),
+                          //     Text('Preco à combinar'),
+                          //     const SizedBox(height: 20)
+                          //   ],
+                          // ),
+                        ],
+                      ),
+
+                    if (showPreco &&
+                        !_valPrecoCombinar &&
+                        _categoriaSel.isNotEmpty)
+                      Column(
+                        children: <Widget>[
+                          // Row(
+                          //   children: <Widget>[
+                          //     Switch(
+                          //         value: valPrecoInicial,
+                          //         onChanged: (bool _val) {
+                          //           setState(() {
+                          //             valPrecoInicial = val;
+                          //           });
+                          //         }),
+                          //     const SizedBox(width: 20),
+                          //     Text(valPrecoInicial
+                          //         ? 'Preco à partir de'
+                          //         : 'Preço fechado'),
+                          //     const SizedBox(height: 20),
+                          //   ],
+                          // ),
+                          TextFormField(
+                            inputFormatters: [
+                              FilteringTextInputFormatter.digitsOnly,
+                              CentavosInputFormatter(),
+                            ],
+                            controller: _mofferController.txtPreco,
+                            // initialValue: '0',
+
+                            decoration: InputDecoration(
+                              labelText: 'Preço',
+                              prefix: Text('R\$ '),
+                              border: OutlineInputBorder(),
+                            ),
+                            textInputAction: TextInputAction.next,
+                            focusNode: _priceFocusNode,
+                            keyboardType:
+                                TextInputType.numberWithOptions(decimal: true),
+                            onFieldSubmitted: (_) {
+                              FocusScope.of(context)
+                                  .requestFocus(_descriptionFocusNode);
+                            },
+                            validator: (value) {
+                              double xPreco = double.parse(value
+                                  .toString()
+                                  .replaceAll('.', '')
+                                  .replaceAll(',', '.'));
+                              if (xPreco <= 0 && !_valPrecoCombinar)
+                                return 'Valor precisa ser maior do que zero, ou marque como Preço à combinar';
+                              return null;
                             },
                           ),
 
-                          //
-                          // ListTile(
-                          //   leading: Text('Categoria'),
-                          //   trailing: ModalRoute.of(context)
-                          //               ?.settings
-                          //               .arguments ==
-                          //           null
-                          //       ? DropdownButton<String>(
-                          //           items: _listaCategoriasNomes
-                          //               .map((String value) {
-                          //             return DropdownMenuItem<String>(
-                          //               value: value,
-                          //               child: Text(value),
-                          //             );
-                          //           }).toList(),
-                          //           value: _categoriaSel == ''
-                          //               ? null
-                          //               : _categoriaSel,
-                          //           onChanged: (String? newValue) async {
-                          //             print('_categSelecionada: ' + newValue!);
-                          //             if (newValue.isNotEmpty) {
-                          //               _categoriaSel =
-                          //                   newValue.toString();
-                          //               _categSelecionada = await widget
-                          //                       ._categoriesController
-                          //                       .selecionaCategoriaPorNome(
-                          //                           newValue.toString())
-                          //                   as Categorias;
-                          //
-                          //               setState(() {
-                          //                 _manageCampos();
-                          //               });
-                          //             }
-                          //
-                          //
-                          //           },
-                          //         )
-                          //       : Text(_categoriaSel.toString()),
-                          // ),
-
-                          const SizedBox(height: 20),
-
-                          if (showCamposBasicos && _categoriaSel.isNotEmpty)
-                            Column(
-                              children: <Widget>[
-                                TextFormField(
-                                  controller:
-                                  _mofferController.txtTitulo,
-                                  decoration: InputDecoration(
-                                      labelText: 'Titulo',
-                                      border: OutlineInputBorder(),
-                                      filled: true),
-                                  // textInputAction: TextInputAction.next,
-                                  // onFieldSubmitted: (_) {
-                                  //   FocusScope.of(context)
-                                  //       .requestFocus(_priceFocusNode);
-                                  // },
-                                  validator: (value) {
-                                    bool isValid =
-                                        value.toString().trimRight().length <
-                                            3;
-                                    if (isValid)
-                                      return 'Informe um titulo valido';
-                                    return null;
-                                  },
-                                ),
-                                const SizedBox(height: 20),
-                                TextFormField(
-                                  controller:
-                                  _mofferController.txtDescricao,
-                                  decoration: InputDecoration(
-                                    labelText: 'Descrição',
-                                    border: OutlineInputBorder(),
-                                  ),
-                                  maxLines: 3,
-                                  keyboardType: TextInputType.multiline,
-                                ),
-                                CheckboxListTile(controlAffinity: ListTileControlAffinity.leading, title: Text('Preco à combinar'), value:
-                                _valPrecoCombinar,
-                                onChanged: (val) {
-                                          setState(() {
-                                            _valPrecoCombinar = val!;
-                                          });
-                                        },
-                                ),
-                                // Row(
-                                //   children: <Widget>[
-                                //     Checkbox(
-                                //       value: _valPrecoCombinar,
-                                //       onChanged: (val) {
-                                //         setState(() {
-                                //           _valPrecoCombinar = val!;
-                                //         });
-                                //       },
-                                //       activeColor: Colors.blue,
-                                //     ),
-                                //     const SizedBox(width: 20),
-                                //     Text('Preco à combinar'),
-                                //     const SizedBox(height: 20)
-                                //   ],
-                                // ),
-                              ],
-                            ),
-
-                          if (showPreco && !_valPrecoCombinar && _categoriaSel.isNotEmpty)
-                            Column(
-                              children: <Widget>[
-                                // Row(
-                                //   children: <Widget>[
-                                //     Switch(
-                                //         value: valPrecoInicial,
-                                //         onChanged: (bool _val) {
-                                //           setState(() {
-                                //             valPrecoInicial = val;
-                                //           });
-                                //         }),
-                                //     const SizedBox(width: 20),
-                                //     Text(valPrecoInicial
-                                //         ? 'Preco à partir de'
-                                //         : 'Preço fechado'),
-                                //     const SizedBox(height: 20),
-                                //   ],
-                                // ),
-                                TextFormField(
-                                  inputFormatters: [
-                                    FilteringTextInputFormatter.digitsOnly,
-                                    CentavosInputFormatter(),
-                                  ],
-                                  controller:
-                                  _mofferController.txtPreco,
-                                  // initialValue: '0',
-
-                                  decoration: InputDecoration(
-                                    labelText: 'Preço',
-                                    prefix: Text('R\$ '),
-                                    border: OutlineInputBorder(),
-                                  ),
-                                  textInputAction: TextInputAction.next,
-                                  focusNode: _priceFocusNode,
-                                  keyboardType:
-                                  TextInputType.numberWithOptions(
-                                      decimal: true),
-                                  onFieldSubmitted: (_) {
-                                    FocusScope.of(context).requestFocus(
-                                        _descriptionFocusNode);
-                                  },
-                                  validator: (value) {
-                                    double xPreco = double.parse(value
-                                        .toString()
-                                        .replaceAll('.', '')
-                                        .replaceAll(',', '.'));
-                                    if (xPreco <= 0 &&
-                                        !_valPrecoCombinar)
-                                      return 'Valor precisa ser maior do que zero, ou marque como Preço à combinar';
-                                    return null;
-                                  },
-                                ),
-
-                                // if (showTxtValorSinalOrc)
-                                //   Column(children: <Widget>[
-                                //     const SizedBox(width: 20),
-                                //     Row(
-                                //       children: <Widget>[
-                                //         Switch(
-                                //             value: valSinalPercentual,
-                                //             onChanged: (bool _val) {
-                                //               setState(() {
-                                //                 valSinalPercentual =
-                                //                     val;
-                                //               });
-                                //             }),
-                                //         const SizedBox(width: 20),
-                                //         Text(valSinalPercentual
-                                //             ? 'Sinal em Percentual (opcional)'
-                                //             : 'Sinal em valor cheio (opcional)'),
-                                //         const SizedBox(height: 20)
-                                //       ],
-                                //     ),
-                                //     TextFormField(
-                                //         inputFormatters: [
-                                //           FilteringTextInputFormatter
-                                //               .digitsOnly,
-                                //           CentavosInputFormatter(),
-                                //         ],
-                                //         // initialValue: '0',
-                                //         controller: _mofferController
-                                //             .txtValorSinalOrc,
-                                //         decoration: InputDecoration(
-                                //             prefix: Text(
-                                //                 valSinalPercentual
-                                //                     ? '%'
-                                //                     : 'R\$ '),
-                                //             border: OutlineInputBorder(),
-                                //             labelText:
-                                //                 'Valor Sinal/Orçamento'),
-                                //         keyboardType: TextInputType.number),
-                                //     const SizedBox(width: 20),
-                                //   ]),
-
-                                // if (showAceitaProposta)
-                                //   Row(
-                                //     children: <Widget>[
-                                //       Switch(
-                                //           value: valAceitaProposta,
-                                //           onChanged: (bool _val) {
-                                //             setState(() {
-                                //               valAceitaProposta = val;
-                                //             });
-                                //           }),
-                                //       const SizedBox(width: 20),
-                                //       Text('Aceita contra proposta'),
-                                //     ],
-                                //   ),
-                                //
-                                // if (valAceitaProposta)
-                                //   Column(children: <Widget>[
-                                //     const SizedBox(height: 10),
-                                //     TextFormField(
-                                //       inputFormatters: [
-                                //         FilteringTextInputFormatter
-                                //             .digitsOnly,
-                                //         CentavosInputFormatter(),
-                                //       ],
-                                //       // initialValue: '0',
-                                //       controller:
-                                //           _mofferController.txtValorMin,
-                                //       decoration: InputDecoration(
-                                //         labelText: 'Valor mín',
-                                //         prefix: Text('R\$ '),
-                                //         border: OutlineInputBorder(),
-                                //       ),
-                                //       keyboardType:
-                                //           TextInputType.numberWithOptions(
-                                //               decimal: true),
-                                //     ),
-                                //   ]),
-
-                                // if (showTxtValorSinalOrc)
-                              ],
-                            ),
-
-                          // if (showQtd && showCamposBasicos)
-                          //   Column(
-                          //     children: <Widget>[
-                          //       Row(
-                          //         children: <Widget>[
-                          //           Switch(
-                          //               value: valQtd,
-                          //               onChanged: (bool _val) {
-                          //                 setState(() {
-                          //                   valQtd = val;
-                          //                 });
-                          //               }),
-                          //           const SizedBox(width: 20),
-                          //           Text(valQtd
-                          //               ? 'Controla quantidade'
-                          //               : 'Sem controle de quantidade'),
-                          //           const SizedBox(height: 10)
-                          //         ],
-                          //       ),
-                          //       if (valQtd)
-                          //         Column(children: <Widget>[
-                          //           const SizedBox(height: 10),
-                          //           TextFormField(
-                          //             controller:
-                          //                 _mofferController.txtQtdDispo,
-                          //             decoration: InputDecoration(
-                          //               labelText: 'Qtd disponível',
-                          //               border: OutlineInputBorder(),
-                          //             ),
-                          //             keyboardType: TextInputType.number,
-                          //             validator: (value) {
-                          //               int xQtdDispo =
-                          //                   int.parse(value.toString());
-                          //               if (xQtdDispo <= 0)
-                          //                 return 'Quantidade disponível precisa ser maior do que zero, ou marque como Sem controle de quantidade';
-                          //               return null;
-                          //             },
-                          //           ),
-                          //           const SizedBox(height: 20),
-                          //           TextFormField(
-                          //             controller: widget
-                          //                 ._mofferController.txtQtdMaxPorVenda,
-                          //             decoration: InputDecoration(
-                          //               labelText: 'Qtd máxima por venda',
-                          //               border: OutlineInputBorder(),
-                          //             ),
-                          //             keyboardType: TextInputType.number,
-                          //           ),
-                          //           const SizedBox(
-                          //             height: 20,
-                          //           ),
-                          //           TextFormField(
-                          //             controller:
-                          //                 _mofferController.txtQtdAviso,
-                          //             decoration: InputDecoration(
-                          //               labelText: 'Qtd aviso acabando',
-                          //               border: OutlineInputBorder(),
-                          //             ),
-                          //             keyboardType: TextInputType.number,
-                          //           ),
-                          //         ]),
-                          //     ],
-                          //   ),
-                          //
-                          // if (showTxtPesoPorcao)
+                          // if (showTxtValorSinalOrc)
                           //   Column(children: <Widget>[
-                          //     const SizedBox(height: 20),
+                          //     const SizedBox(width: 20),
+                          //     Row(
+                          //       children: <Widget>[
+                          //         Switch(
+                          //             value: valSinalPercentual,
+                          //             onChanged: (bool _val) {
+                          //               setState(() {
+                          //                 valSinalPercentual =
+                          //                     val;
+                          //               });
+                          //             }),
+                          //         const SizedBox(width: 20),
+                          //         Text(valSinalPercentual
+                          //             ? 'Sinal em Percentual (opcional)'
+                          //             : 'Sinal em valor cheio (opcional)'),
+                          //         const SizedBox(height: 20)
+                          //       ],
+                          //     ),
                           //     TextFormField(
                           //         inputFormatters: [
-                          //           FilteringTextInputFormatter.digitsOnly,
-                          //           PesoInputFormatter(),
+                          //           FilteringTextInputFormatter
+                          //               .digitsOnly,
+                          //           CentavosInputFormatter(),
                           //         ],
-                          //         controller:
-                          //             _mofferController.txtPesoPorcao,
+                          //         // initialValue: '0',
+                          //         controller: _mofferController
+                          //             .txtValorSinalOrc,
                           //         decoration: InputDecoration(
-                          //           labelText: 'Peso/Porção',
-                          //           border: OutlineInputBorder(),
-                          //         ),
-                          //         keyboardType: TextInputType.number),
-                          //   ]),
-                          //
-                          // if (showTxtPesoPorcaoUn)
-                          //   Column(children: <Widget>[
-                          //     const SizedBox(height: 20),
-                          //     TextFormField(
-                          //         controller:
-                          //             _mofferController.txtPesoPorcaoUn,
-                          //         decoration: InputDecoration(
-                          //           labelText: 'Peso/Porção Unidade',
-                          //           border: OutlineInputBorder(),
-                          //         ),
-                          //         validator: (value) {
-                          //           double xPeso = double.parse(widget
-                          //               ._mofferController.txtPesoPorcao
-                          //               .toString()
-                          //               .replaceAll('.', '')
-                          //               .replaceAll(',', '.'));
-                          //           if (xPeso > 0 && value.toString() == '')
-                          //             return 'Favor informar uma unidade de peso';
-                          //           return null;
-                          //         },
-                          //         keyboardType: TextInputType.text),
-                          //
-                          //     // if (showTxtSabor)
-                          //     //   TextFormField(
-                          //     //       controller: _mofferController.txtSabor,
-                          //     //       decoration: InputDecoration(labelText: 'Sabores divididos por /'),
-                          //     //       keyboardType: TextInputType.multiline),
-                          //   ]),
-                          //
-                          // if (showTxtValidade)
-                          //   Column(children: <Widget>[
-                          //     const SizedBox(height: 20),
-                          //     TextFormField(
-                          //         controller:
-                          //             _mofferController.txtValidade,
-                          //         decoration: InputDecoration(
-                          //             suffix: Text('dias'),
+                          //             prefix: Text(
+                          //                 valSinalPercentual
+                          //                     ? '%'
+                          //                     : 'R\$ '),
                           //             border: OutlineInputBorder(),
-                          //             labelText: _labelValidade +
-                          //                 ' (ex: 5 dias)'),
+                          //             labelText:
+                          //                 'Valor Sinal/Orçamento'),
                           //         keyboardType: TextInputType.number),
+                          //     const SizedBox(width: 20),
                           //   ]),
-                          //
-                          if (showTxtCep && _categoriaSel.isNotEmpty)
-                            Column(children: <Widget>[
-                              const SizedBox(height: 20),
-                              TextFormField(
-                                inputFormatters: [
-                                  FilteringTextInputFormatter.digitsOnly,
-                                  CepInputFormatter(),
-                                ],
 
-                               // initialValue: _loginController.usuCep!.toString(),
-                                controller: _mofferController.txtCEP,
-                                decoration: InputDecoration(
-                                  labelText: 'Cep da oferta',
-                                  fillColor: Colors.redAccent.shade100,
-                                  border: OutlineInputBorder(),
-                                ),
-                                keyboardType: TextInputType.number,
-                              ),
-                            ]),
+                          // if (showAceitaProposta)
+                          //   Row(
+                          //     children: <Widget>[
+                          //       Switch(
+                          //           value: valAceitaProposta,
+                          //           onChanged: (bool _val) {
+                          //             setState(() {
+                          //               valAceitaProposta = val;
+                          //             });
+                          //           }),
+                          //       const SizedBox(width: 20),
+                          //       Text('Aceita contra proposta'),
+                          //     ],
+                          //   ),
                           //
-                          // if (showTxtOfertaCepDistancia &&
-                          //     showCamposBasicos)
+                          // if (valAceitaProposta)
                           //   Column(children: <Widget>[
-                          //     const SizedBox(height: 20),
+                          //     const SizedBox(height: 10),
                           //     TextFormField(
+                          //       inputFormatters: [
+                          //         FilteringTextInputFormatter
+                          //             .digitsOnly,
+                          //         CentavosInputFormatter(),
+                          //       ],
+                          //       // initialValue: '0',
                           //       controller:
-                          //           _mofferController.txtCepDistancia,
+                          //           _mofferController.txtValorMin,
                           //       decoration: InputDecoration(
-                          //           suffix: Text('Km '),
-                          //           border: OutlineInputBorder(),
-                          //           labelText: 'Distância de ' +
-                          //               _labelEntrega +
-                          //               ' em Km'),
-                          //       keyboardType: TextInputType.number,
+                          //         labelText: 'Valor mín',
+                          //         prefix: Text('R\$ '),
+                          //         border: OutlineInputBorder(),
+                          //       ),
+                          //       keyboardType:
+                          //           TextInputType.numberWithOptions(
+                          //               decimal: true),
                           //     ),
                           //   ]),
-                          //
-                          // // if (showTxtMarca)
-                          // //   Column(children: <Widget>[
-                          // //     const SizedBox(height: 20),
-                          // //     TextFormField(
-                          // //         controller:
-                          // //             _mofferController.txtMarca,
-                          // //         decoration: InputDecoration(
-                          // //           labelText: 'Marca',
-                          // //           border: OutlineInputBorder(),
-                          // //         ),
-                          // //         keyboardType: TextInputType.text),
-                          // //   ]),
 
-                          if (showTxtMarca && _categoriaSel.isNotEmpty)
-                            Column(
-                              children: <Widget>[
-                                const Divider(),
-                                const SizedBox(height: 10),
-                                Text('Revenda'),
-                                const SizedBox(height: 10),
-                                DropdownButton<String>(
-                                  items: _loginController.listaRevendasNomes
-                                      .map((String? value) {
-                                    return DropdownMenuItem<String>(
-                                      value: value.toString(),
-                                      child: Text(value.toString()),
-                                    );
-                                  }).toList(),
-                                   value: _revendaSel == ''
-                                       ? null
-                                       : _revendaSel,
-                                  onChanged: (String? newValue) {
-                                    setState(() {
-                                      _revendaSel = newValue!;
-                                    });
-                                  },
-                                ),
-                              ],
-                            ),
+                          // if (showTxtValorSinalOrc)
+                        ],
+                      ),
 
+                    // if (showQtd && showCamposBasicos)
+                    //   Column(
+                    //     children: <Widget>[
+                    //       Row(
+                    //         children: <Widget>[
+                    //           Switch(
+                    //               value: valQtd,
+                    //               onChanged: (bool _val) {
+                    //                 setState(() {
+                    //                   valQtd = val;
+                    //                 });
+                    //               }),
+                    //           const SizedBox(width: 20),
+                    //           Text(valQtd
+                    //               ? 'Controla quantidade'
+                    //               : 'Sem controle de quantidade'),
+                    //           const SizedBox(height: 10)
+                    //         ],
+                    //       ),
+                    //       if (valQtd)
+                    //         Column(children: <Widget>[
+                    //           const SizedBox(height: 10),
+                    //           TextFormField(
+                    //             controller:
+                    //                 _mofferController.txtQtdDispo,
+                    //             decoration: InputDecoration(
+                    //               labelText: 'Qtd disponível',
+                    //               border: OutlineInputBorder(),
+                    //             ),
+                    //             keyboardType: TextInputType.number,
+                    //             validator: (value) {
+                    //               int xQtdDispo =
+                    //                   int.parse(value.toString());
+                    //               if (xQtdDispo <= 0)
+                    //                 return 'Quantidade disponível precisa ser maior do que zero, ou marque como Sem controle de quantidade';
+                    //               return null;
+                    //             },
+                    //           ),
+                    //           const SizedBox(height: 20),
+                    //           TextFormField(
+                    //             controller: widget
+                    //                 ._mofferController.txtQtdMaxPorVenda,
+                    //             decoration: InputDecoration(
+                    //               labelText: 'Qtd máxima por venda',
+                    //               border: OutlineInputBorder(),
+                    //             ),
+                    //             keyboardType: TextInputType.number,
+                    //           ),
+                    //           const SizedBox(
+                    //             height: 20,
+                    //           ),
+                    //           TextFormField(
+                    //             controller:
+                    //                 _mofferController.txtQtdAviso,
+                    //             decoration: InputDecoration(
+                    //               labelText: 'Qtd aviso acabando',
+                    //               border: OutlineInputBorder(),
+                    //             ),
+                    //             keyboardType: TextInputType.number,
+                    //           ),
+                    //         ]),
+                    //     ],
+                    //   ),
+                    //
+                    // if (showTxtPesoPorcao)
+                    //   Column(children: <Widget>[
+                    //     const SizedBox(height: 20),
+                    //     TextFormField(
+                    //         inputFormatters: [
+                    //           FilteringTextInputFormatter.digitsOnly,
+                    //           PesoInputFormatter(),
+                    //         ],
+                    //         controller:
+                    //             _mofferController.txtPesoPorcao,
+                    //         decoration: InputDecoration(
+                    //           labelText: 'Peso/Porção',
+                    //           border: OutlineInputBorder(),
+                    //         ),
+                    //         keyboardType: TextInputType.number),
+                    //   ]),
+                    //
+                    // if (showTxtPesoPorcaoUn)
+                    //   Column(children: <Widget>[
+                    //     const SizedBox(height: 20),
+                    //     TextFormField(
+                    //         controller:
+                    //             _mofferController.txtPesoPorcaoUn,
+                    //         decoration: InputDecoration(
+                    //           labelText: 'Peso/Porção Unidade',
+                    //           border: OutlineInputBorder(),
+                    //         ),
+                    //         validator: (value) {
+                    //           double xPeso = double.parse(widget
+                    //               ._mofferController.txtPesoPorcao
+                    //               .toString()
+                    //               .replaceAll('.', '')
+                    //               .replaceAll(',', '.'));
+                    //           if (xPeso > 0 && value.toString() == '')
+                    //             return 'Favor informar uma unidade de peso';
+                    //           return null;
+                    //         },
+                    //         keyboardType: TextInputType.text),
+                    //
+                    //     // if (showTxtSabor)
+                    //     //   TextFormField(
+                    //     //       controller: _mofferController.txtSabor,
+                    //     //       decoration: InputDecoration(labelText: 'Sabores divididos por /'),
+                    //     //       keyboardType: TextInputType.multiline),
+                    //   ]),
+                    //
+                    // if (showTxtValidade)
+                    //   Column(children: <Widget>[
+                    //     const SizedBox(height: 20),
+                    //     TextFormField(
+                    //         controller:
+                    //             _mofferController.txtValidade,
+                    //         decoration: InputDecoration(
+                    //             suffix: Text('dias'),
+                    //             border: OutlineInputBorder(),
+                    //             labelText: _labelValidade +
+                    //                 ' (ex: 5 dias)'),
+                    //         keyboardType: TextInputType.number),
+                    //   ]),
+                    //
+                    if (showTxtCep && _categoriaSel.isNotEmpty)
+                      Column(children: <Widget>[
+                        const SizedBox(height: 20),
+                        TextFormField(
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly,
+                            CepInputFormatter(),
+                          ],
 
-                          // if (showTxtCodigoAlt)
-                          //   Column(children: <Widget>[
-                          //     const SizedBox(height: 20),
-                          //     TextFormField(
-                          //         controller:
-                          //             _mofferController.txtCodigoAlt,
-                          //         decoration: InputDecoration(
-                          //           labelText: 'Código da revenda',
-                          //           border: OutlineInputBorder(),
-                          //         ),
-                          //         keyboardType: TextInputType.text),
-                          //   ]),
+                          // initialValue: _loginController.usuCep!.toString(),
+                          controller: _mofferController.txtCEP,
+                          decoration: InputDecoration(
+                            labelText: 'Cep da oferta',
+                            fillColor: Colors.redAccent.shade100,
+                            border: OutlineInputBorder(),
+                          ),
+                          keyboardType: TextInputType.number,
+                        ),
+                      ]),
+                    //
+                    // if (showTxtOfertaCepDistancia &&
+                    //     showCamposBasicos)
+                    //   Column(children: <Widget>[
+                    //     const SizedBox(height: 20),
+                    //     TextFormField(
+                    //       controller:
+                    //           _mofferController.txtCepDistancia,
+                    //       decoration: InputDecoration(
+                    //           suffix: Text('Km '),
+                    //           border: OutlineInputBorder(),
+                    //           labelText: 'Distância de ' +
+                    //               _labelEntrega +
+                    //               ' em Km'),
+                    //       keyboardType: TextInputType.number,
+                    //     ),
+                    //   ]),
+                    //
+                    // // if (showTxtMarca)
+                    // //   Column(children: <Widget>[
+                    // //     const SizedBox(height: 20),
+                    // //     TextFormField(
+                    // //         controller:
+                    // //             _mofferController.txtMarca,
+                    // //         decoration: InputDecoration(
+                    // //           labelText: 'Marca',
+                    // //           border: OutlineInputBorder(),
+                    // //         ),
+                    // //         keyboardType: TextInputType.text),
+                    // //   ]),
 
-                          // if (showTxtCores)
-                          //   Column(children: <Widget>[
-                          //     const SizedBox(height: 20),
-                          //     TextFormField(
-                          //         decoration: InputDecoration(
-                          //           labelText: 'Cores ',
-                          //           hintText: '(separadas por /)',
-                          //           border: OutlineInputBorder(),
-                          //         ),
-                          //         controller:
-                          //             _mofferController.txtCores,
-                          //         keyboardType: TextInputType.multiline),
-                          //   ]),
-                          //
-                          // if (showTxtTamanhos)
-                          //   Column(children: <Widget>[
-                          //     const SizedBox(height: 20),
-                          //     TextFormField(
-                          //         decoration: InputDecoration(
-                          //           labelText: 'Tamanhos ',
-                          //           hintText: '(separados por /)',
-                          //           border: OutlineInputBorder(),
-                          //         ),
-                          //         controller:
-                          //             _mofferController.txtTamanhos,
-                          //         keyboardType: TextInputType.multiline),
-                          //   ]),
+                    if (showTxtMarca && _categoriaSel.isNotEmpty)
+                      Column(
+                        children: <Widget>[
+                          const Divider(),
+                          const SizedBox(height: 10),
+                          Text('Revenda'),
+                          const SizedBox(height: 10),
+                          DropdownButton<String>(
+                            items: _loginController.listaRevendasNomes
+                                .map((String? value) {
+                              return DropdownMenuItem<String>(
+                                value: value.toString(),
+                                child: Text(value.toString()),
+                              );
+                            }).toList(),
+                            value: _revendaSel == '' ? null : _revendaSel,
+                            onChanged: (String? newValue) {
+                              setState(() {
+                                _revendaSel = newValue!;
+                              });
+                            },
+                          ),
+                        ],
+                      ),
 
-                          // SizedBox(height: 20),
-                          // Text('Nome 1º campo personalizado'),
-                          // TextFormField(
-                          //   //decoration: InputDecoration(labelText: 'Tempo de entrega após aceite'),
-                          //     keyboardType: TextInputType.number),
-                          // SizedBox(height: 20),
-                          // Text('Valor'),
-                          // TextFormField(
-                          //   //decoration: InputDecoration(labelText: 'Tempo de entrega após aceite'),
-                          //     keyboardType: TextInputType.number),
-                          // SizedBox(height: 20),
+                    // if (showTxtCodigoAlt)
+                    //   Column(children: <Widget>[
+                    //     const SizedBox(height: 20),
+                    //     TextFormField(
+                    //         controller:
+                    //             _mofferController.txtCodigoAlt,
+                    //         decoration: InputDecoration(
+                    //           labelText: 'Código da revenda',
+                    //           border: OutlineInputBorder(),
+                    //         ),
+                    //         keyboardType: TextInputType.text),
+                    //   ]),
 
-                          if (showCamposBasicos && _categoriaSel.isNotEmpty)
-                            Column(children: <Widget>[
-                              const SizedBox(height: 20),
-                              TextFormField(
-                                controller:
-                                _mofferController.txtDetalhes,
-                                decoration: InputDecoration(
-                                    labelText: 'Informações adicionais',
-                                    border: OutlineInputBorder()),
-                                keyboardType: TextInputType.multiline,
-                                maxLines: 5,
-                              ),
-                            ]),
+                    // if (showTxtCores)
+                    //   Column(children: <Widget>[
+                    //     const SizedBox(height: 20),
+                    //     TextFormField(
+                    //         decoration: InputDecoration(
+                    //           labelText: 'Cores ',
+                    //           hintText: '(separadas por /)',
+                    //           border: OutlineInputBorder(),
+                    //         ),
+                    //         controller:
+                    //             _mofferController.txtCores,
+                    //         keyboardType: TextInputType.multiline),
+                    //   ]),
+                    //
+                    // if (showTxtTamanhos)
+                    //   Column(children: <Widget>[
+                    //     const SizedBox(height: 20),
+                    //     TextFormField(
+                    //         decoration: InputDecoration(
+                    //           labelText: 'Tamanhos ',
+                    //           hintText: '(separados por /)',
+                    //           border: OutlineInputBorder(),
+                    //         ),
+                    //         controller:
+                    //             _mofferController.txtTamanhos,
+                    //         keyboardType: TextInputType.multiline),
+                    //   ]),
 
-                          // if (show24hs)
-                          //   // Row(
-                          //   //   children: <Widget>[
-                          //   //     const SizedBox(height: 20),
-                          //   SwitchListTile(controlAffinity: ListTileControlAffinity.leading,title:Text('Sempre disponível'),
-                          //   value: _val24hs,
-                          //           onChanged: (bool val) {
-                          //             setState(() {
-                          //               _val24hs = val;
-                          //             });
-                          //           }),
-                          //   //     const SizedBox(width: 20),
-                          //   //     Text('24hs'),
-                          //   //     const SizedBox(height: 20),
-                          //   //   ],
-                          //   // ),
+                    // SizedBox(height: 20),
+                    // Text('Nome 1º campo personalizado'),
+                    // TextFormField(
+                    //   //decoration: InputDecoration(labelText: 'Tempo de entrega após aceite'),
+                    //     keyboardType: TextInputType.number),
+                    // SizedBox(height: 20),
+                    // Text('Valor'),
+                    // TextFormField(
+                    //   //decoration: InputDecoration(labelText: 'Tempo de entrega após aceite'),
+                    //     keyboardType: TextInputType.number),
+                    // SizedBox(height: 20),
 
-                          if (showDispoImediata && _categoriaSel.isNotEmpty) // && !show24hs)
-                            // Row(
-                            //   children: <Widget>[
-                            //     const SizedBox(height: 20),
-                                SwitchListTile(controlAffinity: ListTileControlAffinity.leading,title: Text(_valDispoImediata
-          ? 'Sempre disponível'
-              : 'Disponibilidade agendada'),
-                                    value: _valDispoImediata,
-                                    onChanged: (bool val) {
-                                      setState(() {
-                                        _valDispoImediata = val;
-                                      });
-                                    }),
-                              //   const SizedBox(width: 20),
-                              //   Expanded(
-                              //     child: Text(_valDispoImediata
-                              //         ? 'Disponibilidade imediata (o tempo todo)'
-                              //         : 'Disponibilidade agendada'),
-                              //   ),
-                              //   const SizedBox(height: 20)
-                              // ],
-                           // ),
+                    if (showCamposBasicos && _categoriaSel.isNotEmpty)
+                      Column(children: <Widget>[
+                        const SizedBox(height: 20),
+                        TextFormField(
+                          controller: _mofferController.txtDetalhes,
+                          decoration: InputDecoration(
+                              labelText: 'Informações adicionais',
+                              border: OutlineInputBorder()),
+                          keyboardType: TextInputType.multiline,
+                          maxLines: 5,
+                        ),
+                      ]),
 
-                          if (showDispoImediata && !_valDispoImediata && _categoriaSel.isNotEmpty)
-                            Column(children: <Widget>[
-                              // Row(children: <Widget>[
-                              //   const SizedBox(height: 20),
-                                // SEGUNDA
-                                CheckboxListTile(controlAffinity: ListTileControlAffinity.leading, title: Text('Segunda'), value:
-                                   _valSeg,
-                                  onChanged: (val) {
-                                    setState(() {
-                                      _valSeg = val!;
-                                    });
-                                  },
-                                  activeColor: Colors.blue,
-                                ),
-                                // Text('segunda '),
-                              // ]),
+                    // if (show24hs)
+                    //   // Row(
+                    //   //   children: <Widget>[
+                    //   //     const SizedBox(height: 20),
+                    //   SwitchListTile(controlAffinity: ListTileControlAffinity.leading,title:Text('Sempre disponível'),
+                    //   value: _val24hs,
+                    //           onChanged: (bool val) {
+                    //             setState(() {
+                    //               _val24hs = val;
+                    //             });
+                    //           }),
+                    //   //     const SizedBox(width: 20),
+                    //   //     Text('24hs'),
+                    //   //     const SizedBox(height: 20),
+                    //   //   ],
+                    //   // ),
 
-                              //const SizedBox(),
-                              if (_valSeg)
-                                Row(
-                                  children: <Widget>[
-                                    const SizedBox(height: 5, width: 5),
-                                    Text('Das '),
-                                    const SizedBox(width: 5),
-                                    ElevatedButton(
-                                        onPressed: () {
-                                          showTimePicker(
-                                              context: context,
-                                              initialTime: TimeOfDay(
-                                                  hour: 08, minute: 00))
-                                              .then((value) => setState(() {
-                                            _mofferController
-                                                .valSegDas = value!
-                                                .hour
-                                                .toString()
-                                                .padLeft(2, '0') +
-                                                ':' +
-                                                value.minute
-                                                    .toString()
-                                                    .padLeft(2, '0');
-                                          }));
-                                        },
-                                        style: ButtonStyle(
-                                            backgroundColor:
-                                            MaterialStateProperty.all<
-                                                Color>(
-                                              _loginController
-                                                  .colorFromHex(_loginController.listCore
-                                                  .where((coreItem) =>
-                                              coreItem.coreChave ==
-                                                  'backDark')
-                                                  .first
-                                                  .coreValor
-                                                  .toString()),
-                                            )),
-                                        child: Row(
-                                          children: [
-                                            Icon(Icons.access_time_outlined),
-                                            const SizedBox(
-                                              width: 16,
-                                            ),
-                                            Text(_mofferController.valSegDas)
-                                          ],
-                                        )),
-                                    const SizedBox(width: 5),
-                                    Text(' às '),
-                                    const SizedBox(width: 5),
-                                    ElevatedButton(
-                                        onPressed: () {
-                                          showTimePicker(
-                                              context: context,
-                                              initialTime: TimeOfDay(
-                                                  hour: 18, minute: 00))
-                                              .then((value) => setState(() {
-                                            _mofferController
-                                                .valSegAs = value!
-                                                .hour
-                                                .toString()
-                                                .padLeft(2, '0') +
-                                                ':' +
-                                                value.minute
-                                                    .toString()
-                                                    .padLeft(2, '0');
-                                          }));
-                                        },
-                                        style: ButtonStyle(
-                                            backgroundColor:
-                                            MaterialStateProperty.all<
-                                                Color>(
-                                              _loginController
-                                                  .colorFromHex(_loginController.listCore
-                                                  .where((coreItem) =>
-                                              coreItem.coreChave ==
-                                                  'backDark')
-                                                  .first
-                                                  .coreValor
-                                                  .toString()),
-                                            )),
-                                        child: Row(
-                                          children: [
-                                            Icon(Icons.access_time_outlined),
-                                            const SizedBox(
-                                              width: 16,
-                                            ),
-                                            Text(_mofferController.valSegAs)
-                                          ],
-                                        )),
-                                  ],
-                                ),
+                    if (showDispoImediata &&
+                        _categoriaSel.isNotEmpty) // && !show24hs)
+                      // Row(
+                      //   children: <Widget>[
+                      //     const SizedBox(height: 20),
+                      SwitchListTile(
+                          controlAffinity: ListTileControlAffinity.leading,
+                          title: Text(_valDispoImediata
+                              ? 'Sempre disponível'
+                              : 'Disponibilidade agendada'),
+                          value: _valDispoImediata,
+                          onChanged: (bool val) {
+                            setState(() {
+                              _valDispoImediata = val;
+                            });
+                          }),
+                    //   const SizedBox(width: 20),
+                    //   Expanded(
+                    //     child: Text(_valDispoImediata
+                    //         ? 'Disponibilidade imediata (o tempo todo)'
+                    //         : 'Disponibilidade agendada'),
+                    //   ),
+                    //   const SizedBox(height: 20)
+                    // ],
+                    // ),
 
-                              // TERÇA
-                              // Row(children: <Widget>[
-                                CheckboxListTile(controlAffinity: ListTileControlAffinity.leading, title: Text('terça '),
-                                  value: _valTer,
-                                  onChanged: (val) {
-                                    setState(() {
-                                      _valTer = val!;
-                                    });
-                                  },
-                                  activeColor: Colors.blue,
-                                ),
-                                // Text('terça ')
-                              // ]),
+                    if (showDispoImediata &&
+                        !_valDispoImediata &&
+                        _categoriaSel.isNotEmpty)
+                      Column(children: <Widget>[
+                        // Row(children: <Widget>[
+                        //   const SizedBox(height: 20),
+                        // SEGUNDA
+                        CheckboxListTile(
+                          controlAffinity: ListTileControlAffinity.leading,
+                          title: Text('Segunda'),
+                          value: _valSeg,
+                          onChanged: (val) {
+                            setState(() {
+                              _valSeg = val!;
+                            });
+                          },
+                          activeColor: Colors.blue,
+                        ),
+                        // Text('segunda '),
+                        // ]),
 
-                              //const SizedBox(height: 5),
-                              if (_valTer)
-                                Row(
-                                  children: <Widget>[
-                                    const SizedBox(height: 5, width: 5),
-                                    Text('Das '),
-                                    const SizedBox(width: 5),
-                                    ElevatedButton(
-                                        onPressed: () {
-                                          showTimePicker(
-                                              context: context,
-                                              initialTime: TimeOfDay(
-                                                  hour: 08, minute: 00))
-                                              .then((value) => setState(() {
-                                            _mofferController
-                                                .valTerDas = value!
-                                                .hour
-                                                .toString()
-                                                .padLeft(2, '0') +
-                                                ':' +
-                                                value.minute
-                                                    .toString()
-                                                    .padLeft(2, '0');
-                                          }));
-                                        },
-                                        style: ButtonStyle(
-                                            backgroundColor:
-                                            MaterialStateProperty.all<
-                                                Color>(
-                                              _loginController
-                                                  .colorFromHex(_loginController.listCore
-                                                  .where((coreItem) =>
-                                              coreItem.coreChave ==
-                                                  'backDark')
-                                                  .first
-                                                  .coreValor
-                                                  .toString()),
-                                            )),
-                                        child: Row(
-                                          children: [
-                                            Icon(Icons.access_time_outlined),
-                                            const SizedBox(
-                                              width: 16,
-                                            ),
-                                            Text(_mofferController.valTerDas)
-                                          ],
-                                        )),
-                                    const SizedBox(width: 5),
-                                    Text(' às '),
-                                    const SizedBox(width: 5),
-                                    ElevatedButton(
-                                        onPressed: () {
-                                          showTimePicker(
-                                              context: context,
-                                              initialTime: TimeOfDay(
-                                                  hour: 18, minute: 00))
-                                              .then((value) => setState(() {
-                                            _mofferController
-                                                .valTerAs = value!
-                                                .hour
-                                                .toString()
-                                                .padLeft(2, '0') +
-                                                ':' +
-                                                value.minute
-                                                    .toString()
-                                                    .padLeft(2, '0');
-                                          }));
-                                        },
-                                        style: ButtonStyle(
-                                            backgroundColor:
-                                            MaterialStateProperty.all<
-                                                Color>(
-                                              _loginController
-                                                  .colorFromHex(_loginController.listCore
-                                                  .where((coreItem) =>
-                                              coreItem.coreChave ==
-                                                  'backDark')
-                                                  .first
-                                                  .coreValor
-                                                  .toString()),
-                                            )),
-                                        child: Row(
-                                          children: [
-                                            Icon(Icons.access_time_outlined),
-                                            const SizedBox(
-                                              width: 16,
-                                            ),
-                                            Text(_mofferController.valTerAs)
-                                          ],
-                                        )),
-                                  ],
-                                ),
-
-                              // Row(children: <Widget>[
-                              CheckboxListTile(controlAffinity: ListTileControlAffinity.leading, title:Text('quarta '),
-                              value: this._valQua,
-                                  onChanged: (val) {
-                                    setState(() {
-                                      this._valQua = val!;
-                                    });
-                                  },
-                                  activeColor: Colors.blue,
-                                ),
-                              //   Text('quarta '),
-                              // ]),
-
-                              //const SizedBox(height: 5),
-                              if (_valQua)
-                                Row(
-                                  children: <Widget>[
-                                    const SizedBox(height: 5, width: 5),
-                                    Text('Das '),
-                                    const SizedBox(width: 5),
-                                    ElevatedButton(
-                                        onPressed: () {
-                                          showTimePicker(
-                                              context: context,
-                                              initialTime: TimeOfDay(
-                                                  hour: 08, minute: 00))
-                                              .then((value) => setState(() {
-                                            _mofferController
-                                                .valQuaDas = value!
-                                                .hour
-                                                .toString()
-                                                .padLeft(2, '0') +
-                                                ':' +
-                                                value.minute
-                                                    .toString()
-                                                    .padLeft(2, '0');
-                                          }));
-                                        },
-                                        style: ButtonStyle(
-                                            backgroundColor:
-                                            MaterialStateProperty.all<
-                                                Color>(
-                                              _loginController
-                                                  .colorFromHex(_loginController.listCore
-                                                  .where((coreItem) =>
-                                              coreItem.coreChave ==
-                                                  'backDark')
-                                                  .first
-                                                  .coreValor
-                                                  .toString()),
-                                            )),
-                                        child: Row(
-                                          children: [
-                                            Icon(Icons.access_time_outlined),
-                                            const SizedBox(
-                                              width: 16,
-                                            ),
-                                            Text(_mofferController.valQuaDas)
-                                          ],
-                                        )),
-                                    const SizedBox(width: 5),
-                                    Text(' às '),
-                                    const SizedBox(width: 5),
-                                    ElevatedButton(
-                                        onPressed: () {
-                                          showTimePicker(
-                                              context: context,
-                                              initialTime: TimeOfDay(
-                                                  hour: 18, minute: 00))
-                                              .then((value) => setState(() {
-                                            _mofferController
-                                                .valQuaAs = value!
-                                                .hour
-                                                .toString()
-                                                .padLeft(2, '0') +
-                                                ':' +
-                                                value.minute
-                                                    .toString()
-                                                    .padLeft(2, '0');
-                                          }));
-                                        },
-                                        style: ButtonStyle(
-                                            backgroundColor:
-                                            MaterialStateProperty.all<
-                                                Color>(
-                                              _loginController
-                                                  .colorFromHex(_loginController.listCore
-                                                  .where((coreItem) =>
-                                              coreItem.coreChave ==
-                                                  'backDark')
-                                                  .first
-                                                  .coreValor
-                                                  .toString()),
-                                            )),
-                                        child: Row(
-                                          children: [
-                                            Icon(Icons.access_time_outlined),
-                                            const SizedBox(
-                                              width: 16,
-                                            ),
-                                            Text(_mofferController.valQuaAs)
-                                          ],
-                                        )),
-                                  ],
-                                ),
-
-                              // Row(children: <Widget>[
-                              CheckboxListTile(controlAffinity: ListTileControlAffinity.leading, title: Text('quinta '),
-                              value: this._valQui,
-                                  onChanged: (val) {
-                                    setState(() {
-                                      this._valQui = val!;
-                                    });
-                                  },
-                                  activeColor: Colors.blue,
-                                ),
-                              //   Text('quinta '),
-                              // ]),
-
-                              //const SizedBox(height: 5),
-                              if (_valQui)
-                                Row(
-                                  children: <Widget>[
-                                    const SizedBox(height: 5, width: 5),
-                                    Text('Das '),
-                                    const SizedBox(width: 5),
-                                    ElevatedButton(
-                                        onPressed: () {
-                                          showTimePicker(
-                                              context: context,
-                                              initialTime: TimeOfDay(
-                                                  hour: 08, minute: 00))
-                                              .then((value) => setState(() {
-                                            _mofferController
-                                                .valQuiDas = value!
-                                                .hour
-                                                .toString()
-                                                .padLeft(2, '0') +
-                                                ':' +
-                                                value.minute
-                                                    .toString()
-                                                    .padLeft(2, '0');
-                                          }));
-                                        },
-                                        style: ButtonStyle(
-                                            backgroundColor:
-                                            MaterialStateProperty.all<
-                                                Color>(
-                                              _loginController
-                                                  .colorFromHex(_loginController.listCore
-                                                  .where((coreItem) =>
-                                              coreItem.coreChave ==
-                                                  'backDark')
-                                                  .first
-                                                  .coreValor
-                                                  .toString()),
-                                            )),
-                                        child: Row(
-                                          children: [
-                                            Icon(Icons.access_time_outlined),
-                                            const SizedBox(
-                                              width: 16,
-                                            ),
-                                            Text(_mofferController.valQuiDas)
-                                          ],
-                                        )),
-                                    const SizedBox(width: 5),
-                                    Text(' às '),
-                                    const SizedBox(width: 5),
-                                    ElevatedButton(
-                                        onPressed: () {
-                                          showTimePicker(
-                                              context: context,
-                                              initialTime: TimeOfDay(
-                                                  hour: 18, minute: 00))
-                                              .then((value) => setState(() {
-                                            _mofferController
-                                                .valQuiAs = value!
-                                                .hour
-                                                .toString()
-                                                .padLeft(2, '0') +
-                                                ':' +
-                                                value.minute
-                                                    .toString()
-                                                    .padLeft(2, '0');
-                                          }));
-                                        },
-                                        style: ButtonStyle(
-                                            backgroundColor:
-                                            MaterialStateProperty.all<
-                                                Color>(
-                                              _loginController
-                                                  .colorFromHex(_loginController.listCore
-                                                  .where((coreItem) =>
-                                              coreItem.coreChave ==
-                                                  'backDark')
-                                                  .first
-                                                  .coreValor
-                                                  .toString()),
-                                            )),
-                                        child: Row(
-                                          children: [
-                                            Icon(Icons.access_time_outlined),
-                                            const SizedBox(
-                                              width: 16,
-                                            ),
-                                            Text(_mofferController.valQuiAs)
-                                          ],
-                                        )),
-                                  ],
-                                ),
-
-                              // Row(children: <Widget>[
-                              CheckboxListTile(controlAffinity: ListTileControlAffinity.leading, title:Text('sexta '),
-                              value: this._valSex,
-                                  onChanged: (val) {
-                                    setState(() {
-                                      this._valSex = val!;
-                                    });
-                                  },
-                                  activeColor: Colors.blue,
-                                ),
-                              //   Text('sexta '),
-                              // ]),
-
-                              //const SizedBox(height: 5),
-                              if (_valSex)
-                                Row(
-                                  children: <Widget>[
-                                    const SizedBox(height: 5, width: 5),
-                                    Text('Das '),
-                                    const SizedBox(width: 5),
-                                    ElevatedButton(
-                                        onPressed: () {
-                                          showTimePicker(
-                                              context: context,
-                                              initialTime: TimeOfDay(
-                                                  hour: 08, minute: 00))
-                                              .then((value) => setState(() {
-                                            _mofferController
-                                                .valSexDas = value!
-                                                .hour
-                                                .toString()
-                                                .padLeft(2, '0') +
-                                                ':' +
-                                                value.minute
-                                                    .toString()
-                                                    .padLeft(2, '0');
-                                          }));
-                                        },
-                                        style: ButtonStyle(
-                                            backgroundColor:
-                                            MaterialStateProperty.all<
-                                                Color>(
-                                              _loginController
-                                                  .colorFromHex(_loginController.listCore
-                                                  .where((coreItem) =>
-                                              coreItem.coreChave ==
-                                                  'backDark')
-                                                  .first
-                                                  .coreValor
-                                                  .toString()),
-                                            )),
-                                        child: Row(
-                                          children: [
-                                            Icon(Icons.access_time_outlined),
-                                            const SizedBox(
-                                              width: 16,
-                                            ),
-                                            Text(_mofferController.valSexDas)
-                                          ],
-                                        )),
-                                    const SizedBox(width: 5),
-                                    Text(' às '),
-                                    const SizedBox(width: 5),
-                                    ElevatedButton(
-                                        onPressed: () {
-                                          showTimePicker(
-                                              context: context,
-                                              initialTime: TimeOfDay(
-                                                  hour: 18, minute: 00))
-                                              .then((value) => setState(() {
-                                            _mofferController
-                                                .valSexAs = value!
-                                                .hour
-                                                .toString()
-                                                .padLeft(2, '0') +
-                                                ':' +
-                                                value.minute
-                                                    .toString()
-                                                    .padLeft(2, '0');
-                                          }));
-                                        },
-                                        style: ButtonStyle(
-                                            backgroundColor:
-                                            MaterialStateProperty.all<
-                                                Color>(
-                                              _loginController
-                                                  .colorFromHex(_loginController.listCore
-                                                  .where((coreItem) =>
-                                              coreItem.coreChave ==
-                                                  'backDark')
-                                                  .first
-                                                  .coreValor
-                                                  .toString()),
-                                            )),
-                                        child: Row(
-                                          children: [
-                                            Icon(Icons.access_time_outlined),
-                                            const SizedBox(
-                                              width: 16,
-                                            ),
-                                            Text(_mofferController.valSexAs)
-                                          ],
-                                        )),
-                                  ],
-                                ),
-
-                              // Row(children: <Widget>[
-                              CheckboxListTile(controlAffinity: ListTileControlAffinity.leading, title: Text('sábado '),
-                              value: this._valSab,
-                                  onChanged: (val) {
-                                    setState(() {
-                                      this._valSab = val!;
-                                    });
-                                  },
-                                  activeColor: Colors.blue,
-                                ),
-                              //   Text('sábado '),
-                              // ]),
-
-                              //const SizedBox(height: 5),
-                              if (_valSab)
-                                Row(
-                                  children: <Widget>[
-                                    const SizedBox(height: 5, width: 5),
-                                    Text('Das '),
-                                    const SizedBox(width: 5),
-                                    ElevatedButton(
-                                        onPressed: () {
-                                          showTimePicker(
-                                              context: context,
-                                              initialTime: TimeOfDay(
-                                                  hour: 08, minute: 00))
-                                              .then((value) => setState(() {
-                                            _mofferController
-                                                .valSabDas = value!
-                                                .hour
-                                                .toString()
-                                                .padLeft(2, '0') +
-                                                ':' +
-                                                value.minute
-                                                    .toString()
-                                                    .padLeft(2, '0');
-                                          }));
-                                        },
-                                        style: ButtonStyle(
-                                            backgroundColor:
-                                            MaterialStateProperty.all<
-                                                Color>(
-                                              _loginController
-                                                  .colorFromHex(_loginController.listCore
-                                                  .where((coreItem) =>
-                                              coreItem.coreChave ==
-                                                  'backDark')
-                                                  .first
-                                                  .coreValor
-                                                  .toString()),
-                                            )),
-                                        child: Row(
-                                          children: [
-                                            Icon(Icons.access_time_outlined),
-                                            const SizedBox(
-                                              width: 16,
-                                            ),
-                                            Text(_mofferController.valSabDas)
-                                          ],
-                                        )),
-                                    const SizedBox(width: 5),
-                                    Text(' às '),
-                                    const SizedBox(width: 5),
-                                    ElevatedButton(
-                                        onPressed: () {
-                                          showTimePicker(
-                                              context: context,
-                                              initialTime: TimeOfDay(
-                                                  hour: 18, minute: 00))
-                                              .then((value) => setState(() {
-                                            _mofferController
-                                                .valSabAs = value!
-                                                .hour
-                                                .toString()
-                                                .padLeft(2, '0') +
-                                                ':' +
-                                                value.minute
-                                                    .toString()
-                                                    .padLeft(2, '0');
-                                          }));
-                                        },
-                                        style: ButtonStyle(
-                                            backgroundColor:
-                                            MaterialStateProperty.all<
-                                                Color>(
-                                              _loginController
-                                                  .colorFromHex(_loginController.listCore
-                                                  .where((coreItem) =>
-                                              coreItem.coreChave ==
-                                                  'backDark')
-                                                  .first
-                                                  .coreValor
-                                                  .toString()),
-                                            )),
-                                        child: Row(
-                                          children: [
-                                            Icon(Icons.access_time_outlined),
-                                            const SizedBox(
-                                              width: 16,
-                                            ),
-                                            Text(_mofferController.valSabAs)
-                                          ],
-                                        )),
-                                  ],
-                                ),
-
-                              // Row(children: <Widget>[
-                              CheckboxListTile(controlAffinity: ListTileControlAffinity.leading, title: Text('domingo '),
-                              value: this._valDom,
-                                  onChanged: (val) {
-                                    setState(() {
-                                      this._valDom = val!;
-                                    });
-                                  },
-                                  activeColor: Colors.blue,
-                                ),
-                              //   Text('domingo '),
-                              // ]),
-
-                              //const SizedBox(height: 5),
-                              if (_valDom)
-                                Row(
-                                  children: <Widget>[
-                                    const SizedBox(height: 5, width: 5),
-                                    Text('Das '),
-                                    const SizedBox(width: 5),
-                                    ElevatedButton(
-                                        onPressed: () {
-                                          showTimePicker(
-                                              context: context,
-                                              initialTime: TimeOfDay(
-                                                  hour: 08, minute: 00))
-                                              .then((value) => setState(() {
-                                            _mofferController
-                                                .valDomDas = value!
-                                                .hour
-                                                .toString()
-                                                .padLeft(2, '0') +
-                                                ':' +
-                                                value.minute
-                                                    .toString()
-                                                    .padLeft(2, '0');
-                                          }));
-                                        },
-                                        style: ButtonStyle(
-                                            backgroundColor:
-                                            MaterialStateProperty.all<
-                                                Color>(
-                                              _loginController
-                                                  .colorFromHex(_loginController.listCore
-                                                  .where((coreItem) =>
-                                              coreItem.coreChave ==
-                                                  'backDark')
-                                                  .first
-                                                  .coreValor
-                                                  .toString()),
-                                            )),
-                                        child: Row(
-                                          children: [
-                                            Icon(Icons.access_time_outlined),
-                                            const SizedBox(
-                                              width: 16,
-                                            ),
-                                            Text(_mofferController.valDomDas)
-                                          ],
-                                        )),
-                                    const SizedBox(width: 5),
-                                    Text(' às '),
-                                    const SizedBox(width: 5),
-                                    ElevatedButton(
-                                        onPressed: () {
-                                          showTimePicker(
-                                              context: context,
-                                              initialTime: TimeOfDay(
-                                                  hour: 18, minute: 00))
-                                              .then((value) => setState(() {
-                                            _mofferController
-                                                .valDomAs = value!
-                                                .hour
-                                                .toString()
-                                                .padLeft(2, '0') +
-                                                ':' +
-                                                value.minute
-                                                    .toString()
-                                                    .padLeft(2, '0');
-                                          }));
-                                        },
-                                        style: ButtonStyle(
-                                            backgroundColor:
-                                            MaterialStateProperty.all<
-                                                Color>(
-                                              _loginController
-                                                  .colorFromHex(_loginController.listCore
-                                                  .where((coreItem) =>
-                                              coreItem.coreChave ==
-                                                  'backDark')
-                                                  .first
-                                                  .coreValor
-                                                  .toString()),
-                                            )),
-                                        child: Row(
-                                          children: [
-                                            Icon(Icons.access_time_outlined),
-                                            const SizedBox(
-                                              width: 16,
-                                            ),
-                                            Text(_mofferController.valDomAs)
-                                          ],
-                                        )),
-                                  ],
-                                ),
-                            ]),
-
-                          // const SizedBox(height: 10),
-                          // const Divider(),
-                          // if (showMostraReview)
-                          //   Row(
-                          //     children: <Widget>[
-                          //       Switch(
-                          //           value: valMostraReview,
-                          //           onChanged: (bool _val) {
-                          //             setState(() {
-                          //               valMostraReview = val;
-                          //             });
-                          //           }),
-                          //       const SizedBox(width: 20),
-                          //       Text('Mostrar opiniões'),
-                          //       const SizedBox(height: 20)
-                          //     ],
-                          //   ),
-                          //
-                          // if (showAceiteAuto)
-                          //   Row(
-                          //     children: <Widget>[
-                          //       Switch(
-                          //           value: valAceiteAuto,
-                          //           onChanged: (bool _val) {
-                          //             setState(() {
-                          //               valAceiteAuto = val;
-                          //             });
-                          //           }),
-                          //       const SizedBox(width: 20),
-                          //       Expanded(
-                          //         child: Text(
-                          //             'Aceite automático dentro do horário'),
-                          //       ),
-                          //       const SizedBox(height: 20)
-                          //     ],
-                          //   ),
-
-                          if (showAceitaEncomenda)
-                            // Row(
-                            //   children: <Widget>[
-                            SwitchListTile(controlAffinity: ListTileControlAffinity.leading,title:Text('Aceita encomenda'),
-                            value: _valAceitaEncomenda,
-                                    onChanged: (bool val) {
-                                      setState(() {
-                                        _valAceitaEncomenda = val;
-                                        print('valAceitaEncomenda: ' +
-                                            _valAceitaEncomenda
-                                                .toString());
-                                      });
-                                    }),
-                            //     const SizedBox(width: 20),
-                            //     Text('Aceita encomenda'),
-                            //   ],
-                            // ),
-
-                          if (showAceitaEncomenda && _valAceitaEncomenda)
-                            // Row(
-                            //   children: <Widget>[
-                            //     //const SizedBox(width: 40),
-                            SwitchListTile(controlAffinity: ListTileControlAffinity.leading,title:Text('Somente encomenda'),
-                            value: _valSomenteEncomenda,
-                                    onChanged: (bool val) {
-                                      setState(() {
-                                        _valSomenteEncomenda = val;
-                                        print('valSomenteEncomenda: ' +
-                                            _valSomenteEncomenda
-                                                .toString());
-                                      });
-                                    }),
-                                // const SizedBox(width: 10),
-                                // Text('Somente encomenda'),
-
-                                // Row(children: <Widget>[
-                                //   const SizedBox(height: 30),
-                                //   Text('A partir de: '),
-                                // ]),
-                                // ElevatedButton(
-                                //     onPressed: () {
-                                //       showDatePicker(
-                                //           context: context,
-                                //           initialDate: DateTime.now(),
-                                //           firstDate: DateTime.now(),
-                                //           lastDate: DateTime.now()
-                                //               .add(Duration(days: 1000)))
-                                //           .then((value) => setState(() {
-                                //         _mofferController
-                                //             .valEncomendasAPartir =
-                                //         value!;
-                                //       }));
-                                //     },
-                                //     style: ButtonStyle(
-                                //         backgroundColor:
-                                //         MaterialStateProperty.all<Color>(
-                                //           _loginController.colorFromHex(
-                                //               _loginController.listCore
-                                //                   .where((coreItem) =>
-                                //               coreItem.coreChave ==
-                                //                   'backDark')
-                                //                   .first
-                                //                   .coreValor
-                                //                   .toString()),
-                                //         )),
-                                //     child: Row(
-                                //       children: [
-                                //         Icon(Icons.calendar_today_rounded),
-                                //         const SizedBox(
-                                //           width: 16,
-                                //         ),
-                                //         Text(_mofferController
-                                //             .valEncomendasAPartir.day
-                                //             .toString() +
-                                //             '/' +
-                                //             _mofferController
-                                //                 .valEncomendasAPartir.month
-                                //                 .toString() +
-                                //             '/' +
-                                //             _mofferController
-                                //                 .valEncomendasAPartir.year
-                                //                 .toString())
-                                //       ],
-                                //    )
-                                //),
-                              //   const SizedBox(height: 20),
-                              // ],
-                            //),
-
-                          // if (showCamposBasicos)
-                          //   Column(
-                          //     children: <Widget>[
-                          //       const Divider(),
-                          //       const SizedBox(height: 10),
-                          //       Text('Forma de Fechamento'),
-                          //       const SizedBox(height: 10),
-                          //       DropdownButton<String>(
-                          //         items: listaFormaFechamento
-                          //             .map((String value) {
-                          //           return DropdownMenuItem<String>(
-                          //             value: value,
-                          //             child: Text(value),
-                          //           );
-                          //         }).toList(),
-                          //         value: formaFechSel,
-                          //         onChanged: (String? newValue) {
-                          //           setState(() {
-                          //             formaFechSel = newValue!;
-                          //           });
-                          //         },
-                          //       ),
-                          //     ],
-                          //   ),
-                          //
-                          // const SizedBox(height: 20),
-
-                          // Row(
-                          //   crossAxisAlignment: CrossAxisAlignment.end,
-                          //   children: [
-                          //     SizedBox(height: 20),
-                          //     Divider(),
-                          //   ],
-                          // ),
-
-                          // if (widget
-                          //     .showCamposEntrega) // && _categSelecionada.categoriaFormasEntrega!.contains('other'))
-                          //   Column(
-                          //     children: <Widget>[
-                          //       Text('Agente de ' + _labelEntrega),
-                          //       Row(
-                          //         children: <Widget>[
-                          //           Switch(
-                          //               value: valAceitaEntregaComprador,
-                          //               onChanged: (bool _val) {
-                          //                 setState(() {
-                          //                   valAceitaEntregaComprador = val;
-                          //                 });
-                          //               }),
-                          //           const SizedBox(width: 20),
-                          //           Text('Entrega por comprador'),
-                          //         ],
-                          //       ),
-                          //       Row(
-                          //         children: <Widget>[
-                          //           Switch(
-                          //               value: valAceitaEntregaVendedor,
-                          //               onChanged: (bool _val) {
-                          //                 setState(() {
-                          //                   valAceitaEntregaVendedor = val;
-                          //                 });
-                          //               }),
-                          //           const SizedBox(width: 20),
-                          //           Text('Entrega por vendedor'),
-                          //         ],
-                          //       ),
-                          //       // Row(
-                          //       //   children: <Widget>[
-                          //       //     Switch(
-                          //       //         value: valAceitaEntregaParceiro,
-                          //       //         onChanged: (bool _val) {
-                          //       //           setState(() {
-                          //       //             // configura lista de parceiros
-                          //       //                   listaParceiros.clear();
-                          //       //                   listaParceiros.add('escolha o parceiro');
-                          //       //                   partnersController.parceiros
-                          //       //                       ?.forEach((part) {
-                          //       //                     print(part.ParceiroEntregaNome
-                          //       //                         .toString());
-                          //       //                     listaParceiros.add(part
-                          //       //                         .ParceiroEntregaNome.toString());
-                          //       //                   });
-                          //       //             valAceitaEntregaParceiro = val;
-                          //       //           });
-                          //       //         }),
-                          //       //     const SizedBox(width: 20),
-                          //       //     Text('Entrega por parceiro'),
-                          //       //   ],
-                          //       // ),
-                          //
-                          //       // NAO USAR!
-                          //       // DropdownButton<String>(
-                          //       //   items: listaFormaEntrega
-                          //       //       .map((String value) {
-                          //       //     return DropdownMenuItem<String>(
-                          //       //       value: value,
-                          //       //       child: Text(value),
-                          //       //     );
-                          //       //   }).toList(),
-                          //       //   value: agenteEntregaSel,
-                          //       //   onChanged: (String? newValue) {
-                          //       //     if (newValue == 'parceiro') {
-                          //       //       // configura lista de parceiros
-                          //       //       listaParceiros.clear();
-                          //       //       listaParceiros.add('escolha o parceiro');
-                          //       //       partnersController.parceiros
-                          //       //           ?.forEach((part) {
-                          //       //         print(part.ParceiroEntregaNome
-                          //       //             .toString());
-                          //       //         listaParceiros.add(part
-                          //       //             .ParceiroEntregaNome.toString());
-                          //       //       });
-                          //       //       print('lista parceiros: ' +
-                          //       //           listaParceiros.length
-                          //       //               .toString());
-                          //       //     }
-                          //       //
-                          //       //     setState(() {
-                          //       //       agenteEntregaSel = newValue!;
-                          //       //     });
-                          //       //   },
-                          //       // ),
-                          //
-                          //
-                          //       // if (valAceitaEntregaParceiro)
-                          //       //   Column(
-                          //       //     children: <Widget>[
-                          //       //       //const SizedBox(height: 20),
-                          //       //       const Divider(),
-                          //       //       const SizedBox(height: 10),
-                          //       //       // Text('Parceiro'),
-                          //       //       // const SizedBox(height: 10),
-                          //       //       DropdownButton<String>(
-                          //       //         items: listaParceiros
-                          //       //             .map((String value) {
-                          //       //           return DropdownMenuItem<String>(
-                          //       //             value: value,
-                          //       //             child: Text(value),
-                          //       //           );
-                          //       //         }).toList(),
-                          //       //         value: parceiroSel,
-                          //       //         onChanged: (String? newValue) {
-                          //       //           setState(() {
-                          //       //             parceiroSel = newValue!;
-                          //       //           });
-                          //       //         },
-                          //       //       ),
-                          //       //     ],
-                          //       //   ),
-                          //       const SizedBox(height: 20),
-                          //       Text(
-                          //         "Disponibilidade de " +
-                          //             _labelEntrega +
-                          //             ' à partir de: ',
-                          //         textAlign: TextAlign.center,
-                          //       ),
-                          //       const SizedBox(height: 10),
-                          //       ElevatedButton(
-                          //           onPressed: () {
-                          //             showDatePicker(
-                          //                     context: context,
-                          //                     initialDate: DateTime.now(),
-                          //                     firstDate: DateTime.now(),
-                          //                     lastDate: DateTime.now()
-                          //                         .add(Duration(days: 1000)))
-                          //                 .then((value) => setState(() {
-                          //                       _mofferController
-                          //                               .valEntregasAPartir =
-                          //                           value!;
-                          //                     }));
-                          //           },
-                          //           style: ButtonStyle(
-                          //               backgroundColor:
-                          //                   MaterialStateProperty.all<Color>(
-                          //             _loginController.colorFromHex(
-                          //                 _loginController.listCore
-                          //                     .where((coreItem) =>
-                          //                         coreItem.coreChave ==
-                          //                         'backDark')
-                          //                     .first
-                          //                     .coreValor
-                          //                     .toString()),
-                          //           )),
-                          //           child: Row(
-                          //             children: [
-                          //               Icon(Icons.calendar_today_rounded),
-                          //               const SizedBox(
-                          //                 width: 16,
-                          //               ),
-                          //               Text(_mofferController
-                          //                       .valEntregasAPartir.day
-                          //                       .toString() +
-                          //                   '/' +
-                          //                   _mofferController
-                          //                       .valEntregasAPartir.month
-                          //                       .toString() +
-                          //                   '/' +
-                          //                   _mofferController
-                          //                       .valEntregasAPartir.year
-                          //                       .toString())
-                          //             ],
-                          //           )),
-                          //       const SizedBox(height: 20),
-                          //
-                          //       Text("Horário de " + _labelEntrega),
-                          //       const SizedBox(height: 10),
-                          //       Row(
-                          //         children: <Widget>[
-                          //           const SizedBox(width: 5),
-                          //           Text('Das '),
-                          //           const SizedBox(width: 5),
-                          //           ElevatedButton(
-                          //               onPressed: () {
-                          //                 showTimePicker(
-                          //                         context: context,
-                          //                         initialTime: TimeOfDay(
-                          //                             hour: 08, minute: 00))
-                          //                     .then((value) => setState(() {
-                          //                           _mofferController
-                          //                                   .valEntregaDas =
-                          //                               value!.hour
-                          //                                       .toString()
-                          //                                       .padLeft(
-                          //                                           2, '0') +
-                          //                                   ':' +
-                          //                                   value.minute
-                          //                                       .toString()
-                          //                                       .padLeft(
-                          //                                           2, '0');
-                          //                         }));
-                          //               },
-                          //               style: ButtonStyle(
-                          //                   backgroundColor:
-                          //                       MaterialStateProperty.all<
-                          //                           Color>(
-                          //                 _loginController
-                          //                     .colorFromHex(widget
-                          //                         ._loginController.listCore
-                          //                         .where((coreItem) =>
-                          //                             coreItem.coreChave ==
-                          //                             'backDark')
-                          //                         .first
-                          //                         .coreValor
-                          //                         .toString()),
-                          //               )),
-                          //               child: Row(
-                          //                 children: [
-                          //                   Icon(Icons.access_time_outlined),
-                          //                   const SizedBox(
-                          //                     width: 16,
-                          //                   ),
-                          //                   Text(_mofferController
-                          //                       .valEntregaDas)
-                          //                 ],
-                          //               )),
-                          //           const SizedBox(width: 5),
-                          //           Text(' às '),
-                          //           const SizedBox(width: 5),
-                          //           ElevatedButton(
-                          //               onPressed: () {
-                          //                 showTimePicker(
-                          //                         context: context,
-                          //                         initialTime: TimeOfDay(
-                          //                             hour: 18, minute: 00))
-                          //                     .then((value) => setState(() {
-                          //                           _mofferController
-                          //                               .valEntregaAs = value!
-                          //                                   .hour
-                          //                                   .toString()
-                          //                                   .padLeft(2, '0') +
-                          //                               ':' +
-                          //                               value.minute
-                          //                                   .toString()
-                          //                                   .padLeft(2, '0');
-                          //                         }));
-                          //               },
-                          //               style: ButtonStyle(
-                          //                   backgroundColor:
-                          //                       MaterialStateProperty.all<
-                          //                           Color>(
-                          //                 _loginController
-                          //                     .colorFromHex(widget
-                          //                         ._loginController.listCore
-                          //                         .where((coreItem) =>
-                          //                             coreItem.coreChave ==
-                          //                             'backDark')
-                          //                         .first
-                          //                         .coreValor
-                          //                         .toString()),
-                          //               )),
-                          //               child: Row(
-                          //                 children: [
-                          //                   Icon(Icons.access_time_outlined),
-                          //                   const SizedBox(
-                          //                     width: 16,
-                          //                   ),
-                          //                   Text(_mofferController
-                          //                       .valEntregaAs)
-                          //                 ],
-                          //               )),
-                          //         ],
-                          //       ),
-                          //       if (_labelEntrega == 'Entrega')
-                          //         Column(
-                          //           children: <Widget>[
-                          //             const SizedBox(height: 20),
-                          //             Text(
-                          //               "Taxas de Entrega",
-                          //               textAlign: TextAlign.left,
-                          //             ),
-                          //             const SizedBox(height: 20),
-                          //             TextFormField(
-                          //               inputFormatters: [
-                          //                 FilteringTextInputFormatter
-                          //                     .digitsOnly,
-                          //                 CentavosInputFormatter(),
-                          //               ],
-                          //               // initialValue: '0',
-                          //               controller: widget
-                          //                   ._mofferController.txtValorTaxa1km,
-                          //               decoration: InputDecoration(
-                          //                   prefix: Text('R\$ '),
-                          //                   border: OutlineInputBorder(),
-                          //                   labelText: 'Até 1km'),
-                          //               textInputAction: TextInputAction.next,
-                          //               //focusNode: _priceFocusNode,
-                          //               keyboardType:
-                          //                   TextInputType.numberWithOptions(
-                          //                       decimal: true),
-                          //             ),
-                          //             const SizedBox(height: 20),
-                          //             TextFormField(
-                          //               inputFormatters: [
-                          //                 FilteringTextInputFormatter
-                          //                     .digitsOnly,
-                          //                 CentavosInputFormatter(),
-                          //               ],
-                          //               // initialValue: '0',
-                          //               controller: widget
-                          //                   ._mofferController.txtValorTaxa2km,
-                          //               decoration: InputDecoration(
-                          //                   prefix: Text('R\$ '),
-                          //                   border: OutlineInputBorder(),
-                          //                   labelText: 'Entre 1km e 2km'),
-                          //               textInputAction: TextInputAction.next,
-                          //               //focusNode: _priceFocusNode,
-                          //               keyboardType:
-                          //                   TextInputType.numberWithOptions(
-                          //                       decimal: true),
-                          //             ),
-                          //             const SizedBox(height: 20),
-                          //             TextFormField(
-                          //               inputFormatters: [
-                          //                 FilteringTextInputFormatter
-                          //                     .digitsOnly,
-                          //                 CentavosInputFormatter(),
-                          //               ],
-                          //               // initialValue: '0',
-                          //               controller: _mofferController
-                          //                   .txtValorTaxaMaisQue2km,
-                          //               decoration: InputDecoration(
-                          //                   prefix: Text('R\$ '),
-                          //                   border: OutlineInputBorder(),
-                          //                   labelText: 'Acima de 2km'),
-                          //               textInputAction: TextInputAction.next,
-                          //               //focusNode: _priceFocusNode,
-                          //               keyboardType:
-                          //                   TextInputType.numberWithOptions(
-                          //                       decimal: true),
-                          //             ),
-                          //             const SizedBox(height: 20),
-                          //             // Text('Tempo de Entrega após aceite'),
-                          //             TextFormField(
-                          //                 decoration: InputDecoration(
-                          //                     border: OutlineInputBorder(),
-                          //                     labelText:
-                          //                         'Tempo de entrega após aceite'),
-                          //                 keyboardType: TextInputType.number),
-                          //             const SizedBox(height: 20),
-                          //             Text('Unidade de Tempo'),
-                          //             DropdownButton<String>(
-                          //               items: _listaTempoEntregaTipo
-                          //                   .map((String value) {
-                          //                 return DropdownMenuItem<String>(
-                          //                   value: value,
-                          //                   child: Text(value),
-                          //                 );
-                          //               }).toList(),
-                          //               value: tempoEntregaTipoSel,
-                          //               onChanged: (String? newValue) {
-                          //                 setState(() {
-                          //                   tempoEntregaTipoSel =
-                          //                       newValue!;
-                          //                 });
-                          //               },
-                          //             ),
-                          //           ],
-                          //         ),
-                          //     ],
-                          //   ),
-
-                          if (showCamposBasicos)
-                            Column(children: <Widget>[
-                              const SizedBox(height: 10),
-                              const Divider(),
-                              const SizedBox(height: 10),
+                        //const SizedBox(),
+                        if (_valSeg)
+                          Row(
+                            children: <Widget>[
+                              const SizedBox(height: 5, width: 5),
+                              Text('Das '),
+                              const SizedBox(width: 5),
                               ElevatedButton(
-                                  onPressed: () => pegarImagemGaleria(),
+                                  onPressed: () {
+                                    showTimePicker(
+                                            context: context,
+                                            initialTime:
+                                                TimeOfDay(hour: 08, minute: 00))
+                                        .then((value) => setState(() {
+                                              _mofferController.valSegDas =
+                                                  value!.hour
+                                                          .toString()
+                                                          .padLeft(2, '0') +
+                                                      ':' +
+                                                      value.minute
+                                                          .toString()
+                                                          .padLeft(2, '0');
+                                            }));
+                                  },
                                   style: ButtonStyle(
                                       backgroundColor:
-                                      MaterialStateProperty.all<Color>(
-                                        _loginController.colorFromHex(
-                                            _loginController.listCore
-                                                .where((coreItem) =>
-                                            coreItem.coreChave ==
+                                          MaterialStateProperty.all<Color>(
+                                    _loginController.colorFromHex(
+                                        _loginController.listCore
+                                            .where((coreItem) =>
+                                                coreItem.coreChave ==
                                                 'backDark')
-                                                .first
-                                                .coreValor
-                                                .toString()),
-                                      )),
+                                            .first
+                                            .coreValor
+                                            .toString()),
+                                  )),
                                   child: Row(
                                     children: [
-                                      Icon(Icons.photo_album),
+                                      Icon(Icons.access_time_outlined),
                                       const SizedBox(
                                         width: 16,
                                       ),
-                                      Text('Adicionar Foto')
+                                      Text(_mofferController.valSegDas)
                                     ],
                                   )),
-                              const SizedBox(height: 20),
-                              if (_imgcloud != '')
-                                CachedNetworkImage(
-                                  imageUrl: _imgcloud,
-                                  progressIndicatorBuilder: (context, url,
-                                      downloadProgress) =>
-                                      CircularProgressIndicator(
-                                          value: downloadProgress.progress),
-                                  errorWidget: (context, url, error) =>
-                                      Icon(Icons.local_offer_outlined),
-                                  height: 250,
-                                ),
-
-                              // FadeInImage.assetNetwork(
-                              //   placeholder: 'assets/images/pholder.png',
-                              //   image: _imgcloud,
-                              //   imageErrorBuilder: (context, url, error) =>
-                              //       new Icon(Icons.local_offer_outlined),
-                              //   height: 250,
-                              // ),
-
-                              if (image != null)
-                                Image.file(
-                                  image!,
-                                  fit: BoxFit.contain,
-                                ),
-                              const SizedBox(height: 20),
-                              ButtonOffer(
-                                  text: 'Salvar',
-                                  colorText: _loginController
-                                      .colorFromHex(_loginController.listCore
-                                      .where((coreItem) =>
-                                  coreItem.coreChave ==
-                                      'textLight')
-                                      .first
-                                      .coreValor
-                                      .toString()),
-                                  colorButton: _loginController
-                                      .colorFromHex(_loginController.listCore
-                                      .where((coreItem) =>
-                                  coreItem.coreChave ==
-                                      'iconColor')
-                                      .first
-                                      .coreValor
-                                      .toString()),
+                              const SizedBox(width: 5),
+                              Text(' às '),
+                              const SizedBox(width: 5),
+                              ElevatedButton(
                                   onPressed: () {
-                                    uploadFoto(
-                                        image == null ? null : image,
-                                        _loginController.usuGuid
-                                            .toString())
-                                        .then((value) => Get.offAndToNamed(
-                                        AppRoutes.mOffers));
-                                  }),
-                              if (_mofferController.singleOffer != null)
-                                ButtonOffer(
-                                  onPressed: () async {
-                                    await _mofferController.markOfferSold(
-                                        _mofferController.singleOffer!
-                                            .OfertaGUID
-                                            .toString());
-
-                                    Get.defaultDialog(
-                                        title: "Aviso",
-                                        middleText:
-                                        "Vendido!");
-
-                                    Get.offAndToNamed(AppRoutes.mOffers);
+                                    showTimePicker(
+                                            context: context,
+                                            initialTime:
+                                                TimeOfDay(hour: 18, minute: 00))
+                                        .then((value) => setState(() {
+                                              _mofferController.valSegAs =
+                                                  value!.hour
+                                                          .toString()
+                                                          .padLeft(2, '0') +
+                                                      ':' +
+                                                      value.minute
+                                                          .toString()
+                                                          .padLeft(2, '0');
+                                            }));
                                   },
-                                  colorText: _loginController
-                                      .colorFromHex(_loginController.listCore
-                                      .where((coreItem) =>
-                                  coreItem.coreChave ==
-                                      'textLight')
-                                      .first
-                                      .coreValor
-                                      .toString()),
-                                  text: 'Marcar Vendido',
-                                  colorButton: _loginController
-                                      .colorFromHex(_loginController.listCore
-                                      .where((coreItem) =>
-                                  coreItem.coreChave ==
-                                      'textDark')
-                                      .first
-                                      .coreValor
-                                      .toString()),
-                                ),
-                                ButtonOffer(
-                                  onPressed: () async {
-                                    await _mofferController.apagaMoffer(
-                                        _mofferController.singleOffer!
-                                            .OfertaGUID
-                                            .toString());
+                                  style: ButtonStyle(
+                                      backgroundColor:
+                                          MaterialStateProperty.all<Color>(
+                                    _loginController.colorFromHex(
+                                        _loginController.listCore
+                                            .where((coreItem) =>
+                                                coreItem.coreChave ==
+                                                'backDark')
+                                            .first
+                                            .coreValor
+                                            .toString()),
+                                  )),
+                                  child: Row(
+                                    children: [
+                                      Icon(Icons.access_time_outlined),
+                                      const SizedBox(
+                                        width: 16,
+                                      ),
+                                      Text(_mofferController.valSegAs)
+                                    ],
+                                  )),
+                            ],
+                          ),
 
-                                    Get.defaultDialog(
-                                        title: "Aviso",
-                                        middleText:
-                                        "Oferta removida");
+                        // TERÇA
+                        // Row(children: <Widget>[
+                        CheckboxListTile(
+                          controlAffinity: ListTileControlAffinity.leading,
+                          title: Text('terça '),
+                          value: _valTer,
+                          onChanged: (val) {
+                            setState(() {
+                              _valTer = val!;
+                            });
+                          },
+                          activeColor: Colors.blue,
+                        ),
+                        // Text('terça ')
+                        // ]),
 
-                                    Get.offAndToNamed(AppRoutes.mOffers);
+                        //const SizedBox(height: 5),
+                        if (_valTer)
+                          Row(
+                            children: <Widget>[
+                              const SizedBox(height: 5, width: 5),
+                              Text('Das '),
+                              const SizedBox(width: 5),
+                              ElevatedButton(
+                                  onPressed: () {
+                                    showTimePicker(
+                                            context: context,
+                                            initialTime:
+                                                TimeOfDay(hour: 08, minute: 00))
+                                        .then((value) => setState(() {
+                                              _mofferController.valTerDas =
+                                                  value!.hour
+                                                          .toString()
+                                                          .padLeft(2, '0') +
+                                                      ':' +
+                                                      value.minute
+                                                          .toString()
+                                                          .padLeft(2, '0');
+                                            }));
                                   },
-                                  colorText: _loginController
-                                      .colorFromHex(_loginController.listCore
-                                      .where((coreItem) =>
-                                  coreItem.coreChave ==
-                                      'textDark')
-                                      .first
-                                      .coreValor
-                                      .toString()),
-                                  text: 'Apagar Oferta',
-                                  colorButton: _loginController
-                                      .colorFromHex(_loginController.listCore
-                                      .where((coreItem) =>
-                                  coreItem.coreChave ==
-                                      'textLight')
-                                      .first
-                                      .coreValor
-                                      .toString()),
-                                ),
+                                  style: ButtonStyle(
+                                      backgroundColor:
+                                          MaterialStateProperty.all<Color>(
+                                    _loginController.colorFromHex(
+                                        _loginController.listCore
+                                            .where((coreItem) =>
+                                                coreItem.coreChave ==
+                                                'backDark')
+                                            .first
+                                            .coreValor
+                                            .toString()),
+                                  )),
+                                  child: Row(
+                                    children: [
+                                      Icon(Icons.access_time_outlined),
+                                      const SizedBox(
+                                        width: 16,
+                                      ),
+                                      Text(_mofferController.valTerDas)
+                                    ],
+                                  )),
+                              const SizedBox(width: 5),
+                              Text(' às '),
+                              const SizedBox(width: 5),
+                              ElevatedButton(
+                                  onPressed: () {
+                                    showTimePicker(
+                                            context: context,
+                                            initialTime:
+                                                TimeOfDay(hour: 18, minute: 00))
+                                        .then((value) => setState(() {
+                                              _mofferController.valTerAs =
+                                                  value!.hour
+                                                          .toString()
+                                                          .padLeft(2, '0') +
+                                                      ':' +
+                                                      value.minute
+                                                          .toString()
+                                                          .padLeft(2, '0');
+                                            }));
+                                  },
+                                  style: ButtonStyle(
+                                      backgroundColor:
+                                          MaterialStateProperty.all<Color>(
+                                    _loginController.colorFromHex(
+                                        _loginController.listCore
+                                            .where((coreItem) =>
+                                                coreItem.coreChave ==
+                                                'backDark')
+                                            .first
+                                            .coreValor
+                                            .toString()),
+                                  )),
+                                  child: Row(
+                                    children: [
+                                      Icon(Icons.access_time_outlined),
+                                      const SizedBox(
+                                        width: 16,
+                                      ),
+                                      Text(_mofferController.valTerAs)
+                                    ],
+                                  )),
+                            ],
+                          ),
 
-                            ])
-                        ],
-                      ),
-                    ),
-                  )),
-            );
-          }
-        //});
+                        // Row(children: <Widget>[
+                        CheckboxListTile(
+                          controlAffinity: ListTileControlAffinity.leading,
+                          title: Text('quarta '),
+                          value: this._valQua,
+                          onChanged: (val) {
+                            setState(() {
+                              this._valQua = val!;
+                            });
+                          },
+                          activeColor: Colors.blue,
+                        ),
+                        //   Text('quarta '),
+                        // ]),
+
+                        //const SizedBox(height: 5),
+                        if (_valQua)
+                          Row(
+                            children: <Widget>[
+                              const SizedBox(height: 5, width: 5),
+                              Text('Das '),
+                              const SizedBox(width: 5),
+                              ElevatedButton(
+                                  onPressed: () {
+                                    showTimePicker(
+                                            context: context,
+                                            initialTime:
+                                                TimeOfDay(hour: 08, minute: 00))
+                                        .then((value) => setState(() {
+                                              _mofferController.valQuaDas =
+                                                  value!.hour
+                                                          .toString()
+                                                          .padLeft(2, '0') +
+                                                      ':' +
+                                                      value.minute
+                                                          .toString()
+                                                          .padLeft(2, '0');
+                                            }));
+                                  },
+                                  style: ButtonStyle(
+                                      backgroundColor:
+                                          MaterialStateProperty.all<Color>(
+                                    _loginController.colorFromHex(
+                                        _loginController.listCore
+                                            .where((coreItem) =>
+                                                coreItem.coreChave ==
+                                                'backDark')
+                                            .first
+                                            .coreValor
+                                            .toString()),
+                                  )),
+                                  child: Row(
+                                    children: [
+                                      Icon(Icons.access_time_outlined),
+                                      const SizedBox(
+                                        width: 16,
+                                      ),
+                                      Text(_mofferController.valQuaDas)
+                                    ],
+                                  )),
+                              const SizedBox(width: 5),
+                              Text(' às '),
+                              const SizedBox(width: 5),
+                              ElevatedButton(
+                                  onPressed: () {
+                                    showTimePicker(
+                                            context: context,
+                                            initialTime:
+                                                TimeOfDay(hour: 18, minute: 00))
+                                        .then((value) => setState(() {
+                                              _mofferController.valQuaAs =
+                                                  value!.hour
+                                                          .toString()
+                                                          .padLeft(2, '0') +
+                                                      ':' +
+                                                      value.minute
+                                                          .toString()
+                                                          .padLeft(2, '0');
+                                            }));
+                                  },
+                                  style: ButtonStyle(
+                                      backgroundColor:
+                                          MaterialStateProperty.all<Color>(
+                                    _loginController.colorFromHex(
+                                        _loginController.listCore
+                                            .where((coreItem) =>
+                                                coreItem.coreChave ==
+                                                'backDark')
+                                            .first
+                                            .coreValor
+                                            .toString()),
+                                  )),
+                                  child: Row(
+                                    children: [
+                                      Icon(Icons.access_time_outlined),
+                                      const SizedBox(
+                                        width: 16,
+                                      ),
+                                      Text(_mofferController.valQuaAs)
+                                    ],
+                                  )),
+                            ],
+                          ),
+
+                        // Row(children: <Widget>[
+                        CheckboxListTile(
+                          controlAffinity: ListTileControlAffinity.leading,
+                          title: Text('quinta '),
+                          value: this._valQui,
+                          onChanged: (val) {
+                            setState(() {
+                              this._valQui = val!;
+                            });
+                          },
+                          activeColor: Colors.blue,
+                        ),
+                        //   Text('quinta '),
+                        // ]),
+
+                        //const SizedBox(height: 5),
+                        if (_valQui)
+                          Row(
+                            children: <Widget>[
+                              const SizedBox(height: 5, width: 5),
+                              Text('Das '),
+                              const SizedBox(width: 5),
+                              ElevatedButton(
+                                  onPressed: () {
+                                    showTimePicker(
+                                            context: context,
+                                            initialTime:
+                                                TimeOfDay(hour: 08, minute: 00))
+                                        .then((value) => setState(() {
+                                              _mofferController.valQuiDas =
+                                                  value!.hour
+                                                          .toString()
+                                                          .padLeft(2, '0') +
+                                                      ':' +
+                                                      value.minute
+                                                          .toString()
+                                                          .padLeft(2, '0');
+                                            }));
+                                  },
+                                  style: ButtonStyle(
+                                      backgroundColor:
+                                          MaterialStateProperty.all<Color>(
+                                    _loginController.colorFromHex(
+                                        _loginController.listCore
+                                            .where((coreItem) =>
+                                                coreItem.coreChave ==
+                                                'backDark')
+                                            .first
+                                            .coreValor
+                                            .toString()),
+                                  )),
+                                  child: Row(
+                                    children: [
+                                      Icon(Icons.access_time_outlined),
+                                      const SizedBox(
+                                        width: 16,
+                                      ),
+                                      Text(_mofferController.valQuiDas)
+                                    ],
+                                  )),
+                              const SizedBox(width: 5),
+                              Text(' às '),
+                              const SizedBox(width: 5),
+                              ElevatedButton(
+                                  onPressed: () {
+                                    showTimePicker(
+                                            context: context,
+                                            initialTime:
+                                                TimeOfDay(hour: 18, minute: 00))
+                                        .then((value) => setState(() {
+                                              _mofferController.valQuiAs =
+                                                  value!.hour
+                                                          .toString()
+                                                          .padLeft(2, '0') +
+                                                      ':' +
+                                                      value.minute
+                                                          .toString()
+                                                          .padLeft(2, '0');
+                                            }));
+                                  },
+                                  style: ButtonStyle(
+                                      backgroundColor:
+                                          MaterialStateProperty.all<Color>(
+                                    _loginController.colorFromHex(
+                                        _loginController.listCore
+                                            .where((coreItem) =>
+                                                coreItem.coreChave ==
+                                                'backDark')
+                                            .first
+                                            .coreValor
+                                            .toString()),
+                                  )),
+                                  child: Row(
+                                    children: [
+                                      Icon(Icons.access_time_outlined),
+                                      const SizedBox(
+                                        width: 16,
+                                      ),
+                                      Text(_mofferController.valQuiAs)
+                                    ],
+                                  )),
+                            ],
+                          ),
+
+                        // Row(children: <Widget>[
+                        CheckboxListTile(
+                          controlAffinity: ListTileControlAffinity.leading,
+                          title: Text('sexta '),
+                          value: this._valSex,
+                          onChanged: (val) {
+                            setState(() {
+                              this._valSex = val!;
+                            });
+                          },
+                          activeColor: Colors.blue,
+                        ),
+                        //   Text('sexta '),
+                        // ]),
+
+                        //const SizedBox(height: 5),
+                        if (_valSex)
+                          Row(
+                            children: <Widget>[
+                              const SizedBox(height: 5, width: 5),
+                              Text('Das '),
+                              const SizedBox(width: 5),
+                              ElevatedButton(
+                                  onPressed: () {
+                                    showTimePicker(
+                                            context: context,
+                                            initialTime:
+                                                TimeOfDay(hour: 08, minute: 00))
+                                        .then((value) => setState(() {
+                                              _mofferController.valSexDas =
+                                                  value!.hour
+                                                          .toString()
+                                                          .padLeft(2, '0') +
+                                                      ':' +
+                                                      value.minute
+                                                          .toString()
+                                                          .padLeft(2, '0');
+                                            }));
+                                  },
+                                  style: ButtonStyle(
+                                      backgroundColor:
+                                          MaterialStateProperty.all<Color>(
+                                    _loginController.colorFromHex(
+                                        _loginController.listCore
+                                            .where((coreItem) =>
+                                                coreItem.coreChave ==
+                                                'backDark')
+                                            .first
+                                            .coreValor
+                                            .toString()),
+                                  )),
+                                  child: Row(
+                                    children: [
+                                      Icon(Icons.access_time_outlined),
+                                      const SizedBox(
+                                        width: 16,
+                                      ),
+                                      Text(_mofferController.valSexDas)
+                                    ],
+                                  )),
+                              const SizedBox(width: 5),
+                              Text(' às '),
+                              const SizedBox(width: 5),
+                              ElevatedButton(
+                                  onPressed: () {
+                                    showTimePicker(
+                                            context: context,
+                                            initialTime:
+                                                TimeOfDay(hour: 18, minute: 00))
+                                        .then((value) => setState(() {
+                                              _mofferController.valSexAs =
+                                                  value!.hour
+                                                          .toString()
+                                                          .padLeft(2, '0') +
+                                                      ':' +
+                                                      value.minute
+                                                          .toString()
+                                                          .padLeft(2, '0');
+                                            }));
+                                  },
+                                  style: ButtonStyle(
+                                      backgroundColor:
+                                          MaterialStateProperty.all<Color>(
+                                    _loginController.colorFromHex(
+                                        _loginController.listCore
+                                            .where((coreItem) =>
+                                                coreItem.coreChave ==
+                                                'backDark')
+                                            .first
+                                            .coreValor
+                                            .toString()),
+                                  )),
+                                  child: Row(
+                                    children: [
+                                      Icon(Icons.access_time_outlined),
+                                      const SizedBox(
+                                        width: 16,
+                                      ),
+                                      Text(_mofferController.valSexAs)
+                                    ],
+                                  )),
+                            ],
+                          ),
+
+                        // Row(children: <Widget>[
+                        CheckboxListTile(
+                          controlAffinity: ListTileControlAffinity.leading,
+                          title: Text('sábado '),
+                          value: this._valSab,
+                          onChanged: (val) {
+                            setState(() {
+                              this._valSab = val!;
+                            });
+                          },
+                          activeColor: Colors.blue,
+                        ),
+                        //   Text('sábado '),
+                        // ]),
+
+                        //const SizedBox(height: 5),
+                        if (_valSab)
+                          Row(
+                            children: <Widget>[
+                              const SizedBox(height: 5, width: 5),
+                              Text('Das '),
+                              const SizedBox(width: 5),
+                              ElevatedButton(
+                                  onPressed: () {
+                                    showTimePicker(
+                                            context: context,
+                                            initialTime:
+                                                TimeOfDay(hour: 08, minute: 00))
+                                        .then((value) => setState(() {
+                                              _mofferController.valSabDas =
+                                                  value!.hour
+                                                          .toString()
+                                                          .padLeft(2, '0') +
+                                                      ':' +
+                                                      value.minute
+                                                          .toString()
+                                                          .padLeft(2, '0');
+                                            }));
+                                  },
+                                  style: ButtonStyle(
+                                      backgroundColor:
+                                          MaterialStateProperty.all<Color>(
+                                    _loginController.colorFromHex(
+                                        _loginController.listCore
+                                            .where((coreItem) =>
+                                                coreItem.coreChave ==
+                                                'backDark')
+                                            .first
+                                            .coreValor
+                                            .toString()),
+                                  )),
+                                  child: Row(
+                                    children: [
+                                      Icon(Icons.access_time_outlined),
+                                      const SizedBox(
+                                        width: 16,
+                                      ),
+                                      Text(_mofferController.valSabDas)
+                                    ],
+                                  )),
+                              const SizedBox(width: 5),
+                              Text(' às '),
+                              const SizedBox(width: 5),
+                              ElevatedButton(
+                                  onPressed: () {
+                                    showTimePicker(
+                                            context: context,
+                                            initialTime:
+                                                TimeOfDay(hour: 18, minute: 00))
+                                        .then((value) => setState(() {
+                                              _mofferController.valSabAs =
+                                                  value!.hour
+                                                          .toString()
+                                                          .padLeft(2, '0') +
+                                                      ':' +
+                                                      value.minute
+                                                          .toString()
+                                                          .padLeft(2, '0');
+                                            }));
+                                  },
+                                  style: ButtonStyle(
+                                      backgroundColor:
+                                          MaterialStateProperty.all<Color>(
+                                    _loginController.colorFromHex(
+                                        _loginController.listCore
+                                            .where((coreItem) =>
+                                                coreItem.coreChave ==
+                                                'backDark')
+                                            .first
+                                            .coreValor
+                                            .toString()),
+                                  )),
+                                  child: Row(
+                                    children: [
+                                      Icon(Icons.access_time_outlined),
+                                      const SizedBox(
+                                        width: 16,
+                                      ),
+                                      Text(_mofferController.valSabAs)
+                                    ],
+                                  )),
+                            ],
+                          ),
+
+                        // Row(children: <Widget>[
+                        CheckboxListTile(
+                          controlAffinity: ListTileControlAffinity.leading,
+                          title: Text('domingo '),
+                          value: this._valDom,
+                          onChanged: (val) {
+                            setState(() {
+                              this._valDom = val!;
+                            });
+                          },
+                          activeColor: Colors.blue,
+                        ),
+                        //   Text('domingo '),
+                        // ]),
+
+                        //const SizedBox(height: 5),
+                        if (_valDom)
+                          Row(
+                            children: <Widget>[
+                              const SizedBox(height: 5, width: 5),
+                              Text('Das '),
+                              const SizedBox(width: 5),
+                              ElevatedButton(
+                                  onPressed: () {
+                                    showTimePicker(
+                                            context: context,
+                                            initialTime:
+                                                TimeOfDay(hour: 08, minute: 00))
+                                        .then((value) => setState(() {
+                                              _mofferController.valDomDas =
+                                                  value!.hour
+                                                          .toString()
+                                                          .padLeft(2, '0') +
+                                                      ':' +
+                                                      value.minute
+                                                          .toString()
+                                                          .padLeft(2, '0');
+                                            }));
+                                  },
+                                  style: ButtonStyle(
+                                      backgroundColor:
+                                          MaterialStateProperty.all<Color>(
+                                    _loginController.colorFromHex(
+                                        _loginController.listCore
+                                            .where((coreItem) =>
+                                                coreItem.coreChave ==
+                                                'backDark')
+                                            .first
+                                            .coreValor
+                                            .toString()),
+                                  )),
+                                  child: Row(
+                                    children: [
+                                      Icon(Icons.access_time_outlined),
+                                      const SizedBox(
+                                        width: 16,
+                                      ),
+                                      Text(_mofferController.valDomDas)
+                                    ],
+                                  )),
+                              const SizedBox(width: 5),
+                              Text(' às '),
+                              const SizedBox(width: 5),
+                              ElevatedButton(
+                                  onPressed: () {
+                                    showTimePicker(
+                                            context: context,
+                                            initialTime:
+                                                TimeOfDay(hour: 18, minute: 00))
+                                        .then((value) => setState(() {
+                                              _mofferController.valDomAs =
+                                                  value!.hour
+                                                          .toString()
+                                                          .padLeft(2, '0') +
+                                                      ':' +
+                                                      value.minute
+                                                          .toString()
+                                                          .padLeft(2, '0');
+                                            }));
+                                  },
+                                  style: ButtonStyle(
+                                      backgroundColor:
+                                          MaterialStateProperty.all<Color>(
+                                    _loginController.colorFromHex(
+                                        _loginController.listCore
+                                            .where((coreItem) =>
+                                                coreItem.coreChave ==
+                                                'backDark')
+                                            .first
+                                            .coreValor
+                                            .toString()),
+                                  )),
+                                  child: Row(
+                                    children: [
+                                      Icon(Icons.access_time_outlined),
+                                      const SizedBox(
+                                        width: 16,
+                                      ),
+                                      Text(_mofferController.valDomAs)
+                                    ],
+                                  )),
+                            ],
+                          ),
+                      ]),
+
+                    // const SizedBox(height: 10),
+                    // const Divider(),
+                    // if (showMostraReview)
+                    //   Row(
+                    //     children: <Widget>[
+                    //       Switch(
+                    //           value: valMostraReview,
+                    //           onChanged: (bool _val) {
+                    //             setState(() {
+                    //               valMostraReview = val;
+                    //             });
+                    //           }),
+                    //       const SizedBox(width: 20),
+                    //       Text('Mostrar opiniões'),
+                    //       const SizedBox(height: 20)
+                    //     ],
+                    //   ),
+                    //
+                    // if (showAceiteAuto)
+                    //   Row(
+                    //     children: <Widget>[
+                    //       Switch(
+                    //           value: valAceiteAuto,
+                    //           onChanged: (bool _val) {
+                    //             setState(() {
+                    //               valAceiteAuto = val;
+                    //             });
+                    //           }),
+                    //       const SizedBox(width: 20),
+                    //       Expanded(
+                    //         child: Text(
+                    //             'Aceite automático dentro do horário'),
+                    //       ),
+                    //       const SizedBox(height: 20)
+                    //     ],
+                    //   ),
+
+                    if (showAceitaEncomenda)
+                      // Row(
+                      //   children: <Widget>[
+                      SwitchListTile(
+                          controlAffinity: ListTileControlAffinity.leading,
+                          title: Text('Aceita encomenda'),
+                          value: _valAceitaEncomenda,
+                          onChanged: (bool val) {
+                            setState(() {
+                              _valAceitaEncomenda = val;
+                              print('valAceitaEncomenda: ' +
+                                  _valAceitaEncomenda.toString());
+                            });
+                          }),
+                    //     const SizedBox(width: 20),
+                    //     Text('Aceita encomenda'),
+                    //   ],
+                    // ),
+
+                    if (showAceitaEncomenda && _valAceitaEncomenda)
+                      // Row(
+                      //   children: <Widget>[
+                      //     //const SizedBox(width: 40),
+                      SwitchListTile(
+                          controlAffinity: ListTileControlAffinity.leading,
+                          title: Text('Somente encomenda'),
+                          value: _valSomenteEncomenda,
+                          onChanged: (bool val) {
+                            setState(() {
+                              _valSomenteEncomenda = val;
+                              print('valSomenteEncomenda: ' +
+                                  _valSomenteEncomenda.toString());
+                            });
+                          }),
+                    // const SizedBox(width: 10),
+                    // Text('Somente encomenda'),
+
+                    // Row(children: <Widget>[
+                    //   const SizedBox(height: 30),
+                    //   Text('A partir de: '),
+                    // ]),
+                    // ElevatedButton(
+                    //     onPressed: () {
+                    //       showDatePicker(
+                    //           context: context,
+                    //           initialDate: DateTime.now(),
+                    //           firstDate: DateTime.now(),
+                    //           lastDate: DateTime.now()
+                    //               .add(Duration(days: 1000)))
+                    //           .then((value) => setState(() {
+                    //         _mofferController
+                    //             .valEncomendasAPartir =
+                    //         value!;
+                    //       }));
+                    //     },
+                    //     style: ButtonStyle(
+                    //         backgroundColor:
+                    //         MaterialStateProperty.all<Color>(
+                    //           _loginController.colorFromHex(
+                    //               _loginController.listCore
+                    //                   .where((coreItem) =>
+                    //               coreItem.coreChave ==
+                    //                   'backDark')
+                    //                   .first
+                    //                   .coreValor
+                    //                   .toString()),
+                    //         )),
+                    //     child: Row(
+                    //       children: [
+                    //         Icon(Icons.calendar_today_rounded),
+                    //         const SizedBox(
+                    //           width: 16,
+                    //         ),
+                    //         Text(_mofferController
+                    //             .valEncomendasAPartir.day
+                    //             .toString() +
+                    //             '/' +
+                    //             _mofferController
+                    //                 .valEncomendasAPartir.month
+                    //                 .toString() +
+                    //             '/' +
+                    //             _mofferController
+                    //                 .valEncomendasAPartir.year
+                    //                 .toString())
+                    //       ],
+                    //    )
+                    //),
+                    //   const SizedBox(height: 20),
+                    // ],
+                    //),
+
+                    // if (showCamposBasicos)
+                    //   Column(
+                    //     children: <Widget>[
+                    //       const Divider(),
+                    //       const SizedBox(height: 10),
+                    //       Text('Forma de Fechamento'),
+                    //       const SizedBox(height: 10),
+                    //       DropdownButton<String>(
+                    //         items: listaFormaFechamento
+                    //             .map((String value) {
+                    //           return DropdownMenuItem<String>(
+                    //             value: value,
+                    //             child: Text(value),
+                    //           );
+                    //         }).toList(),
+                    //         value: formaFechSel,
+                    //         onChanged: (String? newValue) {
+                    //           setState(() {
+                    //             formaFechSel = newValue!;
+                    //           });
+                    //         },
+                    //       ),
+                    //     ],
+                    //   ),
+                    //
+                    // const SizedBox(height: 20),
+
+                    // Row(
+                    //   crossAxisAlignment: CrossAxisAlignment.end,
+                    //   children: [
+                    //     SizedBox(height: 20),
+                    //     Divider(),
+                    //   ],
+                    // ),
+
+                    // if (widget
+                    //     .showCamposEntrega) // && _categSelecionada.categoriaFormasEntrega!.contains('other'))
+                    //   Column(
+                    //     children: <Widget>[
+                    //       Text('Agente de ' + _labelEntrega),
+                    //       Row(
+                    //         children: <Widget>[
+                    //           Switch(
+                    //               value: valAceitaEntregaComprador,
+                    //               onChanged: (bool _val) {
+                    //                 setState(() {
+                    //                   valAceitaEntregaComprador = val;
+                    //                 });
+                    //               }),
+                    //           const SizedBox(width: 20),
+                    //           Text('Entrega por comprador'),
+                    //         ],
+                    //       ),
+                    //       Row(
+                    //         children: <Widget>[
+                    //           Switch(
+                    //               value: valAceitaEntregaVendedor,
+                    //               onChanged: (bool _val) {
+                    //                 setState(() {
+                    //                   valAceitaEntregaVendedor = val;
+                    //                 });
+                    //               }),
+                    //           const SizedBox(width: 20),
+                    //           Text('Entrega por vendedor'),
+                    //         ],
+                    //       ),
+                    //       // Row(
+                    //       //   children: <Widget>[
+                    //       //     Switch(
+                    //       //         value: valAceitaEntregaParceiro,
+                    //       //         onChanged: (bool _val) {
+                    //       //           setState(() {
+                    //       //             // configura lista de parceiros
+                    //       //                   listaParceiros.clear();
+                    //       //                   listaParceiros.add('escolha o parceiro');
+                    //       //                   partnersController.parceiros
+                    //       //                       ?.forEach((part) {
+                    //       //                     print(part.ParceiroEntregaNome
+                    //       //                         .toString());
+                    //       //                     listaParceiros.add(part
+                    //       //                         .ParceiroEntregaNome.toString());
+                    //       //                   });
+                    //       //             valAceitaEntregaParceiro = val;
+                    //       //           });
+                    //       //         }),
+                    //       //     const SizedBox(width: 20),
+                    //       //     Text('Entrega por parceiro'),
+                    //       //   ],
+                    //       // ),
+                    //
+                    //       // NAO USAR!
+                    //       // DropdownButton<String>(
+                    //       //   items: listaFormaEntrega
+                    //       //       .map((String value) {
+                    //       //     return DropdownMenuItem<String>(
+                    //       //       value: value,
+                    //       //       child: Text(value),
+                    //       //     );
+                    //       //   }).toList(),
+                    //       //   value: agenteEntregaSel,
+                    //       //   onChanged: (String? newValue) {
+                    //       //     if (newValue == 'parceiro') {
+                    //       //       // configura lista de parceiros
+                    //       //       listaParceiros.clear();
+                    //       //       listaParceiros.add('escolha o parceiro');
+                    //       //       partnersController.parceiros
+                    //       //           ?.forEach((part) {
+                    //       //         print(part.ParceiroEntregaNome
+                    //       //             .toString());
+                    //       //         listaParceiros.add(part
+                    //       //             .ParceiroEntregaNome.toString());
+                    //       //       });
+                    //       //       print('lista parceiros: ' +
+                    //       //           listaParceiros.length
+                    //       //               .toString());
+                    //       //     }
+                    //       //
+                    //       //     setState(() {
+                    //       //       agenteEntregaSel = newValue!;
+                    //       //     });
+                    //       //   },
+                    //       // ),
+                    //
+                    //
+                    //       // if (valAceitaEntregaParceiro)
+                    //       //   Column(
+                    //       //     children: <Widget>[
+                    //       //       //const SizedBox(height: 20),
+                    //       //       const Divider(),
+                    //       //       const SizedBox(height: 10),
+                    //       //       // Text('Parceiro'),
+                    //       //       // const SizedBox(height: 10),
+                    //       //       DropdownButton<String>(
+                    //       //         items: listaParceiros
+                    //       //             .map((String value) {
+                    //       //           return DropdownMenuItem<String>(
+                    //       //             value: value,
+                    //       //             child: Text(value),
+                    //       //           );
+                    //       //         }).toList(),
+                    //       //         value: parceiroSel,
+                    //       //         onChanged: (String? newValue) {
+                    //       //           setState(() {
+                    //       //             parceiroSel = newValue!;
+                    //       //           });
+                    //       //         },
+                    //       //       ),
+                    //       //     ],
+                    //       //   ),
+                    //       const SizedBox(height: 20),
+                    //       Text(
+                    //         "Disponibilidade de " +
+                    //             _labelEntrega +
+                    //             ' à partir de: ',
+                    //         textAlign: TextAlign.center,
+                    //       ),
+                    //       const SizedBox(height: 10),
+                    //       ElevatedButton(
+                    //           onPressed: () {
+                    //             showDatePicker(
+                    //                     context: context,
+                    //                     initialDate: DateTime.now(),
+                    //                     firstDate: DateTime.now(),
+                    //                     lastDate: DateTime.now()
+                    //                         .add(Duration(days: 1000)))
+                    //                 .then((value) => setState(() {
+                    //                       _mofferController
+                    //                               .valEntregasAPartir =
+                    //                           value!;
+                    //                     }));
+                    //           },
+                    //           style: ButtonStyle(
+                    //               backgroundColor:
+                    //                   MaterialStateProperty.all<Color>(
+                    //             _loginController.colorFromHex(
+                    //                 _loginController.listCore
+                    //                     .where((coreItem) =>
+                    //                         coreItem.coreChave ==
+                    //                         'backDark')
+                    //                     .first
+                    //                     .coreValor
+                    //                     .toString()),
+                    //           )),
+                    //           child: Row(
+                    //             children: [
+                    //               Icon(Icons.calendar_today_rounded),
+                    //               const SizedBox(
+                    //                 width: 16,
+                    //               ),
+                    //               Text(_mofferController
+                    //                       .valEntregasAPartir.day
+                    //                       .toString() +
+                    //                   '/' +
+                    //                   _mofferController
+                    //                       .valEntregasAPartir.month
+                    //                       .toString() +
+                    //                   '/' +
+                    //                   _mofferController
+                    //                       .valEntregasAPartir.year
+                    //                       .toString())
+                    //             ],
+                    //           )),
+                    //       const SizedBox(height: 20),
+                    //
+                    //       Text("Horário de " + _labelEntrega),
+                    //       const SizedBox(height: 10),
+                    //       Row(
+                    //         children: <Widget>[
+                    //           const SizedBox(width: 5),
+                    //           Text('Das '),
+                    //           const SizedBox(width: 5),
+                    //           ElevatedButton(
+                    //               onPressed: () {
+                    //                 showTimePicker(
+                    //                         context: context,
+                    //                         initialTime: TimeOfDay(
+                    //                             hour: 08, minute: 00))
+                    //                     .then((value) => setState(() {
+                    //                           _mofferController
+                    //                                   .valEntregaDas =
+                    //                               value!.hour
+                    //                                       .toString()
+                    //                                       .padLeft(
+                    //                                           2, '0') +
+                    //                                   ':' +
+                    //                                   value.minute
+                    //                                       .toString()
+                    //                                       .padLeft(
+                    //                                           2, '0');
+                    //                         }));
+                    //               },
+                    //               style: ButtonStyle(
+                    //                   backgroundColor:
+                    //                       MaterialStateProperty.all<
+                    //                           Color>(
+                    //                 _loginController
+                    //                     .colorFromHex(widget
+                    //                         ._loginController.listCore
+                    //                         .where((coreItem) =>
+                    //                             coreItem.coreChave ==
+                    //                             'backDark')
+                    //                         .first
+                    //                         .coreValor
+                    //                         .toString()),
+                    //               )),
+                    //               child: Row(
+                    //                 children: [
+                    //                   Icon(Icons.access_time_outlined),
+                    //                   const SizedBox(
+                    //                     width: 16,
+                    //                   ),
+                    //                   Text(_mofferController
+                    //                       .valEntregaDas)
+                    //                 ],
+                    //               )),
+                    //           const SizedBox(width: 5),
+                    //           Text(' às '),
+                    //           const SizedBox(width: 5),
+                    //           ElevatedButton(
+                    //               onPressed: () {
+                    //                 showTimePicker(
+                    //                         context: context,
+                    //                         initialTime: TimeOfDay(
+                    //                             hour: 18, minute: 00))
+                    //                     .then((value) => setState(() {
+                    //                           _mofferController
+                    //                               .valEntregaAs = value!
+                    //                                   .hour
+                    //                                   .toString()
+                    //                                   .padLeft(2, '0') +
+                    //                               ':' +
+                    //                               value.minute
+                    //                                   .toString()
+                    //                                   .padLeft(2, '0');
+                    //                         }));
+                    //               },
+                    //               style: ButtonStyle(
+                    //                   backgroundColor:
+                    //                       MaterialStateProperty.all<
+                    //                           Color>(
+                    //                 _loginController
+                    //                     .colorFromHex(widget
+                    //                         ._loginController.listCore
+                    //                         .where((coreItem) =>
+                    //                             coreItem.coreChave ==
+                    //                             'backDark')
+                    //                         .first
+                    //                         .coreValor
+                    //                         .toString()),
+                    //               )),
+                    //               child: Row(
+                    //                 children: [
+                    //                   Icon(Icons.access_time_outlined),
+                    //                   const SizedBox(
+                    //                     width: 16,
+                    //                   ),
+                    //                   Text(_mofferController
+                    //                       .valEntregaAs)
+                    //                 ],
+                    //               )),
+                    //         ],
+                    //       ),
+                    //       if (_labelEntrega == 'Entrega')
+                    //         Column(
+                    //           children: <Widget>[
+                    //             const SizedBox(height: 20),
+                    //             Text(
+                    //               "Taxas de Entrega",
+                    //               textAlign: TextAlign.left,
+                    //             ),
+                    //             const SizedBox(height: 20),
+                    //             TextFormField(
+                    //               inputFormatters: [
+                    //                 FilteringTextInputFormatter
+                    //                     .digitsOnly,
+                    //                 CentavosInputFormatter(),
+                    //               ],
+                    //               // initialValue: '0',
+                    //               controller: widget
+                    //                   ._mofferController.txtValorTaxa1km,
+                    //               decoration: InputDecoration(
+                    //                   prefix: Text('R\$ '),
+                    //                   border: OutlineInputBorder(),
+                    //                   labelText: 'Até 1km'),
+                    //               textInputAction: TextInputAction.next,
+                    //               //focusNode: _priceFocusNode,
+                    //               keyboardType:
+                    //                   TextInputType.numberWithOptions(
+                    //                       decimal: true),
+                    //             ),
+                    //             const SizedBox(height: 20),
+                    //             TextFormField(
+                    //               inputFormatters: [
+                    //                 FilteringTextInputFormatter
+                    //                     .digitsOnly,
+                    //                 CentavosInputFormatter(),
+                    //               ],
+                    //               // initialValue: '0',
+                    //               controller: widget
+                    //                   ._mofferController.txtValorTaxa2km,
+                    //               decoration: InputDecoration(
+                    //                   prefix: Text('R\$ '),
+                    //                   border: OutlineInputBorder(),
+                    //                   labelText: 'Entre 1km e 2km'),
+                    //               textInputAction: TextInputAction.next,
+                    //               //focusNode: _priceFocusNode,
+                    //               keyboardType:
+                    //                   TextInputType.numberWithOptions(
+                    //                       decimal: true),
+                    //             ),
+                    //             const SizedBox(height: 20),
+                    //             TextFormField(
+                    //               inputFormatters: [
+                    //                 FilteringTextInputFormatter
+                    //                     .digitsOnly,
+                    //                 CentavosInputFormatter(),
+                    //               ],
+                    //               // initialValue: '0',
+                    //               controller: _mofferController
+                    //                   .txtValorTaxaMaisQue2km,
+                    //               decoration: InputDecoration(
+                    //                   prefix: Text('R\$ '),
+                    //                   border: OutlineInputBorder(),
+                    //                   labelText: 'Acima de 2km'),
+                    //               textInputAction: TextInputAction.next,
+                    //               //focusNode: _priceFocusNode,
+                    //               keyboardType:
+                    //                   TextInputType.numberWithOptions(
+                    //                       decimal: true),
+                    //             ),
+                    //             const SizedBox(height: 20),
+                    //             // Text('Tempo de Entrega após aceite'),
+                    //             TextFormField(
+                    //                 decoration: InputDecoration(
+                    //                     border: OutlineInputBorder(),
+                    //                     labelText:
+                    //                         'Tempo de entrega após aceite'),
+                    //                 keyboardType: TextInputType.number),
+                    //             const SizedBox(height: 20),
+                    //             Text('Unidade de Tempo'),
+                    //             DropdownButton<String>(
+                    //               items: _listaTempoEntregaTipo
+                    //                   .map((String value) {
+                    //                 return DropdownMenuItem<String>(
+                    //                   value: value,
+                    //                   child: Text(value),
+                    //                 );
+                    //               }).toList(),
+                    //               value: tempoEntregaTipoSel,
+                    //               onChanged: (String? newValue) {
+                    //                 setState(() {
+                    //                   tempoEntregaTipoSel =
+                    //                       newValue!;
+                    //                 });
+                    //               },
+                    //             ),
+                    //           ],
+                    //         ),
+                    //     ],
+                    //   ),
+
+                    if (showCamposBasicos)
+                      Column(children: <Widget>[
+                        const SizedBox(height: 10),
+                        const Divider(),
+                        const SizedBox(height: 10),
+                        ElevatedButton(
+                            onPressed: () {
+                              setState(() {
+                                _imgEdited = true;
+                              });
+                              pegarImagemGaleria();
+                            },
+                            style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                              _loginController.colorFromHex(_loginController
+                                  .listCore
+                                  .where((coreItem) =>
+                                      coreItem.coreChave == 'backDark')
+                                  .first
+                                  .coreValor
+                                  .toString()),
+                            )),
+                            child: Row(
+                              children: [
+                                Icon(Icons.photo_album),
+                                const SizedBox(
+                                  width: 16,
+                                ),
+                                Text('Adicionar Foto')
+                              ],
+                            )),
+                        const SizedBox(height: 20),
+                        if (_imgcloud != '')
+                          CachedNetworkImage(
+                            imageUrl: _imgcloud,
+                            progressIndicatorBuilder:
+                                (context, url, downloadProgress) =>
+                                    CircularProgressIndicator(
+                                        value: downloadProgress.progress),
+                            errorWidget: (context, url, error) =>
+                                Icon(Icons.local_offer_outlined),
+                            height: 250,
+                          ),
+
+                        // FadeInImage.assetNetwork(
+                        //   placeholder: 'assets/images/pholder.png',
+                        //   image: _imgcloud,
+                        //   imageErrorBuilder: (context, url, error) =>
+                        //       new Icon(Icons.local_offer_outlined),
+                        //   height: 250,
+                        // ),
+
+                        if (image != null)
+                          Image.file(
+                            image!,
+                            fit: BoxFit.contain,
+                          ),
+                        const SizedBox(height: 20),
+                        ButtonOffer(
+                            text: 'Salvar',
+                            colorText: _loginController.colorFromHex(
+                                _loginController.listCore
+                                    .where((coreItem) =>
+                                        coreItem.coreChave == 'textLight')
+                                    .first
+                                    .coreValor
+                                    .toString()),
+                            colorButton: _loginController.colorFromHex(
+                                _loginController.listCore
+                                    .where((coreItem) =>
+                                        coreItem.coreChave == 'iconColor')
+                                    .first
+                                    .coreValor
+                                    .toString()),
+                            onPressed: () {
+                              uploadFoto(image == null ? null : image,
+                                      _loginController.usuGuid.toString())
+                                  .then((value) =>
+                                      Get.offAndToNamed(AppRoutes.mOffers));
+                            }),
+
+                        // if(_mofferController.mofferGuid.toString() != '')
+                        //   const SizedBox(height: 20),
+                        //   ButtonOffer(
+                        //     text: 'Salvar como novo',
+                        //     colorText: _loginController
+                        //         .colorFromHex(_loginController.listCore
+                        //         .where((coreItem) =>
+                        //     coreItem.coreChave ==
+                        //         'textLight')
+                        //         .first
+                        //         .coreValor
+                        //         .toString()),
+                        //     colorButton: _loginController
+                        //         .colorFromHex(_loginController.listCore
+                        //         .where((coreItem) =>
+                        //     coreItem.coreChave ==
+                        //         'iconColor')
+                        //         .first
+                        //         .coreValor
+                        //         .toString()),
+                        //     onPressed: () {
+                        //       _mofferController.mofferGuid = '';
+                        //       _imgcloud = '';
+                        //
+                        //     }),
+
+                        if (_mofferController.singleOffer != null)
+                          ButtonOffer(
+                            onPressed: () async {
+                              await _mofferController.markOfferSold(
+                                  _mofferController.singleOffer!.OfertaGUID
+                                      .toString());
+
+                              Get.defaultDialog(
+                                  title: "Aviso", middleText: "Vendido!");
+
+                              Get.offAndToNamed(AppRoutes.mOffers);
+                            },
+                            colorText: _loginController.colorFromHex(
+                                _loginController.listCore
+                                    .where((coreItem) =>
+                                        coreItem.coreChave == 'textLight')
+                                    .first
+                                    .coreValor
+                                    .toString()),
+                            text: 'Marcar Vendido',
+                            colorButton: _loginController.colorFromHex(
+                                _loginController.listCore
+                                    .where((coreItem) =>
+                                        coreItem.coreChave == 'textDark')
+                                    .first
+                                    .coreValor
+                                    .toString()),
+                          ),
+                        ButtonOffer(
+                          onPressed: () async {
+                            await _mofferController.apagaMoffer(
+                                _mofferController.singleOffer!.OfertaGUID
+                                    .toString());
+
+                            Get.defaultDialog(
+                                title: "Aviso", middleText: "Oferta removida");
+
+                            Get.offAndToNamed(AppRoutes.mOffers);
+                          },
+                          colorText: _loginController.colorFromHex(
+                              _loginController.listCore
+                                  .where((coreItem) =>
+                                      coreItem.coreChave == 'textDark')
+                                  .first
+                                  .coreValor
+                                  .toString()),
+                          text: 'Apagar Oferta',
+                          colorButton: _loginController.colorFromHex(
+                              _loginController.listCore
+                                  .where((coreItem) =>
+                                      coreItem.coreChave == 'textLight')
+                                  .first
+                                  .coreValor
+                                  .toString()),
+                        ),
+                      ])
+                  ],
+                ),
+              ),
+            )),
+    );
+  }
+  //});
   //}
 
   Future pegarImagemGaleria() async {
@@ -2322,27 +2321,30 @@ class _BodyMoffer extends State<BodyMoffer> {
 
       final imageTemp = File(foto.path);
 
-      setState(() { this.image = imageTemp; _imgEdited = true; });
-
-
+      setState(() {
+        this.image = imageTemp;
+        _imgEdited = true;
+      });
     } on PlatformException catch (e) {
       print('erro tentando abrir album de fotos: $e');
     }
   }
 
   Future<void> uploadFoto(File? foto, String usuGuid) async {
+    print("_imgEdited " + _imgEdited.toString());
+    print("foto null? " + foto.isBlank.toString());
     var imgGuid = await _saveForm(usuGuid);
 
     if (_imgEdited && foto != null) {
       await Firebase.initializeApp();
 
-      print('passou no upload');
+      print('passou no upload / imgGuid: ' + imgGuid);
       Reference ref = FirebaseStorage.instance
           .ref()
           .child("ofertas")
           .child(imgGuid + '.jpg');
 
-      await ref.putFile(image!);
+      await ref.putFile(foto);
       //var downloadURL = await ref.getDownloadURL();
     }
     //showSnackBar("Oferta salva! - " + _offerGuid, Duration(seconds: 3));
@@ -2395,10 +2397,10 @@ class _BodyMoffer extends State<BodyMoffer> {
 
     double valPreco = 0.0;
     if (_categSelecionada.categoriaChave != 'DOACAO')
-      valPreco =
-          double.parse(_mofferController.txtPreco.text.removeAllWhitespace
-           .replaceFirst('.', '')
-              .replaceFirst(',', '.'));
+      valPreco = double.parse(_mofferController
+          .txtPreco.text.removeAllWhitespace
+          .replaceFirst('.', '')
+          .replaceFirst(',', '.'));
 
     // assert(valPreco is double);
     // print(valPreco.runtimeType);
@@ -2492,19 +2494,67 @@ class _BodyMoffer extends State<BodyMoffer> {
     // );
 
     var offerGuid = Uuid().v4();
-    var offerToSend = new Oferta(null, _categSelecionada.categoriaChave, usuGuid, _mofferController.txtTitulo.text, _mofferController.txtDetalhes.text, valPreco, null, null, null, _mofferController.singleOffer!.OfertaImgPath.toString().isEmpty ? offerGuid : _mofferController.singleOffer!.OfertaImgPath.toString(),
-        null, _loginController.cloudId, null, null, selStore == null ? '' : selStore!.LojaGUID.toString(), _mofferController.mofferGuid.toString().isEmpty ? offerGuid : _mofferController.mofferGuid.toString(),
-        _valAceitaEncomenda, _valSomenteEncomenda, _revendaSel, _val24hs, _mofferController.valEncomendasAPartir.toString(), _mofferController.valEntregasAPartir.toString(), _valPrecoCombinar,
-        _valSeg, _valTer, _valQua, _valQui, _valSex, _valSab, _valDom, _mofferController.valSegDas, _mofferController.valSegAs, _mofferController.valTerDas, _mofferController.valTerAs, _mofferController.valQuaDas,
-        _mofferController.valQuaAs, _mofferController.valQuiDas, _mofferController.valQuiAs, _mofferController.valSexDas, _mofferController.valSexAs, _mofferController.valSabDas, _mofferController.valSabAs,
-        _mofferController.valDomDas, _mofferController.valDomAs, _mofferController.mofferGuid.toString().isEmpty ? false : true, true);
+    var offerToSend = new Oferta(
+        null,
+        _categSelecionada.categoriaChave,
+        usuGuid,
+        _mofferController.txtTitulo.text,
+        _mofferController.txtDetalhes.text,
+        valPreco,
+        null,
+        null,
+        null,
+        _mofferController.singleOffer == null
+            ? offerGuid
+            : _mofferController.singleOffer!.OfertaGUID.toString(),
+        null,
+        _loginController.cloudId,
+        null,
+        null,
+        selStore == null ? '' : selStore!.LojaGUID.toString(),
+        _mofferController.mofferGuid.toString().isEmpty
+            ? offerGuid
+            : _mofferController.mofferGuid.toString(),
+        _valAceitaEncomenda,
+        _valSomenteEncomenda,
+        _revendaSel,
+        _val24hs,
+        _mofferController.valEncomendasAPartir.toString(),
+        _mofferController.valEntregasAPartir.toString(),
+        _valPrecoCombinar,
+        _valSeg,
+        _valTer,
+        _valQua,
+        _valQui,
+        _valSex,
+        _valSab,
+        _valDom,
+        _mofferController.valSegDas,
+        _mofferController.valSegAs,
+        _mofferController.valTerDas,
+        _mofferController.valTerAs,
+        _mofferController.valQuaDas,
+        _mofferController.valQuaAs,
+        _mofferController.valQuiDas,
+        _mofferController.valQuiAs,
+        _mofferController.valSexDas,
+        _mofferController.valSexAs,
+        _mofferController.valSabDas,
+        _mofferController.valSabAs,
+        _mofferController.valDomDas,
+        _mofferController.valDomAs,
+        _mofferController.mofferGuid.toString().isEmpty ? false : true,
+        true,
+        selStore == null ? '' : selStore!.LojaNome.toString());
 
     // Uri url = Uri.https("ec3digrepo-default-rtdb.firebaseio.com", "/words.json");
 
+    print('mofferGuid antes: ' + _mofferController.mofferGuid.toString());
 
     if (_mofferController.mofferGuid.toString() == '') {
       _mofferController.mofferGuid = offerGuid;
-      var jsonPost = offerToSend.toJsonPost().toString().replaceAll('null', '""');
+      var jsonPost =
+          offerToSend.toJsonPost().toString().replaceAll('null', '""');
       print(jsonPost);
 
       var response = await post(
@@ -2538,7 +2588,7 @@ class _BodyMoffer extends State<BodyMoffer> {
       // print('guid: ' + strGuid);
     }
 
-    return _mofferController.singleOffer!.OfertaImgPath.toString();
+    return _mofferController.mofferGuid.toString();
   }
 
   // somente para testes - em producao virá a partir do Firebase
@@ -2883,8 +2933,7 @@ class _BodyMoffer extends State<BodyMoffer> {
     // }
 
     //se for doacao, remove o preço
-    if (_categSelecionada.categoriaChave == 'DOACAO')
-      showPreco = false;
+    if (_categSelecionada.categoriaChave == 'DOACAO') showPreco = false;
   }
 
   Future<void> carregaObj() async {
@@ -2896,7 +2945,7 @@ class _BodyMoffer extends State<BodyMoffer> {
     //
     //   Oferta oferta = args.first.values.first;
 
-    if(_load) {
+    if (_load) {
       _load = false;
       print('_load: true');
 
@@ -2905,28 +2954,23 @@ class _BodyMoffer extends State<BodyMoffer> {
         Oferta? oferta = _mofferController.singleOffer;
 
         // _isEditing = true;
-        _imgcloud =
-            _loginController.listCore
+        _imgcloud = _loginController.listCore
                 .where((coreItem) => coreItem.coreChave == 'imgpath')
                 .first
                 .coreValor
                 .toString() +
-                oferta!.OfertaImgPath.toString() +
-                _loginController.listCore
-                    .where(
-                        (coreItem) => coreItem.coreChave == 'imgpathsuffix')
-                    .first
-                    .coreValor
-                    .toString();
+            oferta!.OfertaGUID.toString() +
+            _loginController.listCore
+                .where((coreItem) => coreItem.coreChave == 'imgpathsuffix')
+                .first
+                .coreValor
+                .toString();
 
         print('_imgcloud: ' + _imgcloud);
 
-
         print('guidOffer: ' + oferta.OfertaGUID.toString());
         _mofferController.mofferGuid = oferta.OfertaGUID.toString();
-        print(
-            'widget guidOffer: ' +
-                _mofferController.mofferGuid.toString());
+        print('widget guidOffer: ' + _mofferController.mofferGuid.toString());
         _mofferController.txtTitulo.text = oferta.OfertaTitulo.toString();
 
         // if (_loginController.listaCategorias.isEmpty)
@@ -2938,8 +2982,8 @@ class _BodyMoffer extends State<BodyMoffer> {
             .selecionaCategoriaPorChave(oferta.CategoriaChave.toString())!;
         _categoriaSel = _categSelecionada.categoriaNome!;
 
-        print('_categSelecionada: ' +
-            _categSelecionada.categoriaNome.toString());
+        print(
+            '_categSelecionada: ' + _categSelecionada.categoriaNome.toString());
         print('categSel:' + _categoriaSel);
         print('preco 1: ' + oferta.OfertaPreco.toString());
 
@@ -2961,28 +3005,27 @@ class _BodyMoffer extends State<BodyMoffer> {
         //     DateTime.parse(oferta.OfertaEntregasAPartirDe.toString());
 
         _mofferController.txtCodigoAlt.text =
-        // oferta.OfertaCodigoAlt! == 'null'
-        //     ? ''
-        //     : oferta.OfertaCodigoAlt.toString();
-        // oferta.OfertaDistanciaKm == null
-        //     ? '0'
-        //     : oferta.OfertaDistanciaKm.toString();
-        //_mofferController.txtEntregaAs.text = oferta.Ate.toString();
-        _mofferController.txtValorSinalOrc.text =
-        // oferta.OfertaSinal == null ? '0' : oferta.OfertaSinal.toString();
-        // _mofferController.txtValidade.text =
-        // oferta.OfertaDiasValidade == null
-        //     ? '0'
-        //     : oferta.OfertaDiasValidade.toString();
-        // _mofferController.txtPesoPorcao.text =
-        // oferta.OfertaPeso == null ? '0' : oferta.OfertaPeso.toString();
-        //_mofferController.txtPesoPorcaoUn.text =oferta.OfertaPesoUnidade == 'null' ? '' :  oferta.OfertaPesoUnidade.toString();
-        _mofferController.txtDescricao.text =
-        oferta.OfertaDetalhe! == 'null'
-            ? ''
-            : oferta.OfertaDetalhe.toString();
-        _mofferController.txtDetalhes.text =
-        oferta.OfertaDetalhe! == 'null'
+            // oferta.OfertaCodigoAlt! == 'null'
+            //     ? ''
+            //     : oferta.OfertaCodigoAlt.toString();
+            // oferta.OfertaDistanciaKm == null
+            //     ? '0'
+            //     : oferta.OfertaDistanciaKm.toString();
+            //_mofferController.txtEntregaAs.text = oferta.Ate.toString();
+            _mofferController.txtValorSinalOrc.text =
+                // oferta.OfertaSinal == null ? '0' : oferta.OfertaSinal.toString();
+                // _mofferController.txtValidade.text =
+                // oferta.OfertaDiasValidade == null
+                //     ? '0'
+                //     : oferta.OfertaDiasValidade.toString();
+                // _mofferController.txtPesoPorcao.text =
+                // oferta.OfertaPeso == null ? '0' : oferta.OfertaPeso.toString();
+                //_mofferController.txtPesoPorcaoUn.text =oferta.OfertaPesoUnidade == 'null' ? '' :  oferta.OfertaPesoUnidade.toString();
+                _mofferController.txtDescricao.text =
+                    oferta.OfertaDetalhe! == 'null'
+                        ? ''
+                        : oferta.OfertaDetalhe.toString();
+        _mofferController.txtDetalhes.text = oferta.OfertaDetalhe! == 'null'
             ? ''
             : oferta.OfertaDetalhe.toString();
         // _mofferController.txtTamanhos.text =
@@ -3001,8 +3044,11 @@ class _BodyMoffer extends State<BodyMoffer> {
 
         // _revendaSel = oferta.OfertaMarcaRevenda!;
 
-        print('oferta.OfertaMarcaRevenda: ' + oferta.OfertaMarcaRevenda.toString());
-        _revendaSel = oferta.OfertaMarcaRevenda.toString() == 'null' ? '' : oferta.OfertaMarcaRevenda.toString();
+        print('oferta.OfertaMarcaRevenda: ' +
+            oferta.OfertaMarcaRevenda.toString());
+        _revendaSel = oferta.OfertaMarcaRevenda.toString() == 'null'
+            ? ''
+            : oferta.OfertaMarcaRevenda.toString();
 
         // _mofferController.txtQtdMaxPorVenda.text =
         // oferta.OfertaQtdMaxVenda == null
@@ -3017,15 +3063,15 @@ class _BodyMoffer extends State<BodyMoffer> {
 
         print('preco 2: ' + oferta.OfertaPreco.toString());
         _mofferController.txtPreco.text =
-        oferta.OfertaPreco == null ? '0,00' : oferta.OfertaPreco.toString();
+            oferta.OfertaPreco == null ? '0,00' : oferta.OfertaPreco.toString();
         _mofferController.txtTempoEntrega.text =
-        // oferta.OfertaTempoEntrega == null
-        //     ? '0'
-        //     : oferta.OfertaTempoEntrega.toString();
+            // oferta.OfertaTempoEntrega == null
+            //     ? '0'
+            //     : oferta.OfertaTempoEntrega.toString();
 
-        // _offerGuid = _mofferController.mofferGuid!;
+            // _offerGuid = _mofferController.mofferGuid!;
 
-        _mofferController.valSegDas = oferta.SegDas.toString();
+            _mofferController.valSegDas = oferta.SegDas.toString();
         _mofferController.valSegAs = oferta.SegAs.toString();
         _mofferController.valTerDas = oferta.TerDas.toString();
         _mofferController.valTerAs = oferta.TerAs.toString();

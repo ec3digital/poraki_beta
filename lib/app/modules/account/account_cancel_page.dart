@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:poraki/app/data/repositories/offer_repository.dart';
 import 'package:poraki/app/modules/auth/login/login_controller.dart';
 import 'package:poraki/app/modules/auth/pw/pw_controller.dart';
 import 'package:poraki/app/modules/home/widgets/drawer_home.dart';
@@ -82,6 +83,11 @@ class _AccountCancelPageState extends State<AccountCancelPage> {
                 ),
                 ButtonOffer(
                   onPressed: () async {
+                    // desativa as ofertas do Vendedor
+                    var offerRepo = new OfferRepository();
+                    await offerRepo.deleteOfferByStore(auth.currentUser!.uid.toString());
+
+                    // remove o usuário da base do Firebase
                     await auth.currentUser!.delete();
                     Get.toNamed(AppRoutes.accountBye);
                   },

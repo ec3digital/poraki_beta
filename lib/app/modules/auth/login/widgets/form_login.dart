@@ -23,7 +23,7 @@ class FormLogin extends StatelessWidget {
             },
             controller: controller.mailInputController,
             keyboardType: TextInputType.emailAddress,
-            autofocus: true,
+            autofocus:  false, // true,
             style: TextStyle(color: Colors.white),
             decoration: InputDecoration(
               labelText: "E-mail",

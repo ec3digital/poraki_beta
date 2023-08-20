@@ -112,7 +112,7 @@ class _LoginPageState extends State<LoginPage> {
                                 return null;
                               },
                               controller: _mailInputController,
-                              autofocus: _mailInputController.text.isEmpty,
+                              autofocus: false, // _mailInputController.text.isEmpty,
                               style: TextStyle(color: Colors.white),
                               keyboardType: TextInputType.emailAddress,
                               autofillHints: [AutofillHints.email],

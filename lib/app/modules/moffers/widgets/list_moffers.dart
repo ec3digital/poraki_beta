@@ -99,7 +99,7 @@ class _ListMoffersState extends State<ListMoffers> {
                           .first
                           .coreValor
                           .toString() +
-                      moferta.OfertaImgPath.toString() +
+                      moferta.OfertaGUID.toString() +
                       _loginController.listCore
                           .where((coreItem) =>
                               coreItem.coreChave == 'imgpathsuffix')
@@ -159,6 +159,7 @@ class _ListMoffersState extends State<ListMoffers> {
               ButtonOffer(
                 onPressed: () {
                   mofferController.singleOffer = null;
+                  mofferController.mofferGuid = '';
                   // mofferController.loja = selStore;
                   // mofferController.txtCEP.text = _loginController.usuCep.toString();
                   // mofferController.lojaGuid = selStore == null ? '' : selStore!.LojaGUID.toString();

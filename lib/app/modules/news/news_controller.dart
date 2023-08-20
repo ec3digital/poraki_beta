@@ -12,25 +12,27 @@ class NewsController extends GetxController {
 
   @override
   void onInit() async {
-    // await carregaNoticias();
+    //await carregaNoticias();
     super.onInit();
   }
 
   Future<void> carregaNoticias() async {
-    if (_loginController.usuCep!.length >= 3) {
-      print('carregaNoticias cep: ${_loginController.usuCep!.substring(0, 3)}');
+    print('usuCep: ' + _loginController.usuCep.toString());
+
+    //if (_loginController.usuCep!.length >= 2) {
+      print('carregaNoticias cep: ${_loginController.cloudId}');
       final FirebaseFirestore? fbInstance = _loginController.fbInstance;
       noticias.clear();
       //await fbInstance!.collection("akinews").doc('057').collection("news").get().then((value) => value.docs.forEach((element) { print(element.data()); }));
       await fbInstance!
           .collection("akinews")
-          .doc(_loginController.usuCep!.substring(0, 3))
+          .doc(_loginController.cloudId)
           .collection("news")
           .get()
           .then((value) => value.docs.forEach((element) {
                 noticias.add(Noticia.fromJson(element.data()));
               }));
-    }
+    //}
   }
 
   Future<void> carregaNoticiasRealtime() async {

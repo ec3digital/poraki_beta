@@ -32,7 +32,7 @@ class BodyShowDayOffer extends StatelessWidget {
             List<String> offersImages = [];
             offersImages.add(
                 'https://firebasestorage.googleapis.com/v0/b/ec3digrepo.appspot.com/o/ofertas%2F' +
-                    _product!.ofertaImgPath.toString() +
+                    _product!.ofertaGUID.toString() +
                     '.jpg?alt=media');
 
             return SingleChildScrollView(

@@ -85,7 +85,7 @@ class _UpdatePwPageState extends State<UpdatePwPage> {
                         TextFormField(
                           readOnly: true,
                           controller: widget._pwController.txtEmail,
-                          autofocus: true,
+                          autofocus: false, // true,
                           style: TextStyle(color: Colors.white),
                           keyboardType: TextInputType.emailAddress,
                           autofillHints: [AutofillHints.email],

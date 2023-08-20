@@ -57,7 +57,7 @@ class BodyOffer extends StatelessWidget {
           List<String> offersImages = [];
           offersImages.add(
               'https://firebasestorage.googleapis.com/v0/b/ec3digrepo.appspot.com/o/ofertas%2F' +
-                  produtoOferta.ofertaImgPath.toString() +
+                  produtoOferta.ofertaGUID.toString() +
                   '.jpg?alt=media');
 
           var detail2 = '';
@@ -359,10 +359,6 @@ class BodyOffer extends StatelessWidget {
 
                           Lojas? loja = null;
                           if (produtoOferta.lojaID.toString().length > 5) {
-                            StoreController storeController = Get.put(StoreController());
-
-
-
                             Future.wait([
                               offersController.getOffersByStore(
                                   produtoOferta.lojaID.toString())
@@ -383,7 +379,7 @@ class BodyOffer extends StatelessWidget {
                             {
                               'title':
                                   produtoOferta.lojaID.toString().length > 5
-                                      ? 'Loja X' // loja!.LojaNome
+                                      ? produtoOferta.lojaNome
                                       : 'Vendedor'
                             },
                             {'ofertaGuid': null},

@@ -182,4 +182,28 @@ class OfferRepository extends GetConnect {
     else print(response.body);
   }
 
+  Future<void> reactivateOffer(String offerGuid) async {
+    print('markOfferAsSold');
+    String url = Constants.baseUrl + 'reativaoferta/' + offerGuid;
+    var response = await put(url, '', headers: Constants.headers);
+    if (response.hasError) throw 'Ocorreu um erro em markOfferAsSold() $offerGuid';
+    else print(response.body);
+  }
+
+  Future<void> deleteOfferByStore(String offerStoreId) async {
+    print('deleteOfferByStore');
+    String url = Constants.baseUrl + 'inativaofertaloja/' + offerStoreId;
+    var response = await put(url, '', headers: Constants.headers);
+    if (response.hasError) throw 'Ocorreu um erro em deleteOfferByStore() $offerStoreId';
+    else print(response.body);
+  }
+
+  Future<void> deleteOfferByVendor(String offerFkid) async {
+    print('deleteOfferByVendor');
+    String url = Constants.baseUrl + 'inativaofertavendedor/' + offerFkid;
+    var response = await put(url, '', headers: Constants.headers);
+    if (response.hasError) throw 'Ocorreu um erro em deleteOfferByVendor() $offerFkid';
+    else print(response.body);
+  }
+
 }

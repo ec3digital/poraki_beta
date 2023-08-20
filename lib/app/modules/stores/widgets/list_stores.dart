@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:poraki/app/data/models/lojas.dart';
@@ -23,16 +24,31 @@ class ListStores extends StatelessWidget {
     Widget _buildRow(Lojas loja) {
       return Column(children: [
         ListTile(
-            leading: Text("CEP - " +
-              loja.LojaCEP.toString(),
+            leading:
+            CachedNetworkImage(
+              imageUrl: 'https://firebasestorage.googleapis.com/v0/b/ec3digrepo.appspot.com/o/lojas%2F' +
+      loja.LojaGUID.toString() +
+          '.jpg?alt=media',
+              progressIndicatorBuilder: (context, url, downloadProgress) =>
+                  CircularProgressIndicator(
+                      value: downloadProgress.progress),
+              errorWidget: (context, url, error) =>
+                  Icon(Icons.local_offer_outlined),
+              height: 110,
             ),
+
+
             onTap: () {
               controller.loja = loja;
               Get.toNamed(AppRoutes.store);
             },
             title: Text(
               loja.LojaNome.toString(),
-            )),
+            ),
+          subtitle: Text("CEP - " +
+              loja.LojaCEP.toString(),
+          ),
+        ),
         const SizedBox(height: 5),
 
       ]);

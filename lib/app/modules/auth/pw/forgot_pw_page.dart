@@ -57,7 +57,7 @@ class ForgotPwPage extends StatelessWidget {
               },
               controller: txtEmail,
               keyboardType: TextInputType.emailAddress,
-              autofocus: true,
+              autofocus: false, // true,
               style: TextStyle(color: Colors.white),
               decoration: InputDecoration(
                 labelText: "E-mail",

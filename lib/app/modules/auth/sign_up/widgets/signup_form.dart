@@ -35,7 +35,7 @@ class _FormSignupState extends State<FormSignup> {
             },
             controller: widget.controller.nameInputController,
             keyboardType: TextInputType.name,
-            autofocus: true,
+            autofocus: false, // true,
             style: TextStyle(color: Colors.white),
             autofillHints: [AutofillHints.name],
             decoration: InputDecoration(
@@ -59,7 +59,7 @@ class _FormSignupState extends State<FormSignup> {
               return null;
             },
             controller: widget.controller.nickInputController,
-            autofocus: true,
+            autofocus: false, // true,
             style: TextStyle(color: Colors.white),
             keyboardType: TextInputType.name,
             autofillHints: [AutofillHints.nickname],
@@ -89,7 +89,7 @@ class _FormSignupState extends State<FormSignup> {
             ],
             controller: widget.controller.cpfInputController,
             keyboardType: TextInputType.number,
-            autofocus: true,
+            autofocus: false, // true,
             // onChanged: (cpf) { if (!CNPJValidator.isValid(cpf)) { Get.defaultDialog(title: "CPF Inválido", middleText: "Por favor informe um CPF válido" ); }  {} } ,
             style: TextStyle(color: Colors.white),
             decoration: InputDecoration(
@@ -120,7 +120,7 @@ class _FormSignupState extends State<FormSignup> {
             controller: widget.controller.phoneInputController,
             keyboardType: TextInputType.phone,
             autofillHints: [AutofillHints.telephoneNumber],
-            autofocus: true,
+            autofocus: false, // true,
             style: TextStyle(color: Colors.white),
             decoration: InputDecoration(
               border: OutlineInputBorder(),
@@ -145,7 +145,7 @@ class _FormSignupState extends State<FormSignup> {
                 return null;
             },
             controller: widget.controller.mailInputController,
-            autofocus: true,
+            autofocus: false, // true,
             style: TextStyle(color: Colors.white),
             keyboardType: TextInputType.emailAddress,
             autofillHints: [AutofillHints.email],
@@ -178,7 +178,7 @@ class _FormSignupState extends State<FormSignup> {
             controller: widget.controller.cepInputController,
             keyboardType: TextInputType.number,
             autofillHints: [AutofillHints.postalCode],
-            autofocus: true,
+            autofocus: false, // true,
             style: TextStyle(color: Colors.white),
             decoration: InputDecoration(
               filled: true,

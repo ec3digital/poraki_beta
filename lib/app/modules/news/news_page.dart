@@ -16,7 +16,7 @@ class NewsPage extends StatelessWidget {
     final LoginController _loginController = Get.find();
     final NewsController _news = Get.put(NewsController());
 
-    Future.delayed(Duration.zero, () async { _news.carregaNoticias(); });
+    // Future.delayed(Duration.zero, () async { _news.carregaNoticias(); });
 
     return Scaffold(
         appBar: PreferredSize(

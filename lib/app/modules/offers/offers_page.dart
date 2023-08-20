@@ -2,7 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:poraki/app/modules/auth/login/login_controller.dart';
-import 'package:poraki/app/modules/home/widgets/gradient_header_home.dart';
 import 'package:poraki/app/modules/offers/widgets/app_offers.dart';
 import 'widgets/list_offers.dart';
 
@@ -86,8 +85,13 @@ class OffersPage extends StatelessWidget {
                       errorWidget: (context, url, error) =>
                           Icon(Icons.local_offer_outlined),
                       height: 100,
-                    ),
+                    ), const SizedBox(height: 12), Text(Get.arguments[3]['title'], style: TextStyle(fontSize: 16, color: _loginController.colorFromHex(_loginController.listCore
+        .where((coreItem) => coreItem.coreChave == 'textDark')
+        .first
+        .coreValor
+        .toString()))),
                   // const SizedBox(height: 2),
+
 
                   ListOffers()
                   // BodyOffers()

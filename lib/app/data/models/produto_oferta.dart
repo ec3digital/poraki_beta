@@ -1,3 +1,5 @@
+import 'package:poraki/app/data/models/sql/sqlLoja.dart';
+
 class ProdutoOferta {
   String? categoriaChave;
   String? ofertaCEP;
@@ -61,6 +63,7 @@ class ProdutoOferta {
   int? ofertaQtdAviso;
   int? ofertaQtdDispo;
   bool? ofertaSemQtd;
+  String? lojaNome;
   // int? ofertaTotalAval;
   // int? ofertaQtdAval;
 
@@ -128,7 +131,8 @@ class ProdutoOferta {
       this.sabDas,
       this.sabAs,
       this.domDas,
-      this.domAs});
+      this.domAs,
+      this.lojaNome});
 
   ProdutoOferta.fromJson(Map<String, dynamic> json) {
     //print('ofertaGUID from Json:' + json['OfertaGUID'].toString());
@@ -238,6 +242,7 @@ class ProdutoOferta {
     sabAs = json['SabAs'].toString();
     domDas = json['DomDas'].toString();
     domAs = json['DomAs'].toString();
+    lojaNome = json['LojaNome'].toString();
   }
 
   Map<String, dynamic> toJson() {
@@ -287,6 +292,7 @@ class ProdutoOferta {
     data['ValorEntregaAte1'] = this.valorEntregaAte1;
     data['ValorEntregaAte2'] = this.valorEntregaAte2;
     data['ValorEntregaMaisDe2'] = this.valorEntregaMaisDe2;
+    data['LojaNome'] = this.lojaNome;
 
     return data;
   }

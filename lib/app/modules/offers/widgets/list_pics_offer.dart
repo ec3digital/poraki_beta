@@ -104,19 +104,22 @@ class _ListPicsOfferState extends State<ListPicsOffer> {
               backgroundColor: backColor, //AppColors.containerLightColor,
               mini: true,
               onPressed: () async {
-                //OffersFavController _offersFavController = Get.put(OffersFavController());
+
+                // OffersFavController offersFavController = Get.put(OffersFavController());
                 //_loginController.refreshOfertasFavs = true;
                 if (favorited) {
                   _loginController.ofertasFavs.removeWhere((ofertaFav) => ofertaFav.ofertaGUID == widget.offer.ofertaGUID);
-                  //await _offersFavController.removeObj(ofertaFav);
+                  // Future.wait([offersFavController.removeObj(ofertaFav);]);
                 } else {
                   _loginController.ofertasFavs.add(widget.offer);
-                  //await _offersFavController.addObj(ofertaFav);
+                  // Future.wait([_offersFavController.addObj(ofertaFav)]);
                 }
 
                 setState(() {
                   favorited = !favorited;
                 });
+
+                Future.wait([_offersController.getOffersFavsFromMemory()]);
 
                 Get.offAndToNamed(AppRoutes.offers, arguments: [
                   {'listName': 'favsoffers'},

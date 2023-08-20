@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 //import 'package:poraki/app/data/models/ofertafav.dart';
 import 'package:poraki/app/data/repositories/offerfav_repository.dart';
 import 'package:poraki/app/modules/auth/login/login_controller.dart';
+import 'package:poraki/app/modules/offers/offers_controller.dart';
 import '../../data/models/categorias.dart';
 import '../../data/models/produto_oferta.dart';
 import '../../data/repositories/categories_repository.dart';
@@ -13,6 +14,7 @@ class HomeController extends GetxController {
 
   OfferRepository offerRepository = OfferRepository();
   CategoriesRepository categoriesRepository = CategoriesRepository();
+  OffersController _offersController = Get.put(OffersController());
   // PeopleRepository peopleRepository = PeopleRepository();
 
   List<ProdutoOferta>? offersToday = [];
@@ -32,6 +34,7 @@ class HomeController extends GetxController {
     await getBestOffers(4);
     await getMostFreshOffers(4);
     await getBestSellersOffers(4);
+    await _offersController.getOffersFavsByUser(24);
 
     // await getPeople();
 

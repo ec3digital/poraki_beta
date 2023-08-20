@@ -80,6 +80,7 @@ class Oferta {
   // bool? OfertaAceitaEntregaVendedor;
   bool? OfertaRevisao;
   bool? OfertaMostra;
+  String? LojaNome;
 
   Oferta(
       this.OfertaID,
@@ -162,7 +163,8 @@ class Oferta {
       // this.OfertaAceitaEntregaParceiro,
       // this.OfertaAceitaEntregaVendedor,
       this.OfertaRevisao,
-      this.OfertaMostra);
+      this.OfertaMostra,
+      this.LojaNome);
 
 
   Oferta.fromJson(Map<String, dynamic> json) {
@@ -229,6 +231,7 @@ class Oferta {
     // ValorEntregaAte1 = double.parse(json['ValorEntregaAte1'].toString());
     // ValorEntregaAte2 = double.parse(json['ValorEntregaAte2'].toString());
     // ValorEntregaMaisDe2 = double.parse(json['ValorEntregaMaisDe2'].toString());
+    LojaNome = json['LojaNome'].toString().trim();
   }
 
   Map<String, dynamic> toJsonPost() {
@@ -238,7 +241,7 @@ class Oferta {
     data['OfertaDetalhe'] = this.OfertaDetalhe.toString().trim();
     // data['OfertaDispoDesde'] = this.OfertaDispoDesde;
     //data['OfertaID'] = this.OfertaID.toString();
-    data['OfertaImgPath'] = this.OfertaImgPath.toString().trim();
+    // data['OfertaImgPath'] = this.OfertaImgPath.toString().trim();
     data['OfertaPreco'] = this.OfertaPreco.toString().trim();
     data['OfertaTitulo'] = this.OfertaTitulo.toString().trim();
     data['OfertaFKID'] = this.OfertaFKID.toString().trim();
@@ -251,7 +254,7 @@ class Oferta {
     //data['OfertaPontoMenos'] = this.OfertaPontoMenos.toString();
     //data['OfertaQtdVendida'] = this.OfertaQtdVendida.toString();
     // data['OfertaPrazoEntregaMinutos'] = this.OfertaPrazoEntregaMinutos.toString();
-    data['LojaID'] = this.LojaID.toString();
+    // data['LojaID'] = this.LojaID.toString();
     // data['OfertaGUID'] = this.OfertaGUID;
     // data['OfertaQtdDispo'] = '1'; // this.OfertaQtdDispo.toString();
     // data['OfertaQtdMaxVenda'] = this.OfertaQtdMaxVenda.toString();
@@ -312,6 +315,7 @@ class Oferta {
     data['DomAs'] = this.DomAs.toString().trim();
     data['OfertaSomenteEncomenda'] = 'false';
     // data['OfertaMostraReview'] = this.OfertaMostraReview.toString();
+    data['LojaNome'] = this.LojaNome.toString().trim();
     return data;
   }
 
@@ -388,7 +392,8 @@ class Oferta {
     //data['OfertaPontoMenos'] = this.OfertaPontoMenos.toString();
     //data['OfertaPontoMenos'] = this.OfertaPontoMenos.toString();
     //data['OfertaQtdVendida'] = this.OfertaQtdVendida.toString();
-    data['LojaID'] = this.LojaID.toString().trim();
+    // data['LojaID'] = this.LojaID.toString().trim();
+    data['LojaNome'] = this.LojaNome.toString().trim();
     // data['OfertaAceitaAuto'] = this.OfertaAceitaAuto.toString().trim();
     // data['OfertaMostraReview'] = this.OfertaMostraReview.toString().trim();
     return data;
