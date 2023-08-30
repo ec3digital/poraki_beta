@@ -114,6 +114,12 @@ class _DrawerHomeState extends State<DrawerHome> {
                       onTap: () => Get.toNamed(AppRoutes.news),
                     ),
                     RowCategoriesDrawerHome(
+                      text: 'Eventos da região',
+                      // isSelected: index == 1,
+                      icon: Icons.calendar_today_outlined,
+                      onTap: () => Get.toNamed(AppRoutes.events),
+                    ),
+                    RowCategoriesDrawerHome(
                       text: 'Categorias',
                       // isSelected: index == 1,
                       icon: Icons.category,

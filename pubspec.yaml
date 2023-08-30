@@ -68,6 +68,7 @@ dependencies:
   url_launcher: ^6.1.10
   uuid: ^3.0.7
   pull_to_refresh: ^2.0.0
+  full_screen_image: ^2.0.0
 
 
 dev_dependencies:

@@ -36,4 +36,6 @@ abstract class AppRoutes {
   static const updatePw = '/updatePw';
   static const accountCancel = '/account-cancel';
   static const accountBye = '/accountBy';
+  static const events = '/events';
+  static const newEvent = '/new-event';
 }

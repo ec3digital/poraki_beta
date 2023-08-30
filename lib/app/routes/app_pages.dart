@@ -11,6 +11,8 @@ import 'package:poraki/app/modules/auth/termos_page.dart';
 import 'package:poraki/app/modules/categories/categories_page.dart';
 import 'package:poraki/app/modules/chats/chatList_page.dart';
 import 'package:poraki/app/modules/checkout/checkout_page.dart';
+import 'package:poraki/app/modules/events/event_page.dart';
+import 'package:poraki/app/modules/events/new_event_page.dart';
 import 'package:poraki/app/modules/moffers/moffer_page.dart';
 import 'package:poraki/app/modules/moffers/moffers_page.dart';
 import 'package:poraki/app/modules/news/news_page.dart';
@@ -164,5 +166,14 @@ class AppPages {
       name: AppRoutes.accountBye,
       page: () => AccountByePage(),
     ),
+    GetPage(
+      name: AppRoutes.newEvent,
+      page: () => NewEventPage(),
+    ),
+    GetPage(
+      name: AppRoutes.events,
+      page: () => EventPage(),
+    ),
+
   ];
 }
