@@ -28,6 +28,7 @@ class CategoriesController extends GetxController {
     await getQtyCategs();
 
     _loginController.listaCategorias.forEach((categ) { categorias.add(categ); });
+    _loginController.listaCategorias.sort((a, b) => a.categoriaNome.toString().compareTo(b.categoriaNome.toString()));
 
     super.onInit();
   }

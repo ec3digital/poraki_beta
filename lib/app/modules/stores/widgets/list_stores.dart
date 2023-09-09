@@ -34,7 +34,7 @@ class ListStores extends StatelessWidget {
                       value: downloadProgress.progress),
               errorWidget: (context, url, error) =>
                   Icon(Icons.local_offer_outlined),
-              height: 110,
+              height: 160,
             ),
 
 
@@ -44,9 +44,11 @@ class ListStores extends StatelessWidget {
             },
             title: Text(
               loja.LojaNome.toString(),
+                style: TextStyle(fontSize: 18),
             ),
           subtitle: Text("CEP - " +
               loja.LojaCEP.toString(),
+              style: TextStyle(fontSize: 16),
           ),
         ),
         const SizedBox(height: 5),

@@ -10,9 +10,16 @@ import 'package:poraki/app/modules/home/home_controller.dart';
 import 'package:poraki/app/modules/offers/widgets/button_offer.dart';
 import 'package:poraki/app/routes/app_routes.dart';
 
-class EventsListPage extends StatelessWidget {
-  final HomeController controller = Get.find();
+class EventsListPage extends StatefulWidget {
+
   EventsListPage({Key? key}) : super(key: key);
+
+  @override
+  State<EventsListPage> createState() => _EventsListPageState();
+}
+
+class _EventsListPageState extends State<EventsListPage> {
+  final HomeController controller = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -30,62 +37,129 @@ class EventsListPage extends StatelessWidget {
         .first
         .coreValor
         .toString());
+    Future<List<Evento>> _evtList;
+
+    // @override
+    // void initState() {
+    //   super.initState();
+    //   _evtList = pegaEventos();
+    // }
 
     Widget _buildRow(Evento evento) {
-      return ListTile(
-        leading: Icon(Icons.calendar_today_outlined),
-        //trailing: Text(noticia.NoticiaPor.toString()),
-        title: Text(evento.EventoNome.toString(),
-            textAlign: TextAlign.left,
-            style: TextStyle(
-                fontSize: 18, color: colorText, fontWeight: FontWeight.w900)
-            // style: _biggerFont,
-            ),
-        subtitle:
-            Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          const SizedBox(height: 10),
-          Text(
-            evento.EventoDetalhes.toString(),
-            style: TextStyle(fontSize: 16, color: colorText),
-          ),
-          const SizedBox(height: 20),
-          // TODO: jogar a Image da evento se existir
-          Text(
-            'Data do evento: ' +
-                DateFormat("dd/MM/yyyy").format(evento.EventoData!) +
-                ' às ' +
-                evento.EventoHora.toString(),
-            style: TextStyle(fontSize: 13, color: colorText),
-          ),
-          // Text('Data do evento: ' + evento.EventoData.toString()),
-          const SizedBox(height: 20),
+      if (evento.EventoUID == _loginController.usuGuid)
+        return ListTile(
+          trailing: GestureDetector(onTap: () async {
+            await _eventController.apagaEvento(evento);
 
-          FullScreenWidget(
-            disposeLevel: DisposeLevel.Medium,
-            child: ClipRRect(
+          },
+            child: Badge(
+                backgroundColor: Colors.red,
+                label: Text(' X '),
+                textStyle: TextStyle(fontSize: 18),
+                smallSize: 22,
+                largeSize: 24),
+          ),
+          leading: Icon(Icons.calendar_today_outlined),
+          title: Text(evento.EventoNome.toString(),
+              textAlign: TextAlign.left,
+              style: TextStyle(
+                  fontSize: 18, color: colorText, fontWeight: FontWeight.w900)
+              ),
+          subtitle:
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            const SizedBox(height: 10),
+            Text(
+              evento.EventoDetalhes.toString(),
+              style: TextStyle(fontSize: 16, color: colorText),
+            ),
+            const SizedBox(height: 20),
+            Text(
+              'Data do evento: ' +
+                  DateFormat("dd/MM/yyyy").format(evento.EventoData!) +
+                  ' às ' +
+                  evento.EventoHora.toString(),
+              style: TextStyle(fontSize: 16, color: colorText),
+            ),
+            // Text('Data do evento: ' + evento.EventoData.toString()),
+            const SizedBox(height: 20),
+
+            FullScreenWidget(
+              disposeLevel: DisposeLevel.Medium,
+              child: ClipRRect(
                 borderRadius: BorderRadius.circular(6),
-                child:
-                    CachedNetworkImage(
+                child: CachedNetworkImage(
                   imageUrl:
                       'https://firebasestorage.googleapis.com/v0/b/ec3digrepo.appspot.com/o/eventos%2F' +
                           evento.EventoGUID.toString() +
                           '.jpg?alt=media',
                   progressIndicatorBuilder: (context, url, downloadProgress) =>
-                      CircularProgressIndicator(value: downloadProgress.progress),
-                  errorWidget: (context, url, error) =>
-                      Text(""),
+                      CircularProgressIndicator(
+                          value: downloadProgress.progress),
+                  errorWidget: (context, url, error) => Text(""),
                   //height: 110,
                 ),
               ),
+            ),
+            const SizedBox(height: 10),
+          ]),
+        );
+      else
+        return ListTile(
+          leading: Icon(Icons.calendar_today_outlined),
+          //trailing: Text(noticia.NoticiaPor.toString()),
+          title: Text(evento.EventoNome.toString(),
+              textAlign: TextAlign.left,
+              style: TextStyle(
+                  fontSize: 18, color: colorText, fontWeight: FontWeight.w900)
+              // style: _biggerFont,
+              ),
+          subtitle:
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            const SizedBox(height: 10),
+            Text(
+              evento.EventoDetalhes.toString(),
+              style: TextStyle(fontSize: 16, color: colorText),
+            ),
+            const SizedBox(height: 20),
+            Text(
+              'Data do evento: ' +
+                  DateFormat("dd/MM/yyyy").format(evento.EventoData!) +
+                  ' às ' +
+                  evento.EventoHora.toString(),
+              style: TextStyle(fontSize: 16, color: colorText),
+            ),
+            // Text('Data do evento: ' + evento.EventoData.toString()),
+            const SizedBox(height: 20),
 
-          ),
-              const SizedBox(height: 10),
-        ]),
-      );
+            FullScreenWidget(
+              disposeLevel: DisposeLevel.Medium,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(6),
+                child: CachedNetworkImage(
+                  imageUrl:
+                      'https://firebasestorage.googleapis.com/v0/b/ec3digrepo.appspot.com/o/eventos%2F' +
+                          evento.EventoGUID.toString() +
+                          '.jpg?alt=media',
+                  progressIndicatorBuilder: (context, url, downloadProgress) =>
+                      CircularProgressIndicator(
+                          value: downloadProgress.progress),
+                  errorWidget: (context, url, error) => Text(""),
+                  //height: 110,
+                ),
+              ),
+            ),
+            const SizedBox(height: 10),
+          ]),
+        );
     }
 
-    Future<void> pegaEventos() async {
+    Future<List<Evento>> pegaEventos() async {
       await _eventController.carregaEventos();
+      return _eventController.eventos;
+
+      // setState(() {
+      //   evtList = _eventController.eventos;
+      // });
     }
 
     return FutureBuilder(

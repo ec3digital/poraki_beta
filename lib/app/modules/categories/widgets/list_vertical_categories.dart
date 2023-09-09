@@ -17,15 +17,16 @@ class ListVerticalCategories extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final LoginController _loginController = Get.find();
-    final CategoriesController _categoriesController = Get.put(CategoriesController());
+    final CategoriesController _categoriesController = Get.find(); // .put(CategoriesController());
     final Color backColor = _loginController.colorFromHex(_loginController
         .listCore
         .where((coreItem) => coreItem.coreChave == 'backLight')
         .first
         .coreValor
         .toString());
-    var categoriasAll =
-        _loginController.listaCategorias.toList(); //.sort((o1,o2) => o1.or);
+    var categoriasAll = _loginController.listaCategorias;
+    // categoriasAll.sort((a, b) => a.secao.toString().compareTo(b.secao.toString()));
+    // var categoriasSorted = categoriasAll.sort((a, b) => a.secao.compareTo(b.secao));
 
     Widget _buildRow(
         int idx, String categoryName, String chave, String iconcode, int? qtd) {

@@ -144,7 +144,7 @@ class _LoginPageState extends State<LoginPage> {
                                 }
                                 return null;
                               },
-                              autofocus: _mailInputController.text.isNotEmpty,
+                              autofocus: false, // _mailInputController.text.isNotEmpty,
                               obscureText: !_obscurePassword,
                               controller: _passwordInputController,
                               style: TextStyle(color: Colors.white),

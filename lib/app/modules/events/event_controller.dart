@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:poraki/app/data/models/evento.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:uuid/uuid.dart';
 import '../auth/login/login_controller.dart';
 
@@ -11,7 +10,6 @@ class EventController extends GetxController {
   final LoginController _loginController = Get.find();
   final TextEditingController? txtEventoNome = TextEditingController();
   final TextEditingController? txtEventoData = TextEditingController();
-  // final TextEditingController? txtEventoHora = TextEditingController();
   final TextEditingController? txtEventoLocal = TextEditingController();
   final TextEditingController? txtEventoEndereco = TextEditingController();
   final TextEditingController? txtEventoDetalhes = TextEditingController();
@@ -25,16 +23,34 @@ class EventController extends GetxController {
 
   Future<void> carregaEventos() async {
     print('carregaEventos regiao: ${_loginController.cloudId}');
-    final FirebaseFirestore? fbInstance = _loginController.fbInstance;
     eventos.clear();
-    await fbInstance!
+    await _loginController.fbInstance!
         .collection("akievents")
         .doc(_loginController.cloudId)
         .collection("eventos")
         .get()
         .then((value) => value.docs.forEach((element) {
-              eventos.add(Evento.fromJson(element.data()));
+            var evt = Evento.fromJson(element.data());
+            if(evt.EventoData!.isBefore(DateTime.now()) && evt.EventoAtivo == true)
+              eventos.add(evt);
             }));
+  }
+
+  Future<List<Evento>> retornaEventos() async {
+    print('carregaEventos regiao: ${_loginController.cloudId}');
+    eventos.clear();
+    await _loginController.fbInstance!
+        .collection("akievents")
+        .doc(_loginController.cloudId)
+        .collection("eventos")
+        .get()
+        .then((value) => value.docs.forEach((element) {
+            var evt = Evento.fromJson(element.data());
+            if(evt.EventoData!.isBefore(DateTime.now()) && evt.EventoAtivo == true)
+              eventos.add(evt);
+            }));
+
+    return eventos;
   }
 
   Future<String> novoEvento() async {
@@ -46,7 +62,7 @@ class EventController extends GetxController {
           DateTime.now(),
           valEventoHora, txtEventoLocal!.text.toString(), txtEventoEndereco!.text.toString(), txtEventoDetalhes!.text.toString(),
           //EventoUID, EventoPor
-        '',''
+        '','', true
       );
       await _loginController.fbInstance!.collection("akievents").doc(_loginController.cloudId).collection("eventos").doc().set(evt.toJson());
     } catch (e) {
@@ -58,9 +74,14 @@ class EventController extends GetxController {
     return eventoGuid.toString();
   }
 
-  Future<void> apagaEvento() async {
+  Future<void> apagaEvento(Evento evt) async {
     try {
       _changeLoading(true);
+      String getId = '';
+      await _loginController.fbInstance!.collection("akievents").doc(_loginController.cloudId).collection("eventos").where('EventoGUID', isEqualTo: evt.EventoGUID).get().then((ss) => getId = ss.docs.first.id);
+      evt.EventoAtivo = false;
+      await _loginController.fbInstance!.collection("akievents").doc(_loginController.cloudId).collection("eventos").doc(getId).set(evt.toJson());
+      //await carregaEventos();
     } catch (e) {
       print('Erro no apagaEvento() controller ${e.toString()}');
     } finally {

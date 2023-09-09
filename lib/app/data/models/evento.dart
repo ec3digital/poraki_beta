@@ -8,11 +8,12 @@ class Evento {
   String? EventoDetalhes;
   String? EventoUID;
   String? EventoPor;
+  bool? EventoAtivo;
 
-  Evento(this.EventoGUID, this.EventoNome, this.EventoData, this.EventoHora, this.EventoLocal, this.EventoEndereco, this.EventoDetalhes, this.EventoUID, this.EventoPor);
+  Evento(this.EventoGUID, this.EventoNome, this.EventoData, this.EventoHora, this.EventoLocal, this.EventoEndereco, this.EventoDetalhes, this.EventoUID, this.EventoPor, this.EventoAtivo);
 
   Evento.fromJson(Map<String, dynamic> json) {
-    print('eventoData: ' + json['EventoData'].toString().trim());
+    // print('eventoData: ' + json['EventoData'].toString().trim());
     EventoGUID = json['EventoGUID'].toString();
     EventoNome = json['EventoNome'].toString().trim();
     // EventoData = Timestamp.fromMillisecondsSinceEpoch(json['EventoData']['seconds']).toDate(); //DateTime.now(); // json['EventoData'].toString().trim();
@@ -23,6 +24,7 @@ class Evento {
     EventoLocal = json['EventoLocal'].toString().trim();
     EventoEndereco = json['EventoEndereco'].toString().trim();
     EventoHora = json['EventoHora'].toString().trim();
+    EventoAtivo = json['EventoAtivo'].toString() == "true" ? true : false;
   }
 
   Map<String, dynamic> toJson() {
@@ -36,6 +38,7 @@ class Evento {
     data['EventoDetalhes'] = this.EventoDetalhes.toString().trim();
     data['EventoUID'] = this.EventoUID.toString().trim();
     data['EventoPor'] = this.EventoPor.toString().trim();
+    data['EventoAtivo'] = this.EventoAtivo;
 
     return data;
   }

@@ -85,7 +85,7 @@ class ListOffers extends StatelessWidget {
               title: Text(oferta.ofertaTitulo.toString()),
               subtitle: Text(oferta.ofertaDetalhe.toString()),
               trailing: Text(
-                  'R\$ ${oferta.ofertaPreco?.toStringAsFixed(2).replaceAll(',', '').replaceAll('.', ',') ?? ''}')),
+                  'R\$ ${oferta.ofertaPreco?.toStringAsFixed(2).replaceAll(',', '').replaceAll('.', ',') ?? ''}', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),)),
         ) //const Divider(),
       ]);
     }

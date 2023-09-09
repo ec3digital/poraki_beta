@@ -194,6 +194,8 @@ class CardOffertsDayHome extends StatelessWidget {
                                             Icon(Icons.local_offer_outlined),
                                         height: 110,alignment: Alignment.bottomCenter,
                                       ),
+
+
                                     )),
                                     SizedBox(height: 10),
                                     Expanded(

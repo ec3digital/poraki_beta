@@ -121,7 +121,7 @@ class _ListMoffersState extends State<ListMoffers> {
                   moferta.OfertaDispoAte.toString().length > 4
                       ? '(Vendido) ' + moferta.OfertaTitulo.toString()
                       : moferta.OfertaTitulo.toString(),
-                  style: TextStyle(
+                  style: TextStyle(fontSize: 18,
                       decoration: moferta.OfertaDispoAte.toString().length > 4
                           ? TextDecoration.lineThrough
                           : TextDecoration.none,
@@ -129,9 +129,9 @@ class _ListMoffersState extends State<ListMoffers> {
                           ? Colors.redAccent
                           : textDarkColor),
                 ),
-                subtitle: Text(moferta.OfertaDetalhe.toString()),
+                subtitle: Text(moferta.OfertaDetalhe.toString(), style: TextStyle(fontSize: 16)),
                 trailing: Text(
-                    'R\$ ${moferta.OfertaPreco?.toStringAsFixed(2).replaceAll(',', '').replaceAll('.', ',') ?? ''}')))
+                    'R\$ ${moferta.OfertaPreco?.toStringAsFixed(2).replaceAll(',', '').replaceAll('.', ',') ?? ''}', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),))
         //const SizedBox(height: 3),
       ]);
     }
@@ -181,7 +181,7 @@ class _ListMoffersState extends State<ListMoffers> {
               ),
               const SizedBox(height: 5),
               ListTile(
-                title: Text('Loja: '),
+                title: Text('Loja: ', style: TextStyle(fontSize: 18),),
                 trailing: DropdownButton<Lojas>(
                   items: listStores.map((Lojas loja) {
                     return DropdownMenuItem<Lojas>(

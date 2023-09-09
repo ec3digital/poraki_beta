@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:poraki/app/modules/categories/categories_controller.dart';
 import 'package:poraki/app/routes/app_routes.dart';
 import 'package:poraki/app/theme/app_theme.dart';
 import 'modules/auth/login/login_controller.dart';
@@ -16,6 +17,7 @@ class _PorakiSplash extends State<PorakiSplash> {
   void initState() {
     super.initState();
     final LoginController _loginController = Get.find();
+    final CategoriesController _categoriesController = Get.put(CategoriesController());
 
     Timer(Duration(seconds: 0), () async {
       await _loginController.runCore();
@@ -25,6 +27,7 @@ class _PorakiSplash extends State<PorakiSplash> {
         _loginController.loadUserData(),
         _loginController.getCategories(),
         _loginController.loadStoresData(),
+
         // _loginController.loadOffersFavs(),
         // _loginController.loadAddressData(),
         // _loginController.getListBannersFromFBCloud(),
