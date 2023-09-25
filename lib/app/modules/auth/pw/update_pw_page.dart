@@ -19,6 +19,8 @@ class UpdatePwPage extends StatefulWidget {
 }
 
 class _UpdatePwPageState extends State<UpdatePwPage> {
+  bool isLoading = false;
+
   Future<void> carregaObjUsuario() async {
     widget._pwController.txtEmail.text =
         widget._loginController.usuEmail.toString();

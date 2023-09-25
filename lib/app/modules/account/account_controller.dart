@@ -66,15 +66,16 @@ class AccountController extends GetxController {
       txtCPF.text = value['CPF'].toString();
       txtTelefone.text = value['Whatsapp'].toString();
       txtApelido.text = auth!.currentUser!.displayName.toString();
+      _loginController.cloudId = value['CEP'].toString().substring(0,3);
     });
   }
 
   Future<void> atualizaUsuario() async {
     print('atualizaUsuario');
-    await sqlPorakiLoginService().updateUsuarioCEP(
-        txtCEP.text.trim(), auth!.currentUser!.email.toString());
-    _loginController.usuNome = txtApelido.text.trim();
-    _loginController.usuCep = txtCEP.text.trim();
+    // await sqlPorakiLoginService().updateUsuarioCEP(
+    //     txtCEP.text.trim(), auth!.currentUser!.email.toString());
+    // _loginController.usuNome = txtApelido.text.trim();
+    // _loginController.usuCep = txtCEP.text.trim();
 
     await auth!.currentUser!.updateDisplayName(txtApelido.text.trim());
 
@@ -86,6 +87,7 @@ class AccountController extends GetxController {
         email: auth!.currentUser!.email.toString(),
         whatsapp: txtTelefone.text.trim(),
         cpfValidado: false,
+        regiao: _loginController.cloudId,
         dataNascimento: DateTime.now());
 
     await _loginController.fbInstance!

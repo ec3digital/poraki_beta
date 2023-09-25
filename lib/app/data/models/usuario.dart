@@ -7,6 +7,7 @@ class Usuario {
   final String? cep;
   final bool? cpfValidado;
   final DateTime? dataNascimento;
+  final String? regiao;
 
   Usuario(
       {this.nome,
@@ -16,7 +17,8 @@ class Usuario {
       this.whatsapp,
       this.cep,
       this.cpfValidado,
-      this.dataNascimento});
+      this.dataNascimento,
+      this.regiao});
 
   // factory Usuario.fromFirestore(
   //     DocumentSnapshot<Map<String, dynamic>> snapshot,
@@ -36,6 +38,7 @@ class Usuario {
         cpf: elem['CPF'].toString().trim(),
         email: elem['Email'].toString().trim(),
         whatsapp: elem['Whatsapp'].toString().trim(),
+        regiao: elem['Regiao'].toString().trim(),
         cpfValidado: elem['cpfValidado'].toString().trim() == 'true' ? true : false);
   }
 
@@ -46,6 +49,7 @@ class Usuario {
       if (cpf != null) "CPF": cpf.toString().trim(),
       if (email != null) "Email": email.toString().trim(),
       if (whatsapp != null) "Whatsapp": whatsapp.toString().trim(),
+      if (regiao != null) "Regiao": regiao.toString().trim(),
       if (cep != null) "CEP": cep.toString().trim(),
       "cpfValidado": 'false'
     };
@@ -57,6 +61,7 @@ class Usuario {
       if (apelido != null) "Apelido": apelido.toString().trim(),
       if (whatsapp != null) "Whatsapp": whatsapp.toString().trim(),
       if (cep != null) "CEP": cep.toString().trim(),
+      // if (regiao != null) "Regiao": regiao.toString().trim(),
     };
   }
 }

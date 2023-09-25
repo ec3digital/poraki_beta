@@ -20,8 +20,9 @@ class AccountBody extends StatefulWidget {
 
 class _AccountBodyState extends State<AccountBody> {
   // final _form = GlobalKey<FormState>();
-  bool _missingFields = false;
   final AccountController _accountController = Get.put(AccountController());
+  bool _missingFields = false;
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {

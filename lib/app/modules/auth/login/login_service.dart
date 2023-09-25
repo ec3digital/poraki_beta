@@ -53,10 +53,11 @@ class LoginService {
         // print('usuario fb uid: ' + u!.uid.toString());
         // print('usuario fb email:' + u.email.toString());
         // print('usuario fb display name: ' + u.displayName.toString());
-        // print('usuario fb phone#: ' + u.phoneNumber.toString());
-        // print('usuario fb token: ' + u.refreshToken.toString());
 
-        if(displayName != null) u!.updateDisplayName(displayName);
+        if (!u!.emailVerified)
+          return 'Acesso temporariamente bloqueado. Por favor verifique na sua caixa de e-mail o link de confirmação da sua conta no aplicativo';
+
+        if(displayName != null) u.updateDisplayName(displayName);
 
         return 'OK';
       }
@@ -86,4 +87,5 @@ class LoginService {
   void logOut() async {
     await auth.FirebaseAuth.instance.signOut();
   }
+
 }

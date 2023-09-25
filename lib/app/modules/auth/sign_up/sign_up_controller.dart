@@ -9,6 +9,7 @@ import 'package:poraki/app/modules/auth/login/login_controller.dart';
 import 'package:poraki/app/modules/auth/login/login_service.dart';
 import '../../../routes/app_routes.dart';
 import 'package:poraki/app/services/sqlite/sqlporaki_login_service.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class SignUpController extends GetxController {
   final TextEditingController nameInputController = TextEditingController();
@@ -23,7 +24,7 @@ class SignUpController extends GetxController {
   final TextEditingController nickInputController = TextEditingController();
 
   bool showPassword = false;
-  late String _userUID;
+  // late String _userUID;
   // final formKey = Get.key; // GlobalKey<FormState>();
 
   Future<String> signUp(
@@ -76,6 +77,7 @@ class SignUpController extends GetxController {
             email: _loginSvc.CurrentUserObject!.email,
             whatsapp: formWhatsApp,
             cpfValidado: false,
+            regiao: '057',
             dataNascimento: DateTime.now());
 
         LoginController _loginController = Get.find();
@@ -93,6 +95,8 @@ class SignUpController extends GetxController {
 
         // salva usuário no sqlLocal, para ser recuperado depois quando logar novamente
         _saveUser();
+
+        FirebaseAuth.instance.signOut();
       }
 
       return loginResp;

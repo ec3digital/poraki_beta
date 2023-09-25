@@ -55,7 +55,14 @@ class _LocalPickPageState extends State<LocalPickPage> {
                           placeholder: 'assets/images/poraki250.png',
                           image:
                               'https://firebasestorage.googleapis.com/v0/b/ec3digrepo.appspot.com/o/App%2Fporaki-splash.png?alt=media'),
-                      const SizedBox(height: 20),
+                      //const SizedBox(height: 3),
+                      Padding(
+                        padding: const EdgeInsets.all(14.0),
+                        child: Text(
+                            'Caso não encontre sua região na lista, escolha a opção mais próxima. Estamos trabalhando para descobrir ofertas próximas à você',
+                            style: TextStyle(fontSize: 17, color: Colors.black54, fontStyle: FontStyle.italic),softWrap: true,textAlign: TextAlign.justify),
+                      ),
+                      const SizedBox(height: 10),
                       Column(
                         children: <Widget>[
                           const Divider(),
@@ -71,18 +78,24 @@ class _LocalPickPageState extends State<LocalPickPage> {
                               );
                             }).toList(),
                             value: localSel,
-                            onChanged: (String? newValue) {
+                            onChanged: (String? newValue) async {
                               if (newValue != '') {
+                                _loginController.usuCep = localSel;
+                                _loginController.cloudId = localSel;
+                                await _loginController.fbInstance!
+                                    .collection("akiusuarios")
+                                    .doc(_loginController.usuGuid)
+                                    .update({'Regiao': localSel});
+
                                 setState(() {
                                   _loginController.cloudId =
                                       newValue!.substring(0, 3);
                                   localSel = newValue;
                                 });
-                                _loginController.usuCep = localSel;
-                                _loginController.cloudId = localSel;
-                                new sqlPorakiLoginService().updateUsuarioCEP(
-                                    localSel,
-                                    _loginController.usuEmail.toString());
+
+                                // new sqlPorakiLoginService().updateUsuarioCEP(
+                                //     localSel,
+                                //     _loginController.usuEmail.toString());
                                 Get.toNamed(AppRoutes.porakiSplash);
                               }
                             },

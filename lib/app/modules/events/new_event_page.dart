@@ -10,7 +10,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:poraki/app/modules/auth/login/login_controller.dart';
 import 'package:poraki/app/modules/events/event_controller.dart';
 import 'package:poraki/app/modules/home/widgets/gradient_header_home.dart';
-import 'package:poraki/app/modules/offers/widgets/button_offer.dart';
 import 'package:poraki/app/routes/app_routes.dart';
 
 class NewEventPage extends StatefulWidget {
@@ -23,6 +22,7 @@ class NewEventPage extends StatefulWidget {
 class _NewEventPage extends State<NewEventPage> {
   File? image;
   bool isEditing = false;
+  bool isLoading = false;
   bool imgEdited = false;
   String eventGuid = '';
   String imgcloud = '';
@@ -39,12 +39,12 @@ class _NewEventPage extends State<NewEventPage> {
         .coreValor
         .toString());
 
-    return Container(child: GetBuilder<EventController>(builder: (context) {
-      if (_eventController.isLoading) {
-        return Center(
-          child: Container(),
-        );
-      } else {
+    return FutureBuilder<EventController>(builder: (context, futuro) {
+      // if (isLoading) {
+      //   return Center(
+      //     child: Container(),
+      //   );
+      // } else {
         return Scaffold(
             appBar: PreferredSize(
               preferredSize: Size(double.maxFinite, 55),
@@ -64,342 +64,353 @@ class _NewEventPage extends State<NewEventPage> {
               ),
             ),
             body:
-            // SingleChildScrollView(
-            //     child:
-            GradientHeaderHome(
-                child: Padding(
-                  padding: const EdgeInsets.all(15.0),
-                  child: Form(
-                    // key: _loginController.formKey,
-                    // key: controller.formKey,
-                      child: ListView(children: [
+                // SingleChildScrollView(
+                //     child:
+                GradientHeaderHome(
+                    child: Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Form(
+                  // key: _loginController.formKey,
+                  // key: controller.formKey,
+                  child: ListView(children: [
+                const SizedBox(
+                  height: 20,
+                ),
+
+                ElevatedButton(
+                    onPressed: () => pegarImagemGaleria(),
+                    style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                      _loginController.colorFromHex(_loginController.listCore
+                          .where((coreItem) => coreItem.coreChave == 'backDark')
+                          .first
+                          .coreValor
+                          .toString()),
+                    )),
+                    child: Row(
+                      children: [
+                        Icon(Icons.photo_album),
                         const SizedBox(
-                          height: 20,
+                          width: 16,
                         ),
+                        Text('Adicionar foto')
+                      ],
+                    )),
+                SizedBox(height: 20),
 
-                        ElevatedButton(
-                            onPressed: () => pegarImagemGaleria(),
-                            style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all<Color>(
-                                  _loginController.colorFromHex(_loginController
-                                      .listCore
-                                      .where((coreItem) =>
-                                  coreItem.coreChave == 'backDark')
-                                      .first
-                                      .coreValor
-                                      .toString()),
-                                )),
-                            child: Row(
-                              children: [
-                                Icon(Icons.photo_album),
-                                const SizedBox(
-                                  width: 16,
-                                ),
-                                Text('Adicionar foto')
-                              ],
-                            )),
-                        SizedBox(height: 20),
+                if (imgcloud != '')
+                  CachedNetworkImage(
+                    imageUrl: imgcloud,
+                    height: 250,
+                    progressIndicatorBuilder:
+                        (context, url, downloadProgress) =>
+                            CircularProgressIndicator(
+                                value: downloadProgress.progress),
+                    errorWidget: (context, url, error) =>
+                        Icon(Icons.local_offer_outlined),
+                  ),
 
-                        if (imgcloud != '')
-                          CachedNetworkImage(
-                            imageUrl: imgcloud,
-                            height: 250,
-                            progressIndicatorBuilder:
-                                (context, url, downloadProgress) =>
-                                CircularProgressIndicator(
-                                    value: downloadProgress.progress),
-                            errorWidget: (context, url, error) =>
-                                Icon(Icons.local_offer_outlined),
-                          ),
+                // FadeInImage.assetNetwork(
+                //   placeholder: 'assets/images/pholder.png',
+                //   image: imgcloud,
+                //   imageErrorBuilder: (context, url, error) =>
+                //       new Icon(Icons.store),
+                //   height: 250,
+                // ),
 
-                        // FadeInImage.assetNetwork(
-                        //   placeholder: 'assets/images/pholder.png',
-                        //   image: imgcloud,
-                        //   imageErrorBuilder: (context, url, error) =>
-                        //       new Icon(Icons.store),
-                        //   height: 250,
-                        // ),
+                if (image != null)
+                  Image.file(
+                    image!,
+                    fit: BoxFit.contain,
+                  ),
+                SizedBox(height: 20),
 
-                        if (image != null)
-                          Image.file(
-                            image!,
-                            fit: BoxFit.contain,
-                          ),
-                        SizedBox(height: 20),
+                TextFormField(
+                  // validator: (value) {
+                  //   if (value!.length < 10) {
+                  //     return "Digite um nome maior";
+                  //   }
+                  //   return null;
+                  // },
+                  controller: _eventController.txtEventoNome,
+                  keyboardType: TextInputType.text,
+                  autofocus: false, // true,
+                  style: TextStyle(color: textColor),
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: "Nome do Evento",
+                    labelStyle: TextStyle(color: textColor),
+                    // prefixIcon: Icon(
+                    //   Icons.storefront_rounded,
+                    //   color: textColor,
+                    // ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                TextFormField(
+                  // validator: (value) {
+                  //   if (value!.length != 11) {
+                  //     return "CPF inválido";
+                  //   }
+                  //   return null;
+                  // },
+                  controller: _eventController.txtEventoLocal,
+                  keyboardType: TextInputType.text,
+                  autofocus: false, // true,
+                  // focusNode: txtEnderecoNroFocus,
+                  style: TextStyle(color: textColor),
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: "Local",
+                    labelStyle: TextStyle(color: textColor),
+                    prefixIcon: Icon(
+                      Icons.near_me_outlined,
+                      color: textColor,
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                TextFormField(
+                  // validator: (value) {
+                  //   if (value!.length != 11) {
+                  //     return "Por favor digite um telefone válido";
+                  //   }
+                  //   return null;
+                  // },
+                  // inputFormatters: [
+                  //   FilteringTextInputFormatter.digitsOnly,
+                  //   TelefoneInputFormatter(),
+                  // ],
+                  controller: _eventController.txtEventoEndereco,
+                  keyboardType: TextInputType.streetAddress,
+                  autofocus: false, // true,
+                  style: TextStyle(color: textColor),
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: "Endereço (opcional) ",
+                    labelStyle: TextStyle(color: textColor),
+                    prefixIcon: Icon(
+                      Icons.place_outlined,
+                      color: textColor,
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                TextFormField(
+                  // validator: (value) {
+                  //   if (value!.length != 11) {
+                  //     return "Por favor digite um telefone válido";
+                  //   }
+                  //   return null;
+                  // },
+                  keyboardType: TextInputType.datetime,
+                  controller: _eventController.txtEventoData,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly,
+                    DataInputFormatter(),
+                  ],
+                  //keyboardAppearance: Brightness.dark,
+                  autofocus: false, // true,
+                  style: TextStyle(color: textColor),
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: "Data do Evento",
+                    labelStyle: TextStyle(color: textColor),
+                    prefixIcon: Icon(
+                      Icons.calendar_today_outlined,
+                      color: textColor,
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                // TextFormField(
+                //   // validator: (value) {
+                //   //   if (value!.length != 11) {
+                //   //     return "Por favor digite um telefone válido";
+                //   //   }
+                //   //   return null;
+                //   // },
+                //   controller: _eventController.txtEventoHora,
+                //   autofocus: false, // true,
+                //   style: TextStyle(color: textColor),
+                //   decoration: InputDecoration(
+                //     border: OutlineInputBorder(),
+                //     labelText: "Horário do evento",
+                //     labelStyle: TextStyle(color: textColor),
+                //     prefixIcon: Icon(
+                //       Icons.phone_enabled_outlined,
+                //       color: textColor,
+                //     ),
+                //   ),
+                // ),
 
-                        TextFormField(
-                          // validator: (value) {
-                          //   if (value!.length < 10) {
-                          //     return "Digite um nome maior";
-                          //   }
-                          //   return null;
-                          // },
-                          controller: _eventController.txtEventoNome,
-                          keyboardType: TextInputType.text,
-                          autofocus: false, // true,
-                          style: TextStyle(color: textColor),
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: "Nome do Evento",
-                            labelStyle: TextStyle(color: textColor),
-                            // prefixIcon: Icon(
-                            //   Icons.storefront_rounded,
-                            //   color: textColor,
-                            // ),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        TextFormField(
-                          // validator: (value) {
-                          //   if (value!.length != 11) {
-                          //     return "CPF inválido";
-                          //   }
-                          //   return null;
-                          // },
-                          controller: _eventController.txtEventoLocal,
-                          keyboardType: TextInputType.text,
-                          autofocus: false, // true,
-                          // focusNode: txtEnderecoNroFocus,
-                          style: TextStyle(color: textColor),
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: "Local",
-                            labelStyle: TextStyle(color: textColor),
-                            prefixIcon: Icon(
-                              Icons.near_me_outlined,
-                              color: textColor,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        TextFormField(
-                          // validator: (value) {
-                          //   if (value!.length != 11) {
-                          //     return "Por favor digite um telefone válido";
-                          //   }
-                          //   return null;
-                          // },
-                          // inputFormatters: [
-                          //   FilteringTextInputFormatter.digitsOnly,
-                          //   TelefoneInputFormatter(),
-                          // ],
-                          controller: _eventController.txtEventoEndereco,
-                          keyboardType: TextInputType.streetAddress,
-                          autofocus: false, // true,
-                          style: TextStyle(color: textColor),
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: "Endereço (opcional) ",
-                            labelStyle: TextStyle(color: textColor),
-                            prefixIcon: Icon(
-                              Icons.place_outlined,
-                              color: textColor,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        TextFormField(
-                          // validator: (value) {
-                          //   if (value!.length != 11) {
-                          //     return "Por favor digite um telefone válido";
-                          //   }
-                          //   return null;
-                          // },
-                          keyboardType: TextInputType.datetime,
-                          controller: _eventController.txtEventoData,
-                            inputFormatters: [
-                              FilteringTextInputFormatter.digitsOnly,
-                              DataInputFormatter(),
-                            ],
-                          //keyboardAppearance: Brightness.dark,
-                          autofocus: false, // true,
-                          style: TextStyle(color: textColor),
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: "Data do Evento",
-                            labelStyle: TextStyle(color: textColor),
-                            prefixIcon: Icon(
-                              Icons.calendar_today_outlined,
-                              color: textColor,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        // TextFormField(
-                        //   // validator: (value) {
-                        //   //   if (value!.length != 11) {
-                        //   //     return "Por favor digite um telefone válido";
-                        //   //   }
-                        //   //   return null;
-                        //   // },
-                        //   controller: _eventController.txtEventoHora,
-                        //   autofocus: false, // true,
-                        //   style: TextStyle(color: textColor),
-                        //   decoration: InputDecoration(
-                        //     border: OutlineInputBorder(),
-                        //     labelText: "Horário do evento",
-                        //     labelStyle: TextStyle(color: textColor),
-                        //     prefixIcon: Icon(
-                        //       Icons.phone_enabled_outlined,
-                        //       color: textColor,
-                        //     ),
-                        //   ),
-                        // ),
-
-                        Row(
-                          children: <Widget>[
-                            const SizedBox(height: 5, width: 5),
-                            Text('Horário do evento: ', style: TextStyle(fontSize: 16, color: textColor),),
-                            const SizedBox(width: 5),
-                            ElevatedButton(
-                                onPressed: () {
-                                  showTimePicker(initialEntryMode: TimePickerEntryMode.input,
-                                      context: this.context,
-                                      initialTime:
-                                      TimeOfDay(hour: 08, minute: 00))
-                                      .then((value) => setState(() {
-                                    _eventController.valEventoHora =
-                                        value!.hour
+                Row(
+                  children: <Widget>[
+                    const SizedBox(height: 5, width: 5),
+                    Text(
+                      'Horário do evento: ',
+                      style: TextStyle(fontSize: 16, color: textColor),
+                    ),
+                    const SizedBox(width: 5),
+                    ElevatedButton(
+                        onPressed: () {
+                          showTimePicker(
+                                  initialEntryMode: TimePickerEntryMode.input,
+                                  context: this.context,
+                                  initialTime: TimeOfDay(hour: 08, minute: 00))
+                              .then((value) => setState(() {
+                                    _eventController.valEventoHora = value!.hour
                                             .toString()
                                             .padLeft(2, '0') +
-                                            ':' +
-                                            value.minute
-                                                .toString()
-                                                .padLeft(2, '0');
+                                        ':' +
+                                        value.minute.toString().padLeft(2, '0');
                                   }));
-                                },
-                                style: ButtonStyle(
-                                    backgroundColor:
-                                    MaterialStateProperty.all<Color>(
-                                      _loginController.colorFromHex(
-                                          _loginController.listCore
-                                              .where((coreItem) =>
-                                          coreItem.coreChave ==
-                                              'backDark')
-                                              .first
-                                              .coreValor
-                                              .toString()),
-                                    )),
-                                child: Row(
-                                  children: [
-                                    Icon(Icons.access_time_outlined),
-                                    const SizedBox(
-                                      width: 16,
-                                    ),
-                                    Text(_eventController.valEventoHora.toString())
-                                  ],
-                                )),
-                            const SizedBox(width: 5),
-
-                          ],
-                        ),
-                        //
-                        // const SizedBox(
-                        //   height: 20,
-                        // ),
-                        // TextFormField(
-                        //   // validator: (value) {
-                        //   //   if (value!.length < 4) {
-                        //   //     return "Digite um nome maior";
-                        //   //   }
-                        //   //   return null;
-                        //   // },
-                        //   keyboardType: TextInputType.streetAddress,
-                        //   controller: _eventController.txtEventoEndereco,
-                        //   autofocus: false, // true,
-                        //   style: TextStyle(color: textColor),
-                        //   decoration: InputDecoration(
-                        //     filled: true,
-                        //     border: OutlineInputBorder(),
-                        //     labelText: "Endereço (opcional) ",
-                        //     labelStyle: TextStyle(color: textColor),
-                        //     // prefixIcon: Icon(
-                        //     //   Icons.location_on_outlined,
-                        //     //   color: textColor,
-                        //     // ),
-                        //   ),
-                        // ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        TextFormField(
-                          // validator: (value) {
-                          //   if (value!.length < 10) {
-                          //     return "Digite um nome maior";
-                          //   }
-                          //   return null;
-                          // },
-                          controller: _eventController.txtEventoDetalhes,
-                          keyboardType: TextInputType.text,
-                          // autofocus: true,
-                          style: TextStyle(color: textColor),
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: "Detalhes do Evento (opcional) ",
-                            labelStyle: TextStyle(color: textColor),
-                            // prefixIcon: Icon(
-                            //   Icons.location_on_outlined,
-                            //   color: textColor,
-                            // ),
-                          ),
-                        ),
-
-                        const SizedBox(height: 20),
-
-                        ButtonOffer(
-                          onPressed: () {
-                            salvar().then(
-                                    (value) => Get.offAndToNamed(AppRoutes.events));
-
-                            Get.defaultDialog(
-                                title: "Aviso",
-                                middleText: "Informações atualizadas com sucesso!");
-
-                            // final snackBar = SnackBar(
-                            //     backgroundColor: _loginController.colorFromHex(
-                            //         _loginController.listCore
-                            //             .where((coreItem) =>
-                            //                 coreItem.coreChave == 'textDark')
-                            //             .first
-                            //             .coreValor
-                            //             .toString()),
-                            //     content: Container(
-                            //         height: 40,
-                            //         child: Center(
-                            //             child:
-                            //                 const Text('Informações salvas 1!'))));
-                            //ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                          },
-                          colorText: _loginController.colorFromHex(_loginController
+                        },
+                        style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all<Color>(
+                          _loginController.colorFromHex(_loginController
                               .listCore
-                              .where(
-                                  (coreItem) => coreItem.coreChave == 'textLight')
+                              .where((coreItem) =>
+                                  coreItem.coreChave == 'backDark')
                               .first
                               .coreValor
                               .toString()),
-                          text: 'Salvar',
-                          colorButton: _loginController.colorFromHex(
-                              _loginController.listCore
-                                  .where((coreItem) =>
-                              coreItem.coreChave == 'iconColor')
-                                  .first
-                                  .coreValor
-                                  .toString()),
-                        ),
-                      ])
-                    // ],
+                        )),
+                        child: Row(
+                          children: [
+                            Icon(Icons.access_time_outlined),
+                            const SizedBox(
+                              width: 16,
+                            ),
+                            Text(_eventController.valEventoHora.toString())
+                          ],
+                        )),
+                    const SizedBox(width: 5),
+                  ],
+                ),
+                //
+                // const SizedBox(
+                //   height: 20,
+                // ),
+                // TextFormField(
+                //   // validator: (value) {
+                //   //   if (value!.length < 4) {
+                //   //     return "Digite um nome maior";
+                //   //   }
+                //   //   return null;
+                //   // },
+                //   keyboardType: TextInputType.streetAddress,
+                //   controller: _eventController.txtEventoEndereco,
+                //   autofocus: false, // true,
+                //   style: TextStyle(color: textColor),
+                //   decoration: InputDecoration(
+                //     filled: true,
+                //     border: OutlineInputBorder(),
+                //     labelText: "Endereço (opcional) ",
+                //     labelStyle: TextStyle(color: textColor),
+                //     // prefixIcon: Icon(
+                //     //   Icons.location_on_outlined,
+                //     //   color: textColor,
+                //     // ),
+                //   ),
+                // ),
+                const SizedBox(
+                  height: 20,
+                ),
+                TextFormField(
+                  controller: _eventController.txtEventoDetalhes,
+                  keyboardType: TextInputType.text,
+                  // autofocus: true,
+                  style: TextStyle(color: textColor),
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: "Detalhes do Evento (opcional)",
+                    labelStyle: TextStyle(color: textColor),
                   ),
-                )));
-      }
-    }));
+                ),
+
+                const SizedBox(height: 20),
+
+                ElevatedButton(
+                  onPressed: () async {
+                    setState(() {
+                      isLoading = true;
+                    });
+
+                   await salvar().then((value) {
+                      setState(() {
+                        isLoading = false;
+                      });
+
+                      Get.offAndToNamed(AppRoutes.events);
+                    });
+
+                    Get.defaultDialog(
+                        title: "Aviso",
+                        middleText: "Informações atualizadas com sucesso!");
+
+                    // final snackBar = SnackBar(
+                    //     backgroundColor: _loginController.colorFromHex(
+                    //         _loginController.listCore
+                    //             .where((coreItem) =>
+                    //                 coreItem.coreChave == 'textDark')
+                    //             .first
+                    //             .coreValor
+                    //             .toString()),
+                    //     content: Container(
+                    //         height: 40,
+                    //         child: Center(
+                    //             child:
+                    //                 const Text('Informações salvas 1!'))));
+                    //ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  },
+                  child: (isLoading)
+                      ? const SizedBox(
+                          // width: 16,
+                          height: 50,
+                          child: CircularProgressIndicator(
+                            color: Colors.white,
+                            strokeWidth: 1.5,
+                          ))
+                      : Text(
+                          "Salvar",
+                          style: TextStyle(
+                              color: _loginController.colorFromHex(
+                                  _loginController.listCore
+                                      .where((coreItem) =>
+                                          coreItem.coreChave == 'textLight')
+                                      .first
+                                      .coreValor
+                                      .toString()),
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500),
+                        ),
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(
+                      _loginController.colorFromHex(_loginController.listCore
+                          .where(
+                              (coreItem) => coreItem.coreChave == 'iconColor')
+                          .first
+                          .coreValor
+                          .toString()),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 10),
+              ])
+                  // ],
+                  ),
+            )));
+      //}
+    });
   }
 
   Future<void> salvar() async {

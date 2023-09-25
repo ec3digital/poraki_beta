@@ -7,10 +7,16 @@ import 'package:poraki/app/routes/app_routes.dart';
 import 'package:poraki/app/theme/app_theme.dart';
 import 'package:poraki/app/util/alerta.dart';
 
-class ForgotPwPage extends StatelessWidget {
+class ForgotPwPage extends StatefulWidget {
+  @override
+  State<ForgotPwPage> createState() => _ForgotPwPageState();
+}
+
+class _ForgotPwPageState extends State<ForgotPwPage> {
   final TextEditingController txtEmail = TextEditingController();
   late FirebaseFirestore? fbInstance;
   final FirebaseAuth? auth = FirebaseAuth.instance;
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {

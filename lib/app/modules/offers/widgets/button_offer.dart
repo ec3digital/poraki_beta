@@ -25,14 +25,11 @@ class ButtonOffer extends StatelessWidget {
       height: 50,
       width: double.maxFinite,
       child: ElevatedButton(
-        style: ElevatedButton.styleFrom(primary: isWhatsapp ? Color.fromRGBO(18, 140, 126, 1.0) : colorButton),
+        style: ElevatedButton.styleFrom(backgroundColor: isWhatsapp ? Color.fromRGBO(18, 140, 126, 1.0) : colorButton),
         onPressed: onPressed,
-        // onPressed: () {
-        //   Get.toNamed(AppRoutes.shoppingCart);
-        // },
         child: Text(
           text,
-          style: Get.textTheme.bodyText1!.copyWith(
+          style: Get.textTheme.bodyLarge!.copyWith(
               fontSize: 18, color: colorText, fontWeight: FontWeight.w500),
         ),
       ),

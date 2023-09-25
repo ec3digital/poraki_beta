@@ -88,10 +88,6 @@ class MofferController extends GetxController {
   OfferRepository offerRepository = OfferRepository();
 
 
-
-  //MofferController();
-
-
   @override
   void onInit() async {
     // txtCEP.text = _loginController.usuCep.toString();
@@ -202,7 +198,5 @@ class MofferController extends GetxController {
       changeLoading(false);
     }
   }
-
-
 
 }

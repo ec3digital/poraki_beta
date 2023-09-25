@@ -46,7 +46,7 @@ class _BodyMoffer extends State<BodyMoffer> {
   // bool _isEditing = false;
   // var _form = GlobalKey<FormState>();
 
-  bool _isLoading = false;
+  bool isLoading = false;
   bool _load = true;
   var _revendaSel = 'selecione';
   var _categoriaSel = '';
@@ -275,7 +275,7 @@ class _BodyMoffer extends State<BodyMoffer> {
         ),
       ),
       //drawer: DrawerHome(0),
-      body: _isLoading
+      body: isLoading
           ? Center(
               child: CircularProgressIndicator(),
             )

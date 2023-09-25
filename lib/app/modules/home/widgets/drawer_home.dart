@@ -196,6 +196,7 @@ class _DrawerHomeState extends State<DrawerHome> {
                       // isSelected: index == 9,
                       onTap: () {
                         Get.deleteAll(force: true);
+                        FirebaseAuth.instance.signOut();
                         // _runSpecialCmds();
                         Get.offAllNamed(AppRoutes.signIn);
                       },

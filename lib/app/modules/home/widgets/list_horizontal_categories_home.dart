@@ -21,6 +21,7 @@ class ListHorizontalCategoriesHome extends StatelessWidget {
     var listQtdCategsNomes = [];
 
     // traz somente as categorias que tenham algum item
+    //_categoriesController.getQtyCategs();
     _categoriesController.qtdCategs.forEach((element) { listQtdCategsNomes.add(element.CategoriaChave.toString());});
     _loginController.listaCategorias.forEach((element) {
        if(listQtdCategsNomes.contains(element.categoriaChave))

@@ -20,6 +20,7 @@ class EventsListPage extends StatefulWidget {
 
 class _EventsListPageState extends State<EventsListPage> {
   final HomeController controller = Get.find();
+  List<Evento> evtList = [];
 
   @override
   Widget build(BuildContext context) {
@@ -37,19 +38,20 @@ class _EventsListPageState extends State<EventsListPage> {
         .first
         .coreValor
         .toString());
-    Future<List<Evento>> _evtList;
 
-    // @override
-    // void initState() {
-    //   super.initState();
-    //   _evtList = pegaEventos();
-    // }
+    Future<void> pegaEventos() async {
+      evtList = await _eventController.retornaEventos();
+    }
 
     Widget _buildRow(Evento evento) {
       if (evento.EventoUID == _loginController.usuGuid)
         return ListTile(
           trailing: GestureDetector(onTap: () async {
             await _eventController.apagaEvento(evento);
+            var tempEvtList = await _eventController.retornaEventos();
+            setState(() {
+              evtList = tempEvtList;
+            });
 
           },
             child: Badge(
@@ -153,15 +155,6 @@ class _EventsListPageState extends State<EventsListPage> {
         );
     }
 
-    Future<List<Evento>> pegaEventos() async {
-      await _eventController.carregaEventos();
-      return _eventController.eventos;
-
-      // setState(() {
-      //   evtList = _eventController.eventos;
-      // });
-    }
-
     return FutureBuilder(
         future: pegaEventos(),
         builder: (context, futuro) {
@@ -199,7 +192,7 @@ class _EventsListPageState extends State<EventsListPage> {
                     style: TextStyle(fontSize: 26),
                   )),
                   const SizedBox(height: 10),
-                  if (_eventController.eventos.length == 0)
+                  if (evtList.length == 0)
                     Container(
                         child: Center(
                             child: Text(
@@ -212,7 +205,7 @@ class _EventsListPageState extends State<EventsListPage> {
                           scrollDirection: Axis.vertical,
                           shrinkWrap: true,
                           padding: const EdgeInsets.all(6.0),
-                          itemCount: _eventController.eventos.length,
+                          itemCount: evtList.length,
                           itemBuilder: (BuildContext context, int index) {
                             return Container(
                                 padding: const EdgeInsets.all(8),
@@ -226,7 +219,7 @@ class _EventsListPageState extends State<EventsListPage> {
                                   color: backColor,
                                 ),
                                 child:
-                                    _buildRow(_eventController.eventos[index]));
+                                    _buildRow(evtList[index]));
                           }),
                     ))
                 ]

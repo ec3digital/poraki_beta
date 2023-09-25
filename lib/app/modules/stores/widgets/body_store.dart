@@ -34,6 +34,8 @@ class _StoreBodyState extends State<StoreBody> {
   bool valAceitaPoraki10 = false;
   DateTime valDataCupomDe = new DateTime.now();
   DateTime valDataCupomAte = new DateTime.now();
+  bool isSalvarLoading = false;
+  bool isApagarLoading = false;
   // final _form = GlobalKey<FormState>();
 
   @override
@@ -44,12 +46,12 @@ class _StoreBodyState extends State<StoreBody> {
         .coreValor
         .toString());
 
-    return Container(child: GetBuilder<StoreController>(builder: (context) {
-      if (storeController.isLoading) {
-        return Center(
-          child: Container(),
-        );
-      } else {
+    return FutureBuilder<StoreController>(builder: (context, futuro) {
+      // if (isLoading) {
+      //   return Center(
+      //     child: Container(),
+      //   );
+      // } else {
         if (storeController.loja != null) {
           Future.delayed(Duration.zero, () async {
             storeController.bindLoja();
@@ -148,9 +150,9 @@ class _StoreBodyState extends State<StoreBody> {
                       // },
                       inputFormatters: [
                         FilteringTextInputFormatter.digitsOnly,
-                        TelefoneInputFormatter(),
+                        CnpjInputFormatter(),
                       ],
-                      controller: storeController.txtLojaWhatsapp,
+                      controller: storeController.txtLojaCNPJ,
 
                       onFieldSubmitted: (cnpj) {
                         if (!CNPJValidator.isValid(cnpj)) {
@@ -205,7 +207,11 @@ class _StoreBodyState extends State<StoreBody> {
                       //   }
                       //   return null;
                       // },
-                      controller: storeController.txtLojaRazao,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly,
+                        TelefoneInputFormatter(),
+                      ],
+                      controller: storeController.txtLojaWhatsapp,
                       autofocus: false, // true,
                       style: TextStyle(color: textColor),
                       decoration: InputDecoration(
@@ -524,10 +530,20 @@ class _StoreBodyState extends State<StoreBody> {
                         fit: BoxFit.contain,
                       ),
                     SizedBox(height: 20),
-                    ButtonOffer(
-                      onPressed: () {
-                        salvar().then(
-                            (value) => Get.offAndToNamed(AppRoutes.stores));
+
+                    ElevatedButton(
+                      onPressed: () async {
+                        setState(() {
+                          isSalvarLoading = true;
+                        });
+
+                        await salvar().then((value) {
+                          setState(() {
+                            isSalvarLoading = false;
+                          });
+
+                          Get.offAndToNamed(AppRoutes.stores);
+                        });
 
                         Get.defaultDialog(
                             title: "Aviso",
@@ -548,55 +564,141 @@ class _StoreBodyState extends State<StoreBody> {
                         //                 const Text('Informações salvas 1!'))));
                         //ScaffoldMessenger.of(context).showSnackBar(snackBar);
                       },
-                      colorText: _loginController.colorFromHex(_loginController
-                          .listCore
-                          .where(
-                              (coreItem) => coreItem.coreChave == 'textLight')
-                          .first
-                          .coreValor
-                          .toString()),
-                      text: 'Salvar',
-                      colorButton: _loginController.colorFromHex(
-                          _loginController.listCore
-                              .where((coreItem) =>
-                                  coreItem.coreChave == 'iconColor')
+                      child: (isSalvarLoading)
+                          ? const SizedBox(
+                        // width: 16,
+                          height: 50,
+                          child: CircularProgressIndicator(
+                            color: Colors.white,
+                            strokeWidth: 1.5,
+                          ))
+                          : Text(
+                        "Salvar",
+                        style: TextStyle(
+                            color: _loginController.colorFromHex(
+                                _loginController.listCore
+                                    .where((coreItem) =>
+                                coreItem.coreChave == 'textLight')
+                                    .first
+                                    .coreValor
+                                    .toString()),
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500),
+                      ),
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                          _loginController.colorFromHex(_loginController.listCore
+                              .where(
+                                  (coreItem) => coreItem.coreChave == 'iconColor')
                               .first
                               .coreValor
                               .toString()),
+                        ),
+                      ),
                     ),
 
-                    if (storeController.loja != null)
-                      ButtonOffer(
-                        onPressed: () async {
-                          await storeController.apagaLoja(storeController.loja).then((value) => Get.offAndToNamed(AppRoutes.stores));
 
-                          Get.defaultDialog(
-                              title: "Aviso",
-                              middleText: "Loja removida do Poraki !");
+                    ElevatedButton(
+                      onPressed: () async {
+                        setState(() {
+                          isApagarLoading = true;
+                        });
 
-                        },
-                        colorText: _loginController.colorFromHex(_loginController
-                            .listCore
-                            .where((coreItem) => coreItem.coreChave == 'textDark')
-                            .first
-                            .coreValor
-                            .toString()),
-                        text: 'Apagar Loja',
-                        colorButton: _loginController.colorFromHex(
-                            _loginController.listCore
-                                .where((coreItem) =>
-                                    coreItem.coreChave == 'textLight')
-                                .first
-                                .coreValor
-                                .toString()),
+                        await storeController.apagaLoja(storeController.loja).then((value) {
+                          setState(() {
+                            isApagarLoading = false;
+                          });
+
+                          Get.offAndToNamed(AppRoutes.stores);
+                        });
+
+                        Get.defaultDialog(
+                            title: "Aviso",
+                            middleText: "Loja removida do Poraki !");
+
+                        // final snackBar = SnackBar(
+                        //     backgroundColor: _loginController.colorFromHex(
+                        //         _loginController.listCore
+                        //             .where((coreItem) =>
+                        //                 coreItem.coreChave == 'textDark')
+                        //             .first
+                        //             .coreValor
+                        //             .toString()),
+                        //     content: Container(
+                        //         height: 40,
+                        //         child: Center(
+                        //             child:
+                        //                 const Text('Informações salvas 1!'))));
+                        //ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                      },
+                      child: (isApagarLoading)
+                          ? const SizedBox(
+                        // width: 16,
+                          height: 50,
+                          child: CircularProgressIndicator(
+                            color: Colors.white,
+                            strokeWidth: 1.5,
+                          ))
+                          : Text(
+                        "Apagar Loja",
+                        style: TextStyle(
+                            color: _loginController.colorFromHex(
+                                _loginController.listCore
+                                    .where((coreItem) =>
+                                coreItem.coreChave == 'textLight')
+                                    .first
+                                    .coreValor
+                                    .toString()),
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500),
                       ),
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                          _loginController.colorFromHex(_loginController.listCore
+                              .where(
+                                  (coreItem) => coreItem.coreChave == 'textDark')
+                              .first
+                              .coreValor
+                              .toString()),
+                        ),
+                      ),
+                    ),
+
+
+                    //
+                    // if (storeController.loja != null)
+                    //   ButtonOffer(
+                    //     onPressed: () async {
+                    //       await storeController.apagaLoja(storeController.loja).then((value) => Get.offAndToNamed(AppRoutes.stores));
+                    //
+                    //       Get.defaultDialog(
+                    //           title: "Aviso",
+                    //           middleText: "Loja removida do Poraki !");
+                    //
+                    //     },
+                    //     colorText: _loginController.colorFromHex(_loginController
+                    //         .listCore
+                    //         .where((coreItem) => coreItem.coreChave == 'textDark')
+                    //         .first
+                    //         .coreValor
+                    //         .toString()),
+                    //     text: 'Apagar Loja',
+                    //     colorButton: _loginController.colorFromHex(
+                    //         _loginController.listCore
+                    //             .where((coreItem) =>
+                    //                 coreItem.coreChave == 'textLight')
+                    //             .first
+                    //             .coreValor
+                    //             .toString()),
+                    //   ),
 
                   ])
                   // ],
                   ),
             )));
-      }
-    }));
+      //}
+    });
+    //);
   }
 
   Future<void> salvar() async {

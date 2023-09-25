@@ -66,6 +66,14 @@ class LoginController extends GetxController {
   // atribui a variavel da nuvem
   Future<void> getCloudId() async {
     cloudId = '057';
+
+    await fbInstance!
+        .collection("akiusuarios")
+        .doc(auth!.currentUser!.uid)
+        .get()
+        .then((value) {
+      cloudId = value['Regiao'].toString().trim();
+    });
   }
 
   // carrega dados do usuario
