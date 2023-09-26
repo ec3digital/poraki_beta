@@ -49,6 +49,15 @@ class LoginService {
         _loginController.usuGuid = CurrentUserObject!.uid;
         _loginController.usuEmail = CurrentUserObject!.email;
 
+        await _loginController.fbInstance!
+            .collection("akiusuarios")
+            .doc(CurrentUserObject?.uid)
+            .get()
+            .then((value) {
+          _loginController.cloudId = value['Regiao'].toString().trim();
+          _loginController.usuCep = value['CEP'].toString().trim();
+        });
+
         var u = CurrentUserObject;
         // print('usuario fb uid: ' + u!.uid.toString());
         // print('usuario fb email:' + u.email.toString());

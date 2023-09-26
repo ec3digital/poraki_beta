@@ -47,6 +47,9 @@ class _BodyMoffer extends State<BodyMoffer> {
   // var _form = GlobalKey<FormState>();
 
   bool isLoading = false;
+  bool isSalvarLoading = false;
+  bool isMarcarLoading = false;
+  bool isRemoverLoading = false;
   bool _load = true;
   var _revendaSel = 'selecione';
   var _categoriaSel = '';
@@ -462,7 +465,7 @@ class _BodyMoffer extends State<BodyMoffer> {
 
                             decoration: InputDecoration(
                               labelText: 'Preço',
-                              prefix: Text('R\$ '),
+                              // prefix: Text('R\$ '),
                               border: OutlineInputBorder(),
                             ),
                             textInputAction: TextInputAction.next,
@@ -2199,28 +2202,83 @@ class _BodyMoffer extends State<BodyMoffer> {
                             fit: BoxFit.contain,
                           ),
                         const SizedBox(height: 20),
-                        ButtonOffer(
-                            text: 'Salvar',
-                            colorText: _loginController.colorFromHex(
-                                _loginController.listCore
-                                    .where((coreItem) =>
-                                        coreItem.coreChave == 'textLight')
-                                    .first
-                                    .coreValor
-                                    .toString()),
-                            colorButton: _loginController.colorFromHex(
-                                _loginController.listCore
-                                    .where((coreItem) =>
-                                        coreItem.coreChave == 'iconColor')
-                                    .first
-                                    .coreValor
-                                    .toString()),
-                            onPressed: () {
-                              uploadFoto(image == null ? null : image,
-                                      _loginController.usuGuid.toString())
-                                  .then((value) =>
-                                      Get.offAndToNamed(AppRoutes.mOffers));
-                            }),
+
+                        ElevatedButton(
+                          onPressed: () async {
+                            setState(() {
+                              isSalvarLoading = true;
+                            });
+
+                            await uploadFoto(image == null ? null : image,
+                                              _loginController.usuGuid.toString())
+                                          .then((value) {
+                              setState(() {
+                                isSalvarLoading = false;
+                              });
+
+                              Get.offAndToNamed(AppRoutes.mOffers);
+                            });
+
+                            Get.defaultDialog(
+                                title: "Aviso",
+                                middleText: "Informações atualizadas com sucesso!");
+                          },
+                          child: (isSalvarLoading)
+                              ? const SizedBox(
+                            // width: 16,
+                              height: 50,
+                              child: CircularProgressIndicator(
+                                color: Colors.white,
+                                strokeWidth: 1.5,
+                              ))
+                              : Text(
+                            "Salvar",
+                            style: TextStyle(
+                                color: _loginController.colorFromHex(
+                                    _loginController.listCore
+                                        .where((coreItem) =>
+                                    coreItem.coreChave == 'textLight')
+                                        .first
+                                        .coreValor
+                                        .toString()),
+                                fontSize: 18,
+                                fontWeight: FontWeight.w500),
+                          ),
+                          style: ButtonStyle(fixedSize: MaterialStateProperty.all<Size>(Size.fromWidth(MediaQuery.of(context).size.width)),
+                            backgroundColor: MaterialStateProperty.all<Color>(
+                              _loginController.colorFromHex(_loginController.listCore
+                                  .where(
+                                      (coreItem) => coreItem.coreChave == 'iconColor')
+                                  .first
+                                  .coreValor
+                                  .toString()),
+                            ),
+                          ),
+                        ),
+
+                        //
+                        // ButtonOffer(
+                        //     text: 'Salvar',
+                        //     colorText: _loginController.colorFromHex(
+                        //         _loginController.listCore
+                        //             .where((coreItem) =>
+                        //                 coreItem.coreChave == 'textLight')
+                        //             .first
+                        //             .coreValor
+                        //             .toString()),
+                        //     colorButton: _loginController.colorFromHex(
+                        //         _loginController.listCore
+                        //             .where((coreItem) =>
+                        //                 coreItem.coreChave == 'iconColor')
+                        //             .first
+                        //             .coreValor
+                        //             .toString()),
+                        //     onPressed: () {
+                        //       uploadFoto(image == null ? null : image,
+                        //               _loginController.usuGuid.toString())
+                        //           .then((value) =>
+                        //               Get.offAndToNamed(AppRoutes.mOffers));
+                        //     }),
 
                         // if(_mofferController.mofferGuid.toString() != '')
                         //   const SizedBox(height: 20),
@@ -2248,61 +2306,180 @@ class _BodyMoffer extends State<BodyMoffer> {
                         //
                         //     }),
 
-                        if (_mofferController.singleOffer != null)
-                          ButtonOffer(
-                            onPressed: () async {
-                              await _mofferController.markOfferSold(
-                                  _mofferController.singleOffer!.OfertaGUID
-                                      .toString());
 
-                              Get.defaultDialog(
-                                  title: "Aviso", middleText: "Vendido!");
+
+
+                        if (_mofferController.singleOffer != null)
+                          ElevatedButton(
+                            onPressed: () async {
+                            setState(() {
+                              isMarcarLoading = true;
+                            });
+
+                            await _mofferController.markOfferSold(
+                                        _mofferController.singleOffer!.OfertaGUID
+                                            .toString())
+                                .then((value) {
+                              setState(() {
+                                isMarcarLoading = false;
+                              });
 
                               Get.offAndToNamed(AppRoutes.mOffers);
-                            },
-                            colorText: _loginController.colorFromHex(
-                                _loginController.listCore
-                                    .where((coreItem) =>
-                                        coreItem.coreChave == 'textLight')
-                                    .first
-                                    .coreValor
-                                    .toString()),
-                            text: 'Marcar Vendido',
-                            colorButton: _loginController.colorFromHex(
-                                _loginController.listCore
-                                    .where((coreItem) =>
-                                        coreItem.coreChave == 'textDark')
-                                    .first
-                                    .coreValor
-                                    .toString()),
-                          ),
-                        ButtonOffer(
-                          onPressed: () async {
-                            await _mofferController.apagaMoffer(
-                                _mofferController.singleOffer!.OfertaGUID
-                                    .toString());
+                            });
 
                             Get.defaultDialog(
-                                title: "Aviso", middleText: "Oferta removida");
-
-                            Get.offAndToNamed(AppRoutes.mOffers);
+                                title: "Aviso", middleText: "Vendido!");
                           },
-                          colorText: _loginController.colorFromHex(
-                              _loginController.listCore
-                                  .where((coreItem) =>
-                                      coreItem.coreChave == 'textDark')
+                          child: (isMarcarLoading)
+                              ? const SizedBox(
+                            // width: 16,
+                              height: 50,
+                              child: CircularProgressIndicator(
+                                color: Colors.white,
+                                strokeWidth: 1.5,
+                              ))
+                              : Text(_mofferController.singleOffer!.OfertaDispoAte!.length > 4 ? "Desmarcar Vendido" :
+                            "Marcar Vendido",
+                            style: TextStyle(
+                                color: _loginController.colorFromHex(
+                                    _loginController.listCore
+                                        .where((coreItem) =>
+                                    coreItem.coreChave == 'textLight')
+                                        .first
+                                        .coreValor
+                                        .toString()),
+                                fontSize: 18,
+                                fontWeight: FontWeight.w500),
+                          ),
+                          style: ButtonStyle(fixedSize: MaterialStateProperty.all<Size>(Size.fromWidth(MediaQuery.of(context).size.width)),
+                            backgroundColor: MaterialStateProperty.all<Color>(
+                              _loginController.colorFromHex(_loginController.listCore
+                                  .where(
+                                      (coreItem) => coreItem.coreChave == 'textDark')
                                   .first
                                   .coreValor
                                   .toString()),
-                          text: 'Apagar Oferta',
-                          colorButton: _loginController.colorFromHex(
-                              _loginController.listCore
-                                  .where((coreItem) =>
-                                      coreItem.coreChave == 'textLight')
-                                  .first
-                                  .coreValor
-                                  .toString()),
+                            ),
+                          ),
                         ),
+
+
+                        // if (_mofferController.singleOffer != null)
+                        //   ButtonOffer(
+                        //     onPressed: () async {
+                        //       await _mofferController.markOfferSold(
+                        //           _mofferController.singleOffer!.OfertaGUID
+                        //               .toString());
+                        //
+                        //       Get.defaultDialog(
+                        //           title: "Aviso", middleText: "Vendido!");
+                        //
+                        //       Get.offAndToNamed(AppRoutes.mOffers);
+                        //     },
+                        //     colorText: _loginController.colorFromHex(
+                        //         _loginController.listCore
+                        //             .where((coreItem) =>
+                        //                 coreItem.coreChave == 'textLight')
+                        //             .first
+                        //             .coreValor
+                        //             .toString()),
+                        //     text: 'Marcar Vendido',
+                        //     colorButton: _loginController.colorFromHex(
+                        //         _loginController.listCore
+                        //             .where((coreItem) =>
+                        //                 coreItem.coreChave == 'textDark')
+                        //             .first
+                        //             .coreValor
+                        //             .toString()),
+                        //   ),
+
+
+
+                        if (_mofferController.singleOffer != null)
+                          ElevatedButton(
+                            onPressed: () async {
+                              setState(() {
+                                isRemoverLoading = true;
+                              });
+
+                              await _mofferController.apagaMoffer(
+                                  _mofferController.singleOffer!.OfertaGUID
+                                      .toString())
+                                  .then((value) {
+                                setState(() {
+                                  isRemoverLoading = false;
+                                });
+
+                                Get.offAndToNamed(AppRoutes.mOffers);
+                              });
+
+                              Get.defaultDialog(
+                                  title: "Aviso", middleText: "Oferta removida");
+                            },
+                            child: (isRemoverLoading)
+                                ? const SizedBox(
+                              // width: 16,
+                                height: 50,
+                                child: CircularProgressIndicator(
+                                  color: Colors.white,
+                                  strokeWidth: 1.5,
+                                ))
+                                : Text(
+                              "Apagar Oferta",
+                              style: TextStyle(
+                                  color: _loginController.colorFromHex(
+                                      _loginController.listCore
+                                          .where((coreItem) =>
+                                      coreItem.coreChave == 'textLight')
+                                          .first
+                                          .coreValor
+                                          .toString()),
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                            style: ButtonStyle(fixedSize: MaterialStateProperty.all<Size>(Size.fromWidth(MediaQuery.of(context).size.width)),
+                              backgroundColor: MaterialStateProperty.all<Color>(
+                                _loginController.colorFromHex(_loginController.listCore
+                                    .where(
+                                        (coreItem) => coreItem.coreChave == 'textDark')
+                                    .first
+                                    .coreValor
+                                    .toString()),
+                              ),
+                            ),
+                          ),
+
+
+                        // ButtonOffer(
+                        //   onPressed: () async {
+                        //     await _mofferController.apagaMoffer(
+                        //         _mofferController.singleOffer!.OfertaGUID
+                        //             .toString());
+                        //
+                        //     Get.defaultDialog(
+                        //         title: "Aviso", middleText: "Oferta removida");
+                        //
+                        //     Get.offAndToNamed(AppRoutes.mOffers);
+                        //   },
+                        //   colorText: _loginController.colorFromHex(
+                        //       _loginController.listCore
+                        //           .where((coreItem) =>
+                        //               coreItem.coreChave == 'textDark')
+                        //           .first
+                        //           .coreValor
+                        //           .toString()),
+                        //   text: 'Apagar Oferta',
+                        //   colorButton: _loginController.colorFromHex(
+                        //       _loginController.listCore
+                        //           .where((coreItem) =>
+                        //               coreItem.coreChave == 'textLight')
+                        //           .first
+                        //           .coreValor
+                        //           .toString()),
+                        // ),
+
+
+
                       ])
                   ],
                 ),
@@ -2395,10 +2572,17 @@ class _BodyMoffer extends State<BodyMoffer> {
     //     formaFechto = formaFechSel;
     // }
 
+    print('salva preço: ' + _mofferController
+        .txtPreco.text.removeAllWhitespace
+        .replaceFirst('R\$', '')
+        .replaceFirst('.', '')
+        .replaceFirst(',', '.'));
+
     double valPreco = 0.0;
     if (_categSelecionada.categoriaChave != 'DOACAO')
       valPreco = double.parse(_mofferController
           .txtPreco.text.removeAllWhitespace
+          .replaceFirst('R\$', '')
           .replaceFirst('.', '')
           .replaceFirst(',', '.'));
 
@@ -3061,17 +3245,18 @@ class _BodyMoffer extends State<BodyMoffer> {
         //     ? '0'
         //     : oferta.OfertaQtdAviso.toString();
 
-        print('preco 2: ' + oferta.OfertaPreco.toString());
+        print('preco 2: ' + UtilBrasilFields.obterReal(double.parse(oferta.OfertaPreco.toString())));
         _mofferController.txtPreco.text =
-            oferta.OfertaPreco == null ? '0,00' : oferta.OfertaPreco.toString();
-        _mofferController.txtTempoEntrega.text =
+            oferta.OfertaPreco == null ? '0,00' : UtilBrasilFields.obterReal(double.parse(oferta.OfertaPreco.toString()));
+
+        //_mofferController.txtTempoEntrega.text =
             // oferta.OfertaTempoEntrega == null
             //     ? '0'
             //     : oferta.OfertaTempoEntrega.toString();
 
             // _offerGuid = _mofferController.mofferGuid!;
 
-            _mofferController.valSegDas = oferta.SegDas.toString();
+        _mofferController.valSegDas = oferta.SegDas.toString();
         _mofferController.valSegAs = oferta.SegAs.toString();
         _mofferController.valTerDas = oferta.TerDas.toString();
         _mofferController.valTerAs = oferta.TerAs.toString();

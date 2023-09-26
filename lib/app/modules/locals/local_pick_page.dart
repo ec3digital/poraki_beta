@@ -59,7 +59,7 @@ class _LocalPickPageState extends State<LocalPickPage> {
                       Padding(
                         padding: const EdgeInsets.all(14.0),
                         child: Text(
-                            'Caso não encontre sua região na lista, escolha a opção mais próxima. Estamos trabalhando para descobrir ofertas próximas à você',
+                            'Caso não encontre sua região na lista, escolha a opção mais próxima. Estamos trabalhando para descobrir ofertas mais perto você',
                             style: TextStyle(fontSize: 17, color: Colors.black54, fontStyle: FontStyle.italic),softWrap: true,textAlign: TextAlign.justify),
                       ),
                       const SizedBox(height: 10),
@@ -80,18 +80,17 @@ class _LocalPickPageState extends State<LocalPickPage> {
                             value: localSel,
                             onChanged: (String? newValue) async {
                               if (newValue != '') {
-                                _loginController.usuCep = localSel;
-                                _loginController.cloudId = localSel;
+                                // _loginController.usuCep = newValue;
+                                setState(() {
+                                  localSel = newValue!.substring(0, 3);
+                                  _loginController.cloudId = localSel;
+
+                                });
+
                                 await _loginController.fbInstance!
                                     .collection("akiusuarios")
                                     .doc(_loginController.usuGuid)
                                     .update({'Regiao': localSel});
-
-                                setState(() {
-                                  _loginController.cloudId =
-                                      newValue!.substring(0, 3);
-                                  localSel = newValue;
-                                });
 
                                 // new sqlPorakiLoginService().updateUsuarioCEP(
                                 //     localSel,

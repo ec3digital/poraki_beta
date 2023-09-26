@@ -73,6 +73,7 @@ class LoginController extends GetxController {
         .get()
         .then((value) {
       cloudId = value['Regiao'].toString().trim();
+      usuCep = value['CEP'].toString().trim();
     });
   }
 
@@ -82,6 +83,7 @@ class LoginController extends GetxController {
     usuGuid = auth!.currentUser!.uid.toString();
     usuEmail = auth!.currentUser!.email.toString();
     usuNome = auth!.currentUser!.displayName.toString();
+
 
     //pega o cep local
     //await _getCep();

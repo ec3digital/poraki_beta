@@ -54,7 +54,7 @@ class _LoginPageState extends State<LoginPage> {
             listUser = futuro.data as List<Map<String, dynamic>>?;
             listUser!.forEach((element) {
               _mailInputController.text = element["usuEmail"].toString();
-              _loginController.usuCep = element["usuRegiao"].toString();
+              // _loginController.usuCep = element["usuRegiao"].toString();
             });
 
             return Scaffold(
