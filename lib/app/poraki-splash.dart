@@ -13,11 +13,13 @@ class PorakiSplash extends StatefulWidget {
 }
 
 class _PorakiSplash extends State<PorakiSplash> {
+  final LoginController _loginController = Get.find();
+  final CategoriesController _categoriesController = Get.put(CategoriesController());
+
+
   @override
   void initState() {
     super.initState();
-    final LoginController _loginController = Get.find();
-    final CategoriesController _categoriesController = Get.put(CategoriesController());
 
     Timer(Duration(seconds: 0), () async {
       await _loginController.runCore();

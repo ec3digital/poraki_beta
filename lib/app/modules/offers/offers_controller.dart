@@ -100,7 +100,7 @@ class OffersController extends GetxController {
   @override
   void onInit() async {
     print('offers controller onInit');
-    await loadOffers();
+    // await loadOffers();
 
     super.onInit();
   }

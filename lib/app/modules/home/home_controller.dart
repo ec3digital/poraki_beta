@@ -14,7 +14,7 @@ class HomeController extends GetxController {
 
   OfferRepository offerRepository = OfferRepository();
   CategoriesRepository categoriesRepository = CategoriesRepository();
-  LoginController _loginController = Get.find();
+  // LoginController _loginController = Get.find();
   // OffersController _offersController = Get.put(OffersController());
   // PeopleRepository peopleRepository = PeopleRepository();
 
@@ -29,12 +29,12 @@ class HomeController extends GetxController {
 
   @override
   void onInit() async {
-    // await getCategories();
-    // mostra as 4 ofertas de cada seção; esses valores sao passados para a API, evitando trazer dados desnecessários
-    await getOffers(4);
-    await getBestOffers(4);
-    await getMostFreshOffers(4);
-    await getBestSellersOffers(4);
+    // // await getCategories();
+    // // mostra as 4 ofertas de cada seção; esses valores sao passados para a API, evitando trazer dados desnecessários
+    // await getOffers(4);
+    // await getBestOffers(4);
+    // await getMostFreshOffers(4);
+    // await getBestSellersOffers(4);
 
     // await getPeople();
 

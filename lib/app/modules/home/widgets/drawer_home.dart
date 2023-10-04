@@ -91,12 +91,7 @@ class _DrawerHomeState extends State<DrawerHome> {
                       text: 'Inicio',
                       // isSelected: index == 0,
                       icon: Icons.home_outlined,
-                      onTap: () async {
-                        await _login.getCategories();
-                        await _login.loadStoresData();
-                        await _login.loadOffersFavsGuids();
-                        await _login.getBrands();
-                        Get.toNamed(AppRoutes.home); },
+                      onTap: () => Get.toNamed(AppRoutes.home),
                     ),
                     // RowCategoriesDrawerHome(
                     //   text: 'Mensagens',

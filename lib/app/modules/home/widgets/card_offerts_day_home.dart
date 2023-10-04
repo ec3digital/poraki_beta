@@ -25,7 +25,7 @@ class CardOffertsDayHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final LoginController _loginController = Get.find();
-    final OffersController offersController = Get.put(OffersController());
+    final OffersController offersController = Get.find(); // Get.put(OffersController());
 
     final Color textDark = _loginController.colorFromHex(_loginController
         .listCore

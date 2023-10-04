@@ -9,17 +9,29 @@ import 'widgets/app_bar_home.dart';
 import 'widgets/body_home.dart';
 import 'widgets/drawer_home.dart';
 
-class HomePage extends StatelessWidget {
-  final HomeController controller = Get.put(HomeController());
-  final RefreshController _refreshController = RefreshController();
-  final LoginController _loginController = Get.find();
-  //final CategoriesController categController = Get.put(CategoriesController());
+class HomePage extends StatefulWidget {
 
   HomePage({Key? key}) : super(key: key);
 
   @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  final HomeController controller = Get.put(HomeController());
+  final RefreshController _refreshController = RefreshController();
+  final LoginController _loginController = Get.find();
+
+  @override
+  void initState() {
+    // try { OffersController _offerCtrl = Get.find(); }
+    // catch (execpetion) { Get.lazyPut(() => OffersController()); }
+
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    Get.lazyPut(() => OffersController());
     return Scaffold(
       // key: Get.key,
       appBar: PreferredSize(
