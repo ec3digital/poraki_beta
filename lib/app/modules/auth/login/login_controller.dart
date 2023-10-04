@@ -8,6 +8,7 @@ import 'package:poraki/app/data/models/lojas.dart';
 import 'package:poraki/app/data/models/ofertafav.dart';
 import 'package:poraki/app/data/models/produto_oferta.dart';
 import 'package:poraki/app/data/models/sql/sqlCore.dart';
+import 'package:poraki/app/data/repositories/offer_repository.dart';
 import 'package:poraki/app/data/repositories/offerfav_repository.dart';
 import 'package:poraki/app/services/fbporaki_service.dart';
 import 'package:poraki/app/services/sqlite/sqlporaki_core_service.dart';
@@ -32,10 +33,11 @@ class LoginController extends GetxController {
   List<Enderecos> listaEnderecos = [];
   List<Lojas> listLojas = [];
   //List<OfertasFavs> ofertasFavs = [];
-  List<ProdutoOferta> ofertasFavs = [];
+  // List<ProdutoOferta> ofertasFavs = [];
   List<Categorias> listaCategorias = [];
   // List<Revendas> listaRevendas = [];
   List<String> listaRevendasNomes = [];
+  List<String>? favoffersguids = [];
   bool _obscurePassword = false;
   bool refreshOfertasFavs = false;
   String? usuCep;
@@ -151,20 +153,20 @@ class LoginController extends GetxController {
     listaRevendasNomes.add('selecione');
   }
 
-  Future<void> loadOffersFavs() async {
-    print('entrou no loadOffersFavs()');
-    var offerfavRepository = new OfferfavRepository();
-
-    // if (refreshOfertasFavs) {
-    //   refreshOfertasFavs = false;
-      //await offerfavRepository.updateCollection(ofertasFavs);
-    // }
-    // // ofertasFavs.clear();
-
-    // ofertasFavs = await offerfavRepository.getAll();
-    //ofertasFavs = await offer
-    print('qt ofertasFavs: ' + ofertasFavs.length.toString());
-  }
+  // Future<void> loadOffersFavs() async {
+  //   print('entrou no loadOffersFavs()');
+  //   var offerfavRepository = new OfferfavRepository();
+  //
+  //   // if (refreshOfertasFavs) {
+  //   //   refreshOfertasFavs = false;
+  //     //await offerfavRepository.updateCollection(ofertasFavs);
+  //   // }
+  //   // // ofertasFavs.clear();
+  //
+  //   // ofertasFavs = await offerfavRepository.getAll();
+  //   //ofertasFavs = await offer
+  //   print('qt ofertasFavs: ' + ofertasFavs.length.toString());
+  // }
 
   // atualiza tabela core local com a nuvem
   Future<void> runCore() async {
@@ -210,12 +212,23 @@ class LoginController extends GetxController {
     return Color(int.parse(hexCode));
   }
 
-  _getCep() async {
-    if (usuCep == null) {
-      //var _addressController = new AddressController();
-      usuCep = '05735-030'; // await _addressController.getCepAtualLocal();
+  // _getCep() async {
+  //   if (usuCep == null) {
+  //     //var _addressController = new AddressController();
+  //     usuCep = '05735-030'; // await _addressController.getCepAtualLocal();
+  //   }
+  //   print('usuCep atual: ' + usuCep.toString());
+  // }
+
+  Future<void> loadOffersFavsGuids() async {
+    try {
+      var offerRepository = OfferRepository();
+      favoffersguids = await offerRepository.getFavOffersGuids(usuGuid.toString());
+      print('loadOffersFavsGuids');
+      // favoffersguids!.forEach((element) {print(element.toString() + '/');});
+    } catch (e) {
+      print('Erro no loadOffersFavsGuids() controller ${e.toString()}');
     }
-    print('usuCep atual: ' + usuCep.toString());
   }
 
   Future<void> getListBannersFromFBCloud() async {

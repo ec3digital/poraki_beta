@@ -34,6 +34,7 @@ class OfferfavRepository extends GetConnect {
 
   Future<String> postObj(OfertasFavs ofertafav) async {
     String url = 'https://poraki.hasura.app/api/rest/ofertafavadd/';
+    // print(ofertafav.toJson());
     var response = await http.post(
         Uri.parse(url),
         //Uri.parse('${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiEndereco').first.coreValor.toString()}'),
@@ -41,17 +42,22 @@ class OfferfavRepository extends GetConnect {
         body: ofertafav.toJson());
     // if (response.er)
     //   throw 'Ocorreu um erro em OrdersRepository().postAddress()';
-    return response.body.toString();
+    var ret = response.body.toString();
+    print(ret);
+    return ret;
   }
 
   Future<String> deleteObj(OfertasFavs ofertafav) async {
     String url = 'https://poraki.hasura.app/api/rest/ofertafavdel/';
+    // print(ofertafav.toJson());
     var response = await http.delete(
         Uri.parse(url),
       //Uri.parse('${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiEndereco').first.coreValor.toString()}'),
         headers: Constants.headers,
         body: ofertafav.toJson());
-    return response.body.toString();
+    var ret = response.body.toString();
+    print(ret);
+    return ret;
   }
 
 }

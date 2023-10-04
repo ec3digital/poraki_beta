@@ -18,24 +18,23 @@ class OffersPage extends StatelessWidget {
 
     try {
       storeId = Get.arguments[5]['storeId'].toString();
+      print('storeId = ${storeId.toString()}');
     } catch (exception) {}
 
-    print('storeId = ${storeId.toString()}');
-
     return Scaffold(
-        appBar: appBarOffers(Get.arguments[3]['title']),
-        body:
-            // Padding(padding: const EdgeInsets.all(0)
-            // Center(
+      appBar: appBarOffers(Get.arguments[3]['title']),
+      body:
+          // Padding(padding: const EdgeInsets.all(0)
+          // Center(
 
-            Container(
-          decoration: new BoxDecoration(
-              color: _loginController.colorFromHex(_loginController.listCore
-                  .where((coreItem) => coreItem.coreChave == 'backDark')
-                  .first
-                  .coreValor
-                  .toString())),
-          // child: Expanded(
+          Container(
+              decoration: new BoxDecoration(
+                  color: _loginController.colorFromHex(_loginController.listCore
+                      .where((coreItem) => coreItem.coreChave == 'backDark')
+                      .first
+                      .coreValor
+                      .toString())),
+              // child: Expanded(
               // flex: 1,
               child: Column(
                 // mainAxisAlignment: MainAxisAlignment.start,
@@ -85,20 +84,26 @@ class OffersPage extends StatelessWidget {
                       errorWidget: (context, url, error) =>
                           Icon(Icons.local_offer_outlined),
                       height: 100,
-                    ), const SizedBox(height: 12), Text(Get.arguments[3]['title'], style: TextStyle(fontSize: 16, color: _loginController.colorFromHex(_loginController.listCore
-        .where((coreItem) => coreItem.coreChave == 'textDark')
-        .first
-        .coreValor
-        .toString()))),
+                    ),
+                  const SizedBox(height: 12),
+                  Text(Get.arguments[3]['title'],
+                      style: TextStyle(
+                          fontSize: 16,
+                          color: _loginController.colorFromHex(_loginController
+                              .listCore
+                              .where((coreItem) =>
+                                  coreItem.coreChave == 'textDark')
+                              .first
+                              .coreValor
+                              .toString()))),
                   // const SizedBox(height: 2),
-
 
                   ListOffers()
                   // BodyOffers()
                 ],
               )),
-        // )
-        // backgroundColor: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'backDark').first.coreValor.toString()),
-        );
+      // )
+      // backgroundColor: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'backDark').first.coreValor.toString()),
+    );
   }
 }

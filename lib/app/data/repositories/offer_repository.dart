@@ -152,6 +152,26 @@ class OfferRepository extends GetConnect {
     return listOffers;
   }
 
+  Future<List<String>> getFavOffersGuids(String usuGuid) async {
+    print('getFavOffersGuids ' + usuGuid);
+    List<String> retOffersGuids = [];
+    // String url = '${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiMoffer').first.coreValor.toString()}/' + usuGuid;
+    // print('url moffer: ' + url);
+    String url = 'https://poraki.hasura.app/api/rest/ofertasfavguidsperuser/' + usuGuid;
+    var response = await get(url, headers: Constants.headers);
+    if (response.hasError) throw 'Ocorreu um erro em getFavOffersGuids()';
+
+    var jsonResult = response.body['OfertasFavsNew'];
+    print(jsonResult);
+    var result = (jsonResult as List<dynamic>).toList();
+
+    List<Map<String,dynamic>> convertedList;
+    convertedList = List<Map<String, dynamic>>.from(result);
+    convertedList.forEach((element) { retOffersGuids.add(element.values.single.toString()); });
+
+    return retOffersGuids;
+  }
+
   Oferta getOfferByGuid(String offerGuid) {
     return listOffers.where((oferta) => oferta.OfertaGUID == offerGuid).first;
   }

@@ -14,7 +14,8 @@ class HomeController extends GetxController {
 
   OfferRepository offerRepository = OfferRepository();
   CategoriesRepository categoriesRepository = CategoriesRepository();
-  OffersController _offersController = Get.put(OffersController());
+  LoginController _loginController = Get.find();
+  // OffersController _offersController = Get.put(OffersController());
   // PeopleRepository peopleRepository = PeopleRepository();
 
   List<ProdutoOferta>? offersToday = [];
@@ -34,7 +35,6 @@ class HomeController extends GetxController {
     await getBestOffers(4);
     await getMostFreshOffers(4);
     await getBestSellersOffers(4);
-    await _offersController.getOffersFavsByUser(24);
 
     // await getPeople();
 
@@ -56,8 +56,6 @@ class HomeController extends GetxController {
     try {
       changeLoading(true);
       bestoffers = await offerRepository.getBestOffers(limit);
-      LoginController _loginController = Get.find();
-      _loginController.ofertasFavs = bestoffers!;
     } catch (e) {
       print('Erro no getBestOffers() controller ${e.toString()}');
     } finally {
@@ -86,7 +84,8 @@ class HomeController extends GetxController {
       changeLoading(false);
     }
   }
-  //
+
+
   // Future<void> getCategories() async {
   //   FirebaseFirestore? _fbInstance;
   //   if (Firebase.apps.isEmpty) {

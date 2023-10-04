@@ -275,7 +275,7 @@ class OffersController extends GetxController {
       changeLoading(true);
       print('entrou no getOffersFavsByUser');
       LoginController _loginController = Get.find();
-      _loginController.ofertasFavs = await offerRepository.getFavsOffers(limit);
+      offers = await offerRepository.getFavsOffers(limit);
       this.refresh();
     } catch (e) {
       print('Erro no getOffersFavsByUser() controller ${e.toString()}');
@@ -284,10 +284,10 @@ class OffersController extends GetxController {
     }
   }
 
-  Future<void> getOffersFavsFromMemory() async {
-    LoginController _loginController = Get.find();
-    offers = _loginController.ofertasFavs;
-  }
+  // Future<void> getOffersFavsFromMemory() async {
+  //   LoginController _loginController = Get.find();
+  //   offers = _loginController.ofertasFavs;
+  // }
 
   Future<void> getOfferById(int ofertaId) async {
     try {
