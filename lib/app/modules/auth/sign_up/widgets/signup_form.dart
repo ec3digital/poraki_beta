@@ -21,21 +21,20 @@ class FormSignup extends StatefulWidget {
 
 class _FormSignupState extends State<FormSignup> {
   bool isLoading = false;
+  final _formSignupKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(builder: (context, futuro) {
       return Form(
-        // key: controller.formKey,
+        autovalidateMode: AutovalidateMode.always,
+        key: _formSignupKey,
         child: Column(
           children: [
             TextFormField(
-              validator: (value) {
-                if (value!.length < 3) {
-                  return "Digite um nome correto";
-                }
-                return null;
-              },
+              validator: (valueNome) => valueNome.toString().length < 3
+                  ? "Por favor informe um nome correto"
+                  : null,
               controller: widget.controller.nameInputController,
               keyboardType: TextInputType.name,
               autofocus: false,
@@ -56,12 +55,9 @@ class _FormSignupState extends State<FormSignup> {
               height: 20,
             ),
             TextFormField(
-              validator: (value) {
-                if (value!.length < 3) {
-                  return "Digite um apelido maior";
-                }
-                return null;
-              },
+              validator: (valueNick) => valueNick.toString().length < 3
+                  ? "Por favor informe um apelido correto"
+                  : null,
               controller: widget.controller.nickInputController,
               autofocus: false,
               // true,
@@ -82,12 +78,12 @@ class _FormSignupState extends State<FormSignup> {
               height: 20,
             ),
             TextFormField(
-              // validator: (value) {
-              //   if (value!.length != 11) {
-              //     return "CPF inválido";
-              //   }
-              //   return null;
-              // },
+              validator: (valueCPF) {
+                if (valueCPF.toString().length > 0) if (!UtilBrasilFields.isCPFValido(valueCPF))
+                  return "Por favor informe um CPF válido";
+                else
+                  return null;
+              },
               inputFormatters: [
                 FilteringTextInputFormatter.digitsOnly,
                 CpfInputFormatter(),
@@ -112,13 +108,9 @@ class _FormSignupState extends State<FormSignup> {
               height: 20,
             ),
             TextFormField(
-              // validator: (value) {
-              //   if (value!.length != 11) {
-              //     return "Por favor digite um telefone válido";
-              //   }
-              //   return null;
-              // },
-
+              validator: (valueZap) => valueZap.toString().length < 14
+                  ? "Por favor informe um número de celular correto"
+                  : null,
               inputFormatters: [
                 FilteringTextInputFormatter.digitsOnly,
                 TelefoneInputFormatter(),
@@ -143,10 +135,10 @@ class _FormSignupState extends State<FormSignup> {
               height: 20,
             ),
             TextFormField(
-              validator: (value) {
+              validator: (valueEmail) {
                 RegExp regex = new RegExp(
                     r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$');
-                if (value!.isEmpty || !regex.hasMatch(value))
+                if (valueEmail!.isEmpty || !regex.hasMatch(valueEmail))
                   return 'Favor informar um endereço de e-mail correto';
                 else
                   return null;
@@ -315,31 +307,33 @@ class _FormSignupState extends State<FormSignup> {
             ),
             MaterialButton(
               onPressed: () async {
-                setState(() {
-                  isLoading = true;
-                });
-
-                var ret = await widget.controller
-                    .signUp(
-                        widget.controller.mailInputController.text.trim(),
-                        widget.controller.passwordInputController.text.trim(),
-                        widget.controller.nickInputController.text.trim(),
-                        widget.controller.nameInputController.text.trim(),
-                        widget.controller.cepInputController.text.trim(),
-                        widget.controller.cpfInputController.text.trim(),
-                        widget.controller.phoneInputController.text.trim())
-                    .then((value) {
+                if (_formSignupKey.currentState!.validate()) {
                   setState(() {
-                    isLoading = false;
+                    isLoading = true;
                   });
-                });
 
-                if (ret == 'OK') {
-                  Get.toNamed(AppRoutes.login);
-                  Alerta(context,
-                      'Conta criada com sucesso! Por favor confirme seu acesso clicando no link do e-mail que acabamos de enviar pra você');
-                } else {
-                  Alerta(context, ret.toString());
+                  var ret = await widget.controller
+                      .signUp(
+                          widget.controller.mailInputController.text.trim(),
+                          widget.controller.passwordInputController.text.trim(),
+                          widget.controller.nickInputController.text.trim(),
+                          widget.controller.nameInputController.text.trim(),
+                          widget.controller.cepInputController.text.trim(),
+                          widget.controller.cpfInputController.text.trim(),
+                          widget.controller.phoneInputController.text.trim())
+                      .then((value) {
+                    setState(() {
+                      isLoading = false;
+                    });
+                  });
+
+                  if (ret == 'OK') {
+                    Get.toNamed(AppRoutes.login);
+                    Alerta(context,
+                        'Conta criada com sucesso! Por favor confirme seu acesso clicando no link do e-mail que acabamos de enviar pra você');
+                  } else {
+                    Alerta(context, ret.toString());
+                  }
                 }
               },
               child: Text("     Cadastrar     "),

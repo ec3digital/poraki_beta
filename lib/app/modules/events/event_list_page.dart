@@ -159,7 +159,7 @@ class _EventsListPageState extends State<EventsListPage> {
         future: pegaEventos(),
         builder: (context, futuro) {
           if (futuro.connectionState != ConnectionState.done) {
-            return Center(child: CircularProgressIndicator());
+            return Center(child: CircularProgressIndicator(backgroundColor: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'backDark').first.coreValor.toString())));
           } else {
             return Column(
                 mainAxisAlignment: MainAxisAlignment.start,

@@ -140,7 +140,7 @@ class _ListMoffersState extends State<ListMoffers> {
         future: loadObjs(load),
         builder: (context, futuro) {
           if (futuro.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return Center(child: CircularProgressIndicator(backgroundColor: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'backDark').first.coreValor.toString())));
           } else {
             return Expanded(
                 child: Container(

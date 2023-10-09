@@ -36,10 +36,12 @@ class BodyHome extends StatelessWidget {
 
     Get.lazyPut(() => OffersController());
 
-    // await _controller.getMostFreshOffers(4);
-    // await _controller.getBestOffers(4);
-    // await _controller.getOffers(4);
-    // await _controller.getBestSellersOffers(4);
+    // Get.put(OffersController());
+
+    await _controller.getMostFreshOffers(4);
+    await _controller.getBestOffers(4);
+    await _controller.getOffers(4);
+    await _controller.getBestSellersOffers(4);
 
   }
 
@@ -64,7 +66,7 @@ class BodyHome extends StatelessWidget {
         future: loadAllOffers(),
         builder: (context, futuro) {
           if (futuro.connectionState != ConnectionState.done) {
-            return Center(child: CircularProgressIndicator());
+            return Center(child: CircularProgressIndicator(backgroundColor: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'backDark').first.coreValor.toString())));
           } else {
             return SingleChildScrollView(
               child: GradientHeaderHome(

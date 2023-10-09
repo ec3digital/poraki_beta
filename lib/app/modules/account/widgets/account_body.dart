@@ -19,7 +19,7 @@ class AccountBody extends StatefulWidget {
 }
 
 class _AccountBodyState extends State<AccountBody> {
-  // final _form = GlobalKey<FormState>();
+  final _formAccountKey = GlobalKey<FormState>();
   final AccountController _accountController = Get.put(AccountController());
   bool _missingFields = false;
   bool isLoading = false;
@@ -69,10 +69,12 @@ class _AccountBodyState extends State<AccountBody> {
                         child: Padding(
                   padding: const EdgeInsets.all(15.0),
                   child: Form(
-                      // key: _form,
-                      // key: controller.formKey,
+                      autovalidateMode: AutovalidateMode.always,
+                      key: _formAccountKey,
                       child: ListView(children: [
-                        Text(_missingFields ? "Ops, existem informações faltantes na sua conta": ""),
+                        Text(_missingFields
+                            ? "Ops, existem informações faltantes na sua conta"
+                            : ""),
 
                         TextFormField(
                           validator: (value) {
@@ -88,7 +90,7 @@ class _AccountBodyState extends State<AccountBody> {
                           autofillHints: [AutofillHints.name],
                           decoration: InputDecoration(
                             border: OutlineInputBorder(),
-                            labelText: "Nome Completo",
+                            labelText: "Nome Completo (obrigatório)",
                             labelStyle: TextStyle(color: Colors.white),
                             prefixIcon: Icon(
                               Icons.person,
@@ -113,7 +115,7 @@ class _AccountBodyState extends State<AccountBody> {
                           autofillHints: [AutofillHints.nickname],
                           decoration: InputDecoration(
                             border: OutlineInputBorder(),
-                            labelText: "Apelido",
+                            labelText: "Apelido (obrigatório)",
                             labelStyle: TextStyle(color: Colors.white),
                             prefixIcon: Icon(
                               Icons.person,
@@ -125,12 +127,12 @@ class _AccountBodyState extends State<AccountBody> {
                           height: 20,
                         ),
                         TextFormField(
-                          // validator: (value) {
-                          //   if (value!.length != 11) {
-                          //     return "CPF inválido";
-                          //   }
-                          //   return null;
-                          // },
+                          validator: (valueCPF) {
+                            if (valueCPF.toString().length > 0) if (!UtilBrasilFields.isCPFValido(valueCPF))
+                              return "Por favor informe um CPF válido";
+                            else
+                              return null;
+                          },
                           inputFormatters: [
                             FilteringTextInputFormatter.digitsOnly,
                             CpfInputFormatter(),
@@ -139,12 +141,19 @@ class _AccountBodyState extends State<AccountBody> {
                           controller: _accountController.txtCPF,
                           keyboardType: TextInputType.number,
                           autofocus: false, // true,
-                          // onChanged: (cpf) { if (!CNPJValidator.isValid(cpf)) { Get.defaultDialog(title: "CPF Inválido", middleText: "Por favor informe um CPF válido" ); }  {} } ,
-                          style: TextStyle(color: Colors.black, fontStyle: FontStyle.italic),
+                          onChanged: (cpf) => !UtilBrasilFields.isCPFValido(cpf)
+                              ? Get.defaultDialog(
+                                  title: "CPF Inválido",
+                                  middleText: "Por favor informe um CPF válido")
+                              : null,
+                          style: TextStyle(
+                              color: Colors.black, fontStyle: FontStyle.italic),
                           decoration: InputDecoration(
                             border: OutlineInputBorder(),
-                            labelText: "CPF",
-                            labelStyle: TextStyle(color: Colors.black, fontStyle: FontStyle.italic),
+                            labelText: "CPF (obrigatório)",
+                            labelStyle: TextStyle(
+                                color: Colors.black,
+                                fontStyle: FontStyle.italic),
                             prefixIcon: Icon(
                               Icons.assignment_ind,
                               color: Colors.black,
@@ -155,13 +164,9 @@ class _AccountBodyState extends State<AccountBody> {
                           height: 20,
                         ),
                         TextFormField(
-                          // validator: (value) {
-                          //   if (value!.length != 11) {
-                          //     return "Por favor digite um telefone válido";
-                          //   }
-                          //   return null;
-                          // },
-
+                          validator: (valueZap) => valueZap.toString().length < 14
+                              ? "Por favor informe um número de celular correto"
+                              : null,
                           inputFormatters: [
                             FilteringTextInputFormatter.digitsOnly,
                             TelefoneInputFormatter(),
@@ -173,7 +178,7 @@ class _AccountBodyState extends State<AccountBody> {
                           style: TextStyle(color: Colors.white),
                           decoration: InputDecoration(
                             border: OutlineInputBorder(),
-                            labelText: "Telefone Celular / Whatsapp",
+                            labelText: "Telefone Celular / Whatsapp (obrigatório)",
                             labelStyle: TextStyle(color: Colors.white),
                             prefixIcon: Icon(
                               Icons.phone,
@@ -201,7 +206,7 @@ class _AccountBodyState extends State<AccountBody> {
                           autofillHints: [AutofillHints.email],
                           decoration: InputDecoration(
                             border: OutlineInputBorder(),
-                            labelText: "E-mail",
+                            labelText: "E-mail (obrigatório)",
                             labelStyle: TextStyle(
                               color: Colors.white,
                             ),
@@ -215,12 +220,9 @@ class _AccountBodyState extends State<AccountBody> {
                           height: 20,
                         ),
                         TextFormField(
-                          validator: (value) {
-                            if (value!.length < 8) {
-                              return "Digite um CEP válido";
-                            }
-                            return null;
-                          },
+                          validator: (valueCEP) => valueCEP.toString().length < 9
+                              ? "Por favor informe um CEP correto"
+                              : null,
                           inputFormatters: [
                             FilteringTextInputFormatter.digitsOnly,
                             CepInputFormatter(),
@@ -370,55 +372,57 @@ class _AccountBodyState extends State<AccountBody> {
 
                         ButtonOffer(
                           onPressed: () async {
-                            await _accountController.atualizaUsuario();
+                            if (_formAccountKey.currentState!.validate()) {
+                              await _accountController.atualizaUsuario();
 
-                            // salva os dados do usuário
-                            // widget._controller.atualizaUsuario(
-                            //     new sqlUsuarios(
-                            //     widget._controller.txtEmail.text
-                            //         .removeAllWhitespace,
-                            //     widget._controller.txtNome.text.trimRight(),
-                            //     widget._controller.txtSobreNome.text
-                            //         .trimRight(),
-                            //     widget._controller.txtCPF.text
-                            //         .removeAllWhitespace,
-                            //     widget._controller.txtTelefone.text
-                            //         .removeAllWhitespace,
-                            //     widget._controller.txtCEP.text
-                            //         .removeAllWhitespace,
-                            //     widget._controller.txtEndereco.text
-                            //         .trimRight()
-                            //         .trimLeft(),
-                            //     widget._controller.txtNumero.text
-                            //       ..trimRight().trimLeft(),
-                            //     widget._controller.txtCompl.text
-                            //         .trimRight()
-                            //         .trimLeft(),
-                            //     null,
-                            //     null,
-                            //     null
-                            //     ));
+                              // salva os dados do usuário
+                              // widget._controller.atualizaUsuario(
+                              //     new sqlUsuarios(
+                              //     widget._controller.txtEmail.text
+                              //         .removeAllWhitespace,
+                              //     widget._controller.txtNome.text.trimRight(),
+                              //     widget._controller.txtSobreNome.text
+                              //         .trimRight(),
+                              //     widget._controller.txtCPF.text
+                              //         .removeAllWhitespace,
+                              //     widget._controller.txtTelefone.text
+                              //         .removeAllWhitespace,
+                              //     widget._controller.txtCEP.text
+                              //         .removeAllWhitespace,
+                              //     widget._controller.txtEndereco.text
+                              //         .trimRight()
+                              //         .trimLeft(),
+                              //     widget._controller.txtNumero.text
+                              //       ..trimRight().trimLeft(),
+                              //     widget._controller.txtCompl.text
+                              //         .trimRight()
+                              //         .trimLeft(),
+                              //     null,
+                              //     null,
+                              //     null
+                              //     ));
 
-                            Get.defaultDialog(
-                                title: "Aviso",
-                                middleText:
-                                    "Informações atualizadas com sucesso!");
+                              Get.defaultDialog(
+                                  title: "Aviso",
+                                  middleText:
+                                      "Informações atualizadas com sucesso!");
 
-                            // final snackBar = SnackBar(
-                            //     backgroundColor: _loginController.colorFromHex(
-                            //         _loginController.listCore
-                            //             .where((coreItem) =>
-                            //                 coreItem.coreChave == 'textDark')
-                            //             .first
-                            //             .coreValor
-                            //             .toString()),
-                            //     content: Container(
-                            //         height: 40,
-                            //         child: Center(
-                            //             child: const Text(
-                            //                 'Informações salvas!'))));
-                            // ScaffoldMessenger.of(context)
-                            //     .showSnackBar(snackBar);
+                              // final snackBar = SnackBar(
+                              //     backgroundColor: _loginController.colorFromHex(
+                              //         _loginController.listCore
+                              //             .where((coreItem) =>
+                              //                 coreItem.coreChave == 'textDark')
+                              //             .first
+                              //             .coreValor
+                              //             .toString()),
+                              //     content: Container(
+                              //         height: 40,
+                              //         child: Center(
+                              //             child: const Text(
+                              //                 'Informações salvas!'))));
+                              // ScaffoldMessenger.of(context)
+                              //     .showSnackBar(snackBar);
+                            }
                           },
                           colorText: _loginController.colorFromHex(
                               _loginController.listCore
@@ -454,7 +458,7 @@ class _AccountBodyState extends State<AccountBody> {
                             colorText: _loginController.colorFromHex(
                                 _loginController.listCore
                                     .where((coreItem) =>
-                                coreItem.coreChave == 'textLight')
+                                        coreItem.coreChave == 'textLight')
                                     .first
                                     .coreValor
                                     .toString()),
@@ -462,7 +466,7 @@ class _AccountBodyState extends State<AccountBody> {
                             colorButton: _loginController.colorFromHex(
                                 _loginController.listCore
                                     .where((coreItem) =>
-                                coreItem.coreChave == 'iconColor')
+                                        coreItem.coreChave == 'iconColor')
                                     .first
                                     .coreValor
                                     .toString()),
