@@ -114,19 +114,19 @@ class MofferController extends GetxController {
     }
   }
 
-  // Future<void> getMoffersByStore(String storeGuid) async {
-  //   print('getMoffersByStore / storeGuid = ' + storeGuid);
-  //   try {
-  //     changeLoading(true);
-  //     moffers = await offerRepository.getOfferByStoreGuid(storeGuid);
-  //     // print('getMoffers result - ' + moffers.toString());
-  //   } catch (e) {
-  //     changeLoading(false);
-  //     // print('Erro no getMOffers() controller ${e.toString()}');
-  //   } finally {
-  //     changeLoading(false);
-  //   }
-  // }
+  Future<void> getMoffersByStore(String storeGuid) async {
+    print('getMoffersByStore / storeGuid = ' + storeGuid);
+    try {
+      changeLoading(true);
+      moffers = await offerRepository.getOffersByStore(storeGuid);
+      // print('getMoffers result - ' + moffers.toString());
+    } catch (e) {
+      changeLoading(false);
+      // print('Erro no getMOffers() controller ${e.toString()}');
+    } finally {
+      changeLoading(false);
+    }
+  }
 
   Future<List<Lojas>> getStores(String sellerGuid) async {
     //List<Lojas> retLojas = [];
@@ -191,6 +191,19 @@ class MofferController extends GetxController {
       changeLoading(true);
       print('entrou no markOfferSold $ofertaGuid');
       await offerRepository.markOfferAsSold(ofertaGuid.toString());
+      this.refresh();
+    } catch (e) {
+      print('Erro no markOfferSold() controller ${e.toString()}');
+    } finally {
+      changeLoading(false);
+    }
+  }
+
+  Future<void> markOfferAvailable(String? ofertaGuid) async {
+    try {
+      changeLoading(true);
+      print('entrou no markOfferAvailable $ofertaGuid');
+      await offerRepository.reactivateOffer(ofertaGuid.toString());
       this.refresh();
     } catch (e) {
       print('Erro no markOfferSold() controller ${e.toString()}');

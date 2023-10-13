@@ -26,6 +26,7 @@ class _ListMoffersState extends State<ListMoffers> {
   final LoginController _loginController = Get.find();
 
   List<Lojas> listStores = [];
+
   Lojas? selStore;
   bool load = true;
 
@@ -33,14 +34,14 @@ class _ListMoffersState extends State<ListMoffers> {
     // if (selStore == null) {
     await mofferController.getMoffers(_loginController.usuGuid.toString());
     // } else {
-    //  print('lojaGuid not null: ' + selStore!.LojaNome!.toString());
+     print('lojaGuid: ' + selStore!.LojaNome!.toString());
 
     // if (selStore?.LojaNome.toString() == 'Nenhuma')
-    //if (selStore == null)
-    //   await mofferController.getMoffers(_loginController.usuGuid.toString());
-    //else
-    // await mofferController.getMoffersByStore(selStore!.LojaGUID.toString());
-    //}
+    if (selStore == null)
+      await mofferController.getMoffers(_loginController.usuGuid.toString());
+    else
+      await mofferController.getMoffersByStore(selStore!.LojaGUID.toString());
+    // }
 
     // if (load &&
     //     !listStores.contains(new Lojas(null, null, 'Nenhuma', null, null,
@@ -55,7 +56,15 @@ class _ListMoffersState extends State<ListMoffers> {
 
   @override
   Widget build(BuildContext context) {
-    listStores = _loginController.listLojas;
+    // Lojas lojaNenhuma = new Lojas(DateTime.now(), '', 'Nenhuma', _loginController.usuCep, '', 'Nenhuma', _loginController.usuGuid, '', '', '', '', '', '', '', '');
+    listStores.clear();
+    // if(listStores.contains(lojaNenhuma) == false) listStores.add(lojaNenhuma);
+    _loginController.listLojas.forEach((element) { listStores.add(element); });
+
+    // listStores.forEach((store) { })
+    // listStores.remove((store) => store.LojaNome == 'Nenhuma');
+
+
     // final Color colorText = _loginController.colorFromHex(_loginController
     //     .listCore
     //     .where((coreItem) => coreItem.coreChave == 'textDark')
@@ -190,10 +199,16 @@ class _ListMoffersState extends State<ListMoffers> {
                     );
                   }).toList(),
                   value: selStore,
-                  onChanged: (Lojas? newValue) {
+                  onChanged: (Lojas? novaLojaSel) {
                     setState(() {
                       load = false;
-                      selStore = newValue!;
+                      selStore = novaLojaSel;
+
+                      // listStores.forEach((element) { print(element.LojaNome);});
+
+                      // if (novaLojaSel!.LojaNome != 'Nenhuma') {selStore = novaLojaSel;} else { selStore = listStores.where((element) => element.LojaNome == 'Nenhuma').single; }
+                      // try {selStore = newValue!;} catch (Exception) { selStore = selStore;}
+
                     });
                   },
                 ),

@@ -274,7 +274,7 @@ class OffersController extends GetxController {
     try {
       changeLoading(true);
       print('entrou no getOffersFavsByUser');
-      LoginController _loginController = Get.find();
+      // LoginController _loginController = Get.find();
       offers = await offerRepository.getFavsOffers(limit);
       this.refresh();
     } catch (e) {

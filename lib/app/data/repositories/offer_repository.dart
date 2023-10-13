@@ -103,19 +103,21 @@ class OfferRepository extends GetConnect {
         .toList();
   }
 
-  Future<List<ProdutoOferta>> getOffersByStore(int limit) async {
+  Future<List<Oferta>> getOffersByStore(String StoreGuid) async {
     // String url = '${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiMelhoresOfertas').first.coreValor.toString()}/' + _loginController.usuCep.toString().substring(0,3) + '%25/' + limit.toString();
-    String url = 'https://poraki.hasura.app/api/rest/ofertasporloja/' + _loginController.usuGuid.toString();
+    String url = 'https://poraki.hasura.app/api/rest/ofertasporloja/' + StoreGuid;
+    print(url);
     var response = await get(url, headers: Constants.headers);
     if (response.hasError) throw 'Ocorreu um erro em getOffersByStore()';
     return (response.body['Ofertas'] as List)
-        .map((oferta) => ProdutoOferta.fromJson(oferta))
+        .map((oferta) => Oferta.fromJson(oferta))
         .toList();
   }
 
   Future<List<ProdutoOferta>> getOffersBySeller(String SellerGuid) async {
     print('getOffersBySeller ' + SellerGuid);
     String url = '${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiMoffer').first.coreValor.toString()}/' + SellerGuid;
+    print(url);
     var response = await get(url, headers: Constants.headers);
     //print(response.body.toString());
     if (response.hasError) throw 'Ocorreu um erro em getOfferBySellerGuid()';
@@ -127,6 +129,7 @@ class OfferRepository extends GetConnect {
   Future<List<ProdutoOferta>> getOfferByStoreGuid(String StoreGuid) async {
     print('getOfferByStoreGuid ' + StoreGuid);
     String url = '${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiMoffersStore').first.coreValor.toString()}/' + StoreGuid;
+    print(url);
     var response = await get(url, headers: Constants.headers);
     //print(response.body.toString());
     if (response.hasError) throw 'Ocorreu um erro em getOfferByStoreGuid()';
@@ -197,6 +200,7 @@ class OfferRepository extends GetConnect {
   Future<void> markOfferAsSold(String offerGuid) async {
     print('markOfferAsSold');
     String url = Constants.baseUrl + 'ofertavendida/' + offerGuid;
+    print(url);
     var response = await put(url, '', headers: Constants.headers);
     if (response.hasError) throw 'Ocorreu um erro em markOfferAsSold() $offerGuid';
     else print(response.body);
@@ -205,6 +209,7 @@ class OfferRepository extends GetConnect {
   Future<void> reactivateOffer(String offerGuid) async {
     print('markOfferAsSold');
     String url = Constants.baseUrl + 'reativaoferta/' + offerGuid;
+    print(url);
     var response = await put(url, '', headers: Constants.headers);
     if (response.hasError) throw 'Ocorreu um erro em markOfferAsSold() $offerGuid';
     else print(response.body);

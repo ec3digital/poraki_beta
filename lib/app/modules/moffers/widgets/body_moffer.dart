@@ -15,7 +15,6 @@ import 'package:poraki/app/modules/auth/login/login_controller.dart';
 import 'package:poraki/app/modules/categories/categories_controller.dart';
 import 'package:poraki/app/modules/home/widgets/gradient_header_home.dart';
 import 'package:poraki/app/modules/moffers/moffer_controller.dart';
-import 'package:poraki/app/modules/offers/widgets/button_offer.dart';
 import 'package:poraki/app/shared/constants/constants.dart';
 import 'package:poraki/app/routes/app_routes.dart';
 import 'package:uuid/uuid.dart';
@@ -139,6 +138,7 @@ class _BodyMoffer extends State<BodyMoffer> {
   late Color? textColor;
   late Color? iconColor;
 
+
   // // formatters
   // late TextFormField txtfValorSinalOrc;
   // late TextFormField txtfValorMin;
@@ -153,6 +153,20 @@ class _BodyMoffer extends State<BodyMoffer> {
   void initState() {
     print('initState moffer');
     _imageURLFocusNode.addListener(_updateImageUrl);
+
+
+    textColor = _loginController.colorFromHex(_loginController.listCore
+        .where((coreItem) => coreItem.coreChave == 'textDark')
+        .first
+        .coreValor
+        .toString());
+    iconColor = _loginController.colorFromHex(_loginController.listCore
+        .where((coreItem) => coreItem.coreChave == 'backDark')
+        .first
+        .coreValor
+        .toString());
+
+
 
     //   if(_brandsController.revendas.length == 0){
     //     _brandsController.revendas.forEach((rev) {
@@ -230,18 +244,9 @@ class _BodyMoffer extends State<BodyMoffer> {
     print('build moffer');
     //if (ModalRoute.of(context)?.settings.arguments != null) {}
 
-    textColor = _loginController.colorFromHex(_loginController.listCore
-        .where((coreItem) => coreItem.coreChave == 'textDark')
-        .first
-        .coreValor
-        .toString());
-    iconColor = _loginController.colorFromHex(_loginController.listCore
-        .where((coreItem) => coreItem.coreChave == 'backDark')
-        .first
-        .coreValor
-        .toString());
 
-    listStores = _loginController.listLojas;
+    listStores.clear();
+    _loginController.listLojas.forEach((element) { listStores.add(element); });
 
     if (_mofferController.singleOffer != null) carregaObj();
 
@@ -2307,8 +2312,6 @@ class _BodyMoffer extends State<BodyMoffer> {
                         //     }),
 
 
-
-
                         if (_mofferController.singleOffer != null)
                           ElevatedButton(
                             onPressed: () async {
@@ -2316,19 +2319,39 @@ class _BodyMoffer extends State<BodyMoffer> {
                               isMarcarLoading = true;
                             });
 
-                            await _mofferController.markOfferSold(
-                                        _mofferController.singleOffer!.OfertaGUID
-                                            .toString())
-                                .then((value) {
-                              setState(() {
-                                isMarcarLoading = false;
+                            print('OfertaDispoAte: ' + _mofferController.singleOffer!.OfertaDispoAte.toString());
+
+                            if(_mofferController.singleOffer!.OfertaDispoAte.toString() == 'null') {
+                              await _mofferController.markOfferSold(
+                                  _mofferController.singleOffer!.OfertaGUID
+                                      .toString())
+                                  .then((value) {
+                                setState(() {
+                                  isMarcarLoading = false;
+                                });
+
+                                Get.offAndToNamed(AppRoutes.mOffers);
+
+                                Get.defaultDialog(
+                                    title: "Aviso", middleText: "Vendido!");
                               });
+                            } else {
+                              await _mofferController.markOfferAvailable(
+                                  _mofferController.singleOffer!.OfertaGUID
+                                      .toString())
+                                  .then((value) {
+                                setState(() {
+                                  isMarcarLoading = false;
+                                });
 
-                              Get.offAndToNamed(AppRoutes.mOffers);
-                            });
+                                Get.offAndToNamed(AppRoutes.mOffers);
 
-                            Get.defaultDialog(
-                                title: "Aviso", middleText: "Vendido!");
+                                Get.defaultDialog(
+                                    title: "Aviso", middleText: "Oferta re-publicada!");
+                              });
+                            }
+
+
                           },
                           child: (isMarcarLoading)
                               ? const SizedBox(
@@ -3132,6 +3155,7 @@ class _BodyMoffer extends State<BodyMoffer> {
     if (_load) {
       _load = false;
       print('_load: true');
+      print('_mofferController.singleOffer: ' + _mofferController.singleOffer.toString());
 
       if (_mofferController.singleOffer != null) {
         print('singleOffer not null');
@@ -3160,8 +3184,8 @@ class _BodyMoffer extends State<BodyMoffer> {
         // if (_loginController.listaCategorias.isEmpty)
         //   await _loginController.getCategories();
 
-        // print(oferta.OfertaTitulo);
-        // print(oferta.CategoriaChave);
+        print(oferta.OfertaTitulo);
+        print(oferta.CategoriaChave);
         _categSelecionada = _categoriesController
             .selecionaCategoriaPorChave(oferta.CategoriaChave.toString())!;
         _categoriaSel = _categSelecionada.categoriaNome!;
@@ -3270,6 +3294,9 @@ class _BodyMoffer extends State<BodyMoffer> {
         _mofferController.valSabAs = oferta.SabAs.toString();
         _mofferController.valDomDas = oferta.DomDas.toString();
         _mofferController.valDomAs = oferta.DomAs.toString();
+
+        if(oferta.LojaID!.isNotEmpty)
+          selStore = listStores.where((element) => element.LojaGUID == oferta.LojaID).single;
 
         _manageCampos();
       } else {
