@@ -45,9 +45,39 @@ class LoginController extends GetxController {
   String? usuEmail;
   String? usuGuid;
   String cloudId = "057";
-  // TODO: implementar baseUrl + headers por CEP
-  // String? baseUrl;
-  // Map<String, String>? headers;
+  String apiOfertas1 = "ofertasdodia";
+  String apiOfertas2 = "melhoresofertas";
+  String apiOfertas3 = "ofertasmaisfrescas";
+  String apiOfertas4 = "ofertasmaisvendidas";
+  String apiOfertasCategoria = "ofertasporcepcategoria";
+  String apiOfertasCategoriaTitulo = "ofertasporcepcategoriatitulo";
+  String apiOfertasTitulo = "ofertasporceptitulo";
+  String apiOfertasFavPerUserKeys = "ofertasfavperuserkeys";
+  String apiOfertasPorLoja = "ofertasporloja";
+  String apiMoffer = "moffer";
+  String apiMoffers = "moffers";
+  String apiMoffersStore = "moffersstore";
+  String apiOfertasFavGuidsPerUser = "ofertasfavguidsperuser";
+  String apiOfertaInativ = "ofertainativ";
+  String apiOfertaVendida = "ofertavendida";
+  String apiOfertaReativa = "reativaoferta";
+  String apiOfertaLojaInativa = "inativaofertaloja";
+  String apiOfertaVendedorInativa = "inativaofertavendedor";
+  String apiOfertaFavAdd = "ofertafavadd";
+  String apiOfertaFavDel = "ofertafavdel";
+  String textCard1 = "Ofertas 1";
+  String textCard2 = "Ofertas 2";
+  String textCard3 = "Ofertas 3";
+  String textCard4 = "Ofertas 4";
+  //String baseUrl = "";
+
+  var headers = {
+  'x-hasura-admin-secret':
+  'iy67sW4CLrijAZ3dSDeKpzo565EqoWWnk81DQX8hu1bEE7Q7nCntduiiS2IdKJNR',
+  // 'Content-Type': 'application/json'
+  };
+  Map<String, String> regionHeaders = {}; // = [] as Map<String, String>;
+  String regionBaseUrl = "";
 
   @override
   void onInit() async {
@@ -58,11 +88,42 @@ class LoginController extends GetxController {
     }
 
     fbInstance = FirebaseFirestore.instance;
+    await getRegionApiEndpoint();
   }
 
   void changeCheckBox(bool newObscurePassword) {
     _obscurePassword = newObscurePassword;
     update();
+  }
+
+  // atribui a variavel da nuvem
+  Future<void> getOffersApiEndpoints() async {
+    await fbInstance!
+        .collection("akicore")
+        .doc("core")
+        .get()
+        .then((value) {
+      apiOfertas1 = value['apiOfertas1'].toString().trim();
+      apiOfertas2 = value['apiOfertas2'].toString().trim();
+      apiOfertas3 = value['apiOfertas3'].toString().trim();
+      apiOfertas4 = value['apiOfertas4'].toString().trim();
+      textCard1 = value['textCard1'].toString().trim();
+      textCard2 = value['textCard2'].toString().trim();
+      textCard3 = value['textCard3'].toString().trim();
+      textCard4 = value['textCard4'].toString().trim();
+    });
+  }
+
+  // atribui a variavel da nuvem
+  Future<void> getRegionApiEndpoint() async {
+    await fbInstance!
+        .collection("akicore")
+        .doc(cloudId)
+        .get()
+        .then((value) {
+      regionBaseUrl = value['apiBase'].toString().trim();
+      regionHeaders.addAll({value['header-user'].toString().trim(): value['header-secret'].toString().trim()});
+    });
   }
 
   // atribui a variavel da nuvem
@@ -85,8 +146,6 @@ class LoginController extends GetxController {
     usuGuid = auth!.currentUser!.uid.toString();
     usuEmail = auth!.currentUser!.email.toString();
     usuNome = auth!.currentUser!.displayName.toString();
-
-
     //pega o cep local
     //await _getCep();
   }
@@ -153,27 +212,12 @@ class LoginController extends GetxController {
     listaRevendasNomes.add('selecione');
   }
 
-  // Future<void> loadOffersFavs() async {
-  //   print('entrou no loadOffersFavs()');
-  //   var offerfavRepository = new OfferfavRepository();
-  //
-  //   // if (refreshOfertasFavs) {
-  //   //   refreshOfertasFavs = false;
-  //     //await offerfavRepository.updateCollection(ofertasFavs);
-  //   // }
-  //   // // ofertasFavs.clear();
-  //
-  //   // ofertasFavs = await offerfavRepository.getAll();
-  //   //ofertasFavs = await offer
-  //   print('qt ofertasFavs: ' + ofertasFavs.length.toString());
-  // }
-
   // atualiza tabela core local com a nuvem
   Future<void> runCore() async {
     // pega os valores da tabela nuvem
-    var listCoreTemp = [];
+    // var listCoreTemp = [];
     var coreFB = await fbPorakiService().getListFromFirebase("akicore", "core");
-    listCoreTemp = await sqlPorakiCoreService().buscaTodosValores();
+    // listCoreTemp = await sqlPorakiCoreService().buscaTodosValores();
 
     // var coreFBcep = await fbPorakiService().getListFromFirebase("akicore", "057"); // cloudId.toString());
     var stringCloud = cloudId.isEmpty ? "057" : cloudId.substring(0,3);
@@ -252,4 +296,5 @@ class LoginController extends GetxController {
     //executa comandos na base local
 
   }
+
 }

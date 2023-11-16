@@ -45,7 +45,7 @@ class OffersController extends GetxController {
       // else
       if (this.listName != null) {
         print('offers listName: ' + this.listName.toString());
-        if (this.listName == 'dayoffers') await getDayOffers(limit);
+        if (this.listName == 'offers1') await getOffers1(limit);
 
         if (this.listName == 'bestoffers') await getBestOffers(limit);
 
@@ -206,14 +206,14 @@ class OffersController extends GetxController {
     }
   }
 
-  Future<void> getDayOffers(int limit) async {
+  Future<void> getOffers1(int limit) async {
     try {
       changeLoading(true);
-      print('entrou no getDayOffers');
+      print('entrou no getOffers1');
       offers = await offerRepository.getDayOfferByCEP(limit);
       this.refresh();
     } catch (e) {
-      print('Erro no getDayOffers() controller ${e.toString()}');
+      print('Erro no getOffers1() controller ${e.toString()}');
     } finally {
       changeLoading(false);
     }

@@ -1,18 +1,16 @@
 import 'package:get/get.dart';
 import 'package:poraki/app/modules/auth/login/login_controller.dart';
-import '../../shared/constants/constants.dart';
 import '../models/enderecos.dart';
 import 'package:http/http.dart' as http;
 
 class AddressRepository extends GetConnect {
   LoginController _loginController = Get.find();
 
-
   Future<List<Enderecos>> getAllAddresses() async {
     var response = await get(
-        '${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiEnderecos').first.coreValor.toString()}/' +
+        '${_loginController.regionBaseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiEnderecos').first.coreValor.toString()}/' +
             _loginController.usuGuid.toString(),
-        headers: Constants.headers);
+        headers: _loginController.regionHeaders);
     if (response.hasError)
       throw 'Ocorreu um erro em AddressRepository().getAllAddresses';
     print(response.body);
@@ -23,8 +21,8 @@ class AddressRepository extends GetConnect {
 
   Future<Enderecos> getAddress(String enderecoGuid) async {
     var response = await get(
-        '${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiEnderecos').first.coreValor.toString()}/' + enderecoGuid,
-        headers: Constants.headers);
+        '${_loginController.regionBaseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiEnderecos').first.coreValor.toString()}/' + enderecoGuid,
+        headers: _loginController.regionHeaders);
     if (response.hasError)
       throw 'Ocorreu um erro em AddressRepository().getAddress';
     print(response.body);
@@ -34,9 +32,9 @@ class AddressRepository extends GetConnect {
 
   Future<Enderecos> getCurrentAddress() async {
     var response = await get(
-        '${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiEnderecoAtual').first.coreValor.toString()}/' +
+        '${_loginController.regionBaseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiEnderecoAtual').first.coreValor.toString()}/' +
             _loginController.usuGuid.toString(),
-        headers: Constants.headers);
+        headers: _loginController.regionHeaders);
     if (response.hasError)
       throw 'Ocorreu um erro em AddressRepository().getCurrentAddress';
     return (response.body['Enderecos'] as List)
@@ -47,8 +45,8 @@ class AddressRepository extends GetConnect {
 
   Future<String> postAddress(Enderecos endereco) async {
     var response = await http.post(
-        Uri.parse('${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiEndereco').first.coreValor.toString()}'),
-        headers: Constants.headers,
+        Uri.parse('${_loginController.regionBaseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiEndereco').first.coreValor.toString()}'),
+        headers: _loginController.regionHeaders,
         body: endereco.toJson());
     // if (response.er)
     //   throw 'Ocorreu um erro em OrdersRepository().postAddress()';
@@ -57,8 +55,8 @@ class AddressRepository extends GetConnect {
 
   Future<String> putAddress(Enderecos endereco) async {
     var response = await http.put(
-        Uri.parse('${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiEndereco').first.coreValor.toString()}'),
-        headers: Constants.headers,
+        Uri.parse('${_loginController.regionBaseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiEndereco').first.coreValor.toString()}'),
+        headers: _loginController.regionHeaders,
         body: endereco.toJson());
     return response.body.toString();
   }
@@ -66,8 +64,8 @@ class AddressRepository extends GetConnect {
   Future<String> putCurrentAddress(String enderecoGuid) async {
     print('putCurrentAddress');
     var response = await http.put(
-        Uri.parse('${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiEnderecoAtual').first.coreValor.toString()}/' + enderecoGuid),
-        headers: Constants.headers,
+        Uri.parse('${_loginController.regionBaseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiEnderecoAtual').first.coreValor.toString()}/' + enderecoGuid),
+        headers: _loginController.regionHeaders,
         body: '');
     return response.body.toString();
   }
@@ -75,8 +73,8 @@ class AddressRepository extends GetConnect {
   Future<String> putCurrentNAddress(String enderecoGuid) async {
     print('putCurrentNAddress');
     var response = await http.put(
-        Uri.parse('${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiEnderecoNAtual').first.coreValor.toString()}/' + enderecoGuid),
-        headers: Constants.headers,
+        Uri.parse('${_loginController.regionBaseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiEnderecoNAtual').first.coreValor.toString()}/' + enderecoGuid),
+        headers: _loginController.regionHeaders,
         body: '');
     return response.body.toString();
   }

@@ -15,14 +15,12 @@ import 'package:poraki/app/modules/auth/login/login_controller.dart';
 import 'package:poraki/app/modules/categories/categories_controller.dart';
 import 'package:poraki/app/modules/home/widgets/gradient_header_home.dart';
 import 'package:poraki/app/modules/moffers/moffer_controller.dart';
-import 'package:poraki/app/shared/constants/constants.dart';
 import 'package:poraki/app/routes/app_routes.dart';
 import 'package:uuid/uuid.dart';
 
 class BodyMoffer extends StatefulWidget {
   BodyMoffer({Key? key, required this.offer}) : super(key: key);
   final Oferta? offer;
-  //final String? _offerGuid;
 
   @override
   _BodyMoffer createState() => _BodyMoffer();
@@ -139,21 +137,10 @@ class _BodyMoffer extends State<BodyMoffer> {
   late Color? iconColor;
 
 
-  // // formatters
-  // late TextFormField txtfValorSinalOrc;
-  // late TextFormField txtfValorMin;
-  // late TextFormField txtfValorTaxa1km;
-  // late TextFormField txtfValorTaxa2km;
-  // late TextFormField txtfValorTaxaMaisQue2km;
-  // late TextFormField txtfPesoPorcao;
-  // late TextFormField txtfCEP;
-  // late TextFormField txtfPreco;
-
   @override
   void initState() {
     print('initState moffer');
     _imageURLFocusNode.addListener(_updateImageUrl);
-
 
     textColor = _loginController.colorFromHex(_loginController.listCore
         .where((coreItem) => coreItem.coreChave == 'textDark')
@@ -166,40 +153,13 @@ class _BodyMoffer extends State<BodyMoffer> {
         .coreValor
         .toString());
 
-
-
-    //   if(_brandsController.revendas.length == 0){
-    //     _brandsController.revendas.forEach((rev) {
-    //       print(rev.RevendaNome.toString());
-    //       _listaRevendas.add(rev.RevendaNome.toString());
-    //     });
-    //     print('lista revendas: ' + _listaRevendas.length.toString());
-    //   }
-    // }
-
-    // partnersController.parceiros?.forEach((part) {
-    //   print(part.ParceiroEntregaNome.toString());
-    //   listaParceiros.add(part.ParceiroEntregaNome.toString());
-    // });
-    // print('lista parceiros: ' + listaParceiros.length.toString());
-
-    //final LoginController loginController = Get.find();
-
     Future.delayed(
         Duration.zero,
         () =>
             _mofferController.txtCEP.text = _loginController.usuCep.toString());
-
-    // if(_loginController.listaCategorias.length == 0)
-    //   {
-    //     print('listaCategorias zero');
-    //
-    //   }
     _loginController.listaCategorias.forEach((categ) {
       _listaCategoriasNomes.add(categ.categoriaNome!.trimRight());
     });
-
-    //_listaCategoriasNomes.add('selecione');
 
     _mofferController.txtTitulo.text = '';
     // _mofferController.txtValorTaxa1km.text = '0.00';
@@ -223,9 +183,12 @@ class _BodyMoffer extends State<BodyMoffer> {
     _mofferController.txtQtdDispo.text = '0';
     _mofferController.txtQtdAviso.text = '0';
 
-    // if (_mofferController.singleOffer == null) _manageCampos();
+    print('_mofferController.singleOffer initstate: ' + (_mofferController.singleOffer != null).toString());
 
-    //_manageCampos();
+    listStores.clear();
+    _loginController.listLojas.forEach((element) { listStores.add(element); });
+
+    if (_mofferController.singleOffer != null) carregaObj();
 
     super.initState();
   }
@@ -245,12 +208,8 @@ class _BodyMoffer extends State<BodyMoffer> {
     //if (ModalRoute.of(context)?.settings.arguments != null) {}
 
 
-    listStores.clear();
-    _loginController.listLojas.forEach((element) { listStores.add(element); });
-
-    if (_mofferController.singleOffer != null) carregaObj();
-
-    // if (_mofferController.txtCEP.text == '') _mofferController.txtCEP.text = _loginController.usuCep.toString();
+    // print('_mofferController.singleOffer: ' + (_mofferController.singleOffer != null).toString());
+    // if (_mofferController.singleOffer != null) carregaObj();
 
     // return FutureBuilder(
     //     future: carregaObj(),
@@ -264,6 +223,7 @@ class _BodyMoffer extends State<BodyMoffer> {
     //         // } else if (futuro.hasError) {
     //         //   return Center(child: Text(futuro.error.toString()));
     //       } else {
+
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size(double.maxFinite, 55),
@@ -384,6 +344,7 @@ class _BodyMoffer extends State<BodyMoffer> {
                         children: <Widget>[
                           TextFormField(
                             controller: _mofferController.txtTitulo,
+                            keyboardType: TextInputType.text,
                             decoration: InputDecoration(
                                 labelText: 'Titulo',
                                 border: OutlineInputBorder(),
@@ -2535,7 +2496,7 @@ class _BodyMoffer extends State<BodyMoffer> {
     print("foto null? " + foto.isBlank.toString());
     var imgGuid = await _saveForm(usuGuid);
 
-    if (_imgEdited && foto != null) {
+    if (foto != null) {
       await Firebase.initializeApp();
 
       print('passou no upload / imgGuid: ' + imgGuid);
@@ -2700,7 +2661,8 @@ class _BodyMoffer extends State<BodyMoffer> {
     //   false, // null
     // );
 
-    var offerGuid = Uuid().v4();
+
+    print('_mofferController.mofferGuid.toString(): ' + _mofferController.mofferGuid.toString());
     var offerToSend = new Oferta(
         null,
         _categSelecionada.categoriaChave,
@@ -2711,17 +2673,13 @@ class _BodyMoffer extends State<BodyMoffer> {
         null,
         null,
         null,
-        _mofferController.singleOffer == null
-            ? offerGuid
-            : _mofferController.singleOffer!.OfertaGUID.toString(),
+        null, //_mofferController.singleOffer!.OfertaGUID.toString(),
         null,
         _loginController.cloudId,
         null,
         null,
         selStore == null ? '' : selStore!.LojaGUID.toString(),
-        _mofferController.mofferGuid.toString().isEmpty
-            ? offerGuid
-            : _mofferController.mofferGuid.toString(),
+        _mofferController.mofferGuid.toString(),
         _valAceitaEncomenda,
         _valSomenteEncomenda,
         _revendaSel,
@@ -2757,16 +2715,22 @@ class _BodyMoffer extends State<BodyMoffer> {
     // Uri url = Uri.https("ec3digrepo-default-rtdb.firebaseio.com", "/words.json");
 
     print('mofferGuid antes: ' + _mofferController.mofferGuid.toString());
+    print('verifica mofferGuid vazio: ' + _mofferController.mofferGuid.toString().isEmpty.toString());
 
     if (_mofferController.mofferGuid.toString() == '') {
+      print('entrou no moffer post');
+      var offerGuid = Uuid().v4();
       _mofferController.mofferGuid = offerGuid;
+      offerToSend.OfertaGUID = offerGuid;
+      offerToSend.OfertaImgPath = offerGuid;
+      print('mofferGuid post: ' + _mofferController.mofferGuid.toString());
       var jsonPost =
           offerToSend.toJsonPost().toString().replaceAll('null', '""');
       print(jsonPost);
 
       var response = await post(
-        Uri.parse('${Constants.baseUrl}moffer'),
-        headers: Constants.headers,
+        Uri.parse('${_loginController.regionBaseUrl}moffer'),
+        headers: _loginController.regionHeaders,
         body: offerToSend.toJsonPost(),
       );
 
@@ -2778,12 +2742,13 @@ class _BodyMoffer extends State<BodyMoffer> {
       // _offerGuid = strGuid;
       // print('guid: ' + strGuid);
     } else {
+      print('entrou no moffer put');
+      print('mofferGuid put: ' + _mofferController.mofferGuid.toString());
       var jsonPut = offerToSend.toJsonPut().toString().replaceAll('null', '""');
       print(jsonPut);
-      print('${Constants.baseUrl}moffer');
       var response = await put(
-        Uri.parse('${Constants.baseUrl}moffer'),
-        headers: Constants.headers,
+        Uri.parse('${_loginController.regionBaseUrl}moffer'),
+        headers: _loginController.regionHeaders,
         body: offerToSend.toJsonPut(),
       );
 
@@ -2839,6 +2804,12 @@ class _BodyMoffer extends State<BodyMoffer> {
         _categSelecionada.secao == 'SEC-SERV-FRETE' ||
         _categSelecionada.secao == 'SEC-SERV-VOCE' ||
         _categSelecionada.secao == 'SEC-SERV-CARRO' ||
+        _categSelecionada.secao == 'SEC-SERV-SAUDE' ||
+        _categSelecionada.secao == 'SEC-SERV-CURSOS' ||
+        _categSelecionada.secao == 'SEC-SERV-VOCE' ||
+        _categSelecionada.secao == 'SEC-SERV-IMOVEIS' ||
+        _categSelecionada.secao == 'SEC-SERV-ESPORTE' ||
+        _categSelecionada.secao == 'SEC-SERV-EMPRESA' ||
         _categSelecionada.secao == 'SEC-SERV-PET') {
       // _labelEntrega = 'Atendimento';
       // _labelValidade = 'Garantia';
@@ -3012,7 +2983,10 @@ class _BodyMoffer extends State<BodyMoffer> {
       // showTxtEntregaTaxas = true;
       showTxtCodigoAlt = false;
     }
-    if (_categSelecionada.secao == 'SEC-PROD-OBJETO') {
+    if (_categSelecionada.secao == 'SEC-PROD-OBJETO' ||
+    _categSelecionada.secao == 'SEC-PET' ||
+    _categSelecionada.secao == 'SEC-PROD-DIVERSAO'
+    ) {
       // _labelEntrega = 'Entrega';
       // _labelValidade = 'Validade';
       showQtd = true;
@@ -3047,7 +3021,9 @@ class _BodyMoffer extends State<BodyMoffer> {
       // showTxtEntregaTaxas = true;
       showTxtCodigoAlt = false;
     }
-    if (_categSelecionada.secao == 'SEC-PROD-VEST') {
+    if (_categSelecionada.secao == 'SEC-PROD-VEST' ||
+        _categSelecionada.secao == 'SEC-PROD-MODA'
+    ) {
       // _labelEntrega = 'Entrega';
       showQtd = true;
       showCamposBasicos = true;
@@ -3295,7 +3271,9 @@ class _BodyMoffer extends State<BodyMoffer> {
         _mofferController.valDomDas = oferta.DomDas.toString();
         _mofferController.valDomAs = oferta.DomAs.toString();
 
-        if(oferta.LojaID!.isNotEmpty)
+        print('oferta.LojaID!.toString(): ' + oferta.LojaID!.toString());
+        print('oferta.LojaID!.isNotEmpty: ' + oferta.LojaID!.isNotEmpty.toString());
+        if(oferta.LojaID!.toString() != 'null')
           selStore = listStores.where((element) => element.LojaGUID == oferta.LojaID).single;
 
         _manageCampos();

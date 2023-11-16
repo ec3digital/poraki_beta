@@ -208,11 +208,14 @@ class _LoginPageState extends State<LoginPage> {
                       ElevatedButton(
                         onPressed: () async {
                           if (!isLoading) // && _loginController.formKey.currentState!.validate())
-                            tempLoginResult = await _doLogin(context);
 
-                          setState(() {
-                            isLoading = true;
-                          });
+                            setState(() {
+                              isLoading = true;
+                            });
+
+                            tempLoginResult = await _doLogin(context).then((value) { setState(() {
+                              isLoading = false;
+                            }); return value; });
 
                           if (tempLoginResult == 'OK') {
                             Navigator.push(
@@ -222,9 +225,9 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                             );
                           } else {
-                            setState(() {
-                              isLoading = false;
-                            });
+                            // setState(() {
+                            //   isLoading = false;
+                            // });
 
                             // print(tempLoginResult);
                             Alerta(context, tempLoginResult);

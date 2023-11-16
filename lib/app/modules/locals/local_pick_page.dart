@@ -13,7 +13,7 @@ class LocalPickPage extends StatefulWidget {
 class _LocalPickPageState extends State<LocalPickPage> {
   List<DropdownMenuItem<String>> dropDownMenuItems = [];
   var localSel = '';
-  List<String> locais = ['057 - Zona Sul / Região Morumbi', ''];
+  List<String> locais = []; // ['057 - Zona Sul / Região Morumbi', ''];
   final LoginController _loginController = Get.find();
 
   Future<void> carregaLocais() async {
@@ -82,15 +82,15 @@ class _LocalPickPageState extends State<LocalPickPage> {
                               if (newValue != '') {
                                 // _loginController.usuCep = newValue;
                                 setState(() {
-                                  localSel = newValue!.substring(0, 3);
-                                  _loginController.cloudId = localSel;
+                                  localSel = newValue.toString();
+                                  _loginController.cloudId = newValue!.substring(0, 3);
 
                                 });
 
                                 await _loginController.fbInstance!
                                     .collection("akiusuarios")
                                     .doc(_loginController.usuGuid)
-                                    .update({'Regiao': localSel});
+                                    .update({'Regiao': newValue!.substring(0, 3)});
 
                                 // new sqlPorakiLoginService().updateUsuarioCEP(
                                 //     localSel,

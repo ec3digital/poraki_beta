@@ -7,7 +7,7 @@ AppBar appBarDayOffers() {
     elevation: 0,
     centerTitle: false,
     title: Text(
-      'Ofertas do dia',
+      'Ofertas do dia 1',
       style: Get.textTheme.headline1!.copyWith(fontSize: 25),
     ),
     actions: [

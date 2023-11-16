@@ -2,72 +2,56 @@ import 'package:get/get.dart';
 import 'package:poraki/app/data/models/oferta.dart';
 import 'package:poraki/app/modules/auth/login/login_controller.dart';
 import '../models/produto_oferta.dart';
-import '../../shared/constants/constants.dart';
 
 class OfferRepository extends GetConnect {
-
   LoginController _loginController = Get.find();
   late List<Oferta> listOffers = [];
 
   Future<List<ProdutoOferta>> getOffersAll(int limit) async {
-    String url = '${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiOfertas').first.coreValor.toString()}/' + _loginController.cloudId.toString() + '%25/' + limit.toString();
-    var response = await get(url, headers: Constants.headers);
-    if (response.hasError) throw 'Ocorreu um erro em getOffersAll()';
+    await _loginController.getOffersApiEndpoints();
+    var response = await get('${_loginController.regionBaseUrl + _loginController.apiOfertas1}/' + _loginController.cloudId.toString() + '%25/' + limit.toString(), headers: _loginController.regionHeaders);
+    if (response.hasError) throw 'Ocorreu um erro em getOffersAll() / resp: ${response.body}';
     return (response.body['Ofertas'] as List)
         .map((oferta) => ProdutoOferta.fromJson(oferta))
         .toList();
   }
 
   Future<List<ProdutoOferta>> getDayOfferByCEP(int limit) async {
-    String url = '${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiOfertas').first.coreValor.toString()}/' + _loginController.cloudId.toString() + '%25/' + limit.toString();
-    var response = await get(url, headers: Constants.headers);
-    if (response.hasError) throw 'Ocorreu um erro em getDayOfferByCEP() url: $url / resp: ${response.body}';
+    await _loginController.getOffersApiEndpoints();
+    var response = await get('${_loginController.regionBaseUrl + _loginController.apiOfertas1}/' + _loginController.cloudId.toString() + '%25/' + limit.toString(), headers: _loginController.regionHeaders);
+    if (response.hasError) throw 'Ocorreu um erro em getDayOfferByCEP() / resp: ${response.body}';
     return (response.body['Ofertas'] as List)
         .map((oferta) => ProdutoOferta.fromJson(oferta))
         .toList();
   }
 
   Future<List<ProdutoOferta>> getOfferByCEPCategory(String category) async {
-    String url = '${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiOfertasCategoria').first.coreValor.toString()}/' + _loginController.cloudId.toString() + '%25/' + category;
-    var response = await get(url, headers: Constants.headers);
-    if (response.hasError) throw 'Ocorreu um erro em getOfferByCEPCategory()';
+    var response = await get('${_loginController.regionBaseUrl + _loginController.apiOfertasCategoria}/' + _loginController.cloudId.toString() + '%25/' + category, headers: _loginController.regionHeaders);
+    if (response.hasError) throw 'Ocorreu um erro em getOfferByCEPCategory() / resp: ${response.body}';
     return (response.body['Ofertas'] as List)
         .map((oferta) => ProdutoOferta.fromJson(oferta))
         .toList();
   }
 
   Future<List<ProdutoOferta>> getOfferByCEPCategoryTitle(String title, String category) async {
-    String url = '${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiOfertasCategoriaTitulo').first.coreValor.toString()}/' + _loginController.cloudId.toString() + '%25/' + category + '/' + title;
-    var response = await get(url, headers: Constants.headers);
-    if (response.hasError) throw 'Ocorreu um erro em getOfferByCEPCategoryTitle()';
+    var response = await get('${_loginController.regionBaseUrl + _loginController.apiOfertasCategoriaTitulo}/' + _loginController.cloudId.toString() + '%25/' + category + '/' + title, headers: _loginController.regionHeaders);
+    if (response.hasError) throw 'Ocorreu um erro em getOfferByCEPCategoryTitle() / resp: ${response.body}';
     return (response.body['Ofertas'] as List)
         .map((oferta) => ProdutoOferta.fromJson(oferta))
         .toList();
   }
 
   Future<List<ProdutoOferta>> getOfferByCEPTitle(String title) async {
-    String url = '${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiOfertasTitulo').first.coreValor.toString()}/' + _loginController.cloudId.toString() + '%25';
-    var response = await get(url, headers: Constants.headers);
+    var response = await get('${_loginController.regionBaseUrl + _loginController.apiOfertasTitulo}/' + _loginController.cloudId.toString() + '%25', headers: _loginController.regionHeaders);
     if (response.hasError) throw 'Ocorreu um erro em getOfferByCEPTitle() - ' + response.bodyString.toString();
     return (response.body['Ofertas'] as List)
         .map((oferta) => ProdutoOferta.fromJson(oferta))
         .toList();
   }
 
-  // Future<List<ProdutoOferta>> getOfferById(int ofertaId) async {
-  //   // String url = '${Constants.baseUrl}ofertasingle/' + ofertaId.toString();
-  //   String url = '${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiOferta').first.coreValor.toString()}/' + _loginController.usuCep.toString();
-  //   var response = await get(url, headers: Constants.headers);
-  //   if (response.hasError) throw 'Ocorreu um erro em getOfferById()';
-  //   return (response.body['Ofertas'] as List)
-  //       .map((oferta) => ProdutoOferta.fromJson(oferta))
-  //       .toList();
-  // }
-
   Future<List<ProdutoOferta>> getBestOffers(int limit) async {
-    String url = '${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiMelhoresOfertas').first.coreValor.toString()}/' + _loginController.cloudId.toString() + '%25/' + limit.toString();
-    // print('url: ' + url);
-    var response = await get(url, headers: Constants.headers);
+    await _loginController.getOffersApiEndpoints();
+    var response = await get('${_loginController.regionBaseUrl + _loginController.apiOfertas2}/' + _loginController.cloudId.toString() + '%25/' + limit.toString(), headers: _loginController.regionHeaders);
     // print('resp bestOffers: ' + response.body.toString());
     if (response.hasError) throw 'Ocorreu um erro em getBestOffers() ' + response.body.toString();
     return (response.body['Ofertas'] as List)
@@ -76,78 +60,60 @@ class OfferRepository extends GetConnect {
   }
 
   Future<List<ProdutoOferta>> getBestSellersOffers(int limit) async {
-    String url = '${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiOfertasMaisVendidas').first.coreValor.toString()}/' + _loginController.cloudId.toString() + '%25/' + limit.toString();
-    var response = await get(url, headers: Constants.headers);
-    if (response.hasError) throw 'Ocorreu um erro em getBestSellersOffers()';
+    await _loginController.getOffersApiEndpoints();
+    var response = await get('${_loginController.regionBaseUrl + _loginController.apiOfertas3}/' + _loginController.cloudId.toString() + '%25/' + limit.toString(), headers: _loginController.regionHeaders);
+    if (response.hasError) throw 'Ocorreu um erro em getBestSellersOffers() ' + response.body.toString();
     return (response.body['Ofertas'] as List)
         .map((oferta) => ProdutoOferta.fromJson(oferta))
         .toList();
   }
 
   Future<List<ProdutoOferta>> getMostFreshOffers(int limit) async {
-    String url = '${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiOfertasMaisFrescas').first.coreValor.toString()}/' + _loginController.cloudId.toString() + '%25/' + limit.toString();
-    var response = await get(url, headers: Constants.headers);
-    if (response.hasError) throw 'Ocorreu um erro em getMostFreshOffers()';
+    await _loginController.getOffersApiEndpoints();
+    var response = await get('${_loginController.regionBaseUrl + _loginController.apiOfertas4}/' + _loginController.cloudId.toString() + '%25/' + limit.toString(), headers: _loginController.regionHeaders);
+    if (response.hasError) throw 'Ocorreu um erro em getMostFreshOffers() ' + response.body.toString();
     return (response.body['Ofertas'] as List)
         .map((oferta) => ProdutoOferta.fromJson(oferta))
         .toList();
   }
 
   Future<List<ProdutoOferta>> getFavsOffers(int limit) async {
-    // String url = '${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiMelhoresOfertas').first.coreValor.toString()}/' + _loginController.usuCep.toString().substring(0,3) + '%25/' + limit.toString();
-    String url = 'https://poraki.hasura.app/api/rest/ofertasfavperuserkeys/' + _loginController.usuGuid.toString();
-    var response = await get(url, headers: Constants.headers);
-    if (response.hasError) throw 'Ocorreu um erro em getFavsOffers()';
+    var response = await get('${_loginController.regionBaseUrl + _loginController.apiOfertasFavPerUserKeys}/' + _loginController.usuGuid.toString(), headers: _loginController.regionHeaders);
+    if (response.hasError) throw 'Ocorreu um erro em getFavsOffers() ' + response.body.toString();
     return (response.body['OfertasFavsNew'] as List)
         .map((oferta) => ProdutoOferta.fromJson(oferta['OfertaFavXofertas']))
         .toList();
   }
 
   Future<List<Oferta>> getOffersByStore(String StoreGuid) async {
-    // String url = '${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiMelhoresOfertas').first.coreValor.toString()}/' + _loginController.usuCep.toString().substring(0,3) + '%25/' + limit.toString();
-    String url = 'https://poraki.hasura.app/api/rest/ofertasporloja/' + StoreGuid;
-    print(url);
-    var response = await get(url, headers: Constants.headers);
-    if (response.hasError) throw 'Ocorreu um erro em getOffersByStore()';
+    var response = await get('${_loginController.regionBaseUrl + _loginController.apiOfertasPorLoja}/' + StoreGuid, headers: _loginController.regionHeaders);
+    if (response.hasError) throw 'Ocorreu um erro em getOffersByStore() ' + response.body.toString();
     return (response.body['Ofertas'] as List)
         .map((oferta) => Oferta.fromJson(oferta))
         .toList();
   }
 
   Future<List<ProdutoOferta>> getOffersBySeller(String SellerGuid) async {
-    print('getOffersBySeller ' + SellerGuid);
-    String url = '${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiMoffer').first.coreValor.toString()}/' + SellerGuid;
-    print(url);
-    var response = await get(url, headers: Constants.headers);
-    //print(response.body.toString());
-    if (response.hasError) throw 'Ocorreu um erro em getOfferBySellerGuid()';
+    var response = await get('${_loginController.regionBaseUrl + _loginController.apiMoffer}/' + SellerGuid, headers: _loginController.regionHeaders);
+    if (response.hasError) throw 'Ocorreu um erro em getOffersBySeller() ' + response.body.toString();
     return (response.body['Ofertas'] as List)
         .map((oferta) => ProdutoOferta.fromJson(oferta))
         .toList();
   }
 
   Future<List<ProdutoOferta>> getOfferByStoreGuid(String StoreGuid) async {
-    print('getOfferByStoreGuid ' + StoreGuid);
-    String url = '${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiMoffersStore').first.coreValor.toString()}/' + StoreGuid;
-    print(url);
-    var response = await get(url, headers: Constants.headers);
-    //print(response.body.toString());
-    if (response.hasError) throw 'Ocorreu um erro em getOfferByStoreGuid()';
+    var response = await get('${_loginController.regionBaseUrl + _loginController.apiMoffersStore}/' + StoreGuid, headers: _loginController.regionHeaders);
+    if (response.hasError) throw 'Ocorreu um erro em getOfferByStoreGuid() ' + response.body.toString();
     return (response.body['Ofertas'] as List)
         .map((oferta) => ProdutoOferta.fromJson(oferta))
         .toList();
   }
 
   Future<List<Oferta>> getOfferBySellerGuid(String SellerGuid) async {
-    print('getOfferBySellerGuid ' + SellerGuid);
-    String url = '${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiMoffer').first.coreValor.toString()}/' + SellerGuid;
-    print('url moffer: ' + url);
-    var response = await get(url, headers: Constants.headers);
-    //print(response.body.toString());
-    if (response.hasError) throw 'Ocorreu um erro em getOfferBySellerGuid()';
+    var response = await get('${_loginController.regionBaseUrl + _loginController.apiMoffer}/' + SellerGuid, headers: _loginController.regionHeaders);
+    if (response.hasError) throw 'Ocorreu um erro em getOfferBySellerGuid() ' + response.body.toString();
 
     var jsonResult = response.body['Ofertas'];
-    // print(jsonResult);
     listOffers = (jsonResult as List)
         .map((oferta) => Oferta.fromJson(oferta))
         .toList();
@@ -156,13 +122,9 @@ class OfferRepository extends GetConnect {
   }
 
   Future<List<String>> getFavOffersGuids(String usuGuid) async {
-    print('getFavOffersGuids ' + usuGuid);
     List<String> retOffersGuids = [];
-    // String url = '${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiMoffer').first.coreValor.toString()}/' + usuGuid;
-    // print('url moffer: ' + url);
-    String url = 'https://poraki.hasura.app/api/rest/ofertasfavguidsperuser/' + usuGuid;
-    var response = await get(url, headers: Constants.headers);
-    if (response.hasError) throw 'Ocorreu um erro em getFavOffersGuids()';
+    var response = await get('${_loginController.regionBaseUrl + _loginController.apiOfertasFavGuidsPerUser}/' + usuGuid, headers: _loginController.regionHeaders);
+    if (response.hasError) throw 'Ocorreu um erro em getFavOffersGuids() ' + response.body.toString();
 
     var jsonResult = response.body['OfertasFavsNew'];
     print(jsonResult);
@@ -180,53 +142,40 @@ class OfferRepository extends GetConnect {
   }
 
   Future<List<ProdutoOferta>> getOfferByGuidFromApi(String offerGuid) async {
-    print('getOfferByGuidFromApi');
-    String url = '${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiOferta').first.coreValor.toString()}/' + offerGuid;
-    var response = await get(url, headers: Constants.headers);
-    if (response.hasError) throw 'Ocorreu um erro em getOfferByGuidFromApi()';
+    await _loginController.getOffersApiEndpoints();
+    var response = await get('${_loginController.regionBaseUrl + _loginController.apiOfertas1}/' + offerGuid, headers: _loginController.regionHeaders);
+    if (response.hasError) throw 'Ocorreu um erro em getOfferByGuidFromApi() ' + response.body.toString();
     return (response.body['Ofertas'] as List)
         .map((oferta) => ProdutoOferta.fromJson(oferta))
         .toList();
   }
 
   Future<void> deleteOfferByGuidFromApi(String offerGuid) async {
-    print('deleteOfferByGuidFromApi');
-    String url = Constants.baseUrl + 'ofertainativ/' + offerGuid;
-    var response = await put(url, '', headers: Constants.headers);
-    if (response.hasError) throw 'Ocorreu um erro em deleteOfferByGuidFromApi()';
+    var response = await put('${_loginController.regionBaseUrl + _loginController.apiOfertaInativ}/' + offerGuid, '', headers: _loginController.regionHeaders);
+    if (response.hasError) throw 'Ocorreu um erro em deleteOfferByGuidFromApi() ' + response.body.toString();
     else print(response.body);
   }
 
   Future<void> markOfferAsSold(String offerGuid) async {
-    print('markOfferAsSold');
-    String url = Constants.baseUrl + 'ofertavendida/' + offerGuid;
-    print(url);
-    var response = await put(url, '', headers: Constants.headers);
+    var response = await put('${_loginController.regionBaseUrl + _loginController.apiOfertaVendida}/' + offerGuid, '', headers: _loginController.regionHeaders);
     if (response.hasError) throw 'Ocorreu um erro em markOfferAsSold() $offerGuid';
     else print(response.body);
   }
 
   Future<void> reactivateOffer(String offerGuid) async {
-    print('markOfferAsSold');
-    String url = Constants.baseUrl + 'reativaoferta/' + offerGuid;
-    print(url);
-    var response = await put(url, '', headers: Constants.headers);
+    var response = await put('${_loginController.regionBaseUrl + _loginController.apiOfertaReativa}/' + offerGuid, '', headers: _loginController.regionHeaders);
     if (response.hasError) throw 'Ocorreu um erro em markOfferAsSold() $offerGuid';
     else print(response.body);
   }
 
   Future<void> deleteOfferByStore(String offerStoreId) async {
-    print('deleteOfferByStore');
-    String url = Constants.baseUrl + 'inativaofertaloja/' + offerStoreId;
-    var response = await put(url, '', headers: Constants.headers);
+    var response = await put('${_loginController.regionBaseUrl + _loginController.apiOfertaLojaInativa}/' + offerStoreId, '', headers: _loginController.regionHeaders);
     if (response.hasError) throw 'Ocorreu um erro em deleteOfferByStore() $offerStoreId';
     else print(response.body);
   }
 
   Future<void> deleteOfferByVendor(String offerFkid) async {
-    print('deleteOfferByVendor');
-    String url = Constants.baseUrl + 'inativaofertavendedor/' + offerFkid;
-    var response = await put(url, '', headers: Constants.headers);
+    var response = await put('${_loginController.regionBaseUrl + _loginController.apiOfertaVendedorInativa}/' + offerFkid, '', headers: _loginController.regionHeaders);
     if (response.hasError) throw 'Ocorreu um erro em deleteOfferByVendor() $offerFkid';
     else print(response.body);
   }

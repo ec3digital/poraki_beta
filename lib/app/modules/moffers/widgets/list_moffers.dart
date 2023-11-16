@@ -34,7 +34,7 @@ class _ListMoffersState extends State<ListMoffers> {
     // if (selStore == null) {
     await mofferController.getMoffers(_loginController.usuGuid.toString());
     // } else {
-     print('lojaGuid: ' + selStore!.LojaNome!.toString());
+    print('lojaGuid: ' + selStore!.LojaNome!.toString());
 
     // if (selStore?.LojaNome.toString() == 'Nenhuma')
     if (selStore == null)
@@ -59,11 +59,12 @@ class _ListMoffersState extends State<ListMoffers> {
     // Lojas lojaNenhuma = new Lojas(DateTime.now(), '', 'Nenhuma', _loginController.usuCep, '', 'Nenhuma', _loginController.usuGuid, '', '', '', '', '', '', '', '');
     listStores.clear();
     // if(listStores.contains(lojaNenhuma) == false) listStores.add(lojaNenhuma);
-    _loginController.listLojas.forEach((element) { listStores.add(element); });
+    _loginController.listLojas.forEach((element) {
+      listStores.add(element);
+    });
 
     // listStores.forEach((store) { })
     // listStores.remove((store) => store.LojaNome == 'Nenhuma');
-
 
     // final Color colorText = _loginController.colorFromHex(_loginController
     //     .listCore
@@ -102,45 +103,51 @@ class _ListMoffersState extends State<ListMoffers> {
                   : backColor,
             ),
             child: ListTile(
-                leading: CachedNetworkImage(
-                  imageUrl: _loginController.listCore
-                          .where((coreItem) => coreItem.coreChave == 'imgpath')
-                          .first
-                          .coreValor
-                          .toString() +
-                      moferta.OfertaGUID.toString() +
-                      _loginController.listCore
-                          .where((coreItem) =>
-                              coreItem.coreChave == 'imgpathsuffix')
-                          .first
-                          .coreValor
-                          .toString(),
-                  progressIndicatorBuilder: (context, url, downloadProgress) =>
-                      CircularProgressIndicator(
-                          value: downloadProgress.progress),
-                  errorWidget: (context, url, error) =>
-                      Icon(Icons.local_offer_outlined),
-                  height: 110,
-                ),
-                onTap: () {
-                  mofferController.singleOffer = moferta;
-                  Get.toNamed(AppRoutes.mOffer);
-                },
-                title: Text(
-                  moferta.OfertaDispoAte.toString().length > 4
-                      ? '(Vendido) ' + moferta.OfertaTitulo.toString()
-                      : moferta.OfertaTitulo.toString(),
-                  style: TextStyle(fontSize: 18,
-                      decoration: moferta.OfertaDispoAte.toString().length > 4
-                          ? TextDecoration.lineThrough
-                          : TextDecoration.none,
-                      color: moferta.OfertaDispoAte.toString().length > 4
-                          ? Colors.redAccent
-                          : textDarkColor),
-                ),
-                subtitle: Text(moferta.OfertaDetalhe.toString(), style: TextStyle(fontSize: 16)),
-                trailing: Text(
-                    'R\$ ${moferta.OfertaPreco?.toStringAsFixed(2).replaceAll(',', '').replaceAll('.', ',') ?? ''}', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),))
+              leading: CachedNetworkImage(
+                imageUrl: _loginController.listCore
+                        .where((coreItem) => coreItem.coreChave == 'imgpath')
+                        .first
+                        .coreValor
+                        .toString() +
+                    moferta.OfertaGUID.toString() +
+                    _loginController.listCore
+                        .where(
+                            (coreItem) => coreItem.coreChave == 'imgpathsuffix')
+                        .first
+                        .coreValor
+                        .toString(),
+                progressIndicatorBuilder: (context, url, downloadProgress) =>
+                    CircularProgressIndicator(value: downloadProgress.progress),
+                errorWidget: (context, url, error) =>
+                    Icon(Icons.local_offer_outlined),
+                height: 110,
+              ),
+              onTap: () {
+                mofferController.singleOffer = moferta;
+                Get.toNamed(AppRoutes.mOffer);
+              },
+              title: Text(
+                moferta.OfertaDispoAte.toString().length > 4
+                    ? '(Vendido) ' + moferta.OfertaTitulo.toString()
+                    : moferta.OfertaTitulo.toString(),
+                style: TextStyle(
+                    fontSize: 18,
+                    decoration: moferta.OfertaDispoAte.toString().length > 4
+                        ? TextDecoration.lineThrough
+                        : TextDecoration.none,
+                    color: moferta.OfertaDispoAte.toString().length > 4
+                        ? Colors.redAccent
+                        : textDarkColor),
+              ),
+              subtitle: Text(moferta.OfertaDetalhe.toString(),
+                  style: TextStyle(fontSize: 16)),
+              trailing: Text(
+                  //'R\$ ${moferta.OfertaPreco?.toStringAsFixed(2).replaceAll(',', '').replaceAll('.', ',') ?? ''}', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),))
+                  moferta.OfertaPreco! > 0
+                      ? 'R\$ ${moferta.OfertaPreco?.toStringAsFixed(2).replaceAll(',', '').replaceAll('.', ',') ?? ''}'
+                      : 'à combinar',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+            )),
         //const SizedBox(height: 3),
       ]);
     }
@@ -149,7 +156,15 @@ class _ListMoffersState extends State<ListMoffers> {
         future: loadObjs(load),
         builder: (context, futuro) {
           if (futuro.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator(backgroundColor: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'backDark').first.coreValor.toString())));
+            return Center(
+                child: CircularProgressIndicator(
+                    backgroundColor: _loginController.colorFromHex(
+                        _loginController.listCore
+                            .where(
+                                (coreItem) => coreItem.coreChave == 'backDark')
+                            .first
+                            .coreValor
+                            .toString())));
           } else {
             return Expanded(
                 child: Container(
@@ -190,7 +205,10 @@ class _ListMoffersState extends State<ListMoffers> {
               ),
               const SizedBox(height: 5),
               ListTile(
-                title: Text('Loja: ', style: TextStyle(fontSize: 18),),
+                title: Text(
+                  'Loja: ',
+                  style: TextStyle(fontSize: 18),
+                ),
                 trailing: DropdownButton<Lojas>(
                   items: listStores.map((Lojas loja) {
                     return DropdownMenuItem<Lojas>(
@@ -208,7 +226,6 @@ class _ListMoffersState extends State<ListMoffers> {
 
                       // if (novaLojaSel!.LojaNome != 'Nenhuma') {selStore = novaLojaSel;} else { selStore = listStores.where((element) => element.LojaNome == 'Nenhuma').single; }
                       // try {selStore = newValue!;} catch (Exception) { selStore = selStore;}
-
                     });
                   },
                 ),

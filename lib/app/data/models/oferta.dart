@@ -255,7 +255,7 @@ class Oferta {
     //data['OfertaQtdVendida'] = this.OfertaQtdVendida.toString();
     // data['OfertaPrazoEntregaMinutos'] = this.OfertaPrazoEntregaMinutos.toString();
     // data['LojaID'] = this.LojaID.toString();
-    // data['OfertaGUID'] = this.OfertaGUID;
+    data['OfertaGUID'] = this.OfertaGUID;
     // data['OfertaQtdDispo'] = '1'; // this.OfertaQtdDispo.toString();
     // data['OfertaQtdMaxVenda'] = this.OfertaQtdMaxVenda.toString();
     // data['OfertaQtdAviso'] = this.OfertaQtdAviso.toString();

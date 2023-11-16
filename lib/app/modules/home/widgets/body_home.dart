@@ -144,13 +144,8 @@ class BodyHome extends StatelessWidget {
                         } else {
                           return CardOffertsDayHome(
                             cardListOffers: _controller.offersToday!,
-                            widgetTitle: _loginController.listCore
-                                .where((coreItem) =>
-                                    coreItem.coreChave == 'textCard1')
-                                .first
-                                .coreValor
-                                .toString(),
-                            nomeLista: 'dayoffers',
+                            widgetTitle: _loginController.textCard1,
+                            nomeLista: 'offers1',
                           );
                         }
                       },
@@ -162,12 +157,7 @@ class BodyHome extends StatelessWidget {
                           return Container();
                         } else {
                           return CardOffertsDayHome(
-                            widgetTitle: _loginController.listCore
-                                .where((coreItem) =>
-                                    coreItem.coreChave == 'textCard2')
-                                .first
-                                .coreValor
-                                .toString(),
+                            widgetTitle: _loginController.textCard2,
                             cardListOffers: _controller.bestoffers!,
                             nomeLista: 'bestoffers',
                           );
@@ -181,12 +171,7 @@ class BodyHome extends StatelessWidget {
                           return Container();
                         } else {
                           return CardOffertsDayHome(
-                            widgetTitle: _loginController.listCore
-                                .where((coreItem) =>
-                                    coreItem.coreChave == 'textCard3')
-                                .first
-                                .coreValor
-                                .toString(),
+                            widgetTitle: _loginController.textCard3,
                             cardListOffers: _controller.bestselleroffers!,
                             nomeLista: 'bestsellers',
                           );
@@ -200,12 +185,7 @@ class BodyHome extends StatelessWidget {
                           return Container();
                         } else {
                           return CardOffertsDayHome(
-                            widgetTitle: _loginController.listCore
-                                .where((coreItem) =>
-                                    coreItem.coreChave == 'textCard4')
-                                .first
-                                .coreValor
-                                .toString(),
+                            widgetTitle: _loginController.textCard4,
                             cardListOffers: _controller.mostfresheroffers!,
                             nomeLista: 'freshoffers',
                           );

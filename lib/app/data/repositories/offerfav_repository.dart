@@ -1,16 +1,13 @@
 import 'package:get/get.dart';
 import 'package:poraki/app/data/models/ofertafav.dart';
 import 'package:poraki/app/modules/auth/login/login_controller.dart';
-import '../../shared/constants/constants.dart';
 import 'package:http/http.dart' as http;
 
 class OfferfavRepository extends GetConnect {
   LoginController _loginController = Get.find();
 
   Future<List<OfertasFavs>> getAll() async {
-    String url = 'https://poraki.hasura.app/api/rest/ofertasfavperuserkeys/' + _loginController.usuGuid.toString();
-    print('OfertasFavs.getAll() - ' + url.toString());
-    var response = await get(url, headers: Constants.headers);
+    var response = await get('${_loginController.regionBaseUrl + _loginController.apiOfertasFavPerUserKeys}/' + _loginController.usuGuid.toString(), headers: _loginController.regionHeaders);
     if (response.hasError) throw 'Ocorreu um erro em OfertaFav.getAll()';
     return (response.body['OfertasFavs'] as List)
         .map((ofertafav) => OfertasFavs.fromJson(ofertafav))
@@ -29,31 +26,21 @@ class OfferfavRepository extends GetConnect {
       });
 
     return resp;
-
   }
 
   Future<String> postObj(OfertasFavs ofertafav) async {
-    String url = 'https://poraki.hasura.app/api/rest/ofertafavadd/';
-    // print(ofertafav.toJson());
     var response = await http.post(
-        Uri.parse(url),
-        //Uri.parse('${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiEndereco').first.coreValor.toString()}'),
-        headers: Constants.headers,
+        Uri.parse('${_loginController.regionBaseUrl + _loginController.apiOfertaFavAdd}/'),
+        headers: _loginController.regionHeaders,
         body: ofertafav.toJson());
-    // if (response.er)
-    //   throw 'Ocorreu um erro em OrdersRepository().postAddress()';
     var ret = response.body.toString();
-    print(ret);
     return ret;
   }
 
   Future<String> deleteObj(OfertasFavs ofertafav) async {
-    String url = 'https://poraki.hasura.app/api/rest/ofertafavdel/';
-    // print(ofertafav.toJson());
     var response = await http.delete(
-        Uri.parse(url),
-      //Uri.parse('${Constants.baseUrl + _loginController.listCore.where((coreItem) => coreItem.coreChave == 'apiEndereco').first.coreValor.toString()}'),
-        headers: Constants.headers,
+        Uri.parse('${_loginController.regionBaseUrl + _loginController.apiOfertaFavDel}/'),
+        headers: _loginController.regionHeaders,
         body: ofertafav.toJson());
     var ret = response.body.toString();
     print(ret);

@@ -104,7 +104,8 @@ class _ListShoppingCartState extends State<ListShoppingCart> {
                                 children: [
                                   const SizedBox(width: 05),
                                   Text(
-                                      'R\$ ${widget.controller.listShoppingCart[index].totalValue.toStringAsFixed(2).replaceAll(',', '').replaceAll('.', ',')}',
+                                      //'R\$ ${widget.controller.listShoppingCart[index].totalValue.toStringAsFixed(2).replaceAll(',', '').replaceAll('.', ',')}',
+                                      widget.controller.listShoppingCart[index].totalValue > 0 ? 'R\$ ${widget.controller.listShoppingCart[index].totalValue.toStringAsFixed(2).replaceAll(',', '').replaceAll('.', ',')}' : 'à combinar',
                                       style: TextStyle(
                                           fontSize: 18, color: darkText)),
                                 ],

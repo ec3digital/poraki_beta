@@ -25,7 +25,8 @@ class CardOffertsDayHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final LoginController _loginController = Get.find();
-    final OffersController offersController = Get.find(); // Get.put(OffersController());
+    final OffersController offersController =
+        Get.find(); // Get.put(OffersController());
 
     final Color textDark = _loginController.colorFromHex(_loginController
         .listCore
@@ -192,10 +193,9 @@ class CardOffertsDayHome extends StatelessWidget {
                                                     downloadProgress.progress),
                                         errorWidget: (context, url, error) =>
                                             Icon(Icons.local_offer_outlined),
-                                        height: 110,alignment: Alignment.bottomCenter,
+                                        height: 110,
+                                        alignment: Alignment.bottomCenter,
                                       ),
-
-
                                     )),
                                     SizedBox(height: 10),
                                     Expanded(
@@ -221,7 +221,14 @@ class CardOffertsDayHome extends StatelessWidget {
 
                                         SizedBox(height: 5),
                                         Text(
-                                            'R\$ ${double.parse(cardListOffers[itemIndex].ofertaPreco.toString()).toStringAsFixed(2).replaceAll(',', '').replaceAll('.', ',')}',
+                                            //'R\$ ${double.parse(cardListOffers[itemIndex].ofertaPreco.toString()).toStringAsFixed(2).replaceAll(',', '').replaceAll('.', ',')}',
+                                            double.parse(cardListOffers[
+                                                            itemIndex]
+                                                        .ofertaPreco
+                                                        .toString()) >
+                                                    0
+                                                ? 'R\$ ${double.parse(cardListOffers[itemIndex].ofertaPreco.toString()).toStringAsFixed(2).replaceAll(',', '').replaceAll('.', ',')}'
+                                                : 'à combinar',
                                             style: TextStyle(
                                               fontSize: 22,
                                               fontWeight: FontWeight.bold,
@@ -289,24 +296,24 @@ class CardOffertsDayHome extends StatelessWidget {
                       // carrega as listas necessarias ao clicar
                       var sendTitle = 'Ofertas';
                       if (this.nomeLista.isNotEmpty) {
-                        if (this.nomeLista == 'dayoffers') {
-                          sendTitle = 'Ofertas do dia';
-                          Future.wait([offersController.getDayOffers(24)]);
+                        if (this.nomeLista == 'offers1') {
+                          sendTitle = _loginController.textCard1;
+                          Future.wait([offersController.getOffers1(24)]);
                         }
 
                         if (this.nomeLista == 'bestoffers') {
-                          sendTitle = 'Melhores ofertas';
+                          sendTitle = _loginController.textCard2;
                           Future.wait([offersController.getBestOffers(24)]);
                         }
 
                         if (this.nomeLista == 'freshoffers') {
-                          sendTitle = 'Fresquinhas';
+                          sendTitle = _loginController.textCard3;
                           Future.wait(
                               [offersController.getMostFreshOffers(24)]);
                         }
 
                         if (this.nomeLista == 'bestsellers') {
-                          sendTitle = "Mais vendidas";
+                          sendTitle = _loginController.textCard4;
                           Future.wait(
                               [offersController.getBestSellerOffers(24)]);
                         }

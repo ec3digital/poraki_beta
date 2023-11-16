@@ -156,7 +156,10 @@ class BodyOffer extends StatelessWidget {
                   // const SizedBox(height: 2),
                   Center(
                     child: Text(
-                      'R\$ ${produtoOferta.ofertaPreco?.toStringAsFixed(2).replaceAll(',', '').replaceAll('.', ',') ?? ''}',
+                      // 'R\$ ${produtoOferta.ofertaPreco?.toStringAsFixed(2).replaceAll(',', '').replaceAll('.', ',') ?? ''}',
+                      produtoOferta.ofertaPreco! > 0
+                          ? 'R\$ ${produtoOferta.ofertaPreco?.toStringAsFixed(2).replaceAll(',', '').replaceAll('.', ',') ?? ''}'
+                          : 'à combinar',
                       style: TextStyle(
                           fontSize: 25,
                           color: _loginController.colorFromHex(_loginController

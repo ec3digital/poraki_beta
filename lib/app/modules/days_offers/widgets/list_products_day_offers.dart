@@ -86,7 +86,8 @@ class ListProductsDayOffers extends StatelessWidget {
                           const SizedBox(height: 15),
                           Container(
                             child: Text(
-                              'R\$ ${_product.ofertaPreco?.toStringAsFixed(2).replaceAll(',', '').replaceAll('.', ',') ?? ''}',
+                              //'R\$ ${_product.ofertaPreco?.toStringAsFixed(2).replaceAll(',', '').replaceAll('.', ',') ?? ''}',
+                              _product.ofertaPreco! > 0 ? 'R\$ ${_product.ofertaPreco!.toStringAsFixed(2).replaceAll(',', '').replaceAll('.', ',')}' : 'à combinar',
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontWeight: FontWeight.w700,
