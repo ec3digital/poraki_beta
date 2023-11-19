@@ -42,42 +42,44 @@ class OfferRepository extends GetConnect {
   }
 
   Future<List<ProdutoOferta>> getOfferByCEPTitle(String title) async {
-    var response = await get('${_loginController.regionBaseUrl + _loginController.apiOfertasTitulo}/' + _loginController.cloudId.toString() + '%25', headers: _loginController.regionHeaders);
+    var url = '${_loginController.regionBaseUrl + _loginController.apiOfertasTitulo}/' + _loginController.cloudId.toString() + '%25' + '/%25' + title + '%25';
+    print('url: ' + url);
+    var response = await get('${_loginController.regionBaseUrl + _loginController.apiOfertasTitulo}/' + _loginController.cloudId.toString() + '%25' + '/%25' + title + '%25', headers: _loginController.regionHeaders);
     if (response.hasError) throw 'Ocorreu um erro em getOfferByCEPTitle() - ' + response.bodyString.toString();
     return (response.body['Ofertas'] as List)
         .map((oferta) => ProdutoOferta.fromJson(oferta))
         .toList();
   }
 
-  Future<List<ProdutoOferta>> getBestOffers(int limit) async {
+  Future<List<ProdutoOferta>> getOffers2(int limit) async {
     await _loginController.getOffersApiEndpoints();
     var response = await get('${_loginController.regionBaseUrl + _loginController.apiOfertas2}/' + _loginController.cloudId.toString() + '%25/' + limit.toString(), headers: _loginController.regionHeaders);
     // print('resp bestOffers: ' + response.body.toString());
-    if (response.hasError) throw 'Ocorreu um erro em getBestOffers() ' + response.body.toString();
+    if (response.hasError) throw 'Ocorreu um erro em getOffers2() ' + response.body.toString();
     return (response.body['Ofertas'] as List)
         .map((oferta) => ProdutoOferta.fromJson(oferta))
         .toList();
   }
 
-  Future<List<ProdutoOferta>> getBestSellersOffers(int limit) async {
+  Future<List<ProdutoOferta>> getOffers4(int limit) async {
     await _loginController.getOffersApiEndpoints();
     var response = await get('${_loginController.regionBaseUrl + _loginController.apiOfertas3}/' + _loginController.cloudId.toString() + '%25/' + limit.toString(), headers: _loginController.regionHeaders);
-    if (response.hasError) throw 'Ocorreu um erro em getBestSellersOffers() ' + response.body.toString();
+    if (response.hasError) throw 'Ocorreu um erro em getOffers4() ' + response.body.toString();
     return (response.body['Ofertas'] as List)
         .map((oferta) => ProdutoOferta.fromJson(oferta))
         .toList();
   }
 
-  Future<List<ProdutoOferta>> getMostFreshOffers(int limit) async {
+  Future<List<ProdutoOferta>> getOffers3(int limit) async {
     await _loginController.getOffersApiEndpoints();
     var response = await get('${_loginController.regionBaseUrl + _loginController.apiOfertas4}/' + _loginController.cloudId.toString() + '%25/' + limit.toString(), headers: _loginController.regionHeaders);
-    if (response.hasError) throw 'Ocorreu um erro em getMostFreshOffers() ' + response.body.toString();
+    if (response.hasError) throw 'Ocorreu um erro em getOffers3() ' + response.body.toString();
     return (response.body['Ofertas'] as List)
         .map((oferta) => ProdutoOferta.fromJson(oferta))
         .toList();
   }
 
-  Future<List<ProdutoOferta>> getFavsOffers(int limit) async {
+  Future<List<ProdutoOferta>> getFavsOffers() async {
     var response = await get('${_loginController.regionBaseUrl + _loginController.apiOfertasFavPerUserKeys}/' + _loginController.usuGuid.toString(), headers: _loginController.regionHeaders);
     if (response.hasError) throw 'Ocorreu um erro em getFavsOffers() ' + response.body.toString();
     return (response.body['OfertasFavsNew'] as List)

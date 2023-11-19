@@ -44,9 +44,9 @@ class _HomePageState extends State<HomePage> {
           // header: defaultHeader,
           onRefresh: () async {
             await controller.getOffers(4);
-            await controller.getBestOffers(4);
-            await controller.getMostFreshOffers(4);
-            await controller.getBestSellersOffers(4);
+            await controller.getOffers2(4);
+            await controller.getOffers3(4);
+            await controller.getOffers4(4);
             await _loginController.getListBannersFromFBCloud();
             await _loginController.getCategories();
 

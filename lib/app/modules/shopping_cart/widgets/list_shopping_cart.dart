@@ -166,7 +166,6 @@ class _ListShoppingCartState extends State<ListShoppingCart> {
                                                 .listShoppingCart[index].sellerId.toString())
                                       ]);
 
-
                                       Get.offAndToNamed(AppRoutes.offers, arguments: [
                                         {'listName': null},
                                         {'limit': 24},
@@ -178,7 +177,7 @@ class _ListShoppingCartState extends State<ListShoppingCart> {
                                     },
                                     //}//TODO: falta fazer fkid
                                     child: Text(
-                                        'Ver outros produtos deste vendedor',
+                                        'Ver outras ofertas deste vendedor',
                                         style: TextStyle(
                                             fontSize: 15, color: linkText)),
                                   ),

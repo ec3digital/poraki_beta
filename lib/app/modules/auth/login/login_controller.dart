@@ -69,6 +69,9 @@ class LoginController extends GetxController {
   String textCard2 = "Ofertas 2";
   String textCard3 = "Ofertas 3";
   String textCard4 = "Ofertas 4";
+  int qtyOfertas = 24;
+  int qtyOfertasGratis = 5;
+  int qtyOfertasIndica = 24;
   //String baseUrl = "";
 
   var headers = {

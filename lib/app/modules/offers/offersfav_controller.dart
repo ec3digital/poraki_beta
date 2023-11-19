@@ -37,7 +37,7 @@ class OffersFavController extends GetxController {
 
   Future<void> addObj(String ofertafavguid, OffersController offersController) async {
     var oFav = new OfertasFavs(ofertafavguid, _loginController.usuGuid, false, true);
-    await offerfavRepo.postObj(oFav).then((value) => offersController.getOffersFavsByUser(24));
+    await offerfavRepo.postObj(oFav).then((value) => offersController.getOffersFavsByUser(_loginController.qtyOfertas));
 
     _loginController.favoffersguids!.add(ofertafavguid);
     // _loginController.update();
@@ -65,7 +65,7 @@ class OffersFavController extends GetxController {
   Future<void> removeObj(String ofertafavguid, OffersController offersController) async {
     try {
         var oFav = new OfertasFavs(ofertafavguid, _loginController.usuGuid, false, true);
-        await offerfavRepo.deleteObj(oFav).then((value) => offersController.getOffersFavsByUser(24));
+        await offerfavRepo.deleteObj(oFav).then((value) => offersController.getOffersFavsByUser(_loginController.qtyOfertas));
 
         _loginController.favoffersguids!.remove(ofertafavguid);
         // _loginController.update();

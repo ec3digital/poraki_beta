@@ -6,6 +6,7 @@ import '../../data/repositories/offer_repository.dart';
 
 class OffersController extends GetxController {
   OfferRepository offerRepository = OfferRepository();
+  final LoginController _loginController = Get.find();
   List<ProdutoOferta> offers = [];
   Oferta? oferta;
   String? cep;
@@ -15,7 +16,7 @@ class OffersController extends GetxController {
   String? storeId;
   String? fkId;
   //String? ofertaGuid;
-  int limit = 24;
+  // int limit = 24;
 
   OffersController();
 
@@ -26,13 +27,15 @@ class OffersController extends GetxController {
     if(Get.arguments != null)
     {
       this.listName = Get.arguments[0]['listName'];
-      this.limit = Get.arguments[1]['limit'];
+      // this.limit = Get.arguments[1]['limit'];
       this.category = Get.arguments[2]['category'];
       this.title = Get.arguments[3]['title'];
       this.storeId = Get.arguments[4]['storeId'];
       this.fkId = Get.arguments[5]['fkId'];
 
-      print('ln: ' + this.listName.toString() + ' / l: ' + this.limit.toString() + ' / c: ' + this.category.toString() + ' / t: ' + this.title.toString());
+      print('ln: ' + this.listName.toString() + ' / l: ' + ' / c: ' + this.category.toString() + ' / t: ' + this.title.toString());
+
+      print(Get.arguments.toString());
 
       //this.ofertaGuid = Get.arguments[4]['ofertaGuid'];
 
@@ -43,27 +46,30 @@ class OffersController extends GetxController {
       //
       // }
       // else
+
+      if (this.title != null) print("busca: " + this.title.toString());
+
       if (this.listName != null) {
         print('offers listName: ' + this.listName.toString());
-        if (this.listName == 'offers1') await getOffers1(limit);
+        if (this.listName == 'offers1') await getOffers1(_loginController.qtyOfertas);
 
-        if (this.listName == 'bestoffers') await getBestOffers(limit);
+        if (this.listName == 'offers2') await getOffers2(_loginController.qtyOfertas);
 
-        if (this.listName == 'freshoffers') await getMostFreshOffers(limit);
+        if (this.listName == 'offers3') await getOffers3(_loginController.qtyOfertas);
 
-        if (this.listName == 'bestsellers') await getBestSellerOffers(limit);
+        if (this.listName == 'offers4') await getOffers4(_loginController.qtyOfertas);
 
-        if (this.listName == 'favsoffers') await getOffersFavsByUser(limit); // getBestSellerOffers(limit);
+        if (this.listName == 'favsoffers') await getOffersFavsByUser(_loginController.qtyOfertas); // getBestSellerOffers(limit);
       }
       else {
         if (this.category == null && this.title == null &&
             this.listName == null && this.storeId == null && this.fkId == null) {
-          await getOffers(24);
+          await getOffers(_loginController.qtyOfertas);
         }
 
         if (this.category == null && this.title == null &&
             this.listName == null && this.storeId == null && this.fkId == null) {
-          await getDayOfferByCEP(24);
+          await getDayOfferByCEP(_loginController.qtyOfertas);
         }
 
         if (this.category != null && this.title == null &&
@@ -170,37 +176,11 @@ class OffersController extends GetxController {
   Future<void> getOfferByCEPTitle(String title) async {
     try {
       changeLoading(true);
-      print('entrou no getOfferByCEPTitle');
+      print('entrou no getOfferByCEPTitle: ' + title);
       offers = await offerRepository.getOfferByCEPTitle(title);
       this.refresh();
     } catch (e) {
       print('Erro no getOfferByCEPTitle() controller ${e.toString()}');
-    } finally {
-      changeLoading(false);
-    }
-  }
-
-  Future<void> getBestOffers(int limit) async {
-    try {
-      changeLoading(true);
-      print('entrou no getOfferByCEPTitle');
-      offers = await offerRepository.getBestOffers(limit);
-      this.refresh();
-    } catch (e) {
-      print('Erro no getOfferByCEPTitle() controller ${e.toString()}');
-    } finally {
-      changeLoading(false);
-    }
-  }
-
-  Future<void> getBestSellerOffers(int limit) async {
-    try {
-      changeLoading(true);
-      print('entrou no getBestSellerOffers');
-      offers = await offerRepository.getBestSellersOffers(limit);
-      this.refresh();
-    } catch (e) {
-      print('Erro no getBestSellerOffers() controller ${e.toString()}');
     } finally {
       changeLoading(false);
     }
@@ -219,14 +199,40 @@ class OffersController extends GetxController {
     }
   }
 
-  Future<void> getMostFreshOffers(int limit) async {
+  Future<void> getOffers2(int limit) async {
     try {
       changeLoading(true);
-      print('entrou no getMostFreshOffers');
-      offers = await offerRepository.getMostFreshOffers(limit);
+      print('entrou no getOfferByCEPTitle');
+      offers = await offerRepository.getOffers2(limit);
       this.refresh();
     } catch (e) {
-      print('Erro no getMostFreshOffers() controller ${e.toString()}');
+      print('Erro no getOfferByCEPTitle() controller ${e.toString()}');
+    } finally {
+      changeLoading(false);
+    }
+  }
+
+  Future<void> getOffers3(int limit) async {
+    try {
+      changeLoading(true);
+      print('entrou no getOffers3');
+      offers = await offerRepository.getOffers3(limit);
+      this.refresh();
+    } catch (e) {
+      print('Erro no getOffers3() controller ${e.toString()}');
+    } finally {
+      changeLoading(false);
+    }
+  }
+
+  Future<void> getOffers4(int limit) async {
+    try {
+      changeLoading(true);
+      print('entrou no getBestSellerOffers');
+      offers = await offerRepository.getOffers4(limit);
+      this.refresh();
+    } catch (e) {
+      print('Erro no getOffers4() controller ${e.toString()}');
     } finally {
       changeLoading(false);
     }
@@ -270,12 +276,12 @@ class OffersController extends GetxController {
     }
   }
 
-  Future<void> getOffersFavsByUser(int limit) async {
+  Future<void> getOffersFavsByUser(int qtyOfertas) async {
     try {
       changeLoading(true);
       print('entrou no getOffersFavsByUser');
       // LoginController _loginController = Get.find();
-      offers = await offerRepository.getFavsOffers(limit);
+      offers = await offerRepository.getFavsOffers();
       this.refresh();
     } catch (e) {
       print('Erro no getOffersFavsByUser() controller ${e.toString()}');

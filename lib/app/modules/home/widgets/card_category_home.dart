@@ -15,8 +15,8 @@ class CardCategories extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     LoginController _loginController = Get.find();
+
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 8),
       child: Column(
@@ -35,7 +35,7 @@ class CardCategories extends StatelessWidget {
 
                   Get.toNamed(AppRoutes.offers, arguments: [
                     {'listName': null},
-                    {'limit': 24},
+                    {'limit': _loginController.qtyOfertas},
                     {'category': chave.toString()},
                     {'title': text.toString()},
                     {'ofertaGuid': null}

@@ -38,10 +38,10 @@ class BodyHome extends StatelessWidget {
 
     // Get.put(OffersController());
 
-    await _controller.getMostFreshOffers(4);
-    await _controller.getBestOffers(4);
     await _controller.getOffers(4);
-    await _controller.getBestSellersOffers(4);
+    await _controller.getOffers3(4);
+    await _controller.getOffers2(4);
+    await _controller.getOffers4(4);
 
   }
 
@@ -139,11 +139,11 @@ class BodyHome extends StatelessWidget {
                     GetBuilder<HomeController>(
                       builder: (_) {
                         if (_controller.isLoading ||
-                            _controller.offersToday!.length == 0) {
+                            _controller.offers1!.length == 0) {
                           return Container();
                         } else {
                           return CardOffertsDayHome(
-                            cardListOffers: _controller.offersToday!,
+                            cardListOffers: _controller.offers1!,
                             widgetTitle: _loginController.textCard1,
                             nomeLista: 'offers1',
                           );
@@ -153,13 +153,13 @@ class BodyHome extends StatelessWidget {
                     GetBuilder<HomeController>(
                       builder: (_) {
                         if (_controller.isLoading ||
-                            _controller.bestoffers!.length == 0) {
+                            _controller.offers2!.length == 0) {
                           return Container();
                         } else {
                           return CardOffertsDayHome(
                             widgetTitle: _loginController.textCard2,
-                            cardListOffers: _controller.bestoffers!,
-                            nomeLista: 'bestoffers',
+                            cardListOffers: _controller.offers2!,
+                            nomeLista: 'offers2',
                           );
                         }
                       },
@@ -167,13 +167,13 @@ class BodyHome extends StatelessWidget {
                     GetBuilder<HomeController>(
                       builder: (_) {
                         if (_controller.isLoading ||
-                            _controller.bestselleroffers!.length == 0) {
+                            _controller.offers3!.length == 0) {
                           return Container();
                         } else {
                           return CardOffertsDayHome(
                             widgetTitle: _loginController.textCard3,
-                            cardListOffers: _controller.bestselleroffers!,
-                            nomeLista: 'bestsellers',
+                            cardListOffers: _controller.offers3!,
+                            nomeLista: 'offers4',
                           );
                         }
                       },
@@ -181,13 +181,13 @@ class BodyHome extends StatelessWidget {
                     GetBuilder<HomeController>(
                       builder: (_) {
                         if (_controller.isLoading ||
-                            _controller.mostfresheroffers!.length == 0) {
+                            _controller.offers4!.length == 0) {
                           return Container();
                         } else {
                           return CardOffertsDayHome(
                             widgetTitle: _loginController.textCard4,
-                            cardListOffers: _controller.mostfresheroffers!,
-                            nomeLista: 'freshoffers',
+                            cardListOffers: _controller.offers4!,
+                            nomeLista: 'offers3',
                           );
                         }
                       },

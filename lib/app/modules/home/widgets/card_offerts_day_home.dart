@@ -298,30 +298,30 @@ class CardOffertsDayHome extends StatelessWidget {
                       if (this.nomeLista.isNotEmpty) {
                         if (this.nomeLista == 'offers1') {
                           sendTitle = _loginController.textCard1;
-                          Future.wait([offersController.getOffers1(24)]);
+                          Future.wait([offersController.getOffers1(_loginController.qtyOfertas)]);
                         }
 
-                        if (this.nomeLista == 'bestoffers') {
+                        if (this.nomeLista == 'offers2') {
                           sendTitle = _loginController.textCard2;
-                          Future.wait([offersController.getBestOffers(24)]);
+                          Future.wait([offersController.getOffers2(_loginController.qtyOfertas)]);
                         }
 
-                        if (this.nomeLista == 'freshoffers') {
+                        if (this.nomeLista == 'offers3') {
                           sendTitle = _loginController.textCard3;
                           Future.wait(
-                              [offersController.getMostFreshOffers(24)]);
+                              [offersController.getOffers3(_loginController.qtyOfertas)]);
                         }
 
-                        if (this.nomeLista == 'bestsellers') {
+                        if (this.nomeLista == 'offers4') {
                           sendTitle = _loginController.textCard4;
                           Future.wait(
-                              [offersController.getBestSellerOffers(24)]);
+                              [offersController.getOffers4(_loginController.qtyOfertas)]);
                         }
                       }
 
                       Get.toNamed(AppRoutes.offers, arguments: [
                         {'listName': nomeLista},
-                        {'limit': 24},
+                        {'limit': _loginController.qtyOfertas},
                         {'category': null},
                         {'title': sendTitle},
                         {'ofertaGuid': null}

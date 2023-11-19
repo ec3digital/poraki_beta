@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:poraki/app/modules/auth/login/login_controller.dart';
+import 'package:poraki/app/modules/offers/offers_controller.dart';
 import 'package:poraki/app/routes/app_routes.dart';
 import '../home_controller.dart';
 
@@ -31,9 +32,20 @@ class AppBarHome extends StatelessWidget {
                 ),
                 child: TextFormField(
                   onFieldSubmitted: (String value) {
+                    // Get.toNamed(AppRoutes.offers, arguments: [                      {'listName': null}, {'limit': 24}, {'category': null }, {'title': txtBuscaCtrl.text.trimRight()}, {'ofertaGuid': null}] );
+                    OffersController offersController = Get.find();
+                    Future.wait([offersController.getOfferByCEPTitle(value.trim())]);
+
                     Get.toNamed(AppRoutes.offers, arguments: [
-                      {'listName': null}, {'limit': 24}, {'category': null }, {'title': txtBuscaCtrl.text.trimRight()}, {'ofertaGuid': null}] );
-                  } ,
+                      {'listName': null},
+                      {'limit': 24},
+                      {'category': null},
+                      {'title': value.trim()},
+                      {'ofertaGuid': null},
+                      // {'storeId': ''}
+                    ]);
+
+                  },
                   controller: txtBuscaCtrl,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(

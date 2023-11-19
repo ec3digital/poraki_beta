@@ -21,6 +21,8 @@ class OffersPage extends StatelessWidget {
       print('storeId = ${storeId.toString()}');
     } catch (exception) {}
 
+    print(Get.arguments.toString());
+
     return Scaffold(
       appBar: appBarOffers(Get.arguments[3]['title']),
       body:

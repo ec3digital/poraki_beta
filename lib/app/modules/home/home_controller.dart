@@ -18,10 +18,11 @@ class HomeController extends GetxController {
   // OffersController _offersController = Get.put(OffersController());
   // PeopleRepository peopleRepository = PeopleRepository();
 
-  List<ProdutoOferta>? offersToday = [];
-  List<ProdutoOferta>? bestoffers = [];
-  List<ProdutoOferta>? mostfresheroffers = [];
-  List<ProdutoOferta>? bestselleroffers = [];
+  List<ProdutoOferta>? offers1 = [];
+  List<ProdutoOferta>? offers2 = [];
+  List<ProdutoOferta>? offers3 = [];
+  List<ProdutoOferta>? offers4 = [];
+
   // List<Categorias>? categorias;
   bool isLoading = false;
 
@@ -44,7 +45,7 @@ class HomeController extends GetxController {
   Future<void> getOffers(int limit) async {
     try {
       changeLoading(true);
-      offersToday = await offerRepository.getDayOfferByCEP(limit);
+      offers1 = await offerRepository.getDayOfferByCEP(limit);
     } catch (e) {
       print('Erro no getOffers() controller ${e.toString()}');
     } finally {
@@ -52,39 +53,38 @@ class HomeController extends GetxController {
     }
   }
 
-  Future<void> getBestOffers(int limit) async {
+  Future<void> getOffers2(int limit) async {
     try {
       changeLoading(true);
-      bestoffers = await offerRepository.getBestOffers(limit);
+      offers2 = await offerRepository.getOffers2(limit);
     } catch (e) {
-      print('Erro no getBestOffers() controller ${e.toString()}');
+      print('Erro no getOffers2() controller ${e.toString()}');
     } finally {
       changeLoading(false);
     }
   }
 
-  Future<void> getMostFreshOffers(int limit) async {
+  Future<void> getOffers4(int limit) async {
     try {
       changeLoading(true);
-      mostfresheroffers = await offerRepository.getMostFreshOffers(limit);
+      offers3 = await offerRepository.getOffers4(limit);
     } catch (e) {
-      print('Erro no getMostFreshOffers() controller ${e.toString()}');
+      print('Erro no getOffers4() controller ${e.toString()}');
     } finally {
       changeLoading(false);
     }
   }
 
-  Future<void> getBestSellersOffers(int limit) async {
+  Future<void> getOffers3(int limit) async {
     try {
       changeLoading(true);
-      bestselleroffers = await offerRepository.getBestSellersOffers(limit);
+      offers4 = await offerRepository.getOffers3(limit);
     } catch (e) {
-      print('Erro no getBestSellersOffers() controller ${e.toString()}');
+      print('Erro no getOffers3() controller ${e.toString()}');
     } finally {
       changeLoading(false);
     }
   }
-
 
   // Future<void> getCategories() async {
   //   FirebaseFirestore? _fbInstance;

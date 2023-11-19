@@ -43,7 +43,7 @@ class _DrawerHomeState extends State<DrawerHome> {
 
   @override
   Widget build(BuildContext context) {
-    //LoginController _loginController = Get.find();
+    LoginController _loginController = Get.find();
     Color lightBack = _login.colorFromHex(_login.listCore
         .where((coreItem) => coreItem.coreChave == 'backLight')
         .first
@@ -133,7 +133,7 @@ class _DrawerHomeState extends State<DrawerHome> {
                         OffersController _offersController =
                             Get.find(); // Get.put(OffersController());
                         Future.wait(
-                            [_offersController.getOffersFavsByUser(24)]);
+                            [_offersController.getOffersFavsByUser(_loginController.qtyOfertas)]);
 
                         Get.toNamed(AppRoutes.offers, arguments: [
                           {'listName': 'favsoffers'},
