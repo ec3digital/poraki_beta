@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+// import 'package:get/get.dart';
 import 'package:poraki/app/data/models/produto_oferta.dart';
 import 'package:poraki/app/modules/offers/widgets/app_offers.dart';
 import 'package:poraki/app/modules/offers/widgets/body_offer.dart';

@@ -16,7 +16,7 @@ class TextPriceProductDayOffer extends StatelessWidget {
       textPrice,
       style: TextStyle(
         fontSize: 25,
-        color: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'backLight').first.coreValor.toString())
+        color: _loginController.colorFromHex(_loginController.backLight)
       ),
     );
   }

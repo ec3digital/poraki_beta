@@ -10,7 +10,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:poraki/app/routes/app_routes.dart';
 
 class AccountCancelPage extends StatefulWidget {
-  final PwController _pwController = Get.put(PwController());
+  // final PwController _pwController = Get.put(PwController());
   AccountCancelPage({Key? key}) : super(key: key);
 
   @override
@@ -23,41 +23,23 @@ class _AccountCancelPageState extends State<AccountCancelPage> {
     LoginController _loginController = Get.find();
     final FirebaseAuth? auth = FirebaseAuth.instance;
 
-    Color textDark = _loginController.colorFromHex(_loginController.listCore
-        .where((coreItem) => coreItem.coreChave == 'textLight')
-        .first
-        .coreValor
-        .toString());
+    Color textDark = _loginController.colorFromHex(_loginController.textLight);
 
     return Scaffold(
         drawer: DrawerHome(0),
-        backgroundColor: _loginController.colorFromHex(_loginController.listCore
-            .where((coreItem) => coreItem.coreChave == 'backDark')
-            .first
-            .coreValor
-            .toString()),
+        backgroundColor: _loginController.colorFromHex(_loginController.backDark),
         body: Scaffold(
             appBar: PreferredSize(
               preferredSize: Size(double.maxFinite, 55),
               child: AppBar(
                 // elevation: 0,
                 centerTitle: false,
-                backgroundColor: _loginController.colorFromHex(_loginController
-                    .listCore
-                    .where((coreItem) => coreItem.coreChave == 'backLight')
-                    .first
-                    .coreValor
-                    .toString()),
+                backgroundColor: _loginController.colorFromHex(_loginController.backLight),
                 title: Text(
                   'Cancelamento de conta',
                   style: TextStyle(
                       fontSize: 25,
-                      color: _loginController.colorFromHex(_loginController
-                          .listCore
-                          .where((coreItem) => coreItem.coreChave == 'textDark')
-                          .first
-                          .coreValor
-                          .toString())),
+                      color: _loginController.colorFromHex(_loginController.textDark)),
                 ),
               ),
             ),
@@ -93,12 +75,7 @@ class _AccountCancelPageState extends State<AccountCancelPage> {
                   },
                   colorText: textDark,
                   text: 'Sim',
-                  colorButton: _loginController.colorFromHex(_loginController
-                      .listCore
-                      .where((coreItem) => coreItem.coreChave == 'textDark')
-                      .first
-                      .coreValor
-                      .toString()),
+                  colorButton: _loginController.colorFromHex(_loginController.textDark),
                 ),
                 const SizedBox(
                   height: 20,
@@ -109,12 +86,7 @@ class _AccountCancelPageState extends State<AccountCancelPage> {
                   },
                   colorText: textDark,
                   text: 'Não',
-                  colorButton: _loginController.colorFromHex(_loginController
-                      .listCore
-                      .where((coreItem) => coreItem.coreChave == 'textDark')
-                      .first
-                      .coreValor
-                      .toString()),
+                  colorButton: _loginController.colorFromHex(_loginController.textDark),
                 ),
               ])
                   // ],

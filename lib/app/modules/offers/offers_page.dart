@@ -31,11 +31,7 @@ class OffersPage extends StatelessWidget {
 
           Container(
               decoration: new BoxDecoration(
-                  color: _loginController.colorFromHex(_loginController.listCore
-                      .where((coreItem) => coreItem.coreChave == 'backDark')
-                      .first
-                      .coreValor
-                      .toString())),
+                  color: _loginController.colorFromHex(_loginController.backDark)),
               // child: Expanded(
               // flex: 1,
               child: Column(
@@ -75,10 +71,7 @@ class OffersPage extends StatelessWidget {
                   const SizedBox(height: 10),
                   if (storeId.toString() != 'null')
                     CachedNetworkImage(
-                      imageUrl:
-                          'https://firebasestorage.googleapis.com/v0/b/ec3digrepo.appspot.com/o/lojas%2F' +
-                              storeId.toString() +
-                              '.jpg?alt=media',
+                      imageUrl: _loginController.imgPathStores + storeId.toString() + _loginController.imgPathSuffix,
                       progressIndicatorBuilder:
                           (context, url, downloadProgress) =>
                               CircularProgressIndicator(
@@ -91,13 +84,7 @@ class OffersPage extends StatelessWidget {
                   Text(Get.arguments[3]['title'],
                       style: TextStyle(
                           fontSize: 16,
-                          color: _loginController.colorFromHex(_loginController
-                              .listCore
-                              .where((coreItem) =>
-                                  coreItem.coreChave == 'textDark')
-                              .first
-                              .coreValor
-                              .toString()))),
+                          color: _loginController.colorFromHex(_loginController.textDark))),
                   // const SizedBox(height: 2),
 
                   ListOffers()

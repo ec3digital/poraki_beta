@@ -18,9 +18,6 @@ class BodyShowDayOffer extends StatelessWidget {
     final ShowDayOfferController _controller = Get.find();
     LoginController _loginController = Get.find();
 
-    //TODO: resolver essa parada
-    // _controller.getOfferTapped(3);
-
     return Container(
         child: GetBuilder<ShowDayOfferController>(builder: (context) {
           if (_controller.isLoading) {
@@ -31,9 +28,7 @@ class BodyShowDayOffer extends StatelessWidget {
             ProdutoOferta? _product = _controller.offerTapped;
             List<String> offersImages = [];
             offersImages.add(
-                'https://firebasestorage.googleapis.com/v0/b/ec3digrepo.appspot.com/o/ofertas%2F' +
-                    _product!.ofertaGUID.toString() +
-                    '.jpg?alt=media');
+                _loginController.imgPath + _product!.ofertaGUID.toString() + _loginController.imgPathSuffix);
 
             return SingleChildScrollView(
               child: Container(
@@ -60,14 +55,7 @@ class BodyShowDayOffer extends StatelessWidget {
                     SizedBox(height: 10),
                     ButtonsDayOffer(
                       onPressed: () {},
-                      colorText: _loginController.colorFromHex(
-                          _loginController.listCore
-                              .where((coreItem) =>
-                          coreItem.coreChave ==
-                              'backLight')
-                              .first
-                              .coreValor
-                              .toString()),
+                      colorText: _loginController.colorFromHex(_loginController.backLight),
                       text: 'Comprar agora',
                       colorButton: AppColors.primaryColor,
                     ),

@@ -44,16 +44,8 @@ class _DrawerHomeState extends State<DrawerHome> {
   @override
   Widget build(BuildContext context) {
     LoginController _loginController = Get.find();
-    Color lightBack = _login.colorFromHex(_login.listCore
-        .where((coreItem) => coreItem.coreChave == 'backLight')
-        .first
-        .coreValor
-        .toString());
-    Color darkBack = _login.colorFromHex(_login.listCore
-        .where((coreItem) => coreItem.coreChave == 'backDark')
-        .first
-        .coreValor
-        .toString());
+    Color lightBack = _login.colorFromHex(_login.backLight);
+    Color darkBack = _login.colorFromHex(_login.backDark);
     final FirebaseAuth? auth = FirebaseAuth.instance;
 
     // TODO: remover daqui e pegar direto do login Controller
@@ -201,7 +193,11 @@ class _DrawerHomeState extends State<DrawerHome> {
                         Get.offAllNamed(AppRoutes.signIn);
                       },
                       icon: Icons.arrow_back,
-                    )
+                    ),
+                    Divider(
+                      color: darkBack,
+                    ),
+                    Text("versão BETA", style: TextStyle(fontSize: 14),)
                   ],
                 ));
           }
@@ -238,17 +234,12 @@ class RowCategoriesDrawerHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     LoginController _loginController = Get.find();
-    var x = badgeText;
 
     if (badgeText == null) {
       return ListTile(
         style: ListTileStyle.list,
         onTap: onTap,
-        tileColor: _loginController.colorFromHex(_loginController.listCore
-            .where((coreItem) => coreItem.coreChave == 'backLight')
-            .first
-            .coreValor
-            .toString()),
+        tileColor: _loginController.colorFromHex(_loginController.backLight),
         minLeadingWidth: (Get.width * 0.3) * 0.01,
         title: Text(
           text,
@@ -256,20 +247,12 @@ class RowCategoriesDrawerHome extends StatelessWidget {
             fontSize: 16, //fontWeight: FontWeight.bold,
             // height: 0.1,
             // fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-            color: _loginController.colorFromHex(_loginController.listCore
-                .where((coreItem) => coreItem.coreChave == 'textDark')
-                .first
-                .coreValor
-                .toString()),
+            color: _loginController.colorFromHex(_loginController.textDark),
           ),
         ),
         leading: Icon(
           icon,
-          color: _loginController.colorFromHex(_loginController.listCore
-              .where((coreItem) => coreItem.coreChave == 'textDark')
-              .first
-              .coreValor
-              .toString()),
+          color: _loginController.colorFromHex(_loginController.textDark),
           size: 20,
         ),
       );
@@ -277,11 +260,7 @@ class RowCategoriesDrawerHome extends StatelessWidget {
       return ListTile(
         style: ListTileStyle.list,
         onTap: onTap,
-        tileColor: _loginController.colorFromHex(_loginController.listCore
-            .where((coreItem) => coreItem.coreChave == 'backLight')
-            .first
-            .coreValor
-            .toString()),
+        tileColor: _loginController.colorFromHex(_loginController.backLight),
         minLeadingWidth: (Get.width * 0.3) * 0.01,
         title: Text(
           text,
@@ -289,11 +268,7 @@ class RowCategoriesDrawerHome extends StatelessWidget {
             fontSize: 16, //fontWeight: FontWeight.bold,
             // height: 0.1,
             // fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-            color: _loginController.colorFromHex(_loginController.listCore
-                .where((coreItem) => coreItem.coreChave == 'textDark')
-                .first
-                .coreValor
-                .toString()),
+            color: _loginController.colorFromHex(_loginController.textDark),
           ),
         ),
         // leading: Badge(

@@ -17,18 +17,8 @@ class ListOffers extends StatelessWidget {
     final OffersController offersController =
         Get.find(); // Get.put(OffersController());
     final LoginController _loginController = Get.find();
-    final Color backDark = _loginController.colorFromHex(_loginController
-        .listCore
-        .where((coreItem) => coreItem.coreChave == 'backDark')
-        .first
-        .coreValor
-        .toString());
-    final Color backColor = _loginController.colorFromHex(_loginController
-        .listCore
-        .where((coreItem) => coreItem.coreChave == 'backLight')
-        .first
-        .coreValor
-        .toString());
+    final Color backDark = _loginController.colorFromHex(_loginController.backDark);
+    final Color backColor = _loginController.colorFromHex(_loginController.backLight);
 
     Widget _buildRow(ProdutoOferta oferta) {
       // List<ProdutoOferta>? listOffer = offersController.offers;
@@ -63,18 +53,7 @@ class ListOffers extends StatelessWidget {
           ),
           child: ListTile(
               leading: CachedNetworkImage(
-                imageUrl: _loginController.listCore
-                        .where((coreItem) => coreItem.coreChave == 'imgpath')
-                        .first
-                        .coreValor
-                        .toString() +
-                    oferta.ofertaGUID.toString() +
-                    _loginController.listCore
-                        .where(
-                            (coreItem) => coreItem.coreChave == 'imgpathsuffix')
-                        .first
-                        .coreValor
-                        .toString(),
+                imageUrl: _loginController.imgPath + oferta.ofertaGUID.toString() + _loginController.imgPathSuffix,
                 progressIndicatorBuilder: (context, url, downloadProgress) =>
                     CircularProgressIndicator(value: downloadProgress.progress),
                 errorWidget: (context, url, error) =>

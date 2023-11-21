@@ -30,48 +30,26 @@ class _UpdatePwPageState extends State<UpdatePwPage> {
   @override
   Widget build(BuildContext context) {
     LoginController _loginController = Get.find();
-
-    Color textDark = _loginController.colorFromHex(_loginController.listCore
-        .where((coreItem) => coreItem.coreChave == 'textLight')
-        .first
-        .coreValor
-        .toString());
+    Color textDark = _loginController.colorFromHex(_loginController.textLight);
 
     return FutureBuilder(
         future: carregaObjUsuario(),
         builder: (context, futuro) {
           return Scaffold(
               drawer: DrawerHome(0),
-              backgroundColor: _loginController.colorFromHex(_loginController
-                  .listCore
-                  .where((coreItem) => coreItem.coreChave == 'backDark')
-                  .first
-                  .coreValor
-                  .toString()),
+              backgroundColor: _loginController.colorFromHex(_loginController.backDark),
               body: Scaffold(
                   appBar: PreferredSize(
                     preferredSize: Size(double.maxFinite, 55),
                     child: AppBar(
                       // elevation: 0,
                       centerTitle: false,
-                      backgroundColor: _loginController.colorFromHex(
-                          _loginController.listCore
-                              .where((coreItem) =>
-                                  coreItem.coreChave == 'backLight')
-                              .first
-                              .coreValor
-                              .toString()),
+                      backgroundColor: _loginController.colorFromHex(_loginController.backLight),
                       title: Text(
                         'Atualizar senha',
                         style: TextStyle(
                             fontSize: 25,
-                            color: _loginController.colorFromHex(
-                                _loginController.listCore
-                                    .where((coreItem) =>
-                                        coreItem.coreChave == 'textDark')
-                                    .first
-                                    .coreValor
-                                    .toString())),
+                            color: _loginController.colorFromHex(_loginController.textDark)),
                       ),
                     ),
                   ),
@@ -205,13 +183,7 @@ class _UpdatePwPageState extends State<UpdatePwPage> {
                             },
                             colorText: textDark,
                             text: 'Confirmar',
-                            colorButton: _loginController.colorFromHex(
-                                _loginController.listCore
-                                    .where((coreItem) =>
-                                        coreItem.coreChave == 'textDark')
-                                    .first
-                                    .coreValor
-                                    .toString()),
+                            colorButton: _loginController.colorFromHex(_loginController.textDark),
                           ),
                         ])
                         // ],

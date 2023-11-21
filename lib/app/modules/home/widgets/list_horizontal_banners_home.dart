@@ -1,7 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:infinite_carousel/infinite_carousel.dart';
+// import 'package:infinite_carousel/infinite_carousel.dart';
 import 'package:poraki/app/modules/auth/login/login_controller.dart';
 
 import '../home_controller.dart';

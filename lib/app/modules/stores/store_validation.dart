@@ -54,11 +54,7 @@ class _StoreValidationState extends State<StoreValidation> {
   @override
   Widget build(BuildContext context) {
     LoginController _loginController = Get.find();
-    Color textDark = _loginController.colorFromHex(_loginController.listCore
-        .where((coreItem) => coreItem.coreChave == 'textDark')
-        .first
-        .coreValor
-        .toString());
+    Color textDark = _loginController.colorFromHex(_loginController.textDark);
 
     return Scaffold(
         appBar: PreferredSize(
@@ -66,12 +62,7 @@ class _StoreValidationState extends State<StoreValidation> {
           child: AppBar(
             elevation: 0,
             centerTitle: false,
-            backgroundColor: widget._loginController.colorFromHex(widget
-                ._loginController.listCore
-                .where((coreItem) => coreItem.coreChave == 'backLight')
-                .first
-                .coreValor
-                .toString()),
+            backgroundColor: widget._loginController.colorFromHex(widget._loginController.backLight),
             title: Text(
               'Validação de Loja',
               style: TextStyle(fontSize: 25, color: textDark),
@@ -105,12 +96,7 @@ class _StoreValidationState extends State<StoreValidation> {
                       },
                       style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.all<Color>(
-                            widget._loginController.colorFromHex(widget
-                                ._loginController.listCore
-                                .where((coreItem) => coreItem.coreChave == 'backDark')
-                                .first
-                                .coreValor
-                                .toString()),
+                            widget._loginController.colorFromHex(widget._loginController.backDark),
                           )),
                       child: Row(
                         children: [
@@ -146,12 +132,7 @@ class _StoreValidationState extends State<StoreValidation> {
                       },
                       style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.all<Color>(
-                            widget._loginController.colorFromHex(widget
-                                ._loginController.listCore
-                                .where((coreItem) => coreItem.coreChave == 'backDark')
-                                .first
-                                .coreValor
-                                .toString()),
+                            widget._loginController.colorFromHex(widget._loginController.backDark),
                           )),
                       child: Row(
                         children: [
@@ -171,18 +152,8 @@ class _StoreValidationState extends State<StoreValidation> {
                   const SizedBox(height: 20),
                   ButtonOffer(
                       text: 'Enviar',
-                      colorText: widget._loginController.colorFromHex(widget
-                          ._loginController.listCore
-                          .where((coreItem) => coreItem.coreChave == 'textLight')
-                          .first
-                          .coreValor
-                          .toString()),
-                      colorButton: widget._loginController.colorFromHex(widget
-                          ._loginController.listCore
-                          .where((coreItem) => coreItem.coreChave == 'iconColor')
-                          .first
-                          .coreValor
-                          .toString()),
+                      colorText: widget._loginController.colorFromHex(widget._loginController.textLight),
+                      colorButton: widget._loginController.colorFromHex(widget._loginController.iconColor),
                       onPressed: () {
                         uploadFoto(imageCNPJ == null ? null : imageCNPJ,
                             widget._loginController.usuGuid.toString(), 1)

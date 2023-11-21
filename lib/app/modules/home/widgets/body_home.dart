@@ -66,7 +66,7 @@ class BodyHome extends StatelessWidget {
         future: loadAllOffers(),
         builder: (context, futuro) {
           if (futuro.connectionState != ConnectionState.done) {
-            return Center(child: CircularProgressIndicator(backgroundColor: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'backDark').first.coreValor.toString())));
+            return Center(child: CircularProgressIndicator(backgroundColor: _loginController.colorFromHex(_loginController.backDark)));
           } else {
             return SingleChildScrollView(
               child: GradientHeaderHome(
@@ -207,13 +207,7 @@ class BodyHome extends StatelessWidget {
                       text: 'Clique aqui para convidar',
                       colorText: Colors.white,
                       isWhatsapp: false,
-                      colorButton: _loginController.colorFromHex(
-                          _loginController.listCore
-                              .where((coreItem) =>
-                                  coreItem.coreChave == 'textDark')
-                              .first
-                              .coreValor
-                              .toString()),
+                      colorButton: _loginController.colorFromHex(_loginController.textDark),
                       onPressed: () async {
                         var androidUrl =
                             "Oi, estou usando aplicativo de ofertas da região e acho que voce iria gostar de ver seus produtos ou serviços lá. Bora baixar ? ";

@@ -16,7 +16,7 @@ class AppBarHome extends StatelessWidget {
     LoginController _loginController = Get.find();
 
     return AppBar(
-      backgroundColor: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'backDark').first.coreValor.toString()),
+      backgroundColor: _loginController.colorFromHex(_loginController.backDark),
       elevation: 0,
       titleSpacing: 0,
       title: Container(
@@ -27,7 +27,7 @@ class AppBarHome extends StatelessWidget {
               child: Container(
                 height: 34,
                 decoration: BoxDecoration(
-                  color: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'textLight').first.coreValor.toString()),
+                  color: _loginController.colorFromHex(_loginController.textLight),
                   borderRadius: BorderRadius.all(Radius.circular(30)),
                 ),
                 child: TextFormField(
@@ -53,7 +53,7 @@ class AppBarHome extends StatelessWidget {
                       borderSide: BorderSide.none,
                     ),
                     prefixIcon: Icon(Icons.search),
-                    labelText: _loginController.listCore.where((coreItem) => coreItem.coreChave == 'textSearch').first.coreValor.toString(),
+                    labelText: _loginController.textSearch,
 
                   ),
                 ),

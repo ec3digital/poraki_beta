@@ -186,26 +186,26 @@ class sqlPorakiCoreService {
 
     await verificaTabela();
     Batch batch = db.batch();
-    batch.insert('appcore', {'coreChave': 'apiCategorias', 'coreValor': 'categorias'});
-    batch.insert('appcore', {'coreChave': 'apiCategoriasBarra', 'coreValor': 'categoriasbarra'});
-    batch.insert('appcore', {'coreChave': 'apiEndereco', 'coreValor': 'endereco'});
-    batch.insert('appcore', {'coreChave': 'apiEnderecoAtual', 'coreValor': 'enderecoatual'});
-    batch.insert('appcore', {'coreChave': 'apiEnderecos', 'coreValor': 'enderecos'});
-    batch.insert('appcore', {'coreChave': 'apiLojasPorVendedor', 'coreValor': 'lojasporvendedor'});
-    batch.insert('appcore', {'coreChave': 'apiLoja', 'coreValor': 'loja'});
-    batch.insert('appcore', {'coreChave': 'apiMelhoresOfertas', 'coreValor': 'melhoresofertas'});
-    batch.insert('appcore', {'coreChave': 'apiMoffer', 'coreValor': 'moffer'});
-    batch.insert('appcore', {'coreChave': 'apiMoffers', 'coreValor': 'moffers'});
-    batch.insert('appcore', {'coreChave': 'apiMoffersStore', 'coreValor': 'moffersstore'});
-    batch.insert('appcore', {'coreChave': 'apiOferta', 'coreValor': 'oferta'});
-    batch.insert('appcore', {'coreChave': 'apiOfertas', 'coreValor': 'ofertasdodia'});
-    batch.insert('appcore', {'coreChave': 'apiOfertasCategoria', 'coreValor': 'ofertasporcepcategoria'});
-    batch.insert('appcore', {'coreChave': 'apiOfertasCategoriaTitulo', 'coreValor': 'ofertasporcepcategoriatitulo'});
-    batch.insert('appcore', {'coreChave': 'apiOfertasMaisFrescas', 'coreValor': 'ofertasmaisfrescas'});
-    batch.insert('appcore', {'coreChave': 'apiOfertasMaisVendidas', 'coreValor': 'ofertasmaisvendidas'});
-    batch.insert('appcore', {'coreChave': 'apiOfertasTitulo', 'coreValor': 'ofertasporceptitulo'});
-    batch.insert('appcore', {'coreChave': 'apiOfertasPorVendedor', 'coreValor': 'ofertasporvendedor'});
-    batch.insert('appcore', {'coreChave': 'apiOfertasPorLoja', 'coreValor': 'ofertasporloja'});
+    // batch.insert('appcore', {'coreChave': 'apiCategorias', 'coreValor': 'categorias'});
+    // batch.insert('appcore', {'coreChave': 'apiCategoriasBarra', 'coreValor': 'categoriasbarra'});
+    // batch.insert('appcore', {'coreChave': 'apiEndereco', 'coreValor': 'endereco'});
+    // batch.insert('appcore', {'coreChave': 'apiEnderecoAtual', 'coreValor': 'enderecoatual'});
+    // batch.insert('appcore', {'coreChave': 'apiEnderecos', 'coreValor': 'enderecos'});
+    // batch.insert('appcore', {'coreChave': 'apiLojasPorVendedor', 'coreValor': 'lojasporvendedor'});
+    // batch.insert('appcore', {'coreChave': 'apiLoja', 'coreValor': 'loja'});
+    // batch.insert('appcore', {'coreChave': 'apiMelhoresOfertas', 'coreValor': 'melhoresofertas'});
+    // batch.insert('appcore', {'coreChave': 'apiMoffer', 'coreValor': 'moffer'});
+    // batch.insert('appcore', {'coreChave': 'apiMoffers', 'coreValor': 'moffers'});
+    // batch.insert('appcore', {'coreChave': 'apiMoffersStore', 'coreValor': 'moffersstore'});
+    // batch.insert('appcore', {'coreChave': 'apiOferta', 'coreValor': 'oferta'});
+    // batch.insert('appcore', {'coreChave': 'apiOfertas', 'coreValor': 'ofertasdodia'});
+    // batch.insert('appcore', {'coreChave': 'apiOfertasCategoria', 'coreValor': 'ofertasporcepcategoria'});
+    // batch.insert('appcore', {'coreChave': 'apiOfertasCategoriaTitulo', 'coreValor': 'ofertasporcepcategoriatitulo'});
+    // batch.insert('appcore', {'coreChave': 'apiOfertasMaisFrescas', 'coreValor': 'ofertasmaisfrescas'});
+    // batch.insert('appcore', {'coreChave': 'apiOfertasMaisVendidas', 'coreValor': 'ofertasmaisvendidas'});
+    // batch.insert('appcore', {'coreChave': 'apiOfertasTitulo', 'coreValor': 'ofertasporceptitulo'});
+    // batch.insert('appcore', {'coreChave': 'apiOfertasPorVendedor', 'coreValor': 'ofertasporvendedor'});
+    // batch.insert('appcore', {'coreChave': 'apiOfertasPorLoja', 'coreValor': 'ofertasporloja'});
     // batch.insert('appcore', {'coreChave': 'apiPedido', 'coreValor': 'pedido'});
     // batch.insert('appcore', {'coreChave': 'apiPedidoItens', 'coreValor': 'pedidoitens'});
     // batch.insert('appcore', {'coreChave': 'apiPedidosPorCliente', 'coreValor': 'pedidosporcliente'});
@@ -213,8 +213,8 @@ class sqlPorakiCoreService {
     // batch.insert('appcore', {'coreChave': 'apiPedidosPorVendedor', 'coreValor': 'pedidosporvendedor'});
     // batch.insert('appcore', {'coreChave': 'apiPedidosPorVendedorOpen', 'coreValor': 'pedidosporvendedoropen'});
     // batch.insert('appcore', {'coreChave': 'apiUsuarioSus', 'coreValor': 'ususus'});
-    batch.insert('appcore', {'coreChave': 'uuidservice', 'coreValor': 'https://www.uuidgenerator.net/api/version4'});
-    batch.insert('appcore', {'coreChave': 'cepservice', 'coreValor': 'https://brasilapi.com.br/api/cep/v2/'});
+    // batch.insert('appcore', {'coreChave': 'uuidservice', 'coreValor': 'https://www.uuidgenerator.net/api/version4'});
+    // batch.insert('appcore', {'coreChave': 'cepservice', 'coreValor': 'https://brasilapi.com.br/api/cep/v2/'});
 
     // batch.insert('appcore', {'coreChave': 'apiPedidoAvalia', 'coreValor': 'pedidoavalia'});
     // batch.insert('appcore', {'coreChave': 'apiPedidoCancela', 'coreValor': 'pedidocancela'});
@@ -226,24 +226,24 @@ class sqlPorakiCoreService {
     // batch.insert('appcore', {'coreChave': 'apiEnderecoAtual', 'coreValor': 'enderecoatual'});
     // batch.insert('appcore', {'coreChave': 'apiEnderecoNAtual', 'coreValor': 'endereconatual'});
 
-    batch.insert('appcore', {'coreChave': 'backDark', 'coreValor': '0xFF21B6A8'});
-    batch.insert('appcore', {'coreChave': 'backLight', 'coreValor': '0xFFA3EBB1'});
-    batch.insert('appcore', {'coreChave': 'iconColor', 'coreValor': '0xDDFF8885'});
-    batch.insert('appcore', {'coreChave': 'textDark', 'coreValor': '0xFF116530'});
-    batch.insert('appcore', {'coreChave': 'textLight', 'coreValor': '0xffFFFFFF'});
-    batch.insert('appcore', {'coreChave': 'textSearch', 'coreValor': 'buscar poraki...'});
+    // batch.insert('appcore', {'coreChave': 'backDark', 'coreValor': '0xFF21B6A8'});
+    // batch.insert('appcore', {'coreChave': 'backLight', 'coreValor': '0xFFA3EBB1'});
+    // batch.insert('appcore', {'coreChave': 'iconColor', 'coreValor': '0xDDFF8885'});
+    // batch.insert('appcore', {'coreChave': 'textDark', 'coreValor': '0xFF116530'});
+    // batch.insert('appcore', {'coreChave': 'textLight', 'coreValor': '0xffFFFFFF'});
+    // batch.insert('appcore', {'coreChave': 'textSearch', 'coreValor': 'buscar poraki...'});
     // batch.insert('appcore', {'coreChave': 'textCard1', 'coreValor': 'Ofertas do dia'});
     // batch.insert('appcore', {'coreChave': 'textCard2', 'coreValor': 'Melhores ofertas'});
     // batch.insert('appcore', {'coreChave': 'textCard3', 'coreValor': 'Mais vendidos'});
     // batch.insert('appcore', {'coreChave': 'textCard4', 'coreValor': 'Mais fresquinhos'});
     // batch.insert('appcore', {'coreChave': 'textCard5', 'coreValor': 'Outras ofertas 1'});
     // batch.insert('appcore', {'coreChave': 'textCard6', 'coreValor': 'Outras ofertas 2'});
-    batch.insert('appcore', {'coreChave': 'imgpath', 'coreValor': 'https://firebasestorage.googleapis.com/v0/b/ec3digrepo.appspot.com/o/ofertas%2F'});
-    batch.insert('appcore', {'coreChave': 'imgpathsuffix', 'coreValor': '.jpg?alt=media'});
-    batch.insert('appcore', {'coreChave': 'lastreload', 'coreValor': '20220401'});
-    batch.insert('appcore', {'coreChave': 'apiBase', 'coreValor': 'https://poraki.hasura.app/api/rest/'});
-    batch.insert('appcore', {'coreChave': 'header-user', 'coreValor': 'x-hasura-admin-secret'}); //, 'cep': ''
-    batch.insert('appcore', {'coreChave': 'header-secret', 'coreValor': 'iy67sW4CLrijAZ3dSDeKpzo565EqoWWnk81DQX8hu1bEE7Q7nCntduiiS2IdKJNR'});
+    // batch.insert('appcore', {'coreChave': 'imgpath', 'coreValor': 'https://firebasestorage.googleapis.com/v0/b/ec3digrepo.appspot.com/o/ofertas%2F'});
+    // batch.insert('appcore', {'coreChave': 'imgpathsuffix', 'coreValor': '.jpg?alt=media'});
+    // batch.insert('appcore', {'coreChave': 'lastreload', 'coreValor': '20220401'});
+    // batch.insert('appcore', {'coreChave': 'apiBase', 'coreValor': 'https://poraki.hasura.app/api/rest/'});
+    // batch.insert('appcore', {'coreChave': 'header-user', 'coreValor': 'x-hasura-admin-secret'}); //, 'cep': ''
+    // batch.insert('appcore', {'coreChave': 'header-secret', 'coreValor': 'iy67sW4CLrijAZ3dSDeKpzo565EqoWWnk81DQX8hu1bEE7Q7nCntduiiS2IdKJNR'});
 
     print('valor iniciais criados');
     await batch.commit(noResult: true);

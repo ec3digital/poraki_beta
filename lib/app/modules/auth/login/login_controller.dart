@@ -44,6 +44,7 @@ class LoginController extends GetxController {
   String? usuNome;
   String? usuEmail;
   String? usuGuid;
+  String usuPerfil = 'U';
   String cloudId = "057";
   String apiOfertas1 = "ofertasdodia";
   String apiOfertas2 = "melhoresofertas";
@@ -69,8 +70,13 @@ class LoginController extends GetxController {
   String textCard2 = "Ofertas 2";
   String textCard3 = "Ofertas 3";
   String textCard4 = "Ofertas 4";
+  String imgPath = "https://firebasestorage.googleapis.com/v0/b/ec3digrepo.appspot.com/o/ofertas%2F";
+  String imgPathStores = "https://firebasestorage.googleapis.com/v0/b/ec3digrepo.appspot.com/o/lojas%2F";
+  String imgPathEvents = "https://firebasestorage.googleapis.com/v0/b/ec3digrepo.appspot.com/o/eventos%2F";
+  String imgPathSuffix = ".jpg?alt=media";
   int qtyOfertas = 24;
   int qtyOfertasGratis = 5;
+  // int qtyOfertasLoja = 5;
   int qtyOfertasIndica = 24;
   //String baseUrl = "";
 
@@ -81,6 +87,14 @@ class LoginController extends GetxController {
   };
   Map<String, String> regionHeaders = {}; // = [] as Map<String, String>;
   String regionBaseUrl = "";
+  String cepSvcUrl = "https://brasilapi.com.br/api/cep/v2/";
+  String uuidSvcUrl = "https://www.uuidgenerator.net/api/version4";
+  String textSearch = "buscar por...";
+  String textDark = "0xFF116530";
+  String textLight = "0xffFFFFFF";
+  String backDark = "0xFF21B6A8";
+  String backLight = "0xFFA3EBB1";
+  String iconColor = "0xDDFF8885";
 
   @override
   void onInit() async {
@@ -92,6 +106,7 @@ class LoginController extends GetxController {
 
     fbInstance = FirebaseFirestore.instance;
     await getRegionApiEndpoint();
+    await getFBParams();
   }
 
   void changeCheckBox(bool newObscurePassword) {
@@ -141,6 +156,40 @@ class LoginController extends GetxController {
       cloudId = value['Regiao'].toString().trim();
       usuCep = value['CEP'].toString().trim();
     });
+  }
+
+  // pega params from firebase
+  Future<void> getFBParams() async {
+    // pega o perfil do usuário
+    await fbInstance!
+        .collection("akiusuarios")
+        .doc(auth!.currentUser!.uid)
+        .get()
+        .then((value) {
+          usuPerfil = value['Perfil'].toString().trim();
+    });
+
+    // pega params do core
+    await fbInstance!
+        .collection("akicore")
+        .doc("core")
+        .get()
+        .then((value) {
+      qtyOfertasGratis = int.parse(value['qtyOfertasGratis'].toString().trim());
+      imgPath = value['imgpath'].toString().trim();
+      imgPathStores = value['imgpathstores'].toString().trim();
+      imgPathEvents = value['imgpathevents'].toString().trim();
+      imgPathSuffix = value['imgpathsuffix'].toString().trim();
+      cepSvcUrl =  value['cepSvcUrl'].toString().trim();
+      uuidSvcUrl =  value['uuidSvcUrl'].toString().trim();
+      textSearch =  value['textSearch'].toString().trim();
+      textDark =  value['textDark'].toString().trim();
+      textLight =  value['textLight'].toString().trim();
+      iconColor =  value['iconColor'].toString().trim();
+      backDark =  value['backDark'].toString().trim();
+      backLight =  value['backLight'].toString().trim();
+    });
+
   }
 
   // carrega dados do usuario
@@ -225,18 +274,19 @@ class LoginController extends GetxController {
     // var coreFBcep = await fbPorakiService().getListFromFirebase("akicore", "057"); // cloudId.toString());
     var stringCloud = cloudId.isEmpty ? "057" : cloudId.substring(0,3);
     var coreFBcep = await fbPorakiService().getListFromFirebase("akicore", stringCloud);
-    listCoreCep = await sqlPorakiCoreService().buscaTodosValoresCep();
-    if (coreFBcep.isNotEmpty) {
-      // reseta tabela core local cep
-      await sqlPorakiCoreService().resetaTabelaCep();
-      // verifica tabela core local cep
-      await sqlPorakiCoreService().verificaTabelaCep();
-      // insere os valores iniciais cep
-      await sqlPorakiCoreService().valoresIniciaisCep();
 
-      // atualiza lista de params core
-      listCoreCep = await sqlPorakiCoreService().buscaTodosValoresCep();
-    }
+    // listCoreCep = await sqlPorakiCoreService().buscaTodosValoresCep();
+    // if (coreFBcep.isNotEmpty) {
+    //   // reseta tabela core local cep
+    //   await sqlPorakiCoreService().resetaTabelaCep();
+    //   // verifica tabela core local cep
+    //   await sqlPorakiCoreService().verificaTabelaCep();
+    //   // insere os valores iniciais cep
+    //   await sqlPorakiCoreService().valoresIniciaisCep();
+    //
+    //   // atualiza lista de params core
+    //   listCoreCep = await sqlPorakiCoreService().buscaTodosValoresCep();
+    // }
 
     // se chegaram dados da nuvem
     if (coreFB.isNotEmpty) {

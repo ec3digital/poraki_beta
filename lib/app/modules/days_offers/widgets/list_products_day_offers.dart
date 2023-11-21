@@ -48,7 +48,7 @@ class ListProductsDayOffers extends StatelessWidget {
                             margin: EdgeInsets.only(top: 4),
 
                             child: CachedNetworkImage(
-                              imageUrl: 'https://firebasestorage.googleapis.com/v0/b/ec3digrepo.appspot.com/o/ofertas%2F' + _product.ofertaGUID.toString() + '.jpg?alt=media',
+                              imageUrl: _loginController.imgPath + _product.ofertaGUID.toString() + _loginController.imgPathSuffix,
                               progressIndicatorBuilder: (context, url, downloadProgress) =>
                                   CircularProgressIndicator(value: downloadProgress.progress),
                               errorWidget: (context, url, error) => Icon(Icons.local_offer_outlined),
@@ -78,7 +78,7 @@ class ListProductsDayOffers extends StatelessWidget {
                               style: TextStyle(
                                 fontWeight: FontWeight.w700,
                                 fontSize: 14,
-                                color: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'textDark').first.coreValor.toString())
+                                color: _loginController.colorFromHex(_loginController.textDark)
                               ),
                               maxLines: 2,
                             ),
@@ -92,7 +92,7 @@ class ListProductsDayOffers extends StatelessWidget {
                               style: TextStyle(
                                 fontWeight: FontWeight.w700,
                                 fontSize: 16,
-                                color: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'backDark').first.coreValor.toString()),
+                                color: _loginController.colorFromHex(_loginController.backDark),
                               ),
                             ),
                           ),

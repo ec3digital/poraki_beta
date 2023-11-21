@@ -18,12 +18,7 @@ class ListVerticalCategories extends StatelessWidget {
   Widget build(BuildContext context) {
     final LoginController _loginController = Get.find();
     final CategoriesController _categoriesController = Get.find(); // .put(CategoriesController());
-    final Color backColor = _loginController.colorFromHex(_loginController
-        .listCore
-        .where((coreItem) => coreItem.coreChave == 'backLight')
-        .first
-        .coreValor
-        .toString());
+    final Color backColor = _loginController.colorFromHex(_loginController.backLight);
     var categoriasAll = _loginController.listaCategorias;
     // categoriasAll.sort((a, b) => a.secao.toString().compareTo(b.secao.toString()));
     // var categoriasSorted = categoriasAll.sort((a, b) => a.secao.compareTo(b.secao));
@@ -37,8 +32,9 @@ class ListVerticalCategories extends StatelessWidget {
                   'MaterialIcons')), //Icon(IconData(int.parse(iconcode), fontFamily: 'MaterialIcons')),
           onTap: () {
             OffersController offersController = Get.find();
-            Future.wait(
-                [offersController.getOfferByCEPCategory(chave.toString())]);
+
+            if(qtd! > 0) Future.wait([offersController.getOfferByCEPCategory(chave.toString())]);
+            else offersController.offers.clear();
 
             Get.toNamed(AppRoutes.offers, arguments: [
               {'listName': null},

@@ -21,11 +21,7 @@ class MoffersPage extends StatelessWidget {
         preferredSize: Size(double.maxFinite, 55),
         child: AppBarHome(controller: controller),
       ),
-      backgroundColor: _loginController.colorFromHex(_loginController.listCore
-        .where((coreItem) => coreItem.coreChave == 'backDark')
-        .first
-        .coreValor
-        .toString()),
+      backgroundColor: _loginController.colorFromHex(_loginController.backDark),
       body:  Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [ListMoffers()]),

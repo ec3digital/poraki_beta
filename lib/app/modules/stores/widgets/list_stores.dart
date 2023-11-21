@@ -14,21 +14,14 @@ class ListStores extends StatelessWidget {
   Widget build(BuildContext context) {
     final StoreController controller = Get.put(StoreController());
     final LoginController _loginController = Get.find();
-    final Color backColor = _loginController.colorFromHex(_loginController
-        .listCore
-        .where((coreItem) => coreItem.coreChave == 'backLight')
-        .first
-        .coreValor
-        .toString());
+    final Color backColor = _loginController.colorFromHex(_loginController.backLight);
 
     Widget _buildRow(Lojas loja) {
       return Column(children: [
         ListTile(
             leading:
             CachedNetworkImage(
-              imageUrl: 'https://firebasestorage.googleapis.com/v0/b/ec3digrepo.appspot.com/o/lojas%2F' +
-      loja.LojaGUID.toString() +
-          '.jpg?alt=media',
+              imageUrl: _loginController.imgPathStores + loja.LojaGUID.toString() + _loginController.imgPathSuffix,
               progressIndicatorBuilder: (context, url, downloadProgress) =>
                   CircularProgressIndicator(
                       value: downloadProgress.progress),
@@ -36,8 +29,6 @@ class ListStores extends StatelessWidget {
                   Icon(Icons.local_offer_outlined),
               height: 160,
             ),
-
-
             onTap: () {
               controller.loja = loja;
               Get.toNamed(AppRoutes.store);
@@ -76,18 +67,9 @@ class ListStores extends StatelessWidget {
                 });
                 Get.toNamed(AppRoutes.store);
               },
-              colorText: _loginController.colorFromHex(_loginController.listCore
-                  .where((coreItem) => coreItem.coreChave == 'textLight')
-                  .first
-                  .coreValor
-                  .toString()),
+              colorText: _loginController.colorFromHex(_loginController.textLight),
               text: 'Criar Loja',
-              colorButton: _loginController.colorFromHex(_loginController
-                  .listCore
-                  .where((coreItem) => coreItem.coreChave == 'textDark')
-                  .first
-                  .coreValor
-                  .toString()),
+              colorButton: _loginController.colorFromHex(_loginController.textDark),
             ),
             Expanded(
                 child: Container(

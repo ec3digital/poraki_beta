@@ -142,16 +142,8 @@ class _BodyMoffer extends State<BodyMoffer> {
     print('initState moffer');
     _imageURLFocusNode.addListener(_updateImageUrl);
 
-    textColor = _loginController.colorFromHex(_loginController.listCore
-        .where((coreItem) => coreItem.coreChave == 'textDark')
-        .first
-        .coreValor
-        .toString());
-    iconColor = _loginController.colorFromHex(_loginController.listCore
-        .where((coreItem) => coreItem.coreChave == 'backDark')
-        .first
-        .coreValor
-        .toString());
+    textColor = _loginController.colorFromHex(_loginController.textDark);
+    iconColor = _loginController.colorFromHex(_loginController.backDark);
 
     Future.delayed(
         Duration.zero,
@@ -230,12 +222,7 @@ class _BodyMoffer extends State<BodyMoffer> {
         child: AppBar(
           elevation: 0,
           centerTitle: false,
-          backgroundColor: _loginController.colorFromHex(_loginController
-              .listCore
-              .where((coreItem) => coreItem.coreChave == 'backLight')
-              .first
-              .coreValor
-              .toString()),
+          backgroundColor: _loginController.colorFromHex(_loginController.backLight),
           title: Text(
             'Minha oferta',
             style: TextStyle(fontSize: 25, color: textColor),
@@ -893,13 +880,7 @@ class _BodyMoffer extends State<BodyMoffer> {
                                       backgroundColor:
                                           MaterialStateProperty.all<Color>(
                                     _loginController.colorFromHex(
-                                        _loginController.listCore
-                                            .where((coreItem) =>
-                                                coreItem.coreChave ==
-                                                'backDark')
-                                            .first
-                                            .coreValor
-                                            .toString()),
+                                        _loginController.backDark),
                                   )),
                                   child: Row(
                                     children: [
@@ -933,14 +914,7 @@ class _BodyMoffer extends State<BodyMoffer> {
                                   style: ButtonStyle(
                                       backgroundColor:
                                           MaterialStateProperty.all<Color>(
-                                    _loginController.colorFromHex(
-                                        _loginController.listCore
-                                            .where((coreItem) =>
-                                                coreItem.coreChave ==
-                                                'backDark')
-                                            .first
-                                            .coreValor
-                                            .toString()),
+                                    _loginController.colorFromHex(_loginController.backDark),
                                   )),
                                   child: Row(
                                     children: [
@@ -997,14 +971,7 @@ class _BodyMoffer extends State<BodyMoffer> {
                                   style: ButtonStyle(
                                       backgroundColor:
                                           MaterialStateProperty.all<Color>(
-                                    _loginController.colorFromHex(
-                                        _loginController.listCore
-                                            .where((coreItem) =>
-                                                coreItem.coreChave ==
-                                                'backDark')
-                                            .first
-                                            .coreValor
-                                            .toString()),
+                                    _loginController.colorFromHex(_loginController.backDark),
                                   )),
                                   child: Row(
                                     children: [
@@ -1038,14 +1005,7 @@ class _BodyMoffer extends State<BodyMoffer> {
                                   style: ButtonStyle(
                                       backgroundColor:
                                           MaterialStateProperty.all<Color>(
-                                    _loginController.colorFromHex(
-                                        _loginController.listCore
-                                            .where((coreItem) =>
-                                                coreItem.coreChave ==
-                                                'backDark')
-                                            .first
-                                            .coreValor
-                                            .toString()),
+                                    _loginController.colorFromHex(_loginController.backDark),
                                   )),
                                   child: Row(
                                     children: [
@@ -1101,14 +1061,7 @@ class _BodyMoffer extends State<BodyMoffer> {
                                   style: ButtonStyle(
                                       backgroundColor:
                                           MaterialStateProperty.all<Color>(
-                                    _loginController.colorFromHex(
-                                        _loginController.listCore
-                                            .where((coreItem) =>
-                                                coreItem.coreChave ==
-                                                'backDark')
-                                            .first
-                                            .coreValor
-                                            .toString()),
+                                    _loginController.colorFromHex(_loginController.backDark),
                                   )),
                                   child: Row(
                                     children: [
@@ -1142,14 +1095,7 @@ class _BodyMoffer extends State<BodyMoffer> {
                                   style: ButtonStyle(
                                       backgroundColor:
                                           MaterialStateProperty.all<Color>(
-                                    _loginController.colorFromHex(
-                                        _loginController.listCore
-                                            .where((coreItem) =>
-                                                coreItem.coreChave ==
-                                                'backDark')
-                                            .first
-                                            .coreValor
-                                            .toString()),
+                                    _loginController.colorFromHex(_loginController.backDark),
                                   )),
                                   child: Row(
                                     children: [
@@ -1205,14 +1151,7 @@ class _BodyMoffer extends State<BodyMoffer> {
                                   style: ButtonStyle(
                                       backgroundColor:
                                           MaterialStateProperty.all<Color>(
-                                    _loginController.colorFromHex(
-                                        _loginController.listCore
-                                            .where((coreItem) =>
-                                                coreItem.coreChave ==
-                                                'backDark')
-                                            .first
-                                            .coreValor
-                                            .toString()),
+                                    _loginController.colorFromHex(_loginController.backDark),
                                   )),
                                   child: Row(
                                     children: [
@@ -1246,14 +1185,7 @@ class _BodyMoffer extends State<BodyMoffer> {
                                   style: ButtonStyle(
                                       backgroundColor:
                                           MaterialStateProperty.all<Color>(
-                                    _loginController.colorFromHex(
-                                        _loginController.listCore
-                                            .where((coreItem) =>
-                                                coreItem.coreChave ==
-                                                'backDark')
-                                            .first
-                                            .coreValor
-                                            .toString()),
+                                    _loginController.colorFromHex(_loginController.backDark),
                                   )),
                                   child: Row(
                                     children: [
@@ -1309,14 +1241,7 @@ class _BodyMoffer extends State<BodyMoffer> {
                                   style: ButtonStyle(
                                       backgroundColor:
                                           MaterialStateProperty.all<Color>(
-                                    _loginController.colorFromHex(
-                                        _loginController.listCore
-                                            .where((coreItem) =>
-                                                coreItem.coreChave ==
-                                                'backDark')
-                                            .first
-                                            .coreValor
-                                            .toString()),
+                                    _loginController.colorFromHex(_loginController.backDark),
                                   )),
                                   child: Row(
                                     children: [
@@ -1350,14 +1275,7 @@ class _BodyMoffer extends State<BodyMoffer> {
                                   style: ButtonStyle(
                                       backgroundColor:
                                           MaterialStateProperty.all<Color>(
-                                    _loginController.colorFromHex(
-                                        _loginController.listCore
-                                            .where((coreItem) =>
-                                                coreItem.coreChave ==
-                                                'backDark')
-                                            .first
-                                            .coreValor
-                                            .toString()),
+                                    _loginController.colorFromHex(_loginController.backDark),
                                   )),
                                   child: Row(
                                     children: [
@@ -1413,14 +1331,7 @@ class _BodyMoffer extends State<BodyMoffer> {
                                   style: ButtonStyle(
                                       backgroundColor:
                                           MaterialStateProperty.all<Color>(
-                                    _loginController.colorFromHex(
-                                        _loginController.listCore
-                                            .where((coreItem) =>
-                                                coreItem.coreChave ==
-                                                'backDark')
-                                            .first
-                                            .coreValor
-                                            .toString()),
+                                    _loginController.colorFromHex(_loginController.backDark),
                                   )),
                                   child: Row(
                                     children: [
@@ -1454,14 +1365,7 @@ class _BodyMoffer extends State<BodyMoffer> {
                                   style: ButtonStyle(
                                       backgroundColor:
                                           MaterialStateProperty.all<Color>(
-                                    _loginController.colorFromHex(
-                                        _loginController.listCore
-                                            .where((coreItem) =>
-                                                coreItem.coreChave ==
-                                                'backDark')
-                                            .first
-                                            .coreValor
-                                            .toString()),
+                                    _loginController.colorFromHex(_loginController.backDark),
                                   )),
                                   child: Row(
                                     children: [
@@ -1517,14 +1421,7 @@ class _BodyMoffer extends State<BodyMoffer> {
                                   style: ButtonStyle(
                                       backgroundColor:
                                           MaterialStateProperty.all<Color>(
-                                    _loginController.colorFromHex(
-                                        _loginController.listCore
-                                            .where((coreItem) =>
-                                                coreItem.coreChave ==
-                                                'backDark')
-                                            .first
-                                            .coreValor
-                                            .toString()),
+                                    _loginController.colorFromHex(_loginController.backDark),
                                   )),
                                   child: Row(
                                     children: [
@@ -1558,14 +1455,7 @@ class _BodyMoffer extends State<BodyMoffer> {
                                   style: ButtonStyle(
                                       backgroundColor:
                                           MaterialStateProperty.all<Color>(
-                                    _loginController.colorFromHex(
-                                        _loginController.listCore
-                                            .where((coreItem) =>
-                                                coreItem.coreChave ==
-                                                'backDark')
-                                            .first
-                                            .coreValor
-                                            .toString()),
+                                    _loginController.colorFromHex(_loginController.backDark),
                                   )),
                                   child: Row(
                                     children: [
@@ -2124,13 +2014,7 @@ class _BodyMoffer extends State<BodyMoffer> {
                             style: ButtonStyle(
                                 backgroundColor:
                                     MaterialStateProperty.all<Color>(
-                              _loginController.colorFromHex(_loginController
-                                  .listCore
-                                  .where((coreItem) =>
-                                      coreItem.coreChave == 'backDark')
-                                  .first
-                                  .coreValor
-                                  .toString()),
+                              _loginController.colorFromHex(_loginController.backDark),
                             )),
                             child: Row(
                               children: [
@@ -2200,24 +2084,13 @@ class _BodyMoffer extends State<BodyMoffer> {
                               : Text(
                             "Salvar",
                             style: TextStyle(
-                                color: _loginController.colorFromHex(
-                                    _loginController.listCore
-                                        .where((coreItem) =>
-                                    coreItem.coreChave == 'textLight')
-                                        .first
-                                        .coreValor
-                                        .toString()),
+                                color: _loginController.colorFromHex(_loginController.textLight),
                                 fontSize: 18,
                                 fontWeight: FontWeight.w500),
                           ),
                           style: ButtonStyle(fixedSize: MaterialStateProperty.all<Size>(Size.fromWidth(MediaQuery.of(context).size.width)),
                             backgroundColor: MaterialStateProperty.all<Color>(
-                              _loginController.colorFromHex(_loginController.listCore
-                                  .where(
-                                      (coreItem) => coreItem.coreChave == 'iconColor')
-                                  .first
-                                  .coreValor
-                                  .toString()),
+                              _loginController.colorFromHex(_loginController.iconColor),
                             ),
                           ),
                         ),
@@ -2325,24 +2198,13 @@ class _BodyMoffer extends State<BodyMoffer> {
                               : Text(_mofferController.singleOffer!.OfertaDispoAte!.length > 4 ? "Desmarcar Vendido" :
                             "Marcar Vendido",
                             style: TextStyle(
-                                color: _loginController.colorFromHex(
-                                    _loginController.listCore
-                                        .where((coreItem) =>
-                                    coreItem.coreChave == 'textLight')
-                                        .first
-                                        .coreValor
-                                        .toString()),
+                                color: _loginController.colorFromHex(_loginController.textLight),
                                 fontSize: 18,
                                 fontWeight: FontWeight.w500),
                           ),
                           style: ButtonStyle(fixedSize: MaterialStateProperty.all<Size>(Size.fromWidth(MediaQuery.of(context).size.width)),
                             backgroundColor: MaterialStateProperty.all<Color>(
-                              _loginController.colorFromHex(_loginController.listCore
-                                  .where(
-                                      (coreItem) => coreItem.coreChave == 'textDark')
-                                  .first
-                                  .coreValor
-                                  .toString()),
+                              _loginController.colorFromHex(_loginController.textDark),
                             ),
                           ),
                         ),
@@ -2411,24 +2273,12 @@ class _BodyMoffer extends State<BodyMoffer> {
                                 : Text(
                               "Apagar Oferta",
                               style: TextStyle(
-                                  color: _loginController.colorFromHex(
-                                      _loginController.listCore
-                                          .where((coreItem) =>
-                                      coreItem.coreChave == 'textLight')
-                                          .first
-                                          .coreValor
-                                          .toString()),
+                                  color: _loginController.colorFromHex(_loginController.textLight),
                                   fontSize: 18,
                                   fontWeight: FontWeight.w500),
                             ),
                             style: ButtonStyle(fixedSize: MaterialStateProperty.all<Size>(Size.fromWidth(MediaQuery.of(context).size.width)),
-                              backgroundColor: MaterialStateProperty.all<Color>(
-                                _loginController.colorFromHex(_loginController.listCore
-                                    .where(
-                                        (coreItem) => coreItem.coreChave == 'textDark')
-                                    .first
-                                    .coreValor
-                                    .toString()),
+                              backgroundColor: MaterialStateProperty.all<Color>(_loginController.colorFromHex(_loginController.textDark),
                               ),
                             ),
                           ),
@@ -3138,20 +2988,8 @@ class _BodyMoffer extends State<BodyMoffer> {
         Oferta? oferta = _mofferController.singleOffer;
 
         // _isEditing = true;
-        _imgcloud = _loginController.listCore
-                .where((coreItem) => coreItem.coreChave == 'imgpath')
-                .first
-                .coreValor
-                .toString() +
-            oferta!.OfertaGUID.toString() +
-            _loginController.listCore
-                .where((coreItem) => coreItem.coreChave == 'imgpathsuffix')
-                .first
-                .coreValor
-                .toString();
-
+        _imgcloud = _loginController.imgPath + oferta!.OfertaGUID.toString() + _loginController.imgPathSuffix;
         print('_imgcloud: ' + _imgcloud);
-
         print('guidOffer: ' + oferta.OfertaGUID.toString());
         _mofferController.mofferGuid = oferta.OfertaGUID.toString();
         print('widget guidOffer: ' + _mofferController.mofferGuid.toString());

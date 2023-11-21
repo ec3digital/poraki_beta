@@ -23,12 +23,8 @@ class DetailOffer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    textColor = _loginController.colorFromHex(_loginController.listCore
-        .where((coreItem) => coreItem.coreChave == 'textDark')
-        .first
-        .coreValor
-        .toString());
-    //
+    textColor = _loginController.colorFromHex(_loginController.textDark);
+
     // return Flex(direction: Axis.vertical,
     //     children: [
     //   Column(

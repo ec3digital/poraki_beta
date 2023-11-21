@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:poraki/app/data/models/login_model.dart';
+// import 'package:poraki/app/data/models/login_model.dart';
 import 'package:poraki/app/data/models/sql/sqlUsuario.dart';
 import 'package:poraki/app/modules/locals/local_pick_page.dart';
 import 'package:poraki/app/poraki-splash.dart';

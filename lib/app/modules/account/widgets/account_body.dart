@@ -27,11 +27,7 @@ class _AccountBodyState extends State<AccountBody> {
   @override
   Widget build(BuildContext context) {
     LoginController _loginController = Get.find();
-    Color textDark = _loginController.colorFromHex(_loginController.listCore
-        .where((coreItem) => coreItem.coreChave == 'textDark')
-        .first
-        .coreValor
-        .toString());
+    Color textDark = _loginController.colorFromHex(_loginController.textDark);
 
     return FutureBuilder(
         future: _accountController.carregaUsuario(),
@@ -48,14 +44,7 @@ class _AccountBodyState extends State<AccountBody> {
                   child: AppBar(
                     // elevation: 0,
                     centerTitle: false,
-                    backgroundColor: _loginController.colorFromHex(
-                        _loginController
-                            .listCore
-                            .where(
-                                (coreItem) => coreItem.coreChave == 'backLight')
-                            .first
-                            .coreValor
-                            .toString()),
+                    backgroundColor: _loginController.colorFromHex(_loginController.backLight),
                     title: Text(
                       'Minha conta',
                       style: TextStyle(fontSize: 25, color: textDark),
@@ -424,21 +413,9 @@ class _AccountBodyState extends State<AccountBody> {
                               //     .showSnackBar(snackBar);
                             }
                           },
-                          colorText: _loginController.colorFromHex(
-                              _loginController.listCore
-                                  .where((coreItem) =>
-                                      coreItem.coreChave == 'textLight')
-                                  .first
-                                  .coreValor
-                                  .toString()),
+                          colorText: _loginController.colorFromHex(_loginController.textLight),
                           text: 'Salvar',
-                          colorButton: _loginController.colorFromHex(
-                              _loginController.listCore
-                                  .where((coreItem) =>
-                                      coreItem.coreChave == 'iconColor')
-                                  .first
-                                  .coreValor
-                                  .toString()),
+                          colorButton: _loginController.colorFromHex(_loginController.iconColor),
                         ),
                         ButtonOffer(
                           onPressed: () {
@@ -446,30 +423,12 @@ class _AccountBodyState extends State<AccountBody> {
                           },
                           colorText: textDark,
                           text: 'Mudar senha',
-                          colorButton: _loginController.colorFromHex(
-                              _loginController.listCore
-                                  .where((coreItem) =>
-                                      coreItem.coreChave == 'backLight')
-                                  .first
-                                  .coreValor
-                                  .toString()),
+                          colorButton: _loginController.colorFromHex(_loginController.backLight),
                         ),
                         ButtonOffer(
-                            colorText: _loginController.colorFromHex(
-                                _loginController.listCore
-                                    .where((coreItem) =>
-                                        coreItem.coreChave == 'textLight')
-                                    .first
-                                    .coreValor
-                                    .toString()),
+                            colorText: _loginController.colorFromHex(_loginController.textLight),
                             text: 'Cancelar conta',
-                            colorButton: _loginController.colorFromHex(
-                                _loginController.listCore
-                                    .where((coreItem) =>
-                                        coreItem.coreChave == 'iconColor')
-                                    .first
-                                    .coreValor
-                                    .toString()),
+                            colorButton: _loginController.colorFromHex(_loginController.iconColor),
                             onPressed: () =>
                                 Get.toNamed(AppRoutes.accountCancel)),
                         // )

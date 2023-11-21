@@ -33,11 +33,7 @@ class _NewEventPage extends State<NewEventPage> {
 
   @override
   Widget build(BuildContext buildContext) {
-    Color textColor = _loginController.colorFromHex(_loginController.listCore
-        .where((coreItem) => coreItem.coreChave == 'textDark')
-        .first
-        .coreValor
-        .toString());
+    Color textColor = _loginController.colorFromHex(_loginController.textDark);
 
     return FutureBuilder<EventController>(builder: (context, futuro) {
       // if (isLoading) {
@@ -51,12 +47,7 @@ class _NewEventPage extends State<NewEventPage> {
             child: AppBar(
               // elevation: 0,
               centerTitle: false,
-              backgroundColor: _loginController.colorFromHex(_loginController
-                  .listCore
-                  .where((coreItem) => coreItem.coreChave == 'backLight')
-                  .first
-                  .coreValor
-                  .toString()),
+              backgroundColor: _loginController.colorFromHex(_loginController.backLight),
               title: Text(
                 'Evento',
                 style: TextStyle(fontSize: 25, color: textColor),
@@ -82,12 +73,7 @@ class _NewEventPage extends State<NewEventPage> {
                       onPressed: () => pegarImagemGaleria(),
                       style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.all<Color>(
-                        _loginController.colorFromHex(_loginController.listCore
-                            .where(
-                                (coreItem) => coreItem.coreChave == 'backDark')
-                            .first
-                            .coreValor
-                            .toString()),
+                        _loginController.colorFromHex(_loginController.backDark),
                       )),
                       child: Row(
                         children: [
@@ -263,13 +249,7 @@ class _NewEventPage extends State<NewEventPage> {
                           },
                           style: ButtonStyle(
                               backgroundColor: MaterialStateProperty.all<Color>(
-                            _loginController.colorFromHex(_loginController
-                                .listCore
-                                .where((coreItem) =>
-                                    coreItem.coreChave == 'backDark')
-                                .first
-                                .coreValor
-                                .toString()),
+                            _loginController.colorFromHex(_loginController.backDark),
                           )),
                           child: Row(
                             children: [
@@ -372,24 +352,12 @@ class _NewEventPage extends State<NewEventPage> {
                         : Text(
                             "Salvar",
                             style: TextStyle(
-                                color: _loginController.colorFromHex(
-                                    _loginController.listCore
-                                        .where((coreItem) =>
-                                            coreItem.coreChave == 'textLight')
-                                        .first
-                                        .coreValor
-                                        .toString()),
+                                color: _loginController.colorFromHex(_loginController.textLight),
                                 fontSize: 18,
                                 fontWeight: FontWeight.w500),
                           ),
                     style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all<Color>(
-                        _loginController.colorFromHex(_loginController.listCore
-                            .where(
-                                (coreItem) => coreItem.coreChave == 'iconColor')
-                            .first
-                            .coreValor
-                            .toString()),
+                      backgroundColor: MaterialStateProperty.all<Color>(_loginController.colorFromHex(_loginController.iconColor),
                       ),
                     ),
                   ),

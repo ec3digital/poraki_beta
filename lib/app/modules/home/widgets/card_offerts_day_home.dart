@@ -28,18 +28,8 @@ class CardOffertsDayHome extends StatelessWidget {
     final OffersController offersController =
         Get.find(); // Get.put(OffersController());
 
-    final Color textDark = _loginController.colorFromHex(_loginController
-        .listCore
-        .where((coreItem) => coreItem.coreChave == 'textDark')
-        .first
-        .coreValor
-        .toString());
-    final Color textLight = _loginController.colorFromHex(_loginController
-        .listCore
-        .where((coreItem) => coreItem.coreChave == 'backLight')
-        .first
-        .coreValor
-        .toString());
+    final Color textDark = _loginController.colorFromHex(_loginController.textDark);
+    final Color textLight = _loginController.colorFromHex(_loginController.backLight);
 
     return GetBuilder<HomeController>(builder: (_controller) {
       if (!_controller.isLoading) {
@@ -50,11 +40,7 @@ class CardOffertsDayHome extends StatelessWidget {
             child: Card(
               elevation: 10,
               //color: Color(0xffFFFFFF),
-              color: _loginController.colorFromHex(_loginController.listCore
-                  .where((coreItem) => coreItem.coreChave == 'backLight')
-                  .first
-                  .coreValor
-                  .toString()),
+              color: _loginController.colorFromHex(_loginController.backLight),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -169,23 +155,11 @@ class CardOffertsDayHome extends StatelessWidget {
                                       decoration:
                                           BoxDecoration(color: Colors.white),
                                       child: CachedNetworkImage(
-                                        imageUrl: _loginController.listCore
-                                                .where((coreItem) =>
-                                                    coreItem.coreChave ==
-                                                    'imgpath')
-                                                .first
-                                                .coreValor
-                                                .toString() +
+                                        imageUrl: _loginController.imgPath +
                                             cardListOffers[itemIndex]
                                                 .ofertaGUID
                                                 .toString() +
-                                            _loginController.listCore
-                                                .where((coreItem) =>
-                                                    coreItem.coreChave ==
-                                                    'imgpathsuffix')
-                                                .first
-                                                .coreValor
-                                                .toString(),
+                                            _loginController.imgPathSuffix,
                                         progressIndicatorBuilder: (context, url,
                                                 downloadProgress) =>
                                             CircularProgressIndicator(
@@ -233,14 +207,7 @@ class CardOffertsDayHome extends StatelessWidget {
                                               fontSize: 22,
                                               fontWeight: FontWeight.bold,
                                               color: _loginController
-                                                  .colorFromHex(_loginController
-                                                      .listCore
-                                                      .where((coreItem) =>
-                                                          coreItem.coreChave ==
-                                                          'backDark')
-                                                      .first
-                                                      .coreValor
-                                                      .toString()),
+                                                  .colorFromHex(_loginController.backDark),
                                             ),
                                             textAlign: TextAlign.center),
                                         // Flexible(
@@ -341,12 +308,7 @@ class CardOffertsDayHome extends StatelessWidget {
                           Icon(
                             Icons.arrow_forward_ios_rounded,
                             color: _loginController.colorFromHex(
-                                _loginController.listCore
-                                    .where((coreItem) =>
-                                        coreItem.coreChave == 'iconColor')
-                                    .first
-                                    .coreValor
-                                    .toString()),
+                                _loginController.iconColor),
                           )
                         ],
                       ),

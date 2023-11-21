@@ -26,18 +26,8 @@ class _EventsListPageState extends State<EventsListPage> {
   Widget build(BuildContext context) {
     final LoginController _loginController = Get.find();
     final EventController _eventController = Get.put(EventController());
-    final Color colorText = _loginController.colorFromHex(_loginController
-        .listCore
-        .where((coreItem) => coreItem.coreChave == 'textDark')
-        .first
-        .coreValor
-        .toString());
-    final Color backColor = _loginController.colorFromHex(_loginController
-        .listCore
-        .where((coreItem) => coreItem.coreChave == 'backLight')
-        .first
-        .coreValor
-        .toString());
+    final Color colorText = _loginController.colorFromHex(_loginController.textDark);
+    final Color backColor = _loginController.colorFromHex(_loginController.backLight);
 
     Future<void> pegaEventos() async {
       evtList = await _eventController.retornaEventos();
@@ -91,9 +81,7 @@ class _EventsListPageState extends State<EventsListPage> {
                 borderRadius: BorderRadius.circular(6),
                 child: CachedNetworkImage(
                   imageUrl:
-                      'https://firebasestorage.googleapis.com/v0/b/ec3digrepo.appspot.com/o/eventos%2F' +
-                          evento.EventoGUID.toString() +
-                          '.jpg?alt=media',
+                      _loginController.imgPathEvents + evento.EventoGUID.toString() + _loginController.imgPathSuffix,
                   progressIndicatorBuilder: (context, url, downloadProgress) =>
                       CircularProgressIndicator(
                           value: downloadProgress.progress),
@@ -138,10 +126,7 @@ class _EventsListPageState extends State<EventsListPage> {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(6),
                 child: CachedNetworkImage(
-                  imageUrl:
-                      'https://firebasestorage.googleapis.com/v0/b/ec3digrepo.appspot.com/o/eventos%2F' +
-                          evento.EventoGUID.toString() +
-                          '.jpg?alt=media',
+                  imageUrl: _loginController.imgPathEvents + evento.EventoGUID.toString() + _loginController.imgPathSuffix,
                   progressIndicatorBuilder: (context, url, downloadProgress) =>
                       CircularProgressIndicator(
                           value: downloadProgress.progress),
@@ -159,7 +144,7 @@ class _EventsListPageState extends State<EventsListPage> {
         future: pegaEventos(),
         builder: (context, futuro) {
           if (futuro.connectionState != ConnectionState.done) {
-            return Center(child: CircularProgressIndicator(backgroundColor: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'backDark').first.coreValor.toString())));
+            return Center(child: CircularProgressIndicator(backgroundColor: _loginController.colorFromHex(_loginController.backDark)));
           } else {
             return Column(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -170,21 +155,9 @@ class _EventsListPageState extends State<EventsListPage> {
                       onPressed: () {
                         Get.toNamed(AppRoutes.newEvent);
                       },
-                      colorText: _loginController.colorFromHex(_loginController
-                          .listCore
-                          .where(
-                              (coreItem) => coreItem.coreChave == 'textLight')
-                          .first
-                          .coreValor
-                          .toString()),
+                      colorText: _loginController.colorFromHex(_loginController.textLight),
                       text: 'Publicar evento',
-                      colorButton: _loginController.colorFromHex(
-                          _loginController.listCore
-                              .where((coreItem) =>
-                                  coreItem.coreChave == 'textDark')
-                              .first
-                              .coreValor
-                              .toString())),
+                      colorButton: _loginController.colorFromHex(_loginController.textDark)),
                   const SizedBox(height: 10),
                   Center(
                       child: Text(

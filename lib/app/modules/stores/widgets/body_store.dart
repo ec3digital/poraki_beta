@@ -41,11 +41,7 @@ class _StoreBodyState extends State<StoreBody> {
 
   @override
   Widget build(BuildContext buildContext) {
-    Color textColor = _loginController.colorFromHex(_loginController.listCore
-        .where((coreItem) => coreItem.coreChave == 'textDark')
-        .first
-        .coreValor
-        .toString());
+    Color textColor = _loginController.colorFromHex(_loginController.textDark);
 
     return FutureBuilder<StoreController>(builder: (context, futuro) {
       // if (isLoading) {
@@ -58,9 +54,7 @@ class _StoreBodyState extends State<StoreBody> {
           storeController.bindLoja();
         });
         imgcloud =
-            'https://firebasestorage.googleapis.com/v0/b/ec3digrepo.appspot.com/o/lojas%2F' +
-                storeController.loja!.LojaGUID.toString() +
-                '.jpg?alt=media';
+            _loginController.imgPathStores + storeController.loja!.LojaGUID.toString() + _loginController.imgPathSuffix;
       }
       return Scaffold(
           appBar: PreferredSize(
@@ -68,12 +62,7 @@ class _StoreBodyState extends State<StoreBody> {
             child: AppBar(
               // elevation: 0,
               centerTitle: false,
-              backgroundColor: _loginController.colorFromHex(_loginController
-                  .listCore
-                  .where((coreItem) => coreItem.coreChave == 'backLight')
-                  .first
-                  .coreValor
-                  .toString()),
+              backgroundColor: _loginController.colorFromHex(_loginController.backLight),
               title: Text(
                 'Loja',
                 style: TextStyle(fontSize: 25, color: textColor),
@@ -481,12 +470,7 @@ class _StoreBodyState extends State<StoreBody> {
                       onPressed: () => pegarImagemGaleria(),
                       style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.all<Color>(
-                        _loginController.colorFromHex(_loginController.listCore
-                            .where(
-                                (coreItem) => coreItem.coreChave == 'backDark')
-                            .first
-                            .coreValor
-                            .toString()),
+                        _loginController.colorFromHex(_loginController.backDark),
                       )),
                       child: Row(
                         children: [
@@ -572,24 +556,12 @@ class _StoreBodyState extends State<StoreBody> {
                         : Text(
                             "Salvar",
                             style: TextStyle(
-                                color: _loginController.colorFromHex(
-                                    _loginController.listCore
-                                        .where((coreItem) =>
-                                            coreItem.coreChave == 'textLight')
-                                        .first
-                                        .coreValor
-                                        .toString()),
+                                color: _loginController.colorFromHex(_loginController.textLight),
                                 fontSize: 18,
                                 fontWeight: FontWeight.w500),
                           ),
                     style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all<Color>(
-                        _loginController.colorFromHex(_loginController.listCore
-                            .where(
-                                (coreItem) => coreItem.coreChave == 'iconColor')
-                            .first
-                            .coreValor
-                            .toString()),
+                      backgroundColor: MaterialStateProperty.all<Color>(_loginController.colorFromHex(_loginController.iconColor),
                       ),
                     ),
                   ),
@@ -640,24 +612,12 @@ class _StoreBodyState extends State<StoreBody> {
                         : Text(
                             "Apagar Loja",
                             style: TextStyle(
-                                color: _loginController.colorFromHex(
-                                    _loginController.listCore
-                                        .where((coreItem) =>
-                                            coreItem.coreChave == 'textLight')
-                                        .first
-                                        .coreValor
-                                        .toString()),
+                                color: _loginController.colorFromHex(_loginController.textLight),
                                 fontSize: 18,
                                 fontWeight: FontWeight.w500),
                           ),
                     style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all<Color>(
-                        _loginController.colorFromHex(_loginController.listCore
-                            .where(
-                                (coreItem) => coreItem.coreChave == 'textDark')
-                            .first
-                            .coreValor
-                            .toString()),
+                      backgroundColor: MaterialStateProperty.all<Color>(_loginController.colorFromHex(_loginController.textDark),
                       ),
                     ),
                   ),

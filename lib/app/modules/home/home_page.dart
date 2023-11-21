@@ -49,6 +49,7 @@ class _HomePageState extends State<HomePage> {
             await controller.getOffers4(4);
             await _loginController.getListBannersFromFBCloud();
             await _loginController.getCategories();
+            await _loginController.getFBParams();
 
             //await Future.delayed(Duration(seconds: 1));
             _refreshController.refreshCompleted();

@@ -10,18 +10,10 @@ class AccountByePage extends StatelessWidget {
   Widget build(BuildContext context) {
     LoginController _loginController = Get.find();
 
-    Color textDark = _loginController.colorFromHex(_loginController.listCore
-        .where((coreItem) => coreItem.coreChave == 'textLight')
-        .first
-        .coreValor
-        .toString());
+    Color textDark = _loginController.colorFromHex(_loginController.textLight);
 
     return Scaffold(
-        backgroundColor: _loginController.colorFromHex(_loginController.listCore
-            .where((coreItem) => coreItem.coreChave == 'backDark')
-            .first
-            .coreValor
-            .toString()),
+        backgroundColor: _loginController.colorFromHex(_loginController.backDark),
         body: Padding(
             padding: const EdgeInsets.all(15.0),
             child: Column(
@@ -43,12 +35,7 @@ class AccountByePage extends StatelessWidget {
                   },
                   colorText: textDark,
                   text: 'Tchau',
-                  colorButton: _loginController.colorFromHex(_loginController
-                      .listCore
-                      .where((coreItem) => coreItem.coreChave == 'textDark')
-                      .first
-                      .coreValor
-                      .toString()),
+                  colorButton: _loginController.colorFromHex(_loginController.textDark),
                 ),
               ],
             )));

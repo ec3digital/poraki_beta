@@ -23,11 +23,7 @@ class EventPage extends StatelessWidget {
           child: AppBarHome(controller: controller),
         ),
         drawer: DrawerHome(0),
-        backgroundColor: _loginController.colorFromHex(_loginController.listCore
-            .where((coreItem) => coreItem.coreChave == 'backDark')
-            .first
-            .coreValor
-            .toString()),
+        backgroundColor: _loginController.colorFromHex(_loginController.backDark),
         body: EventsListPage());
   }
 }

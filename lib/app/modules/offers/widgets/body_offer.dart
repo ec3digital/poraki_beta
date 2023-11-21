@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
-//import 'package:open_whatsapp/open_whatsapp.dart';
+// import 'package:open_whatsapp/open_whatsapp.dart';
 import 'package:get/get.dart';
 import 'package:poraki/app/data/models/lojas.dart';
-import 'package:poraki/app/data/models/sql/sqlCarrinho.dart';
-import 'package:poraki/app/data/repositories/store_repository.dart';
+// imprt 'package:poraki/app/data/models/sql/sqlCarrinho.dart';
+// import 'package:poraki/app/data/repositories/store_repository.dart';
 import 'package:poraki/app/modules/auth/login/login_controller.dart';
 import 'package:poraki/app/modules/offers/widgets/button_offer.dart';
 import 'package:poraki/app/modules/offers/widgets/detail_offer.dart';
-import 'package:poraki/app/modules/stores/store_controller.dart';
+// import 'package:poraki/app/modules/stores/store_controller.dart';
 import 'package:poraki/app/routes/app_routes.dart';
-import 'package:poraki/app/services/sqlite/sqlporaki_cart_service.dart';
+// import 'package:poraki/app/services/sqlite/sqlporaki_cart_service.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import 'package:whatsapp_unilink/whatsapp_unilink.dart';
-//import 'package:whatsapp_sender_flutter/whatsapp_sender_flutter.dart';
-//import 'package:whatsapp_share2/whatsapp_share2.dart';
-//import 'package:whatsapp_unilink/whatsapp_unilink.dart';
+// import 'package:whatsapp_sender_flutter/whatsapp_sender_flutter.dart';
+// import 'package:whatsapp_share2/whatsapp_share2.dart';
+// import 'package:whatsapp_unilink/whatsapp_unilink.dart';
 import '../../../data/models/produto_oferta.dart';
 import '../offers_controller.dart';
 import 'list_pics_offer.dart';
@@ -27,15 +27,10 @@ class BodyOffer extends StatelessWidget {
 
   @override
   Widget build(BuildContext buildContext) {
-    //OffersController offersController = Get.put(OffersController());
+    // OffersController offersController = Get.put(OffersController());
     final OffersController offersController = Get.find();
     final LoginController _loginController = Get.find();
-    final Color darkText = _loginController.colorFromHex(_loginController
-        .listCore
-        .where((coreItem) => coreItem.coreChave == 'textDark')
-        .first
-        .coreValor
-        .toString());
+    final Color darkText = _loginController.colorFromHex(_loginController.textDark);
 
     // RichText richDispo(String disponibilidade) {
     //   return new RichText(text:
@@ -162,13 +157,7 @@ class BodyOffer extends StatelessWidget {
                           : 'à combinar',
                       style: TextStyle(
                           fontSize: 25,
-                          color: _loginController.colorFromHex(_loginController
-                              .listCore
-                              .where((coreItem) =>
-                                  coreItem.coreChave == 'backDark')
-                              .first
-                              .coreValor
-                              .toString())),
+                          color: _loginController.colorFromHex(_loginController.backDark)),
                     ),
                   ),
 
@@ -267,18 +256,8 @@ class BodyOffer extends StatelessWidget {
                     // text: 'Adicionar ao carrinho',
                     text: 'Pedir por Whatsapp', isWhatsapp: true,
 
-                    colorText: _loginController.colorFromHex(_loginController
-                        .listCore
-                        .where((coreItem) => coreItem.coreChave == 'textLight')
-                        .first
-                        .coreValor
-                        .toString()),
-                    colorButton: _loginController.colorFromHex(_loginController
-                        .listCore
-                        .where((coreItem) => coreItem.coreChave == 'iconColor')
-                        .first
-                        .coreValor
-                        .toString()),
+                    colorText: _loginController.colorFromHex(_loginController.textLight),
+                    colorButton: _loginController.colorFromHex(_loginController.iconColor),
                   ),
                   const SizedBox(height: 5),
                   DetailOffer(
@@ -298,13 +277,7 @@ class BodyOffer extends StatelessWidget {
                       if (produtoOferta.ofertaDetalhe != null)
                         Container(
                             width: Get.width,
-                            color: _loginController.colorFromHex(
-                                _loginController.listCore
-                                    .where((coreItem) =>
-                                        coreItem.coreChave == 'backLight')
-                                    .first
-                                    .coreValor
-                                    .toString()),
+                            color: _loginController.colorFromHex(_loginController.backLight),
                             child: Column(
                                 mainAxisSize: MainAxisSize.max,
                                 verticalDirection: VerticalDirection.up,
@@ -407,13 +380,7 @@ class BodyOffer extends StatelessWidget {
                                     : 'do vendedor'),
                             style: TextStyle(
                                 fontSize: 16,
-                                color: _loginController.colorFromHex(
-                                    _loginController.listCore
-                                        .where((coreItem) =>
-                                            coreItem.coreChave == 'textDark')
-                                        .first
-                                        .coreValor
-                                        .toString()))),
+                                color: _loginController.colorFromHex(_loginController.textDark))),
                       ),
                     ],
                   )),

@@ -62,7 +62,7 @@ class _CardBannerAloneHomeState extends State<CardBannerAloneHome> {
                     color: Colors.white,
                 ),
                   //margin: EdgeInsets.all(10),
-                  child: Marquee(text: avisoApp + ' / ' + avisoCep + ' / ', startAfter: Duration(seconds: 1), style: TextStyle(color: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'textDark').first.coreValor.toString()),),),
+                  child: Marquee(text: avisoApp + ' / ' + avisoCep + ' / ', startAfter: Duration(seconds: 1), style: TextStyle(color: _loginController.colorFromHex(_loginController.textDark),),),
                   // child: ClipRRect(
                   //   borderRadius: BorderRadius.circular(15),
                   //   // child: Image.network(

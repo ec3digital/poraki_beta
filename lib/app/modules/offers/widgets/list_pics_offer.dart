@@ -33,19 +33,8 @@ class _ListPicsOfferState extends State<ListPicsOffer> {
 
   @override
   void initState() {
-    print('passou no initState do list_pics_offer');
-    backColor = _loginController.colorFromHex(_loginController.listCore
-        .where((coreItem) => coreItem.coreChave == 'backLight')
-        .first
-        .coreValor
-        .toString());
-
-    textColor = _loginController.colorFromHex(_loginController.listCore
-        .where((coreItem) => coreItem.coreChave == 'backDark')
-        .first
-        .coreValor
-        .toString());
-
+    backColor = _loginController.colorFromHex(_loginController.backLight);
+    textColor = _loginController.colorFromHex(_loginController.backDark);
     favorited = _loginController.favoffersguids!
         .where((ofertaFavGuid) => ofertaFavGuid == widget.offer.ofertaGUID)
         .isNotEmpty;
@@ -53,7 +42,6 @@ class _ListPicsOfferState extends State<ListPicsOffer> {
 
   @override
   Widget build(BuildContext context) {
-    print('passou no build do list_pics_offer');
     icon = favorited
         ? Icon(Icons.favorite, color: textColor)
         : Icon(Icons.favorite_outline, color: textColor);

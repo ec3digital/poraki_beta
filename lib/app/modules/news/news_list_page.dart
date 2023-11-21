@@ -13,18 +13,8 @@ class NewsListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final LoginController _loginController = Get.find();
     final NewsController _newsController = Get.put(NewsController());
-    final Color colorText = _loginController.colorFromHex(_loginController
-        .listCore
-        .where((coreItem) => coreItem.coreChave == 'textDark')
-        .first
-        .coreValor
-        .toString());
-    final Color backColor = _loginController.colorFromHex(_loginController
-        .listCore
-        .where((coreItem) => coreItem.coreChave == 'backLight')
-        .first
-        .coreValor
-        .toString());
+    final Color colorText = _loginController.colorFromHex(_loginController.textDark);
+    final Color backColor = _loginController.colorFromHex(_loginController.backLight);
 
     Widget _buildRow(Noticia noticia) {
       return ListTile(
@@ -63,7 +53,7 @@ class NewsListPage extends StatelessWidget {
         future: pegaNoticias(),
         builder: (context, futuro) {
           if (futuro.connectionState != ConnectionState.done) {
-            return Center(child: CircularProgressIndicator(backgroundColor: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'backDark').first.coreValor.toString())));
+            return Center(child: CircularProgressIndicator(backgroundColor: _loginController.colorFromHex(_loginController.backDark)));
           } else {
             return Column(
                 mainAxisAlignment: MainAxisAlignment.start,

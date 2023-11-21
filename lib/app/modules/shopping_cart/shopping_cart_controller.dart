@@ -78,9 +78,7 @@ class ShoppingCartController extends GetxController {
       print('element ofertaGUID: ' + elem.ofertaGUID.toString());
       listShoppingCart.add(new ShoppingCartModel(
           element.ofertaTitulo.toString(),
-          'https://firebasestorage.googleapis.com/v0/b/ec3digrepo.appspot.com/o/ofertas%2F' +
-              element.ofertaId.toString() +
-              '.jpg?alt=media',
+          _loginController.imgPath + element.ofertaId.toString() + _loginController.imgPathSuffix,
           double.parse(element.ofertaPreco),
           element.ofertaId.toString(),
           int.parse(element.ofertaQtd),

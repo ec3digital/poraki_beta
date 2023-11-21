@@ -23,12 +23,12 @@ class CardCategories extends StatelessWidget {
         children: [
           Card(
             elevation: 5,
-            color: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'iconColor').first.coreValor.toString()),
+            color: _loginController.colorFromHex(_loginController.iconColor),
             shape: CircleBorder(),
             child: Container(
               height: Get.height * 0.07,
               width: Get.width * 0.14,
-              child: IconButton(icon: Icon(iconData), color: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'textLight').first.coreValor.toString()),
+              child: IconButton(icon: Icon(iconData), color: _loginController.colorFromHex(_loginController.textLight),
                 onPressed: () {
                   OffersController offersController = Get.find();
                   Future.wait([offersController.getOfferByCEPCategory(chave.toString())]);
@@ -49,7 +49,7 @@ class CardCategories extends StatelessWidget {
             child: AutoSizeText(
               text,
               style: TextStyle(
-                color: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'textDark').first.coreValor.toString()),
+                color: _loginController.colorFromHex(_loginController.textDark),
                 fontWeight: FontWeight.w500,
                 fontSize: 15,
               ),

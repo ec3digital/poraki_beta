@@ -30,18 +30,8 @@ class TermosPage extends StatelessWidget {
               const SizedBox(height: 80),
               ButtonOffer(
                   text: 'Aceitar >>',
-                  colorText: loginController.colorFromHex(loginController
-                      .listCore
-                      .where((coreItem) => coreItem.coreChave == 'textLight')
-                      .first
-                      .coreValor
-                      .toString()),
-                  colorButton: loginController.colorFromHex(loginController
-                      .listCore
-                      .where((coreItem) => coreItem.coreChave == 'iconColor')
-                      .first
-                      .coreValor
-                      .toString()),
+                  colorText: loginController.colorFromHex(loginController.textLight),
+                  colorButton: loginController.colorFromHex(loginController.iconColor),
                   onPressed: () {
                     // TODO: salvar a data do aceite, versão e uid
                     Get.toNamed(AppRoutes.home);

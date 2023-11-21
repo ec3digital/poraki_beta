@@ -72,18 +72,8 @@ class _ListMoffersState extends State<ListMoffers> {
     //     .first
     //     .coreValor
     //     .toString());
-    final Color backColor = _loginController.colorFromHex(_loginController
-        .listCore
-        .where((coreItem) => coreItem.coreChave == 'backLight')
-        .first
-        .coreValor
-        .toString());
-    final Color textDarkColor = _loginController.colorFromHex(_loginController
-        .listCore
-        .where((coreItem) => coreItem.coreChave == 'textDark')
-        .first
-        .coreValor
-        .toString());
+    final Color backColor = _loginController.colorFromHex(_loginController.backLight);
+    final Color textDarkColor = _loginController.colorFromHex(_loginController.textDark);
     final Color soldBackColor = Colors.grey.shade300;
 
     Widget _buildRow(Oferta moferta) {
@@ -104,18 +94,7 @@ class _ListMoffersState extends State<ListMoffers> {
             ),
             child: ListTile(
               leading: CachedNetworkImage(
-                imageUrl: _loginController.listCore
-                        .where((coreItem) => coreItem.coreChave == 'imgpath')
-                        .first
-                        .coreValor
-                        .toString() +
-                    moferta.OfertaGUID.toString() +
-                    _loginController.listCore
-                        .where(
-                            (coreItem) => coreItem.coreChave == 'imgpathsuffix')
-                        .first
-                        .coreValor
-                        .toString(),
+                imageUrl: _loginController.imgPath + moferta.OfertaGUID.toString() + _loginController.imgPathSuffix,
                 progressIndicatorBuilder: (context, url, downloadProgress) =>
                     CircularProgressIndicator(value: downloadProgress.progress),
                 errorWidget: (context, url, error) =>
@@ -159,12 +138,7 @@ class _ListMoffersState extends State<ListMoffers> {
             return Center(
                 child: CircularProgressIndicator(
                     backgroundColor: _loginController.colorFromHex(
-                        _loginController.listCore
-                            .where(
-                                (coreItem) => coreItem.coreChave == 'backDark')
-                            .first
-                            .coreValor
-                            .toString())));
+                        _loginController.backDark)));
           } else {
             return Expanded(
                 child: Container(
@@ -180,29 +154,25 @@ class _ListMoffersState extends State<ListMoffers> {
                 style: TextStyle(fontSize: 24),
               )),
               const SizedBox(height: 5),
-              ButtonOffer(
-                onPressed: () {
-                  mofferController.singleOffer = null;
-                  mofferController.mofferGuid = '';
-                  // mofferController.loja = selStore;
-                  // mofferController.txtCEP.text = _loginController.usuCep.toString();
-                  // mofferController.lojaGuid = selStore == null ? '' : selStore!.LojaGUID.toString();
-                  Get.toNamed(AppRoutes.mOffer);
-                },
-                colorText: _loginController.colorFromHex(_loginController
-                    .listCore
-                    .where((coreItem) => coreItem.coreChave == 'textLight')
-                    .first
-                    .coreValor
-                    .toString()),
-                text: 'Nova oferta',
-                colorButton: _loginController.colorFromHex(_loginController
-                    .listCore
-                    .where((coreItem) => coreItem.coreChave == 'textDark')
-                    .first
-                    .coreValor
-                    .toString()),
-              ),
+
+              if(_loginController.usuPerfil == 'U' && (mofferController.moffers.length > _loginController.qtyOfertasGratis))
+                Container (padding: const EdgeInsets.all(8.0), child: Text("Ative o pacote Premium para publicar quantas ofertas quiser! :-)", style: TextStyle(fontSize: 16), textAlign: TextAlign.center))
+              else
+                ButtonOffer(
+                  onPressed: () {
+                    mofferController.singleOffer = null;
+                    mofferController.mofferGuid = '';
+                    // mofferController.loja = selStore;
+                    // mofferController.txtCEP.text = _loginController.usuCep.toString();
+                    // mofferController.lojaGuid = selStore == null ? '' : selStore!.LojaGUID.toString();
+                    Get.toNamed(AppRoutes.mOffer);
+                  },
+
+                  colorText: _loginController.colorFromHex(_loginController.textLight),
+                  text: 'Nova oferta',
+                  colorButton: _loginController.colorFromHex(_loginController.textDark),
+                ),
+
               const SizedBox(height: 5),
               ListTile(
                 title: Text(

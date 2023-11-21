@@ -9,11 +9,11 @@ AppBar appBarOffers(String? titulo) {
   return AppBar(
     elevation: 0,
     centerTitle: false,
-    backgroundColor: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'backLight').first.coreValor.toString()),
+    backgroundColor: _loginController.colorFromHex(_loginController.backLight),
     title: Text(
       titulo == null ? 'Ofertas' : titulo,
       style: TextStyle(fontSize: 25,
-      color: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'textDark').first.coreValor.toString()),
+      color: _loginController.colorFromHex(_loginController.textDark),
       ) // Get.textTheme.headline1!.copyWith(fontSize: 25),
     ),
     actions: [

@@ -15,7 +15,7 @@ class GradientHeaderHome extends StatelessWidget {
 
     return Container(
       decoration: BoxDecoration(
-        color: _loginController.colorFromHex(_loginController.listCore.where((coreItem) => coreItem.coreChave == 'backDark').first.coreValor.toString())
+        color: _loginController.colorFromHex(_loginController.backDark)
         // gradient: LinearGradient(
         //   begin: Alignment.topCenter,
         //   end: Alignment.bottomCenter,
