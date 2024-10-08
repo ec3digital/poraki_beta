@@ -69,7 +69,8 @@ dependencies:
   uuid: ^3.0.7
   pull_to_refresh: ^2.0.0
   full_screen_image: ^2.0.0
-
+  firebase_crashlytics: ^3.4.5
+  internet_connection_checker_plus: ^1.0.1
 
 dev_dependencies:
   flutter_test:

@@ -8,6 +8,7 @@ class Usuario {
   final bool? cpfValidado;
   final DateTime? dataNascimento;
   final String? regiao;
+  final DateTime? dataAceiteTermos;
 
   Usuario(
       {this.nome,
@@ -18,7 +19,8 @@ class Usuario {
       this.cep,
       this.cpfValidado,
       this.dataNascimento,
-      this.regiao});
+      this.regiao,
+      this.dataAceiteTermos});
 
   // factory Usuario.fromFirestore(
   //     DocumentSnapshot<Map<String, dynamic>> snapshot,
@@ -39,7 +41,9 @@ class Usuario {
         email: elem['Email'].toString().trim(),
         whatsapp: elem['Whatsapp'].toString().trim(),
         regiao: elem['Regiao'].toString().trim(),
-        cpfValidado: elem['cpfValidado'].toString().trim() == 'true' ? true : false);
+        cpfValidado: elem['cpfValidado'].toString().trim() == 'true' ? true : false,
+        dataAceiteTermos: DateTime.now()
+    );
   }
 
   Map<String, dynamic> toJsonAdd() {
@@ -51,6 +55,7 @@ class Usuario {
       if (whatsapp != null) "Whatsapp": whatsapp.toString().trim(),
       if (regiao != null) "Regiao": regiao.toString().trim(),
       if (cep != null) "CEP": cep.toString().trim(),
+      if (dataAceiteTermos != null) "DataAceiteTermos": dataAceiteTermos.toString(),
       "cpfValidado": 'false'
     };
   }

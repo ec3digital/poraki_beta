@@ -328,7 +328,8 @@ class _FormSignupState extends State<FormSignup> {
                   });
 
                   if (ret == 'OK') {
-                    Get.toNamed(AppRoutes.login);
+                    // Get.toNamed(AppRoutes.login);
+                    Get.toNamed(AppRoutes.termos);
                     Alerta(context,
                         'Conta criada com sucesso! Por favor confirme seu acesso clicando no link do e-mail que acabamos de enviar pra você');
                   } else {

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:poraki/app/modules/categories/categories_controller.dart';
 import 'package:poraki/app/routes/app_routes.dart';
 import 'package:poraki/app/theme/app_theme.dart';
@@ -15,11 +16,19 @@ class PorakiSplash extends StatefulWidget {
 class _PorakiSplash extends State<PorakiSplash> {
   final LoginController _loginController = Get.find();
   final CategoriesController _categoriesController = Get.put(CategoriesController());
-
+  InternetConnectionStatus? _connectionStatus;
+  late StreamSubscription<InternetConnectionStatus> _subscription;
 
   @override
   void initState() {
     super.initState();
+    _subscription = InternetConnectionCheckerPlus().onStatusChange.listen(
+          (status) {
+        setState(() {
+          _connectionStatus = status;
+        });
+      },
+    );
 
     Timer(Duration(seconds: 0), () async {
       await _loginController.runCore();
@@ -75,7 +84,14 @@ class _PorakiSplash extends State<PorakiSplash> {
                             fontFamily: 'Montserrat',
                             fontSize: 16,
                             color: AppColors.darkText)),
-                    const SizedBox(height: 180),
+                    const SizedBox(height: 90),
+                    const Text(
+                      'Conexão: ',
+                    ),
+                    Text(
+                      _connectionStatus?.toString() ?? '...',
+                    ),
+                    const SizedBox(height: 90)
                   ]));
         });
   }

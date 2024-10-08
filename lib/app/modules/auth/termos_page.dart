@@ -34,7 +34,7 @@ class TermosPage extends StatelessWidget {
                   colorButton: loginController.colorFromHex(loginController.iconColor),
                   onPressed: () {
                     // TODO: salvar a data do aceite, versão e uid
-                    Get.toNamed(AppRoutes.home);
+                    Get.toNamed(AppRoutes.login);
                   }),
             ]));
   }

@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:poraki/app/modules/auth/login/login_controller.dart';
 import 'package:poraki/app/modules/home/widgets/gradient_header_home.dart';
 import 'package:poraki/app/modules/offers/widgets/button_offer.dart';
@@ -29,6 +32,8 @@ class StoreValidation extends StatefulWidget {
 }
 
 class _StoreValidationState extends State<StoreValidation> {
+  InternetConnectionStatus? _connectionStatus;
+  late StreamSubscription<InternetConnectionStatus> _subscription;
   // final _form = GlobalKey<FormState>();
   File? imageCNPJ;
   File? imageAddress;
@@ -39,6 +44,13 @@ class _StoreValidationState extends State<StoreValidation> {
     widget._imageURLAddressFocusNode.addListener(_updateImageUrl);
 
     super.initState();
+    _subscription = InternetConnectionCheckerPlus().onStatusChange.listen(
+          (status) {
+        setState(() {
+          _connectionStatus = status;
+        });
+      },
+    );
   }
 
   @override
@@ -75,6 +87,13 @@ class _StoreValidationState extends State<StoreValidation> {
               padding: const EdgeInsets.all(15.0),
               child: Column(
                 children: [
+                  const SizedBox(height: 10),
+                  const Text(
+                    'Conexão: ',
+                  ),
+                  Text(
+                    _connectionStatus?.toString() ?? '...',
+                  ),
                   const SizedBox(height: 10),
                   Text("Para realizar vendas no Poraki, é preciso validar um documento de identificação da empresa, assim podemos manter a nossa comunidade segura ;-)"),
                   const SizedBox(height: 10),

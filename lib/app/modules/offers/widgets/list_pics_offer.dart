@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:full_screen_image/full_screen_image.dart';
 import 'package:get/get.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:poraki/app/data/models/produto_oferta.dart';
 import 'package:poraki/app/modules/auth/login/login_controller.dart';
 import 'package:poraki/app/modules/offers/offers_controller.dart';
@@ -23,6 +26,8 @@ class ListPicsOffer extends StatefulWidget {
 }
 
 class _ListPicsOfferState extends State<ListPicsOffer> {
+  InternetConnectionStatus? _connectionStatus;
+  late StreamSubscription<InternetConnectionStatus> _subscription;
   final LoginController _loginController = Get.find();
   final OffersController _offersController = Get.find();
   late Color backColor;
@@ -33,6 +38,15 @@ class _ListPicsOfferState extends State<ListPicsOffer> {
 
   @override
   void initState() {
+    super.initState();
+    _subscription = InternetConnectionCheckerPlus().onStatusChange.listen(
+      (status) {
+        setState(() {
+          _connectionStatus = status;
+        });
+      },
+    );
+
     backColor = _loginController.colorFromHex(_loginController.backLight);
     textColor = _loginController.colorFromHex(_loginController.backDark);
     favorited = _loginController.favoffersguids!
@@ -51,6 +65,12 @@ class _ListPicsOfferState extends State<ListPicsOffer> {
         height: Get.height * 0.40,
         child: Stack(
           children: [
+            const Text(
+              'Conexão: ',
+            ),
+            Text(
+              _connectionStatus?.toString() ?? '...',
+            ),
             ListView.builder(
               //scrollDirection: Axis.horizontal,
               itemCount: 1, //controller.listPictures.length,
@@ -104,11 +124,18 @@ class _ListPicsOfferState extends State<ListPicsOffer> {
                     isLoading = true;
                   });
 
-                  OffersFavController _offersFavController = Get.put(OffersFavController());
+                  OffersFavController _offersFavController =
+                      Get.put(OffersFavController());
                   if (favorited) {
-                    Future.wait([_offersFavController.removeObj(widget.offer.ofertaGUID.toString(), _offersController)]);
+                    Future.wait([
+                      _offersFavController.removeObj(
+                          widget.offer.ofertaGUID.toString(), _offersController)
+                    ]);
                   } else {
-                    Future.wait([_offersFavController.addObj(widget.offer.ofertaGUID.toString(), _offersController)]);
+                    Future.wait([
+                      _offersFavController.addObj(
+                          widget.offer.ofertaGUID.toString(), _offersController)
+                    ]);
                   }
 
                   setState(() {

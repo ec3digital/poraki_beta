@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -8,6 +9,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:poraki/app/data/models/categorias.dart';
 import 'package:poraki/app/data/models/lojas.dart';
 import 'package:poraki/app/data/models/oferta.dart';
@@ -27,6 +29,8 @@ class BodyMoffer extends StatefulWidget {
 }
 
 class _BodyMoffer extends State<BodyMoffer> {
+  InternetConnectionStatus? _connectionStatus;
+  late StreamSubscription<InternetConnectionStatus> _subscription;
   File? image;
   List<String> _listaCategoriasNomes = [];
   final CategoriesController _categoriesController =
@@ -139,7 +143,6 @@ class _BodyMoffer extends State<BodyMoffer> {
 
   @override
   void initState() {
-    print('initState moffer');
     _imageURLFocusNode.addListener(_updateImageUrl);
 
     textColor = _loginController.colorFromHex(_loginController.textDark);
@@ -175,14 +178,19 @@ class _BodyMoffer extends State<BodyMoffer> {
     _mofferController.txtQtdDispo.text = '0';
     _mofferController.txtQtdAviso.text = '0';
 
-    print('_mofferController.singleOffer initstate: ' + (_mofferController.singleOffer != null).toString());
-
     listStores.clear();
     _loginController.listLojas.forEach((element) { listStores.add(element); });
 
     if (_mofferController.singleOffer != null) carregaObj();
 
     super.initState();
+    _subscription = InternetConnectionCheckerPlus().onStatusChange.listen(
+          (status) {
+        setState(() {
+          _connectionStatus = status;
+        });
+      },
+    );
   }
 
   @override
@@ -241,6 +249,13 @@ class _BodyMoffer extends State<BodyMoffer> {
                 // key: _form,
                 child: ListView(
                   children: [
+                    const SizedBox(height: 10),
+                    const Text(
+                      'Conexão: ',
+                    ),
+                    Text(
+                      _connectionStatus?.toString() ?? '...',
+                    ),
                     const SizedBox(height: 10),
                     ListTile(
                       title: Text('Loja: '),

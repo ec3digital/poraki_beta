@@ -1,8 +1,11 @@
+import 'dart:async';
+
 import 'package:badges/badges.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 // import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:poraki/app/modules/auth/login/login_controller.dart';
 import 'package:poraki/app/modules/offers/offers_controller.dart';
 import 'package:poraki/app/routes/app_routes.dart';
@@ -21,24 +24,24 @@ class DrawerHome extends StatefulWidget {
 
 class _DrawerHomeState extends State<DrawerHome> {
   final LoginController _login = Get.find();
-
-  // Get.put(LoginController());
-  //final OrderController _orderController = Get.find();
   bool load = true;
+  InternetConnectionStatus? _connectionStatus;
+  late StreamSubscription<InternetConnectionStatus> _subscription;
 
   @override
   void initState() {
-    // _loadLogin();
-
     super.initState();
+    _subscription = InternetConnectionCheckerPlus().onStatusChange.listen(
+      (status) {
+        setState(() {
+          _connectionStatus = status;
+        });
+      },
+    );
   }
 
   Future<void> _loadLogin() async {
-    if (load) {
-      load = false;
-      print('_loadLogin');
-      //await _login.loadUserData();
-    }
+    if (load) load = false;
   }
 
   @override
@@ -48,7 +51,6 @@ class _DrawerHomeState extends State<DrawerHome> {
     Color darkBack = _login.colorFromHex(_login.backDark);
     final FirebaseAuth? auth = FirebaseAuth.instance;
 
-    // TODO: remover daqui e pegar direto do login Controller
     return FutureBuilder(
         future: _loadLogin(),
         builder: (context, futuro) {
@@ -60,7 +62,6 @@ class _DrawerHomeState extends State<DrawerHome> {
                 width: Get.width * 0.7,
                 color: lightBack,
                 child: ListView(
-                  // Important: Remove any padding from the ListView.
                   padding: EdgeInsets.zero,
                   children: [
                     SizedBox(
@@ -75,8 +76,11 @@ class _DrawerHomeState extends State<DrawerHome> {
                                 style: TextStyle(fontSize: 18),
                               )),
                               const SizedBox(height: 8),
-                              Center(child: Text(_login.usuCep.toString(),
-                                style: TextStyle(fontSize: 14),)),
+                              Center(
+                                  child: Text(
+                                _login.usuCep.toString(),
+                                style: TextStyle(fontSize: 14),
+                              )),
                             ]))),
 
                     RowCategoriesDrawerHome(
@@ -124,8 +128,10 @@ class _DrawerHomeState extends State<DrawerHome> {
                       onTap: () async {
                         OffersController _offersController =
                             Get.find(); // Get.put(OffersController());
-                        Future.wait(
-                            [_offersController.getOffersFavsByUser(_loginController.qtyOfertas)]);
+                        Future.wait([
+                          _offersController
+                              .getOffersFavsByUser(_loginController.qtyOfertas)
+                        ]);
 
                         Get.toNamed(AppRoutes.offers, arguments: [
                           {'listName': 'favsoffers'},
@@ -197,7 +203,17 @@ class _DrawerHomeState extends State<DrawerHome> {
                     Divider(
                       color: darkBack,
                     ),
-                    Text("versão BETA", style: TextStyle(fontSize: 14),)
+                    Text(
+                      "  versão BETA",
+                      style: TextStyle(fontSize: 14),
+                    ),
+                    const SizedBox(height: 10),
+                    const Text(
+                      'Conexão: ',
+                    ),
+                    Text(
+                      _connectionStatus?.toString() ?? '...',
+                    ),
                   ],
                 ));
           }

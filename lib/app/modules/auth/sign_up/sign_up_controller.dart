@@ -78,6 +78,7 @@ class SignUpController extends GetxController {
             whatsapp: formWhatsApp,
             cpfValidado: false,
             regiao: '057',
+
             dataNascimento: DateTime.now());
 
         LoginController _loginController = Get.find();
