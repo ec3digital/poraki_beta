@@ -31,7 +31,7 @@ class BottomSheetProductDayOffer extends StatelessWidget {
                   alignment: Alignment.topLeft,
                   child: AutoSizeText(
                     'Escolha quantidade',
-                    style: Get.textTheme.bodyText1!.copyWith(
+                    style: Get.textTheme.bodyLarge!.copyWith(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
                     ),
@@ -101,7 +101,7 @@ class BottomSheetProductDayOffer extends StatelessWidget {
                           onPressed: _controller.multipleAmounts,
                           child: Text(
                             'Aplicar',
-                            style: Get.textTheme.bodyText1!.copyWith(
+                            style: Get.textTheme.bodyLarge!.copyWith(
                               fontWeight: FontWeight.bold,
                               fontSize: 16,
                               color: Colors.white,

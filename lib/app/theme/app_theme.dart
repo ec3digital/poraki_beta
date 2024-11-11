@@ -21,41 +21,33 @@ abstract class AppTheme {
     return ThemeData(
       splashColor: AppColors.primaryBackground,
       primaryColor: AppColors.primaryColor,
-       
       scaffoldBackgroundColor: AppColors.primaryLight,
       appBarTheme: AppBarTheme(
         iconTheme: IconThemeData(color: AppColors.darkText),
         elevation: 0.0,
         centerTitle: true,
         color: Colors.transparent,
-        // ignore: deprecated_member_use
-        textTheme: TextTheme(
-          headline6: TextStyle(
-            fontSize: 25,
-            fontWeight: FontWeight.normal,
-            color: AppColors.primaryColor,
-          ),
-        ),
       ),
       textTheme: TextTheme(
-        headline1: TextStyle(
+        displayLarge: TextStyle(
           fontSize: 22,
           fontWeight: FontWeight.w800,
           color: Colors.black,
         ),
-        bodyText1: TextStyle(
+        bodyLarge: TextStyle(
           fontSize: 16,
           fontWeight: FontWeight.w500,
           color: Colors.black,
         ),
-        bodyText2: TextStyle(
+        bodyMedium: TextStyle(
           fontSize: 16,
           fontWeight: FontWeight.w500,
           color: Colors.black,
         ),
       ),
-      colorScheme:
-          ColorScheme.fromSwatch().copyWith(secondary: AppColors.primaryBackground),
+      colorScheme: ColorScheme.fromSwatch().copyWith(
+        secondary: AppColors.primaryBackground,
+      ),
     );
   }
 
@@ -70,27 +62,19 @@ abstract class AppTheme {
         elevation: 0.0,
         centerTitle: true,
         color: Colors.transparent,
-        // ignore: deprecated_member_use
-        textTheme: TextTheme(
-          headline6: TextStyle(
-            fontSize: 25,
-            fontWeight: FontWeight.normal,
-            color: Colors.white,
-          ),
-        ),
       ),
       textTheme: TextTheme(
-        headline1: TextStyle(
+        displayLarge: TextStyle(
           fontSize: 20,
           fontWeight: FontWeight.w700,
           color: Colors.white,
         ),
-        bodyText1: TextStyle(
+        bodyLarge: TextStyle(
           fontSize: 16,
           fontWeight: FontWeight.w500,
           color: Colors.white,
         ),
-        bodyText2: TextStyle(
+        bodyMedium: TextStyle(
           fontSize: 16,
           fontWeight: FontWeight.w500,
           color: Colors.white,

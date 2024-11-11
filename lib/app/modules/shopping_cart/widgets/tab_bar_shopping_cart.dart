@@ -28,14 +28,14 @@ class TabBarShoppingCart extends StatelessWidget {
         tabs: [
           Text(
             'Carrinho(${controller.listShoppingCart.length})',
-            style: Get.textTheme.bodyText1!.copyWith(
+            style: Get.textTheme.bodyLarge!.copyWith(
               fontSize: 18,
               fontWeight: FontWeight.normal,
             ),
           ),
           Text(
             'Salvos',
-            style: Get.textTheme.bodyText1!.copyWith(
+            style: Get.textTheme.bodyLarge!.copyWith(
               fontSize: 18,
               fontWeight: FontWeight.normal,
             ),

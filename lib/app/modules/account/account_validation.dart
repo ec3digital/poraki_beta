@@ -31,15 +31,15 @@ class AccountValidation extends StatefulWidget {
 class _AccountValidationState extends State<AccountValidation> {
   // final _form = GlobalKey<FormState>();
   File? image;
-  InternetConnectionStatus? _connectionStatus;
-  late StreamSubscription<InternetConnectionStatus> _subscription;
+  InternetStatus? _connectionStatus;
+  late StreamSubscription<InternetStatus> _subscription;
 
   @override
   void initState() {
     widget._imageURLFocusNode.addListener(_updateImageUrl);
 
     super.initState();
-    _subscription = InternetConnectionCheckerPlus().onStatusChange.listen(
+    _subscription = InternetConnection().onStatusChange.listen(
           (status) {
         setState(() {
           _connectionStatus = status;

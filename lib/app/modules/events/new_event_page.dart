@@ -367,7 +367,7 @@ class _NewEventPage extends State<NewEventPage> {
                 ),
           )));
       //}
-    });
+    }, future: null,);
   }
 
   Future<void> salvar() async {

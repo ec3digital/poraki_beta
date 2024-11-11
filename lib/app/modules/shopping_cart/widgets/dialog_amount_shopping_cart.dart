@@ -28,7 +28,7 @@ class DialogAmountShoppingCart extends StatelessWidget {
           child: Text(
             'Quantidade',
             textAlign: TextAlign.center,
-            style: Get.textTheme.bodyText1!
+            style: Get.textTheme.bodyLarge!
                 .copyWith(fontWeight: FontWeight.w500, fontSize: 18),
           ),
         ),
@@ -53,7 +53,7 @@ class DialogAmountShoppingCart extends StatelessWidget {
                 child: Text(
                   'Mais de 6 unidades',
                   textAlign: TextAlign.center,
-                  style: Get.textTheme.bodyText1!
+                  style: Get.textTheme.bodyLarge!
                       .copyWith(fontWeight: FontWeight.w400, fontSize: 16),
                 ),
               ),
@@ -87,7 +87,7 @@ class TextAmountDialog extends StatelessWidget {
             child: Text(
               text,
               textAlign: TextAlign.center,
-              style: Get.textTheme.bodyText1!
+              style: Get.textTheme.bodyLarge!
                   .copyWith(fontWeight: FontWeight.w400, fontSize: 16),
             ),
           ),

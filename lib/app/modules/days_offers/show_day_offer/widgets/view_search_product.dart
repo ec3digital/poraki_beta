@@ -15,7 +15,7 @@ class ViewSearchProduct extends StatelessWidget {
         title: TextField(
           decoration: InputDecoration(
             hintText: 'Busca em PorAki',
-            hintStyle: Get.textTheme.bodyText1!.copyWith(
+            hintStyle: Get.textTheme.bodyLarge!.copyWith(
               fontSize: 14,
               color: AppColors.darkText,
             ),

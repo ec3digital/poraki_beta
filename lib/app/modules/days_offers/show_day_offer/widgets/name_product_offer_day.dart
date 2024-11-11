@@ -14,7 +14,7 @@ class NameProductOfferDay extends StatelessWidget {
       child: Text(
         nameProduct!,
         textAlign: TextAlign.start,
-        style: Get.textTheme.bodyText1!
+        style: Get.textTheme.bodyLarge!
             .copyWith(fontSize: 14, fontWeight: FontWeight.w400),
       ),
     );

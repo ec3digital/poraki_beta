@@ -152,7 +152,7 @@ class _BodyCheckOut extends State<BodyCheckOut> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Text(_loginController.usuNome.toString(),
-                      style: Get.textTheme.bodyText1!.copyWith(
+                      style: Get.textTheme.bodyLarge!.copyWith(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                       )),
@@ -202,7 +202,7 @@ class _BodyCheckOut extends State<BodyCheckOut> {
           ),
 
           OutlinedButton(
-            style: ElevatedButton.styleFrom(primary: Colors.yellow),
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.yellow),
             onPressed: () {
               showDialog<String>(
                 context: context,

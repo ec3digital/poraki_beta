@@ -11,7 +11,6 @@ import 'package:poraki/app/data/models/cepApiBrasil.dart';
 import 'package:poraki/app/data/repositories/CepApiBrasil_repository.dart';
 import 'package:poraki/app/modules/auth/login/login_controller.dart';
 import 'package:poraki/app/modules/home/widgets/gradient_header_home.dart';
-import 'package:poraki/app/modules/offers/widgets/button_offer.dart';
 import 'package:poraki/app/routes/app_routes.dart';
 import '../store_controller.dart';
 
@@ -28,12 +27,12 @@ class _StoreBodyState extends State<StoreBody> {
   bool imgEdited = false;
   String storeGuid = '';
   String imgcloud = '';
-  FocusNode txtLojaNroFocus = new FocusNode();
-  StoreController storeController = Get.find();
-  LoginController _loginController = Get.find();
+  final FocusNode txtLojaNroFocus = FocusNode();
+  final StoreController storeController = Get.find();
+  final LoginController _loginController = Get.find();
   bool valAceitaPoraki10 = false;
-  DateTime valDataCupomDe = new DateTime.now();
-  DateTime valDataCupomAte = new DateTime.now();
+  DateTime valDataCupomDe = DateTime.now();
+  DateTime valDataCupomAte = DateTime.now();
   bool isSalvarLoading = false;
   bool isApagarLoading = false;
   bool isCepLoading = false;
@@ -43,669 +42,270 @@ class _StoreBodyState extends State<StoreBody> {
   Widget build(BuildContext buildContext) {
     Color textColor = _loginController.colorFromHex(_loginController.textDark);
 
-    return FutureBuilder<StoreController>(builder: (context, futuro) {
-      // if (isLoading) {
-      //   return Center(
-      //     child: Container(),
-      //   );
-      // } else {
-      if (storeController.loja != null) {
-        Future.delayed(Duration.zero, () async {
-          storeController.bindLoja();
-        });
-        imgcloud =
-            _loginController.imgPathStores + storeController.loja!.LojaGUID.toString() + _loginController.imgPathSuffix;
-      }
-      return Scaffold(
-          appBar: PreferredSize(
-            preferredSize: Size(double.maxFinite, 55),
-            child: AppBar(
-              // elevation: 0,
-              centerTitle: false,
-              backgroundColor: _loginController.colorFromHex(_loginController.backLight),
-              title: Text(
-                'Loja',
-                style: TextStyle(fontSize: 25, color: textColor),
-              ),
+    return FutureBuilder<void>(
+      future: _loadStoreData(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          return Center(child: Text('Erro ao carregar dados: ${snapshot.error}'));
+        } else {
+          return _buildStoreScaffold(textColor);
+        }
+      },
+    );
+  }
+
+  Future<void> _loadStoreData() async {
+    if (storeController.loja != null) {
+      storeController.bindLoja();
+      imgcloud = _loginController.imgPathStores + storeController.loja!.LojaGUID.toString() + _loginController.imgPathSuffix;
+    }
+  }
+
+  Scaffold _buildStoreScaffold(Color textColor) {
+    return Scaffold(
+      appBar: _buildAppBar(textColor),
+      body: GradientHeaderHome(
+        child: Padding(
+          padding: const EdgeInsets.all(15.0),
+          child: Form(
+            key: _formStoreKey,
+            autovalidateMode: AutovalidateMode.always,
+            child: ListView(
+              children: [
+                _buildTextFormField(
+                  labelText: "Nome da Loja",
+                  controller: storeController.txtLojaNome,
+                  validator: (value) => value != null && value.length < 3 ? "Por favor informe um nome maior" : null,
+                  prefixIcon: Icons.storefront_rounded,
+                  textColor: textColor,
+                ),
+                _buildTextFormField(
+                  labelText: "Slogan (opcional)",
+                  controller: storeController.txtLojaSlogan,
+                  prefixIcon: Icons.local_offer_outlined,
+                  textColor: textColor,
+                ),
+                _buildCnpjFormField(textColor),
+                _buildPhoneFormField(textColor),
+                _buildCepFormField(textColor),
+                _buildAddLogoButton(),
+                if (imgcloud.isNotEmpty) _buildCachedNetworkImage(),
+                if (image != null) _buildSelectedImage(),
+                _buildSalvarButton(),
+                _buildApagarButton(),
+              ],
             ),
           ),
-          body:
-              // SingleChildScrollView(
-              //     child:
-              GradientHeaderHome(
-                  child: Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: Form(
-                // key: _loginController.formKey,
-                key: _formStoreKey,
-                autovalidateMode: AutovalidateMode.always,
-                child: ListView(children: [
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  TextFormField(
-                    validator: (valueNome) => valueNome.toString().length < 3
-                        ? "Por favor informe um nome maior"
-                        : null,
-                    controller: storeController.txtLojaNome,
-                    // keyboardType: TextInputType.streetAddress,
-                    autofocus: false, // true,
-                    style: TextStyle(color: textColor),
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: "Nome da Loja",
-                      labelStyle: TextStyle(color: textColor),
-                      prefixIcon: Icon(
-                        Icons.storefront_rounded,
-                        color: textColor,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  TextFormField(
-                    // validator: (value) {
-                    //   if (value!.length != 11) {
-                    //     return "CPF inválido";
-                    //   }
-                    //   return null;
-                    // },
-                    controller: storeController.txtLojaSlogan,
-                    // keyboardType: TextInputType.number,
-                    autofocus: false, // true,
-                    // focusNode: txtEnderecoNroFocus,
-                    style: TextStyle(color: textColor),
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: "Slogan (opcional)",
-                      labelStyle: TextStyle(color: textColor),
-                      prefixIcon: Icon(
-                        Icons.local_offer_outlined,
-                        color: textColor,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  TextFormField(
-                    validator: (valueCNPJ) {
-                      if (valueCNPJ.toString().length > 0) if (!UtilBrasilFields.isCNPJValido(valueCNPJ))
-                        return "Por favor informe um CNPJ válido";
-                      else
-                        return null;
-                    },
-                    inputFormatters: [
-                      FilteringTextInputFormatter.digitsOnly,
-                      CnpjInputFormatter(),
-                    ],
-                    controller: storeController.txtLojaCNPJ,
+        ),
+      ),
+    );
+  }
 
-                    // onFieldSubmitted: (cnpj) {
-                    //   if (!CNPJValidator.isValid(cnpj)) {
-                    //     Get.defaultDialog(
-                    //         title: "CNPJ Inválido",
-                    //         middleText: "Por favor informe um CNPJ válido");
-                    //   }
-                    //   {}
-                    // },
-                    autofocus: false, // true,
-                    style: TextStyle(color: textColor),
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: "CNPJ",
-                      labelStyle: TextStyle(color: textColor),
-                      prefixIcon: Icon(
-                        Icons.work_outline,
-                        color: textColor,
-                      ),
-                    ),
-                  ),
-                  // const SizedBox(
-                  //   height: 20,
-                  // ),
-                  // TextFormField(
-                  //   // validator: (value) {
-                  //   //   if (value!.length != 11) {
-                  //   //     return "Por favor digite um telefone válido";
-                  //   //   }
-                  //   //   return null;
-                  //   // },
-                  //   controller: storeController.txtLojaRazao,
-                  //   autofocus: false, // true,
-                  //   style: TextStyle(color: textColor),
-                  //   decoration: InputDecoration(
-                  //     border: OutlineInputBorder(),
-                  //     labelText: "Razão Social",
-                  //     labelStyle: TextStyle(color: textColor),
-                  //     prefixIcon: Icon(
-                  //       Icons.location_city_outlined,
-                  //       color: textColor,
-                  //     ),
-                  //   ),
-                  // ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  TextFormField(
-                    validator: (valueZap) => valueZap.toString().length < 14
-                        ? "Por favor informe um número de celular correto"
-                        : null,
-                    inputFormatters: [
-                      FilteringTextInputFormatter.digitsOnly,
-                      TelefoneInputFormatter(),
-                    ],
-                    controller: storeController.txtLojaWhatsapp,
-                    autofocus: false, // true,
-                    style: TextStyle(color: textColor),
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: "Whatsapp da Loja (obrigatório)",
-                      labelStyle: TextStyle(color: textColor),
-                      prefixIcon: Icon(
-                        Icons.phone_enabled_outlined,
-                        color: textColor,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  TextFormField(
-                    validator: (valueCEP) => valueCEP.toString().length < 9
-                        ? "Por favor informe um CEP correto"
-                        : null,
-                    controller: storeController.txtLojaCEP,
-                    autofocus: false, // true,
-                    style: TextStyle(color: textColor),
-                    decoration: InputDecoration(
-                      filled: true,
-                      border: OutlineInputBorder(),
-                      labelText: "CEP",
-                      labelStyle: TextStyle(color: textColor),
-                      // suffix: isCepLoading ? CircularProgressIndicator() : null,
-                      prefixIcon: Icon(
-                        Icons.location_on_outlined,
-                        color: textColor,
-                      ),
-                    ),
-                    // onEditingComplete: () async {
-                    //   isCepLoading = true;
-                    //   await buscaCep();
-                    //   isCepLoading = false;
-                    // },
-                  ),
-                  // const SizedBox(
-                  //   height: 20,
-                  // ),
-                  // TextFormField(
-                  //   // validator: (value) {
-                  //   //   if (value!.length < 10) {
-                  //   //     return "Digite um nome maior";
-                  //   //   }
-                  //   //   return null;
-                  //   // },
-                  //   controller: storeController.txtLojaLogra,
-                  //   keyboardType: TextInputType.streetAddress,
-                  //   autofocus: true,
-                  //   style: TextStyle(color: textColor),
-                  //   decoration: InputDecoration(
-                  //     border: OutlineInputBorder(),
-                  //     labelText: "Endereço SEM o número",
-                  //     labelStyle: TextStyle(color: textColor),
-                  //     prefixIcon: Icon(
-                  //       Icons.location_on_outlined,
-                  //       color: textColor,
-                  //     ),
-                  //   ),
-                  // ),
-                  // const SizedBox(
-                  //   height: 20,
-                  // ),
-                  // TextFormField(
-                  //   // validator: (value) {
-                  //   //   if (value!.length != 11) {
-                  //   //     return "CPF inválido";
-                  //   //   }
-                  //   //   return null;
-                  //   // },
-                  //   controller: storeController.txtLojaNumero,
-                  //   keyboardType: TextInputType.number,
-                  //   autofocus: true,
-                  //   focusNode: txtLojaNroFocus,
-                  //   style: TextStyle(color: textColor),
-                  //   decoration: InputDecoration(
-                  //     border: OutlineInputBorder(),
-                  //     labelText: "Número",
-                  //     labelStyle: TextStyle(color: textColor),
-                  //     prefixIcon: Icon(
-                  //       Icons.format_list_numbered,
-                  //       color: textColor,
-                  //     ),
-                  //   ),
-                  // ),
-                  // const SizedBox(
-                  //   height: 20,
-                  // ),
-                  // TextFormField(
-                  //   // validator: (value) {
-                  //   //   if (value!.length != 11) {
-                  //   //     return "Por favor digite um telefone válido";
-                  //   //   }
-                  //   //   return null;
-                  //   // },
-                  //   controller: storeController.txtLojaCompl,
-                  //   autofocus: true,
-                  //   style: TextStyle(color: textColor),
-                  //   decoration: InputDecoration(
-                  //     border: OutlineInputBorder(),
-                  //     labelText: "Complemento (apto, bloco, etc...)",
-                  //     labelStyle: TextStyle(color: textColor),
-                  //     prefixIcon: Icon(
-                  //       Icons.location_city_outlined,
-                  //       color: textColor,
-                  //     ),
-                  //   ),
-                  // ),
+  AppBar _buildAppBar(Color textColor) {
+    return AppBar(
+      backgroundColor: _loginController.colorFromHex(_loginController.backLight),
+      title: Text(
+        'Loja',
+        style: TextStyle(fontSize: 25, color: textColor),
+      ),
+    );
+  }
 
-                  const SizedBox(height: 20),
+  Widget _buildTextFormField({
+    required String labelText,
+    required TextEditingController controller,
+    String? Function(String?)? validator,
+    required IconData prefixIcon,
+    required Color textColor,
+  }) {
+    return Column(
+      children: [
+        const SizedBox(height: 20),
+        TextFormField(
+          controller: controller,
+          validator: validator,
+          style: TextStyle(color: textColor),
+          decoration: InputDecoration(
+            border: OutlineInputBorder(),
+            labelText: labelText,
+            labelStyle: TextStyle(color: textColor),
+            prefixIcon: Icon(prefixIcon, color: textColor),
+          ),
+        ),
+      ],
+    );
+  }
 
-                  //   Row(
-                  //     children: <Widget>[
-                  //       Checkbox(
-                  //         value: this.valAceitaPoraki10,
-                  //         onChanged: (val) {
-                  //           setState(() {
-                  //             this.valAceitaPoraki10 = val!;
-                  //           });
-                  //         },
-                  //         activeColor: Colors.blue,
-                  //       ),
-                  //       const SizedBox(width: 20),
-                  //       Text('PORAKI10 - Aceita cupom de 10% na primeira compra'),
-                  //       const SizedBox(height: 20)
-                  //     ],
-                  //   ),
-                  //   const SizedBox(height: 20),
-                  //   TextFormField(
-                  //     // validator: (value) {
-                  //     //   if (value!.length != 11) {
-                  //     //     return "Por favor digite um telefone válido";
-                  //     //   }
-                  //     //   return null;
-                  //     // },
-                  //     controller: storeController.txtLojaCompl,
-                  //     autofocus: true,
-                  //     style: TextStyle(color: textColor),
-                  //     decoration: InputDecoration(
-                  //       border: OutlineInputBorder(),
-                  //       labelText: "Outro CUPOM",
-                  //       labelStyle: TextStyle(color: textColor),
-                  //       prefixIcon: Icon(
-                  //         Icons.location_city_outlined,
-                  //         color: textColor,
-                  //       ),
-                  //     ),
-                  //   ),
-                  //   const SizedBox(height: 20),
-                  // Column(children: <Widget>[
-                  //   const SizedBox(height: 10),
-                  //   TextFormField(
-                  //     controller:
-                  //     storeController.txtPercCupom,
-                  //     decoration: InputDecoration(
-                  //       labelText: 'Percentual do Cupom',
-                  //       border: OutlineInputBorder(),
-                  //     ),
-                  //     keyboardType: TextInputType.number,
-                  //     validator: (value) {
-                  //       int xPercCupom =
-                  //       int.parse(value.toString());
-                  //       if (xPercCupom <= 0 || xPercCupom >= 100)
-                  //         return 'Precisa ser maior do que zero e menor do que 100';
-                  //       return null;
-                  //     },
-                  //   )]),
-                  //
-                  //   const SizedBox(height: 20),
-                  //   Row(
-                  //     children: <Widget>[
-                  //       Text('A partir de: '),
-                  //       ElevatedButton(
-                  //           onPressed: () {
-                  //             showDatePicker(
-                  //                 context: buildContext,
-                  //                 initialDate: DateTime.now(),
-                  //                 firstDate: DateTime.now(),
-                  //                 lastDate: DateTime.now()
-                  //                     .add(Duration(days: 1000)))
-                  //                 .then((value) => setState(() {
-                  //               valDataCupomDe =
-                  //               value!;
-                  //             }));
-                  //           },
-                  //           style: ButtonStyle(
-                  //               backgroundColor:
-                  //               MaterialStateProperty.all<Color>(
-                  //                 _loginController.colorFromHex(
-                  //                     _loginController.listCore
-                  //                         .where((coreItem) =>
-                  //                     coreItem.coreChave ==
-                  //                         'backDark')
-                  //                         .first
-                  //                         .coreValor
-                  //                         .toString()),
-                  //               )),
-                  //           child: Row(
-                  //             children: [
-                  //               Icon(Icons.calendar_today_rounded),
-                  //               const SizedBox(
-                  //                 width: 16,
-                  //               ),
-                  //               Text(valDataCupomDe.day
-                  //                   .toString() +
-                  //                   '/' +
-                  //                   valDataCupomDe.month
-                  //                       .toString() +
-                  //                   '/' +
-                  //                   valDataCupomDe.year
-                  //                       .toString())
-                  //             ],
-                  //           )),
-                  //       const SizedBox(height: 20),
-                  //     ],
-                  //   ),
-                  //   const SizedBox(height: 20),
-                  //   Row(
-                  //     children: <Widget>[
-                  //       Text('Até: '),
-                  //       ElevatedButton(
-                  //           onPressed: () {
-                  //             showDatePicker(
-                  //                 context: buildContext,
-                  //                 initialDate: DateTime.now(),
-                  //                 firstDate: DateTime.now(),
-                  //                 lastDate: DateTime.now()
-                  //                     .add(Duration(days: 1000)))
-                  //                 .then((value) => setState(() {
-                  //               valDataCupomAte =
-                  //               value!;
-                  //             }));
-                  //           },
-                  //           style: ButtonStyle(
-                  //               backgroundColor:
-                  //               MaterialStateProperty.all<Color>(
-                  //                 _loginController.colorFromHex(
-                  //                     _loginController.listCore
-                  //                         .where((coreItem) =>
-                  //                     coreItem.coreChave ==
-                  //                         'backDark')
-                  //                         .first
-                  //                         .coreValor
-                  //                         .toString()),
-                  //               )),
-                  //           child: Row(
-                  //             children: [
-                  //               Icon(Icons.calendar_today_rounded),
-                  //               const SizedBox(
-                  //                 width: 16,
-                  //               ),
-                  //               Text(valDataCupomAte.day
-                  //                   .toString() +
-                  //                   '/' +
-                  //                   valDataCupomAte.month
-                  //                       .toString() +
-                  //                   '/' +
-                  //                   valDataCupomAte.year
-                  //                       .toString())
-                  //             ],
-                  //           )),
-                  //       const SizedBox(height: 20),
-                  //     ],
-                  //   ),
-                  const SizedBox(height: 20),
+  Widget _buildCnpjFormField(Color textColor) {
+    return _buildTextFormField(
+      labelText: "CNPJ",
+      controller: storeController.txtLojaCNPJ,
+      validator: (valueCNPJ) {
+        if (valueCNPJ != null && valueCNPJ.isNotEmpty && !UtilBrasilFields.isCNPJValido(valueCNPJ)) {
+          return "Por favor informe um CNPJ válido";
+        }
+        return null;
+      },
+      prefixIcon: Icons.work_outline,
+      textColor: textColor,
+    );
+  }
 
-                  ElevatedButton(
-                      onPressed: () => pegarImagemGaleria(),
-                      style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(
-                        _loginController.colorFromHex(_loginController.backDark),
-                      )),
-                      child: Row(
-                        children: [
-                          Icon(Icons.photo_album),
-                          const SizedBox(
-                            width: 16,
-                          ),
-                          Text('Adicionar Logotipo')
-                        ],
-                      )),
-                  SizedBox(height: 20),
+  Widget _buildPhoneFormField(Color textColor) {
+    return _buildTextFormField(
+      labelText: "Whatsapp da Loja (obrigatório)",
+      controller: storeController.txtLojaWhatsapp,
+      validator: (value) => value != null && value.length < 14 ? "Por favor informe um número de celular correto" : null,
+      prefixIcon: Icons.phone_enabled_outlined,
+      textColor: textColor,
+    );
+  }
 
-                  if (imgcloud != '')
-                    CachedNetworkImage(
-                      imageUrl: imgcloud,
-                      height: 250,
-                      progressIndicatorBuilder:
-                          (context, url, downloadProgress) =>
-                              CircularProgressIndicator(
-                                  value: downloadProgress.progress),
-                      errorWidget: (context, url, error) =>
-                          Icon(Icons.local_offer_outlined),
-                    ),
+  Widget _buildCepFormField(Color textColor) {
+    return _buildTextFormField(
+      labelText: "CEP",
+      controller: storeController.txtLojaCEP,
+      validator: (value) => value != null && value.length < 9 ? "Por favor informe um CEP correto" : null,
+      prefixIcon: Icons.location_on_outlined,
+      textColor: textColor,
+    );
+  }
 
-                  // FadeInImage.assetNetwork(
-                  //   placeholder: 'assets/images/pholder.png',
-                  //   image: imgcloud,
-                  //   imageErrorBuilder: (context, url, error) =>
-                  //       new Icon(Icons.store),
-                  //   height: 250,
-                  // ),
+  Widget _buildAddLogoButton() {
+    return ElevatedButton(
+      onPressed: pegarImagemGaleria,
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.all<Color>(
+          _loginController.colorFromHex(_loginController.backDark),
+        ),
+      ),
+      child: Row(
+        children: const [
+          Icon(Icons.photo_album),
+          SizedBox(width: 16),
+          Text('Adicionar Logotipo'),
+        ],
+      ),
+    );
+  }
 
-                  if (image != null)
-                    Image.file(
-                      image!,
-                      fit: BoxFit.contain,
-                    ),
-                  SizedBox(height: 20),
+  Widget _buildCachedNetworkImage() {
+    return CachedNetworkImage(
+      imageUrl: imgcloud,
+      height: 250,
+      progressIndicatorBuilder: (context, url, downloadProgress) => CircularProgressIndicator(
+        value: downloadProgress.progress,
+      ),
+      errorWidget: (context, url, error) => Icon(Icons.local_offer_outlined),
+    );
+  }
 
-                  ElevatedButton(
-                    onPressed: () async {
-                      if (_formStoreKey.currentState!.validate()) {
-                        setState(() {
-                          isSalvarLoading = true;
-                        });
+  Widget _buildSelectedImage() {
+    return Image.file(
+      image!,
+      fit: BoxFit.contain,
+    );
+  }
 
-                        await salvar().then((value) {
-                          setState(() {
-                            isSalvarLoading = false;
-                          });
+  Widget _buildSalvarButton() {
+    return ElevatedButton(
+      onPressed: _saveStore,
+      child: isSalvarLoading
+          ? const SizedBox(
+              height: 50,
+              child: CircularProgressIndicator(color: Colors.white, strokeWidth: 1.5),
+            )
+          : Text(
+              "Salvar",
+              style: TextStyle(
+                color: _loginController.colorFromHex(_loginController.textLight),
+                fontSize: 18,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.all<Color>(_loginController.colorFromHex(_loginController.iconColor)),
+      ),
+    );
+  }
 
-                          Get.offAndToNamed(AppRoutes.stores);
-                        });
+  Widget _buildApagarButton() {
+    return ElevatedButton(
+      onPressed: _deleteStore,
+      child: isApagarLoading
+          ? const SizedBox(
+              height: 50,
+              child: CircularProgressIndicator(color: Colors.white, strokeWidth: 1.5),
+            )
+          : Text(
+              "Apagar Loja",
+              style: TextStyle(
+                color: _loginController.colorFromHex(_loginController.textLight),
+                fontSize: 18,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.all<Color>(_loginController.colorFromHex(_loginController.textDark)),
+      ),
+    );
+  }
 
-                        Get.defaultDialog(
-                            title: "Aviso",
-                            middleText: "Informações atualizadas com sucesso!");
+  Future<void> _saveStore() async {
+    if (_formStoreKey.currentState!.validate()) {
+      setState(() {
+        isSalvarLoading = true;
+      });
 
-                        // final snackBar = SnackBar(
-                        //     backgroundColor: _loginController.colorFromHex(
-                        //         _loginController.listCore
-                        //             .where((coreItem) =>
-                        //                 coreItem.coreChave == 'textDark')
-                        //             .first
-                        //             .coreValor
-                        //             .toString()),
-                        //     content: Container(
-                        //         height: 40,
-                        //         child: Center(
-                        //             child:
-                        //                 const Text('Informações salvas 1!'))));
-                        //ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                      }
-                    },
-                    child: (isSalvarLoading)
-                        ? const SizedBox(
-                            // width: 16,
-                            height: 50,
-                            child: CircularProgressIndicator(
-                              color: Colors.white,
-                              strokeWidth: 1.5,
-                            ))
-                        : Text(
-                            "Salvar",
-                            style: TextStyle(
-                                color: _loginController.colorFromHex(_loginController.textLight),
-                                fontSize: 18,
-                                fontWeight: FontWeight.w500),
-                          ),
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all<Color>(_loginController.colorFromHex(_loginController.iconColor),
-                      ),
-                    ),
-                  ),
+      storeGuid = (await storeController.saveLoja()).toString();
+      await uploadFoto(image == null ? null : image);
+      await _loginController.loadStoresData();
 
-                  ElevatedButton(
-                    onPressed: () async {
-                      setState(() {
-                        isApagarLoading = true;
-                      });
+      setState(() {
+        isSalvarLoading = false;
+      });
 
-                      await storeController
-                          .apagaLoja(storeController.loja)
-                          .then((value) {
-                        setState(() {
-                          isApagarLoading = false;
-                        });
+      Get.defaultDialog(title: "Aviso", middleText: "Informações atualizadas com sucesso!");
+      Get.offAndToNamed(AppRoutes.stores);
+    }
+  }
 
-                        Get.offAndToNamed(AppRoutes.stores);
-                      });
-
-                      Get.defaultDialog(
-                          title: "Aviso",
-                          middleText: "Loja removida do Poraki !");
-
-                      // final snackBar = SnackBar(
-                      //     backgroundColor: _loginController.colorFromHex(
-                      //         _loginController.listCore
-                      //             .where((coreItem) =>
-                      //                 coreItem.coreChave == 'textDark')
-                      //             .first
-                      //             .coreValor
-                      //             .toString()),
-                      //     content: Container(
-                      //         height: 40,
-                      //         child: Center(
-                      //             child:
-                      //                 const Text('Informações salvas 1!'))));
-                      //ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                    },
-                    child: (isApagarLoading)
-                        ? const SizedBox(
-                            // width: 16,
-                            height: 50,
-                            child: CircularProgressIndicator(
-                              color: Colors.white,
-                              strokeWidth: 1.5,
-                            ))
-                        : Text(
-                            "Apagar Loja",
-                            style: TextStyle(
-                                color: _loginController.colorFromHex(_loginController.textLight),
-                                fontSize: 18,
-                                fontWeight: FontWeight.w500),
-                          ),
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all<Color>(_loginController.colorFromHex(_loginController.textDark),
-                      ),
-                    ),
-                  ),
-
-                  //
-                  // if (storeController.loja != null)
-                  //   ButtonOffer(
-                  //     onPressed: () async {
-                  //       await storeController.apagaLoja(storeController.loja).then((value) => Get.offAndToNamed(AppRoutes.stores));
-                  //
-                  //       Get.defaultDialog(
-                  //           title: "Aviso",
-                  //           middleText: "Loja removida do Poraki !");
-                  //
-                  //     },
-                  //     colorText: _loginController.colorFromHex(_loginController
-                  //         .listCore
-                  //         .where((coreItem) => coreItem.coreChave == 'textDark')
-                  //         .first
-                  //         .coreValor
-                  //         .toString()),
-                  //     text: 'Apagar Loja',
-                  //     colorButton: _loginController.colorFromHex(
-                  //         _loginController.listCore
-                  //             .where((coreItem) =>
-                  //                 coreItem.coreChave == 'textLight')
-                  //             .first
-                  //             .coreValor
-                  //             .toString()),
-                  //   ),
-                ])
-                // ],
-                ),
-          )));
-      //}
+  Future<void> _deleteStore() async {
+    setState(() {
+      isApagarLoading = true;
     });
-    //);
+
+    await storeController.apagaLoja(storeController.loja);
+
+    setState(() {
+      isApagarLoading = false;
+    });
+
+    Get.defaultDialog(title: "Aviso", middleText: "Loja removida do Poraki !");
+    Get.offAndToNamed(AppRoutes.stores);
   }
 
-  Future<void> salvar() async {
-    var storeGuidTemp = await storeController.saveLoja();
-    storeGuid = storeGuidTemp.toString();
-
-    await uploadFoto(image == null ? null : image);
-
-    await _loginController.loadStoresData();
-  }
-
-  Future<void> buscaCep() async {
-    CepApiBrasil cepApi = await CepApiBrasilRepository().getCepApiBrasil(
-        storeController.txtLojaCEP.text.trimLeft().trimRight());
-
-    storeController.txtLojaLogra.text = cepApi.street!;
-    if (storeController.txtLojaLogra.text.isNotEmpty)
-      FocusScope.of(context).requestFocus(txtLojaNroFocus);
-  }
-
-  Future pegarImagemGaleria() async {
+  Future<void> pegarImagemGaleria() async {
     try {
-      final foto = await ImagePicker().pickImage(
-          source: ImageSource.gallery, imageQuality: 70, maxHeight: 300);
+      final foto = await ImagePicker().pickImage(source: ImageSource.gallery, imageQuality: 70, maxHeight: 300);
       if (foto == null) return;
 
-      final imageTemp = File(foto.path);
-
-      setState(() => this.image = imageTemp);
-
-      imgEdited = true;
+      setState(() {
+        image = File(foto.path);
+        imgEdited = true;
+      });
     } on PlatformException catch (e) {
-      print('erro tentando abrir album de fotos: $e');
+      print('Erro ao tentar abrir o álbum de fotos: $e');
     }
   }
 
-  uploadFoto(File? foto) async {
-    // await _saveForm();
-
+  Future<void> uploadFoto(File? foto) async {
     if (imgEdited && foto != null) {
       await Firebase.initializeApp();
-
-      print('passou no upload');
-      Reference ref = FirebaseStorage.instance
-          .ref()
-          .child("lojas")
-          .child(storeGuid + '.jpg');
-
-      await ref.putFile(image!);
-      //var downloadURL = await ref.getDownloadURL();
+      Reference ref = FirebaseStorage.instance.ref().child("lojas").child(storeGuid + '.jpg');
+      await ref.putFile(foto);
     }
-    // showSnackBar("Oferta salva! - " + widget.offerGuid, Duration(seconds: 3));
   }
 }

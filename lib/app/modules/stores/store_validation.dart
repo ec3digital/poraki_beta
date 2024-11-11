@@ -32,8 +32,8 @@ class StoreValidation extends StatefulWidget {
 }
 
 class _StoreValidationState extends State<StoreValidation> {
-  InternetConnectionStatus? _connectionStatus;
-  late StreamSubscription<InternetConnectionStatus> _subscription;
+  InternetStatus? _connectionStatus;
+  late StreamSubscription<InternetStatus> _subscription;
   // final _form = GlobalKey<FormState>();
   File? imageCNPJ;
   File? imageAddress;
@@ -44,7 +44,7 @@ class _StoreValidationState extends State<StoreValidation> {
     widget._imageURLAddressFocusNode.addListener(_updateImageUrl);
 
     super.initState();
-    _subscription = InternetConnectionCheckerPlus().onStatusChange.listen(
+    _subscription = InternetConnection().onStatusChange.listen(
           (status) {
         setState(() {
           _connectionStatus = status;

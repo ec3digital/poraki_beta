@@ -23,329 +23,211 @@ class _FormSignupState extends State<FormSignup> {
   bool isLoading = false;
   final _formSignupKey = GlobalKey<FormState>();
 
+  Future<void> _signUp() async {
+    if (_formSignupKey.currentState!.validate()) {
+      setState(() {
+        isLoading = true;
+      });
+
+      var ret = await widget.controller.signUp(
+        widget.controller.mailInputController.text.trim(),
+        widget.controller.passwordInputController.text.trim(),
+        widget.controller.nickInputController.text.trim(),
+        widget.controller.nameInputController.text.trim(),
+        widget.controller.cepInputController.text.trim(),
+        widget.controller.cpfInputController.text.trim(),
+        widget.controller.phoneInputController.text.trim(),
+      );
+
+      setState(() {
+        isLoading = false;
+      });
+
+      if (ret == 'OK') {
+        Get.toNamed(AppRoutes.termos);
+        Alerta(context,
+            'Conta criada com sucesso! Por favor confirme seu acesso clicando no link do e-mail que acabamos de enviar pra você');
+      } else {
+        Alerta(context, ret.toString());
+      }
+    }
+  }
+
+  String? _validateFieldLength(String? value, int minLength, String errorMessage) {
+    if (value != null && value.length < minLength) {
+      return errorMessage;
+    }
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(builder: (context, futuro) {
-      return Form(
-        autovalidateMode: AutovalidateMode.always,
-        key: _formSignupKey,
-        child: Column(
+    return Form(
+      autovalidateMode: AutovalidateMode.always,
+      key: _formSignupKey,
+      child: Column(
+        children: [
+          _buildTextFormField(
+            controller: widget.controller.nameInputController,
+            labelText: "Nome Completo",
+            validator: (value) => _validateFieldLength(value, 3, "Por favor informe um nome correto"),
+            prefixIcon: Icons.person,
+          ),
+          const SizedBox(height: 20),
+          _buildTextFormField(
+            controller: widget.controller.nickInputController,
+            labelText: "Apelido",
+            validator: (value) => _validateFieldLength(value, 3, "Por favor informe um apelido correto"),
+            prefixIcon: Icons.person,
+          ),
+          const SizedBox(height: 20),
+          _buildCpfFormField(),
+          const SizedBox(height: 20),
+          _buildPhoneFormField(),
+          const SizedBox(height: 20),
+          _buildEmailFormField(),
+          const SizedBox(height: 20),
+          _buildCepFormField(),
+          const SizedBox(height: 20),
+          _buildPasswordFields(),
+          _buildShowPasswordCheckbox(),
+          _buildSignUpButton(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTextFormField({
+    required TextEditingController controller,
+    required String labelText,
+    required String? Function(String?) validator,
+    required IconData prefixIcon,
+    bool obscureText = false,
+  }) {
+    return TextFormField(
+      controller: controller,
+      validator: validator,
+      obscureText: obscureText,
+      style: TextStyle(color: Colors.white),
+      decoration: InputDecoration(
+        border: OutlineInputBorder(),
+        labelText: labelText,
+        labelStyle: TextStyle(color: Colors.white),
+        prefixIcon: Icon(prefixIcon, color: Colors.white),
+      ),
+    );
+  }
+
+  Widget _buildCpfFormField() {
+    return _buildTextFormField(
+      controller: widget.controller.cpfInputController,
+      labelText: "CPF",
+      validator: (value) {
+        if (value != null && value.isNotEmpty && !UtilBrasilFields.isCPFValido(value)) {
+          return "Por favor informe um CPF válido";
+        }
+        return null;
+      },
+      prefixIcon: Icons.assignment_ind,
+    );
+  }
+
+  Widget _buildPhoneFormField() {
+    return _buildTextFormField(
+      controller: widget.controller.phoneInputController,
+      labelText: "Telefone Celular / Whatsapp",
+      validator: (value) => _validateFieldLength(value, 14, "Por favor informe um número de celular correto"),
+      prefixIcon: Icons.phone,
+    );
+  }
+
+  Widget _buildEmailFormField() {
+    return _buildTextFormField(
+      controller: widget.controller.mailInputController,
+      labelText: "E-mail",
+      validator: (value) {
+        RegExp regex = RegExp(
+          r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$',
+        );
+        if (value == null || !regex.hasMatch(value)) {
+          return 'Favor informar um endereço de e-mail correto';
+        }
+        return null;
+      },
+      prefixIcon: Icons.mail_outline,
+    );
+  }
+
+  Widget _buildCepFormField() {
+    return _buildTextFormField(
+      controller: widget.controller.cepInputController,
+      labelText: "CEP",
+      validator: (value) => _validateFieldLength(value, 8, "Digite um CEP válido"),
+      prefixIcon: Icons.map,
+    );
+  }
+
+  Widget _buildPasswordFields() {
+    return GetBuilder<SignUpController>(
+      builder: (_) {
+        return Column(
           children: [
-            TextFormField(
-              validator: (valueNome) => valueNome.toString().length < 3
-                  ? "Por favor informe um nome correto"
-                  : null,
-              controller: widget.controller.nameInputController,
-              keyboardType: TextInputType.name,
-              autofocus: false,
-              // true,
-              style: TextStyle(color: Colors.white),
-              autofillHints: [AutofillHints.name],
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: "Nome Completo",
-                labelStyle: TextStyle(color: Colors.white),
-                prefixIcon: Icon(
-                  Icons.person,
-                  color: Colors.white,
-                ),
-              ),
+            _buildTextFormField(
+              controller: widget.controller.passwordInputController,
+              labelText: "Senha",
+              validator: (value) => _validateFieldLength(value, 6, "A senha deve ter pelo menos 6 caracteres"),
+              prefixIcon: Icons.vpn_key_sharp,
+              obscureText: !widget.controller.showPassword, 
             ),
-            const SizedBox(
-              height: 20,
-            ),
-            TextFormField(
-              validator: (valueNick) => valueNick.toString().length < 3
-                  ? "Por favor informe um apelido correto"
-                  : null,
-              controller: widget.controller.nickInputController,
-              autofocus: false,
-              // true,
-              style: TextStyle(color: Colors.white),
-              keyboardType: TextInputType.name,
-              autofillHints: [AutofillHints.nickname],
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: "Apelido",
-                labelStyle: TextStyle(color: Colors.white),
-                prefixIcon: Icon(
-                  Icons.person,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            TextFormField(
-              validator: (valueCPF) {
-                if (valueCPF.toString().length > 0) if (!UtilBrasilFields.isCPFValido(valueCPF))
-                  return "Por favor informe um CPF válido";
-                else
-                  return null;
-              },
-              inputFormatters: [
-                FilteringTextInputFormatter.digitsOnly,
-                CpfInputFormatter(),
-              ],
-              controller: widget.controller.cpfInputController,
-              keyboardType: TextInputType.number,
-              autofocus: false,
-              // true,
-              // onChanged: (cpf) { if (!CNPJValidator.isValid(cpf)) { Get.defaultDialog(title: "CPF Inválido", middleText: "Por favor informe um CPF válido" ); }  {} } ,
-              style: TextStyle(color: Colors.white),
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: "CPF",
-                labelStyle: TextStyle(color: Colors.white),
-                prefixIcon: Icon(
-                  Icons.assignment_ind,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            TextFormField(
-              validator: (valueZap) => valueZap.toString().length < 14
-                  ? "Por favor informe um número de celular correto"
-                  : null,
-              inputFormatters: [
-                FilteringTextInputFormatter.digitsOnly,
-                TelefoneInputFormatter(),
-              ],
-              controller: widget.controller.phoneInputController,
-              keyboardType: TextInputType.phone,
-              autofillHints: [AutofillHints.telephoneNumber],
-              autofocus: false,
-              // true,
-              style: TextStyle(color: Colors.white),
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: "Telefone Celular / Whatsapp",
-                labelStyle: TextStyle(color: Colors.white),
-                prefixIcon: Icon(
-                  Icons.phone,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            TextFormField(
-              validator: (valueEmail) {
-                RegExp regex = new RegExp(
-                    r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$');
-                if (valueEmail!.isEmpty || !regex.hasMatch(valueEmail))
-                  return 'Favor informar um endereço de e-mail correto';
-                else
-                  return null;
-              },
-              controller: widget.controller.mailInputController,
-              autofocus: false,
-              // true,
-              style: TextStyle(color: Colors.white),
-              keyboardType: TextInputType.emailAddress,
-              autofillHints: [AutofillHints.email],
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: "E-mail",
-                labelStyle: TextStyle(
-                  color: Colors.white,
-                ),
-                prefixIcon: Icon(
-                  Icons.mail_outline,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            TextFormField(
+            const SizedBox(height: 20),
+            _buildTextFormField(
+              controller: widget.controller.confirmInputController,
+              labelText: "Confirme a Senha",
               validator: (value) {
-                if (value!.length < 8) {
-                  return "Digite um CEP válido";
+                if (value != widget.controller.passwordInputController.text) {
+                  return "As senhas devem ser iguais";
                 }
                 return null;
               },
-              inputFormatters: [
-                FilteringTextInputFormatter.digitsOnly,
-                CepInputFormatter(),
-              ],
-              controller: widget.controller.cepInputController,
-              keyboardType: TextInputType.number,
-              autofillHints: [AutofillHints.postalCode],
-              autofocus: false,
-              // true,
-              style: TextStyle(color: Colors.white),
-              decoration: InputDecoration(
-                filled: true,
-                border: OutlineInputBorder(),
-                labelText: "CEP",
-                labelStyle: TextStyle(color: Colors.white),
-                prefixIcon: Icon(
-                  Icons.map,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-
-            // const SizedBox(
-            //   height: 20,
-            // ),
-            // TextFormField(
-            //   validator: (value) {
-            //     if (value!.length != 10) {
-            //       return "Digite uma data de nascimento válida";
-            //     }
-            //     return null;
-            //   },
-            //
-            //   inputFormatters: [
-            //     FilteringTextInputFormatter.digitsOnly,
-            //     DataInputFormatter(),
-            //   ],
-            //   //onChanged: (data) { if (!Validat.isValid(cnpj)) { Get.defaultDialog(title: "CNPJ Inválido", middleText: "Por favor informe um CNPJ válido" ); }  {} } ,
-            //   controller: controller.dtNascInputController,
-            //   keyboardType: TextInputType.datetime,
-            //   autofocus: true,
-            //   autofillHints: [AutofillHints.birthday],
-            //   style: TextStyle(color: Colors.white),
-            //   decoration: InputDecoration(
-            //     border: OutlineInputBorder(),
-            //     labelText: "Data de Nascimento",
-            //     labelStyle: TextStyle(color: Colors.white),
-            //     prefixIcon: Icon(
-            //       Icons.event,
-            //       color: Colors.white,
-            //     ),
-            //   ),
-            // ),
-
-            Padding(
-              padding: EdgeInsets.only(
-                bottom: 15,
-              ),
-            ),
-            GetBuilder<SignUpController>(builder: (_) {
-              return Column(
-                children: [
-                  TextFormField(
-                    validator: (value) {
-                      if (value!.length < 6) {
-                        return "A senha deve ter pelo menos 6 caracteres";
-                      }
-                      return null;
-                    },
-                    controller: widget.controller.passwordInputController,
-                    obscureText: !widget.controller.showPassword,
-                    style: TextStyle(color: Colors.white),
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: "Senha",
-                      labelStyle: TextStyle(
-                        color: Colors.white,
-                      ),
-                      prefixIcon: Icon(
-                        Icons.vpn_key_sharp,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  TextFormField(
-                    validator: (value) {
-                      if (value !=
-                          widget.controller.passwordInputController.text) {
-                        return "As senhas devem ser iguais";
-                      }
-                      return null;
-                    },
-                    controller: widget.controller.confirmInputController,
-                    obscureText: !widget.controller.showPassword,
-                    style: TextStyle(color: Colors.white),
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: "Confirme a Senha",
-                      labelStyle: TextStyle(
-                        color: Colors.white,
-                      ),
-                      prefixIcon: Icon(
-                        Icons.vpn_key_sharp,
-                        color: Colors.white,
-                      ),
-                    ),
-                  )
-                ],
-              );
-            }),
-            Row(
-              children: [
-                GetBuilder<SignUpController>(
-                  builder: (_) {
-                    return Checkbox(
-                      value: widget.controller.showPassword,
-                      onChanged: (newValue) {
-                        widget.controller.changeShowPassword(newValue!);
-                      },
-                      activeColor: Colors.blue,
-                    );
-                  },
-                ),
-                Text(
-                  "Mostrar senha",
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),
-                )
-              ],
-            ),
-            MaterialButton(
-              onPressed: () async {
-                if (_formSignupKey.currentState!.validate()) {
-                  setState(() {
-                    isLoading = true;
-                  });
-
-                  var ret = await widget.controller
-                      .signUp(
-                          widget.controller.mailInputController.text.trim(),
-                          widget.controller.passwordInputController.text.trim(),
-                          widget.controller.nickInputController.text.trim(),
-                          widget.controller.nameInputController.text.trim(),
-                          widget.controller.cepInputController.text.trim(),
-                          widget.controller.cpfInputController.text.trim(),
-                          widget.controller.phoneInputController.text.trim())
-                      .then((value) {
-                    setState(() {
-                      isLoading = false;
-                    });
-                  });
-
-                  if (ret == 'OK') {
-                    // Get.toNamed(AppRoutes.login);
-                    Get.toNamed(AppRoutes.termos);
-                    Alerta(context,
-                        'Conta criada com sucesso! Por favor confirme seu acesso clicando no link do e-mail que acabamos de enviar pra você');
-                  } else {
-                    Alerta(context, ret.toString());
-                  }
-                }
-              },
-              child: Text("     Cadastrar     "),
-              color: AppColors.secondaryColorButton,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
+              prefixIcon: Icons.vpn_key_sharp,
+              obscureText: !widget.controller.showPassword,
             ),
           ],
+        );
+      },
+    );
+  }
+
+  Widget _buildShowPasswordCheckbox() {
+    return Row(
+      children: [
+        GetBuilder<SignUpController>(
+          builder: (_) {
+            return Checkbox(
+              value: widget.controller.showPassword,
+              onChanged: (newValue) {
+                widget.controller.changeShowPassword(newValue!);
+              },
+              activeColor: Colors.blue,
+            );
+          },
         ),
-      );
-    });
+        Text(
+          "Mostrar senha",
+          style: TextStyle(color: Colors.white),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildSignUpButton() {
+    return MaterialButton(
+      onPressed: _signUp,
+      child: Text("     Cadastrar     "),
+      color: AppColors.secondaryColorButton,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+    );
   }
 }

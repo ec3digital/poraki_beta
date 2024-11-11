@@ -29,8 +29,8 @@ class BodyMoffer extends StatefulWidget {
 }
 
 class _BodyMoffer extends State<BodyMoffer> {
-  InternetConnectionStatus? _connectionStatus;
-  late StreamSubscription<InternetConnectionStatus> _subscription;
+  InternetStatus? _connectionStatus;
+  late StreamSubscription<InternetStatus> _subscription;
   File? image;
   List<String> _listaCategoriasNomes = [];
   final CategoriesController _categoriesController =
@@ -184,7 +184,7 @@ class _BodyMoffer extends State<BodyMoffer> {
     if (_mofferController.singleOffer != null) carregaObj();
 
     super.initState();
-    _subscription = InternetConnectionCheckerPlus().onStatusChange.listen(
+    _subscription = InternetConnection().onStatusChange.listen(
           (status) {
         setState(() {
           _connectionStatus = status;

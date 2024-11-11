@@ -22,11 +22,11 @@ class ButtonsDayOffer extends StatelessWidget {
       height: 50,
       width: double.maxFinite,
       child: ElevatedButton(
-        style: ElevatedButton.styleFrom(primary: colorButton),
+        style: ElevatedButton.styleFrom(backgroundColor: colorButton),
         onPressed: () => onPressed,
         child: Text(
           text,
-          style: Get.textTheme.bodyText1!.copyWith(
+          style: Get.textTheme.bodyLarge!.copyWith(
               fontSize: 18, color: colorText, fontWeight: FontWeight.w500),
         ),
       ),

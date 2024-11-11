@@ -39,7 +39,7 @@ class ListCategoriesDaysOffers extends StatelessWidget {
                     const SizedBox(height: 5),
                     AutoSizeText(
                       _category,
-                      style: Get.textTheme.headline1!.copyWith(fontSize: 14),
+                      style: Get.textTheme.displayLarge!.copyWith(fontSize: 14),
                       textAlign: TextAlign.center,
                       maxLines: 2,
                     ),

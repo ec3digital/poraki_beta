@@ -19,7 +19,7 @@ class DetailOfferDay extends StatelessWidget {
         children: [
           Text(
             'Detalhes:',
-            style: Get.textTheme.bodyText1!.copyWith(fontWeight: FontWeight.w400, fontSize: 15),
+            style: Get.textTheme.bodyLarge!.copyWith(fontWeight: FontWeight.w400, fontSize: 15),
           ),
           Text(detailProduct!),
         ],

@@ -20,7 +20,7 @@ class AppBarShowDayOffer extends StatelessWidget {
         children: [
           Text(
             'Produto',
-            style: Get.textTheme.bodyText1!.copyWith(
+            style: Get.textTheme.bodyLarge!.copyWith(
               color: AppColors.darkText,
               fontWeight: FontWeight.w400,
             ),
@@ -58,7 +58,7 @@ class AppBarShowDayOffer extends StatelessWidget {
                 const SizedBox(width: 08),
                 Text(
                   adressUser!,
-                  style: Get.textTheme.bodyText1!.copyWith(
+                  style: Get.textTheme.bodyLarge!.copyWith(
                     fontSize: 12,
                     color: AppColors.darkText,
                     fontWeight: FontWeight.w400,

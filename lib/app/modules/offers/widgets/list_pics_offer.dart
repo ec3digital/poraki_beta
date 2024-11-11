@@ -26,8 +26,8 @@ class ListPicsOffer extends StatefulWidget {
 }
 
 class _ListPicsOfferState extends State<ListPicsOffer> {
-  InternetConnectionStatus? _connectionStatus;
-  late StreamSubscription<InternetConnectionStatus> _subscription;
+  InternetStatus? _connectionStatus;
+  late StreamSubscription<InternetStatus> _subscription;
   final LoginController _loginController = Get.find();
   final OffersController _offersController = Get.find();
   late Color backColor;
@@ -39,7 +39,7 @@ class _ListPicsOfferState extends State<ListPicsOffer> {
   @override
   void initState() {
     super.initState();
-    _subscription = InternetConnectionCheckerPlus().onStatusChange.listen(
+    _subscription = InternetConnection().onStatusChange.listen(
       (status) {
         setState(() {
           _connectionStatus = status;
@@ -54,111 +54,85 @@ class _ListPicsOfferState extends State<ListPicsOffer> {
         .isNotEmpty;
   }
 
+  Future<void> _toggleFavorite() async {
+    OffersFavController _offersFavController = Get.put(OffersFavController());
+    if (favorited) {
+      await _offersFavController.removeObj(
+          widget.offer.ofertaGUID.toString(), _offersController);
+    } else {
+      await _offersFavController.addObj(
+          widget.offer.ofertaGUID.toString(), _offersController);
+    }
+    setState(() {
+      favorited = !favorited;
+      isLoading = false;
+    });
+    Get.offAndToNamed(AppRoutes.offers, arguments: [
+      {'listName': 'favsoffers'},
+      {'limit': 24},
+      {'category': null},
+      {'title': 'Favoritas'},
+      {'ofertaGuid': null}
+    ]);
+  }
+
   @override
   Widget build(BuildContext context) {
     icon = favorited
         ? Icon(Icons.favorite, color: textColor)
         : Icon(Icons.favorite_outline, color: textColor);
 
-    return FutureBuilder(builder: (context, futuro) {
-      return Container(
-        height: Get.height * 0.40,
-        child: Stack(
-          children: [
-            const Text(
-              'Conexão: ',
-            ),
-            Text(
-              _connectionStatus?.toString() ?? '...',
-            ),
-            ListView.builder(
-              //scrollDirection: Axis.horizontal,
-              itemCount: 1, //controller.listPictures.length,
-              itemBuilder: (context, index) {
-                return Container(
-                  width: Get.width * 1,
-                  // child: Align(
-                  //   alignment: Alignment.topCenter,
-                  child: Container(
-                    height: Get.height * 0.37,
-
-                    child: FullScreenWidget(
-                        disposeLevel: DisposeLevel.Medium,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(6),
-                          child: CachedNetworkImage(
-                            imageUrl: widget.imagesList[index],
-                            progressIndicatorBuilder:
-                                (context, url, downloadProgress) =>
-                                    CircularProgressIndicator(
-                                        value: downloadProgress.progress),
-                            errorWidget: (context, url, error) =>
-                                Icon(Icons.local_offer_outlined),
-                          ),
-                        )),
-
-                    // child: FadeInImage.assetNetwork(
-                    //   placeholder: 'assets/images/pholder.png',
-                    //   image: imagesList[index],
-                    //   imageErrorBuilder: (context, url, error) => new Icon(Icons.local_offer_outlined),
-                    // ),
-
-                    // child: Image.network(
-                    //   imagesList[index],
-                    // ),
-                  ),
-                  //),
-                );
+    return Container(
+      height: Get.height * 0.40,
+      child: Stack(
+        children: [
+          const Text('Conexão: '),
+          Text(_connectionStatus?.toString() ?? '...'),
+          ListView.builder(
+            itemCount: widget.imagesList.length,
+            itemBuilder: (context, index) {
+              return Container(
+                width: Get.width * 1,
+                child: Container(
+                  height: Get.height * 0.37,
+                  child: FullScreenWidget(
+                      disposeLevel: DisposeLevel.Medium,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(6),
+                        child: CachedNetworkImage(
+                          imageUrl: widget.imagesList[index],
+                          progressIndicatorBuilder:
+                              (context, url, downloadProgress) =>
+                                  CircularProgressIndicator(
+                                      value: downloadProgress.progress),
+                          errorWidget: (context, url, error) =>
+                              Icon(Icons.local_offer_outlined),
+                        ),
+                      )),
+                ),
+              );
+            },
+          ),
+          Positioned(
+            right: 15,
+            top: 0,
+            child: FloatingActionButton(
+              elevation: 0,
+              backgroundColor: backColor,
+              mini: true,
+              onPressed: () async {
+                setState(() {
+                  isLoading = true;
+                });
+                await _toggleFavorite();
               },
+              child: isLoading
+                  ? Icon(Icons.cloud_upload, color: textColor)
+                  : icon,
             ),
-            Positioned(
-              right: 15,
-              //bottom: 0,
-              top: 0,
-              child: FloatingActionButton(
-                elevation: 0,
-                backgroundColor: backColor, //AppColors.containerLightColor,
-                mini: true,
-                onPressed: () async {
-                  setState(() {
-                    isLoading = true;
-                  });
-
-                  OffersFavController _offersFavController =
-                      Get.put(OffersFavController());
-                  if (favorited) {
-                    Future.wait([
-                      _offersFavController.removeObj(
-                          widget.offer.ofertaGUID.toString(), _offersController)
-                    ]);
-                  } else {
-                    Future.wait([
-                      _offersFavController.addObj(
-                          widget.offer.ofertaGUID.toString(), _offersController)
-                    ]);
-                  }
-
-                  setState(() {
-                    favorited = !favorited;
-                    isLoading = false;
-                  });
-
-                  Get.offAndToNamed(AppRoutes.offers, arguments: [
-                    {'listName': 'favsoffers'},
-                    {'limit': 24},
-                    {'category': null},
-                    {'title': 'Favoritas'},
-                    {'ofertaGuid': null}
-                  ]);
-                },
-                child: isLoading
-                    ? Icon(Icons.cloud_upload, color: textColor)
-                    : icon,
-              ),
-            )
-          ],
-        ),
-      );
-    });
+          )
+        ],
+      ),
+    );
   }
 }

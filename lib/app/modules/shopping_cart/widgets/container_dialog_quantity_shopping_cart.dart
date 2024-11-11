@@ -28,7 +28,7 @@ class ContainerDialogShoppingCart extends StatelessWidget {
         children: [
           Text(
             '1',
-            style: Get.textTheme.bodyText1!.copyWith(
+            style: Get.textTheme.bodyLarge!.copyWith(
               fontSize: 14,
               color: AppColors.primaryColor,
             ),

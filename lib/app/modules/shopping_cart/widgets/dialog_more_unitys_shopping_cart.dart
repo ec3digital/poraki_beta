@@ -30,7 +30,7 @@ class DialogMoreUnitysShoppingCart extends StatelessWidget {
           child: Text(
             'Quantidade',
             textAlign: TextAlign.center,
-            style: Get.textTheme.bodyText1!
+            style: Get.textTheme.bodyLarge!
                 .copyWith(fontWeight: FontWeight.w500, fontSize: 18),
           ),
         ),
